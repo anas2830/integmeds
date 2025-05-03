@@ -10,18 +10,6 @@
                 <div class="card-body">
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
-                            <h4 class="card-title">Buttons example</h4>
-                        </div>
-                        <div class="page-title-right">
-                            <a href="{{ route('manage-editor.create') }}" class="btn btn-primary">+ Add New</a>
-                        </div>
-                    </div>
-
-                    <div class="mt-2 page-title-box d-flex align-items-center justify-content-between">
-                        <div>
-                            <p class="card-title-desc">The Buttons extension for DataTables</p>
-                        </div>
-                        <div class="page-title-right">
                             <div class="search-form">
                                 <form action="{{ route('manage-editor.index') }}" method="GET" class="app-search d-none d-lg-block">
                                     <div class="input-group">
@@ -32,6 +20,9 @@
                                     </div>
                                 </form>
                             </div>
+                        </div>
+                        <div class="page-title-right">
+                            <a href="{{ route('manage-editor.create') }}" class="btn btn-primary">+ Add New</a>
                         </div>
                     </div>
 
