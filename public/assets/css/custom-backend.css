@@ -1,0 +1,19 @@
+/* start dropzone css */
+.dropzone{
+    padding:0;
+    border: none;
+    /* border: 1px solid dotted; */
+    border: 1px dotted #ddd;
+
+}
+.dropzone .dz-preview .dz-image {
+    width: 150px;
+    height: 150px;
+}
+.dropzone .dz-preview .dz-image img{
+    width: 150px;
+    height: 150px;
+}
+th.no-sort::after, th.no-sort::before {
+    display: none !important;
+}
