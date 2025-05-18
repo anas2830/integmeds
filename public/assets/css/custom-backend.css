@@ -17,3 +17,14 @@
 th.no-sort::after, th.no-sort::before {
     display: none !important;
 }
+table thead a{
+    color:unset;
+}
+.required-icon {
+    color: red;
+    margin-left: 2px;
+}
+.alert-success{
+    background-color: #00944C;
+    color: white;
+}
