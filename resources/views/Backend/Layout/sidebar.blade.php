@@ -15,17 +15,74 @@
                     </a>
                 </li>
                 @if(Auth::guard('admin')->check())
-                    <li>
-                        <a href="javascript: void(0);" class="has-arrow waves-effect">
-                            <i class="bx bx-user"></i>
-                            <span>Editor Management</span>
-                        </a>
-                        <ul class="sub-menu" aria-expanded="false">
-                            <li><a href="{{ route('manage-editor.index') }}">Editor List</a></li>
-                            <li><a href="{{ route('manage-editor.create') }}">Create</a></li>
-                        </ul>
-                    </li>
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="bx bx-user"></i>
+                        <span>Editor Management</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{ route('manage-editor.index') }}">Editor List</a></li>
+                        <li><a href="{{ route('manage-editor.create') }}">Create</a></li>
+                    </ul>
+                </li>
                 @endif
+
+                <li class="menu-title">Product Management</li>
+
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="bx bx-list-ul"></i>
+                        <span>Category</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{ route('product-category.index') }}">List</a></li>
+                        <li><a href="{{ route('product-category.create') }}">Create</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="bx bx-list-ul"></i>
+                        <span>Brand</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{ route('product-brand.index') }}">List</a></li>
+                        <li><a href="{{ route('product-brand.create') }}">Create</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="bx bx-list-ul"></i>
+                        <span>Tag</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{ route('product-tag.index') }}">List</a></li>
+                        <li><a href="{{ route('product-tag.create') }}">Create</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="bx bx-list-ul"></i>
+                        <span>Size</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{ route('product-size.index') }}">List</a></li>
+                        <li><a href="{{ route('product-size.create') }}">Create</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="bx bx-list-ul"></i>
+                        <span>Cupon</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{ route('cupon.index') }}">List</a></li>
+                        <li><a href="{{ route('cupon.create') }}">Create</a></li>
+                    </ul>
+                </li>
 
                 <li class="menu-title">Apps</li>
 

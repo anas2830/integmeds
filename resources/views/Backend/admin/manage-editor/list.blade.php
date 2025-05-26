@@ -8,6 +8,14 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
+                    @if(session('success'))
+                        <div class="alert alert-success alert-dismissible fade show text-white" role="alert">
+                            <span class="text-sm">{{ session('success') }}</span>
+                            <button type="button" class="close text-white" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    @endif
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
                             <div class="search-form">
@@ -29,6 +37,7 @@
                     <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                         <thead>
                             <tr>
+                                <th>SL</th>
                                 <th class="no-sort">Profile Image</th>
                                 <th>Name</th>
                                 <th>Email</th>
@@ -41,6 +50,7 @@
                         <tbody>
                             @forelse ($all_editors as $editor)
                                 <tr>
+                                    <td>{{ $loop->iteration }}</td>
                                     <td>
                                         @if($editor->file_name && file_exists($editor->file_name))
                                             <img class="w-10 ms-3" src="{{ asset($editor->file_name) }}" alt="editor" style="width:50px; height:50px;">
@@ -52,9 +62,9 @@
                                     <td>{{ $editor->email }}</td>
                                     <td>
                                         @if($editor->status == 1)
-                                            <span class="badge badge-success badge-sm">Active</span>
+                                            <a href="#" class="badge badge-success badge-sm status-update" data-id="{{ $editor->id }}">Active</a>
                                         @else
-                                            <span class="badge badge-danger badge-sm">Inactive</span>
+                                            <a href="#" class="badge badge-danger badge-sm status-update" data-id="{{ $editor->id }}">Inactive</a>
                                         @endif
                                     </td>
                                     <td>
@@ -89,6 +99,7 @@
 @push('custom-scripts')
     <script>
         const deleteEditorUrl = '{{ route('manage-editor.destroy', ':id') }}';
+        const statusUpdateUrl = '{{ route('manage-editor.status-update', ':id') }}';
         $('.delete-editor').on('click', function(e){
             e.preventDefault();
             var editorId = $(this).data('id');
@@ -111,7 +122,7 @@
                         success: function(response) {
                             Swal.fire({
                                 title: "Deleted!",
-                                text: response.message,
+                                // text: response.message,
                                 type: "success",
                             }).then(function(t) {
                                 location.reload();
@@ -126,6 +137,44 @@
                     });
                 }
             })
+        });
+
+        $('.status-update').on('click', function(e){
+            e.preventDefault();
+            var editorId = $(this).data('id');
+            const url = statusUpdateUrl.replace(':id', editorId);
+            Swal.fire({
+                title: "Are you sure?",
+                text: "Do you want to change the status?",
+                type: "warning",
+                showCancelButton: !0,
+                confirmButtonColor: "#34c38f",
+                cancelButtonColor: "#f46a6a",
+                confirmButtonText: "Yes, update it!"
+            }).then(function(t) {
+                if(t.value){
+                    $.ajax({
+                        url: url,
+                        type: 'post',
+                        data: {_method: 'put', _token : '{{ csrf_token() }}'},
+                        success: function(response) {
+                            Swal.fire({
+                                title: "Updated!",
+                                // text: response.message,
+                                type: "success",
+                            }).then(function(t) {
+                                location.reload();
+                            });
+                        },
+                        error: function(xhr) {
+                            Swal.fire({
+                                title: "Error!",
+                                text: "There was a problem updating the status.",
+                            });
+                        }
+                    });
+                }
+            });
         });
     </script>
 @endpush

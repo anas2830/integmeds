@@ -1,16 +1,23 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Backend\Admincontroller;
+use App\Http\Controllers\Backend\AdminController;
+use App\Http\Controllers\Backend\CuponController;
 use App\Http\Controllers\Backend\EditorController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\FileUploadController;
+use App\Http\Controllers\Backend\ProductTagController;
+use App\Http\Controllers\Backend\ProductSizeController;
 use App\Http\Controllers\Backend\ManageEditorController;
+use App\Http\Controllers\Backend\ProductBrandController;
+use App\Http\Controllers\Backend\ProductCategoryController;
+
 
 Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/logout', [Admincontroller::class, 'logout'])->name('admin.logout');
     Route::prefix('backend')->group(function () {
         Route::resource('manage-editor', ManageEditorController::class);
+        Route::put('/manage-editor/statusUpdate/{id}', [ManageEditorController::class, 'statusUpdate'])->name('manage-editor.status-update');
         //admin profile
         Route::get('/admin-profile', [AdminController::class, 'showAdminProfile'])->name('admin.profile');
         Route::post('/update-profile', [AdminController::class, 'profileUpdate'])->name('profile.update');
@@ -29,7 +36,32 @@ Route::group(['middleware' => 'auth:editor'], function () {
 
 Route::group(['middleware' => ['auth:admin,editor']], function () {
     Route::get('dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-    Route::resource('/product', ProductController::class);
     Route::post('/temp-file-upload', [FileUploadController::class, 'temporaryUpload'])->name('temp-file-upload');
     Route::post('/delete-temp-file', [FileUploadController::class, 'deleteTempFile'])->name('delete-temp-file');
+
+    //create product category
+    Route::resource('/product-category', ProductCategoryController::class);
+    Route::put('/product-category/status/{id}', [ProductCategoryController::class, 'status'])->name('product-category.status');
+
+    //create product brand
+    Route::resource('/product-brand', ProductBrandController::class);
+    Route::put('/product-brand/status/{id}', [ProductBrandController::class, 'status'])->name('product-brand.status');
+
+    //create product tag
+    Route::resource('/product-tag', ProductTagController::class);
+    Route::put('/product-tag/status/{id}', [ProductTagController::class, 'status'])->name('product-tag.status');
+
+    //create product size
+    Route::resource('/product-size', ProductSizeController::class);
+    Route::put('/product-size/status/{id}', [ProductSizeController::class, 'status'])->name('product-size.status');
+
+    //create cupon
+    Route::resource('/cupon', CuponController::class);
+    Route::put('/cupon/status/{id}', [CuponController::class, 'status'])->name('cupon.status');
+
+    //create product
+    Route::resource('/product', ProductController::class);
+
+    //order details
+    Route::get('/order-details/{id}', [OrderController::class, 'show'])->name('order.details');
 });
