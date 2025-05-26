@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('short_description')->nullable();
             $table->longText('description')->nullable();
             $table->decimal('purchase_price', 10, 2)->nullable();
+            $table->decimal('regular_price', 10, 2)->nullable();
             $table->decimal('sale_price', 10, 2)->nullable();
             $table->decimal('discount_price', 10, 2)->nullable();
             $table->decimal('discount_percentage', 10, 2)->nullable();

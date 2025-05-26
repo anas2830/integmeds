@@ -16,11 +16,9 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
             $table->enum('type', ['in', 'out', 'return', 'adjustment']);
             $table->integer('quantity');
-
-            //Order #1234: 3 units sold
-            //Received back 50 units after customer return"
             //'Initial stock for product creation'
-            //'Stock adjusted after product update. Previous stock was 10, updated to 20.'
+            //Order #1234: 2 units sold
+            //'Stock adjusted after product update. Previous stock was 8, updated to 18.'
             $table->text('note')->nullable();
             $table->timestamps();
             $table->softDeletes();
