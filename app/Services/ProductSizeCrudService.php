@@ -58,4 +58,5 @@ class ProductSizeCrudService
         $productSize->status = !$productSize->status;
         $productSize->save();
     }
+    
 }

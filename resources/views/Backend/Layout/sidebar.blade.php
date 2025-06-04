@@ -92,7 +92,8 @@
                         <span>Ecommerce</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="{{ route('product.index') }}">Add Product</a></li>
+                        <li><a href="{{ route('product.index') }}">List</a></li>
+                        <li><a href="{{ route('product.create') }}">Add Product</a></li>
                     </ul>
                 </li>
 

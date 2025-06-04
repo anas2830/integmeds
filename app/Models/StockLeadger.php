@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class StockLeadger extends Model
 {
-    //
+    protected $guarded = [];
 }

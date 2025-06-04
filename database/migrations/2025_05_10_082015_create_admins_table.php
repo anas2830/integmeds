@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('file_original_name')->nullable();
             $table->string('file_size')->nullable();
             $table->string('file_extention')->nullable();
+            $table->string('remember_token')->nullable();
             $table->boolean('status')->default(true);
             $table->timestamps();
             $table->softDeletes();

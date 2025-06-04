@@ -59,8 +59,13 @@ Route::group(['middleware' => ['auth:admin,editor']], function () {
     Route::resource('/cupon', CuponController::class);
     Route::put('/cupon/status/{id}', [CuponController::class, 'status'])->name('cupon.status');
 
+    Route::post('/ckeditor/upload', [FileUploadController::class, 'temporaryUpload'])->name('ckeditor.upload');
+
+
     //create product
     Route::resource('/product', ProductController::class);
+    Route::put('/product/status/{id}', [ProductController::class, 'status'])->name('product.status');
+
 
     //order details
     Route::get('/order-details/{id}', [OrderController::class, 'show'])->name('order.details');
