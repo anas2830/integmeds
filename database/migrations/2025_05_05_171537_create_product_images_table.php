@@ -15,6 +15,9 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
             $table->string('image_url');
+            $table->string('file_original_name')->nullable();
+            $table->string('file_size')->nullable();
+            $table->string('file_extension')->nullable();
             $table->timestamps();
         });
     }

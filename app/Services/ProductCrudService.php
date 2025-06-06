@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use App\Models\ProductBrand;
 use App\Models\ProductImage;
 use App\Models\ProductCategory;
+use Illuminate\Support\Facades\File;
 
 
 class ProductCrudService
@@ -19,7 +20,7 @@ class ProductCrudService
         $data['search'] = $search = $request->input('search');
         $data['sortBy'] = $sortBy = $request->input('sort_by', 'id');
         $data['sortDirection'] = $sortDirection = $request->input('sort_direction', 'desc');
-        $data['products'] = Product::with('categories','brands')
+        $data['products'] = Product::with('categories','firstImage')
             ->when($search, function ($query, $search) {
                 return $query->where('product_name', 'like', "%{$search}%")
                     ->orWhere('description', 'like', "%{$search}%");
@@ -34,9 +35,82 @@ class ProductCrudService
         $product = $this->storeBasicInfo($validated);
 
         $this->storeProductImages($product, $validated['product_images'] ?? []);
-        $this->storeStock($product, $validated['stock_quantity'] ?? 0);
+        $this->createStock($product, $validated['stock_quantity']);
         $this->storeRelations($product, $validated);
     }
+
+    public function editProduct($id)
+    {
+        $data = $this->getCreateProductData();
+
+        // Find the product first
+        $product = Product::find($id);
+
+        if (!$product) {
+            // handle product not found, maybe throw exception or return null/empty data
+            abort(404, 'Product not found');
+        }
+
+        // Get existing product images via relationship or separate query
+        $productImages = $product->images;
+
+        // Get selected category IDs
+        $selectedCategories = $product->categories->pluck('id')->toArray();
+        $selectedBrands = $product->brands->pluck('id')->toArray();
+        $selectedTags = $product->tags->pluck('id')->toArray();
+        $selectedSizes = $product->sizes->pluck('id')->toArray();
+
+
+
+        $data['existingFilesArray'] = [];
+
+        if ($productImages->isNotEmpty()) {
+            $data['existingFilesArray'] = $productImages->map(function ($image) {
+                return [
+                    'full_path' => url($image->image_url),             // DB column image_url mapped to full_path
+                    'name'      => $image->file_original_name ?? basename($image->image_url),
+                    'size'      => (int) ($image->file_size ?? 0),
+                    'path'      => $image->image_url,
+                ];
+            })->toArray();
+        }
+
+        $data['product'] = $product;
+        $data['selectedCategories'] = $selectedCategories;
+        $data['selectedBrands'] = $selectedBrands;
+        $data['selectedTags'] = $selectedTags;
+        $data['selectedSizes'] = $selectedSizes;
+
+        // dd($data);
+
+        return $data;
+    }
+
+
+    public function updateProduct(array $validated, $id)
+    {
+        $product = Product::findOrFail($id);
+
+        $product = $this->storeBasicInfo($validated, $product);
+
+
+
+        if (!empty($validated['product_images'])) {
+            $this->storeProductImages($product, $validated['product_images']);
+        }
+        if(request()->files_to_delete){
+            $this->deleteProductImages(request()->files_to_delete);
+        }
+        $this->storeRelations($product, $validated);
+        // dd($validated['stock_quantity']);
+
+        $this->updateStock($product, $validated['stock_quantity'] ?? 0);
+
+        // Add stock/relations if needed
+
+        return $product;
+    }
+
 
     public function deleteProduct($id)
     {
@@ -44,17 +118,17 @@ class ProductCrudService
         $product->delete();
     }
 
-    private function storeBasicInfo(array $validated): Product
+    private function storeBasicInfo(array $validated, ?Product $product = null): Product
     {
         $regular = $validated['regular_price'] ?? 0;
         $sale = $validated['sale_price'] ?? 0;
 
         $discount = $this->calculateDiscounts($regular, $sale);
 
-        return Product::create([
+        $data = [
             'product_name' => $validated['product_name'],
-            'slug' =>  Str::slug($validated['product_name']),
-            'barcode' => $validated['barcode'] ?? $this->generateBarcode(),
+            'slug' => Str::slug($validated['product_name'], '-'),
+            'barcode' => $validated['barcode'] ?? ($product->barcode ?? $this->generateBarcode()),
             'sku' => $validated['sku'],
             'short_description' => $validated['short_description'],
             'description' => $validated['description'],
@@ -68,9 +142,18 @@ class ProductCrudService
             'sale_price' => $sale,
             'discount_price' => $discount['discount_price'],
             'discount_percentage' => $discount['discount_percentage'],
-            'quantity' => $validated['stock_quantity'] ?? 0,
-        ]);
+            // 'quantity' => $validated['stock_quantity'] ?? 0,
+        ];
+
+        if ($product) {
+            $product->fill($data);
+            $product->save();
+            return $product;
+        }
+
+        return Product::create($data);
     }
+
     private function storeProductImages(Product $product, array $uploadedFiles): void
     {
         if (empty($uploadedFiles) || empty($uploadedFiles[0])) {
@@ -78,6 +161,10 @@ class ProductCrudService
         }
 
         $filenames = explode(',', $uploadedFiles[0]);
+        $newDirectory = 'uploads/products';
+        $fileUploadService = new FileUploadService();
+
+        $productImagesData = [];
 
         foreach ($filenames as $filename) {
             $filename = trim($filename);
@@ -86,40 +173,115 @@ class ProductCrudService
             }
 
             try {
-                // You can inject this instead of creating a new instance every time
-                $fileUploadService = new FileUploadService();
-                $newDirectory = 'uploads/products';
-
                 $fileData = $fileUploadService->handleFileUpload($filename, 'temp/' . $filename, $newDirectory);
+
                 $fullPath = $fileData['fullPath'] ?? null;
+                $fileOriginalName = $fileData['originalName'] ?? null;
+                $fileSize = $fileData['size'] ?? null;
+                $fileExtension = $fileData['extension'] ?? null;
 
                 if ($fullPath) {
-                    ProductImage::create([
+                    $productImagesData[] = [
                         'product_id' => $product->id,
                         'image_url' => $fullPath,
-                    ]);
+                        'file_original_name' => $fileOriginalName,
+                        'file_size' => $fileSize,
+                        'file_extension' => $fileExtension,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
                 }
             } catch (\Throwable $e) {
-                // Silently fail or optionally log the error if needed
+                // You can log the error if needed
                 // Log::error("Image upload failed for $filename: " . $e->getMessage());
                 continue;
             }
         }
+
+        if (!empty($productImagesData)) {
+            ProductImage::insert($productImagesData);
+        }        
+    }
+
+    /**
+     * Delete multiple files from the public directory.
+     *
+     * @param array|null $filesToDelete
+     * @return void
+     */
+    public function deleteProductImages(array|null $filesToDelete): void
+    {
+        if (empty($filesToDelete) || !is_array($filesToDelete)) {
+            return;
+        }
+
+        foreach ($filesToDelete as $relativePath) {
+            $filePath = public_path($relativePath);
+
+            if (file_exists($filePath) && is_file($filePath)) {
+                unlink($filePath);
+            }
+            ProductImage::where('image_url', $relativePath) ->delete();
+        }
     }
 
 
-
-    private function storeStock(Product $product, int $quantity)
+    // For creating product inventory and ledger
+    private function createStock(Product $product, int $quantity): void
     {
+        // Update product's quantity column
+        $product->update(['quantity' => $quantity]);
+
+        // Create initial inventory record
         $product->inventory()->create([
             'quantity' => $quantity,
         ]);
 
+        // Create initial stock ledger record for 'in' type if quantity > 0
+        if ($quantity > 0) {
+            $product->stockLedgers()->create([
+                'type' => 'in',
+                'quantity' => $quantity,
+                'note' => "Initial stock added $quantity by admin",
+            ]);
+        }
+    }
+
+
+    // For updating inventory and ledger on product update
+    private function updateStock(Product $product, int $newQuantity): void
+    {
+        $currentQuantity = $product->quantity ?? 0;
+        $difference = $newQuantity - $currentQuantity;
+
+        if ($difference === 0) {
+            return; // no change, no ledger
+        }
+
+        $type = $difference > 0 ? 'in' : 'out';
+
+        $note = $type === 'in'
+            ? "Quantity increased by admin: +{$difference}"
+            : "Quantity decreased by admin: " . abs($difference);
+
+        // Update the product quantity
+        $product->update(['quantity' => $newQuantity]);
+
+        // Update the inventory record
+        $product->inventory()->update([
+            'quantity' => $newQuantity,
+        ]);
+
+        // Create stock ledger entry for the change
         $product->stockLedgers()->create([
-            'type' => 'in',
-            'quantity' => $quantity,
+            'type' => $type,
+            'quantity' => $newQuantity,
+            'note' => $note,
         ]);
     }
+
+
+
 
 
     private function generateBarcode()
@@ -133,22 +295,10 @@ class ProductCrudService
     private function storeRelations(Product $product, array $validated)
     {
         // dd($validated);
-        if (!empty($validated['categories'])) {
-            $product->categories()->sync($validated['categories']);
-        }
-
-        if (!empty($validated['tags'])) {
-            $product->tags()->sync($validated['tags']);
-        }
-
-        if (!empty($validated['sizes'])) {
-            $product->sizes()->sync($validated['sizes']);
-        }
-
-        if (!empty($validated['brand_id'])) {
-            $product->brands()->sync($validated['brand_id']);
-        }
-
+        $product->categories()->sync($validated['categories'] ?? []);
+        $product->brands()->sync($validated['brand_id'] ?? []);
+        $product->tags()->sync($validated['tags'] ?? []);
+        // $product->sizes()->sync($validated['sizes'] ?? []);
     }
 
 

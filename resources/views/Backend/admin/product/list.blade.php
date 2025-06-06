@@ -38,6 +38,7 @@
                         <thead>
                             <tr>
                                 <th>SL</th>
+                                <th>Product Image</th>
                                 <th width="20%">
                                     <a href="{{ route('product.index', array_merge(request()->query(),
                                         [
@@ -70,6 +71,13 @@
                             @forelse ($products as $product)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
+                                    <td>
+                                        @if($product->firstImage )
+                                            <img class="w-10 ms-3" src="{{ asset($product->firstImage->image_url) }}" alt="product" style="width:50px; height:50px;">
+                                        @else 
+                                            No image
+                                        @endif
+                                    </td>
                                     <td>{{ $product->product_name }}</td>
                                     <td>
                                         @foreach($product->categories as $category)
@@ -109,8 +117,8 @@
                     </div>
                 </div>
             </div>
-        </div> <!-- end col -->
-    </div> <!-- end row -->
+        </div>
+    </div>
         
 @endsection
 

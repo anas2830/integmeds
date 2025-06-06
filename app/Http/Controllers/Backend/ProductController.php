@@ -23,7 +23,14 @@ class ProductController extends Controller
         $data = $this->productCrudService->getProductList($request);
         return view('Backend.admin.product.list', $data);
     }
-    
+
+
+    public function create()
+    {
+        $data = $this->productCrudService->getCreateProductData();
+        $data['existingFilesArray'] = [];
+        return view('Backend.admin.product.create', $data);
+    }
 
     public function store(ProductRequest $request)
     {
@@ -32,11 +39,16 @@ class ProductController extends Controller
     }
 
 
-    public function create()
+    public function edit($id)
     {
-        $data = $this->productCrudService->getCreateProductData();
-        $data['existingFilesArray'] = [];
-        return view('Backend.admin.product.create', $data);
+        $data = $this->productCrudService->editProduct($id);
+        return view('Backend.admin.product.edit', $data);
+    }
+
+    public function update(ProductRequest $request, $id)
+    {
+        $this->productCrudService->updateProduct($request->validated(), $id);
+        return redirect()->route('product.index')->with('success', 'Product updated successfully');
     }
     public function status($id)
     {

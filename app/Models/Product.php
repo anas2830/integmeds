@@ -12,6 +12,12 @@ class Product extends Model
     use HasFactory, SoftDeletes;
 
     protected $guarded = ['id'];
+
+    public function firstImage()
+    {
+        return $this->hasOne(ProductImage::class)->orderBy('id');
+    }
+
     public function images()
     {
         return $this->hasMany(ProductImage::class);
@@ -44,7 +50,7 @@ class Product extends Model
 
     public function inventory()
     {
-        return $this->hasMany(Inventory::class);
+        return $this->hasOne( Inventory::class);
     }
 
     public function stockLedgers()
