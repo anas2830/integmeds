@@ -11,15 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('bundles', function (Blueprint $table) {
+        Schema::create('bundle_images', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name')->unique()->index();
-            $table->text('description')->nullable();
-            $table->boolean('status')->default(1)->index();
-            $table->string('icon_path')->nullable();        // full path or relative storage path
+            $table->foreignId('bundle_id')->constrained('bundles')->onDelete('cascade'); 
+            $table->string('image_path')->nullable();
             $table->string('file_original_name')->nullable();
             $table->string('file_extension', 10)->nullable();
-            $table->integer('file_size')->nullable();       // in bytes
+            $table->integer('file_size')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('bundles');
+        Schema::dropIfExists('bundle_images');
     }
 };

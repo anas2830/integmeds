@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\AdminController;
 use App\Http\Controllers\Backend\CuponController;
+use App\Http\Controllers\ProductBundleController;
 use App\Http\Controllers\Backend\EditorController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\FileUploadController;
@@ -65,6 +66,9 @@ Route::group(['middleware' => ['auth:admin,editor']], function () {
     //create product
     Route::resource('/product', ProductController::class);
     Route::put('/product/status/{id}', [ProductController::class, 'status'])->name('product.status');
+
+    Route::resource('/product-bundle', ProductBundleController::class);
+    Route::put('/product-bundle/status/{id}', [ProductBundleController::class, 'status'])->name('product-bundle.status');
 
 
     //order details

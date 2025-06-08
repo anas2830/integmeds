@@ -287,7 +287,7 @@
                 </div>
                 <div class="card">
                     <div class="card-body">
-                        <button type="submit" class="btn btn-primary mr-1 waves-effect waves-light">Save Changes</button>
+                        <button type="submit" class="btn btn-primary mr-1 waves-effect waves-light">Create</button>
                         <a href="" class="btn btn-secondary waves-effect">Cancel</a>
                     </div>
                 </div>

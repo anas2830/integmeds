@@ -41,10 +41,13 @@ class ProductCrudService
 
     public function editProduct($id)
     {
+        // dd($id);
         $data = $this->getCreateProductData();
 
         // Find the product first
         $product = Product::find($id);
+
+        // dd($product);
 
         if (!$product) {
             // handle product not found, maybe throw exception or return null/empty data
@@ -53,6 +56,7 @@ class ProductCrudService
 
         // Get existing product images via relationship or separate query
         $productImages = $product->images;
+        // dd($productImages);
 
         // Get selected category IDs
         $selectedCategories = $product->categories->pluck('id')->toArray();
@@ -214,14 +218,15 @@ class ProductCrudService
         if (empty($filesToDelete) || !is_array($filesToDelete)) {
             return;
         }
+        $filenames = explode(',', $filesToDelete[0]);
 
-        foreach ($filesToDelete as $relativePath) {
-            $filePath = public_path($relativePath);
-
+        foreach ($filenames as $relativePath) {
+            $filePath = realpath(public_path($relativePath));
             if (file_exists($filePath) && is_file($filePath)) {
                 unlink($filePath);
             }
             ProductImage::where('image_url', $relativePath) ->delete();
+            // dd($filePath, $r);
         }
     }
 

@@ -42,6 +42,7 @@ class ProductController extends Controller
     public function edit($id)
     {
         $data = $this->productCrudService->editProduct($id);
+        // dd($data);
         return view('Backend.admin.product.edit', $data);
     }
 
