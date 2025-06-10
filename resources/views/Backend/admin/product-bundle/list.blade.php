@@ -1,6 +1,6 @@
 @extends('Backend.Layout.app')
 
-@section('site-title', 'Product Category')
+@section('site-title', 'Product Bundle')
 
 @section('main-content')
 
@@ -106,11 +106,11 @@
 
 @push('custom-scripts')
     <script>
-        const deleteProductCategoryUrl = '{{ route('product-bundle.destroy', ':id') }}';
+        const deleteProductBundleUrl = '{{ route('product-bundle.destroy', ':id') }}';
         $('.delete-product-bundle').on('click', function(e){
             e.preventDefault();
-            var productCategoryId = $(this).data('id');
-            const url = deleteProductCategoryUrl.replace(':id', productCategoryId);
+            var productBundleId = $(this).data('id');
+            const url = deleteProductBundleUrl.replace(':id', productBundleId);
             Swal.fire({
                 title: "Are you sure?",
                 text: "You won't be able to revert this!",
@@ -138,7 +138,7 @@
                         error: function(xhr) {
                             Swal.fire({
                                 title: "Error!",
-                                text: "There was a problem deleting the Product Category.",
+                                text: "There was a problem deleting the Product Bundle.",
                             });
                         }
                     });
@@ -148,9 +148,9 @@
 
         $('.status-update').on('click', function(e){
             e.preventDefault();
-            var productCategoryId = $(this).data('id');
+            var productBundleId = $(this).data('id');
             const statusUpdateUrl = '{{ route('product-bundle.status', ':id') }}';
-            const url = statusUpdateUrl.replace(':id', productCategoryId);
+            const url = statusUpdateUrl.replace(':id', productBundleId);
             Swal.fire({
                 title: "Are you sure?",
                 text: "Do you want to change the status?",

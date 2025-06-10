@@ -293,7 +293,7 @@
                 <div class="card">
                     <div class="card-body">
                         <button type="submit" class="btn btn-primary mr-1 waves-effect waves-light">Save Changes</button>
-                        <a href="" class="btn btn-secondary waves-effect">Cancel</a>
+                        <a href="{{ route('product.index') }}" class="btn btn-secondary w-md">Back to list</a>
                     </div>
                 </div>
             </form>

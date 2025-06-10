@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Backend;
 
-use App\Models\Product;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\BundleRequest;
 use App\Services\ProductBundleCrudService;
@@ -50,7 +50,7 @@ class ProductBundleController extends Controller
 
     public function destroy($id)
     {
-        $this->productBundleCrudService->deleteProductCategory($id);
+        $this->productBundleCrudService->deleteProductBundle($id);
         session()->flash('success', 'Product bundle deleted successfully');
     }
 

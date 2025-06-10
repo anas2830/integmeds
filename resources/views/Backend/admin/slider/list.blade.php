@@ -1,6 +1,6 @@
 @extends('Backend.Layout.app')
 
-@section('site-title', 'Product')
+@section('site-title', 'Product Bundle')
 
 @section('main-content')
 
@@ -19,7 +19,7 @@
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
                             <div class="search-form">
-                                <form action="{{ route('product.index') }}" method="GET" class="app-search d-none d-lg-block">
+                                <form action="{{ route('slider.index') }}" method="GET" class="app-search d-none d-lg-block">
                                     <div class="input-group">
                                         <input type="text" name="search" class="form-control" placeholder="Search..." value="{{ request('search') }}">
                                         <div class="input-group-append">
@@ -30,7 +30,7 @@
                             </div>
                         </div>
                         <div class="page-title-right">
-                            <a href="{{ route('product.create') }}" class="btn btn-primary">+ Add New</a>
+                            <a href="{{ route('slider.create') }}" class="btn btn-primary">+ Add New</a>
                         </div>
                     </div>
 
@@ -38,16 +38,16 @@
                         <thead>
                             <tr>
                                 <th>SL</th>
-                                <th>Product Image</th>
-                                <th width="20%">
-                                    <a href="{{ route('product.index', array_merge(request()->query(),
+                                <th>Image</th>
+                                <th>
+                                    <a href="{{ route('slider.index', array_merge(request()->query(),
                                         [
-                                            'sort_by' => 'product_name',
-                                            'sort_direction' => request('sort_direction') === 'asc' && request('sort_by') === 'product_name' ? 'desc' : 'asc'
+                                            'sort_by' => 'title',
+                                            'sort_direction' => request('sort_direction') === 'asc' && request('sort_by') === 'title' ? 'desc' : 'asc'
                                         ])) }}"
                                     >
-                                        Name
-                                        @if($sortBy === 'product_name')
+                                        Title
+                                        @if($sortBy === 'title')
                                             @if(request('sort_direction') == 'asc')
                                                 ▲ <!-- Ascending arrow by default -->
                                             @else
@@ -58,53 +58,43 @@
                                         @endif
                                     </a>
                                 </th>
-                                <th>Category</th>
-                                <th>Regular Price</th>
-                                <th>Sale Price</th>
+                                <th>Subtitle</th>
+                                <th>Button Color</th>
+                                <th>Button Text</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
 
-                        {{-- @dd($products) --}}
+
                         <tbody>
-                            @forelse ($products as $product)
+                            @forelse ($sliders as $slider)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
+                                    <td><img src="{{ asset($slider->slider_image) }}" alt="" width="50"></td>
+                                    <td>{{ $slider->title }}</td>
+                                    <td>{{ $slider->subtitle }}</td>
+                                    <td>{{ $slider->button_color }}</td>
+                                    <td>{{ $slider->button_text }}</td>
                                     <td>
-                                        @if($product->firstImage )
-                                            <img class="w-10 ms-3" src="{{ asset($product->firstImage->image_url) }}" alt="product" style="width:50px; height:50px;">
-                                        @else 
-                                            No image
-                                        @endif
-                                    </td>
-                                    <td>{{ $product->product_name }}</td>
-                                    <td>
-                                        @foreach($product->categories as $category)
-                                            <span class="badge badge-info">{{ $category->name }}</span><br>
-                                        @endforeach
-                                    </td>
-                                    <td>{{ $product->regular_price }}</td>
-                                    <td>{{ $product->sale_price }}</td>
-                                    <td>
-                                        @if($product->status == 1)
-                                            <a href="#" class="badge badge-success badge-sm status-update" data-id="{{ $product->id }}">Active</a>
+                                        @if($slider->status == 1)
+                                            <a href="#" class="badge badge-success badge-sm status-update" data-id="{{ $slider->id }}">Active</a>
                                         @else
-                                            <a href="#" class="badge badge-danger badge-sm status-update" data-id="{{ $product->id }}">Inactive</a>
+                                            <a href="#" class="badge badge-danger badge-sm status-update" data-id="{{ $slider->id }}">Inactive</a>
                                         @endif
                                     </td>
                                     <td>
-                                        <a href="{{ route('product.edit', $product->id) }}" class="btn btn-sm btn-primary">
+                                        <a href="{{ route('slider.edit', $slider->id) }}" class="btn btn-sm btn-primary">
                                             <i class="bx bx-edit"></i> Edit
                                         </a>
-                                        <a href="#" class="btn btn-sm btn-danger delete-product" data-id="{{ $product->id }}">
+                                        <a href="#" class="btn btn-sm btn-danger delete-product-bundle" data-id="{{ $slider->id }}">
                                             <i class="bx bx-trash"></i> Delete
                                         </a>
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="4" class="text-center">
+                                    <td colspan="8" class="text-center">
                                         <strong>No data found</strong>
                                     </td>
                                 </tr>
@@ -113,22 +103,22 @@
                     </table>
                     <!-- Pagination -->
                     <div class="d-flex mt-4">
-                        {{ $products->links() }}
+                        {{ $sliders->links() }}
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </div> <!-- end col -->
+    </div> <!-- end row -->
         
 @endsection
 
 @push('custom-scripts')
     <script>
-        const deleteProductUrl = '{{ route('product.destroy', ':id') }}';
-        $('.delete-product').on('click', function(e){
+        const deleteSliderUrl = '{{ route('slider.destroy', ':id') }}';
+        $('.delete-product-bundle').on('click', function(e){
             e.preventDefault();
-            var productId = $(this).data('id');
-            const url = deleteProductUrl.replace(':id', productId);
+            var sliderId = $(this).data('id');
+            const url = deleteSliderUrl.replace(':id', sliderId);
             Swal.fire({
                 title: "Are you sure?",
                 text: "You won't be able to revert this!",
@@ -156,7 +146,7 @@
                         error: function(xhr) {
                             Swal.fire({
                                 title: "Error!",
-                                text: "There was a problem deleting the Product.",
+                                text: "There was a problem deleting the Slider.",
                             });
                         }
                     });
@@ -166,9 +156,9 @@
 
         $('.status-update').on('click', function(e){
             e.preventDefault();
-            var productId = $(this).data('id');
-            const statusUpdateUrl = '{{ route('product.status', ':id') }}';
-            const url = statusUpdateUrl.replace(':id', productId);
+            var sliderId = $(this).data('id');
+            const statusUpdateUrl = '{{ route('slider.status', ':id') }}';
+            const url = statusUpdateUrl.replace(':id', sliderId);
             Swal.fire({
                 title: "Are you sure?",
                 text: "Do you want to change the status?",

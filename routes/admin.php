@@ -3,14 +3,15 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\AdminController;
 use App\Http\Controllers\Backend\CuponController;
-use App\Http\Controllers\ProductBundleController;
 use App\Http\Controllers\Backend\EditorController;
+use App\Http\Controllers\Backend\SliderController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\FileUploadController;
 use App\Http\Controllers\Backend\ProductTagController;
 use App\Http\Controllers\Backend\ProductSizeController;
 use App\Http\Controllers\Backend\ManageEditorController;
 use App\Http\Controllers\Backend\ProductBrandController;
+use App\Http\Controllers\Backend\ProductBundleController;
 use App\Http\Controllers\Backend\ProductCategoryController;
 
 
@@ -67,8 +68,14 @@ Route::group(['middleware' => ['auth:admin,editor']], function () {
     Route::resource('/product', ProductController::class);
     Route::put('/product/status/{id}', [ProductController::class, 'status'])->name('product.status');
 
+    //create product bundle
     Route::resource('/product-bundle', ProductBundleController::class);
     Route::put('/product-bundle/status/{id}', [ProductBundleController::class, 'status'])->name('product-bundle.status');
+
+    // create slider
+    Route::resource('/slider', SliderController::class);
+    Route::put('/slider/status/{id}', [SliderController::class, 'status'])->name('slider.status');
+
 
 
     //order details

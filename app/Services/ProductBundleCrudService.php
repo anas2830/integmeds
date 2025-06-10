@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Models\Bundle;
 use App\Models\Product;
 use App\Models\BundleImage;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 
 class ProductBundleCrudService
@@ -93,17 +92,17 @@ class ProductBundleCrudService
         return $productBundle;
     }
 
-    public function deleteProductCategory($id)
+    public function deleteProductBundle($id)
     {
-        $productCategory = Bundle::find($id);
-        $productCategory->delete();
+        $productBundle = Bundle::find($id);
+        $productBundle->delete();
     }
 
     public function statusUpdate($id)
     {
-        $productCategory = Bundle::find($id);
-        $productCategory->status = !$productCategory->status;
-        $productCategory->save();
+        $productBundle = Bundle::find($id);
+        $productBundle->status = !$productBundle->status;
+        $productBundle->save();
     }
 
     private function storeBundleImages(Bundle $bundle, array $uploadedFiles): void

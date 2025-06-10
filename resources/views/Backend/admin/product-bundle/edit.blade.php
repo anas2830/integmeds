@@ -61,9 +61,12 @@
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <div class="input-group input-group-dynamic mt-4">
-                                                <div class="col-sm-3"><label class="form-check-label" for="status">Status</label></div>
+                                                <div class="col-sm-3">
+                                                    <label class="form-check-label" for="customSwitchsizelg">Status</label>
+                                                </div>
                                                 <div class="custom-control custom-switch custom-switch-lg mb-3" dir="ltr">
-                                                    <input type="checkbox" class="custom-control-input" id="customSwitchsizelg" value="1" name="status" checked="{{ $productBundle->status === 1 ? 'checked': '' }}">
+                                                    <input type="checkbox" class="custom-control-input" id="customSwitchsizelg" name="status"
+                                                           value="1" {{ $productBundle->status == 1 ? 'checked' : '' }}>
                                                     <label class="custom-control-label" for="customSwitchsizelg"></label>
                                                 </div>
                                             </div>
