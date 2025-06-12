@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\AdminController;
 use App\Http\Controllers\Backend\CuponController;
+use App\Http\Controllers\ProductReviewController;
 use App\Http\Controllers\Backend\EditorController;
 use App\Http\Controllers\Backend\SliderController;
 use App\Http\Controllers\Backend\ProductController;
@@ -76,6 +77,10 @@ Route::group(['middleware' => ['auth:admin,editor']], function () {
     Route::resource('/slider', SliderController::class);
     Route::put('/slider/status/{id}', [SliderController::class, 'status'])->name('slider.status');
 
+    // manage product review
+    Route::get('/product-review', [ProductReviewController::class, 'index'])->name('product-review.index');
+    Route::put('/product-review/approve/{id}', [ProductReviewController::class, 'approve'])->name('product-review.approve');
+    Route::delete('/product-review/{id}', [ProductReviewController::class, 'destroy'])->name('product-review.destroy');
 
 
     //order details

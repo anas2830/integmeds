@@ -104,6 +104,16 @@
                     </ul>
                 </li>
 
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="bx bx-list-ul"></i>
+                        <span>Review</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{ route('product-review.index') }}">List</a></li>
+                    </ul>
+                </li>
+
                 <li class="menu-title">Apps</li>
 
                 <li>

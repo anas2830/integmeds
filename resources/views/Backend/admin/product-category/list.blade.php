@@ -133,7 +133,6 @@
                         success: function(response) {
                             Swal.fire({
                                 title: "Deleted!",
-                                // text: response.message,
                                 type: "success",
                             }).then(function(t) {
                                 location.reload();
