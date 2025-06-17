@@ -15,6 +15,8 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->string('name')->unique()->index();
             $table->text('description')->nullable();
+            $table->decimal('min_price', 10, 2)->nullable();
+            $table->decimal('max_price', 10, 2)->nullable();
             $table->boolean('status')->default(1)->index();
             $table->string('icon_path')->nullable();        // full path or relative storage path
             $table->string('file_original_name')->nullable();

@@ -38,6 +38,8 @@ class BundleRequest extends FormRequest
             'bundle_products.*' => ['exists:products,id'],
             'bundle_icon' => ['nullable', 'max:2048'],
             'bundle_images' => ['nullable'],
+            'min_price' => ['required', 'numeric', 'min:0'],
+            'max_price' => ['required', 'numeric', 'min:0'],
         ];
     }
 }

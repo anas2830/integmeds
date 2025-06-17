@@ -87,6 +87,50 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="min_price">
+                                                Minimum Price <span class="text-danger">*</span>
+                                            </label>
+                                            <input id="min_price" 
+                                                name="min_price" 
+                                                type="number"
+                                                min="0" 
+                                                step="0.01"
+                                                class="form-control @error('min_price') is-invalid @enderror" 
+                                                value="{{ old('min_price') ?? $productBundle->min_price }}" 
+                                                required
+                                                placeholder="Enter bundle minimum price"
+                                                maxlength="255"
+                                            >
+                                            @error('min_price')
+                                                <small class="invalid-feedback">{{ $message }}</small>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="max_price">
+                                                Maximum Price <span class="text-danger">*</span>
+                                            </label>
+                                            <input id="max_price" 
+                                                name="max_price" 
+                                                type="number"
+                                                min="0" 
+                                                step="0.01"
+                                                class="form-control @error('max_price') is-invalid @enderror" 
+                                                value="{{ old('max_price') ?? $productBundle->max_price }}" 
+                                                required
+                                                placeholder="Enter bundle maximum price"
+                                                maxlength="255"
+                                            >
+                                            @error('max_price')
+                                                <small class="invalid-feedback">{{ $message }}</small>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="card">

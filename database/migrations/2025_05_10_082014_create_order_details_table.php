@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('product_name');
             $table->decimal('price', 10, 2);
             $table->decimal('subtotal', 10, 2);
+            $table->json('shipping_address')->nullable();
+            $table->json('billing_address')->nullable();
             $table->timestamps();
         });
     }

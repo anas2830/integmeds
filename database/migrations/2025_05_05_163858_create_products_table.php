@@ -14,11 +14,13 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('barcode')->nullable();
+            $table->string('ups_code')->nullable();
             $table->string('product_name')->index();
             $table->string('slug')->unique();
             $table->string('sku')->unique();  // SKU (Stock Keeping Unit), should be unique
             $table->text('short_description')->nullable();
             $table->longText('description')->nullable();
+            $table->longText('research')->nullable();
             $table->decimal('purchase_price', 10, 2)->nullable();
             $table->decimal('regular_price', 10, 2)->nullable();
             $table->decimal('sale_price', 10, 2)->nullable();
