@@ -3,13 +3,16 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\AdminController;
 use App\Http\Controllers\Backend\CuponController;
+use App\Http\Controllers\ProductReviewController;
 use App\Http\Controllers\Backend\EditorController;
+use App\Http\Controllers\Backend\SliderController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\FileUploadController;
 use App\Http\Controllers\Backend\ProductTagController;
 use App\Http\Controllers\Backend\ProductSizeController;
 use App\Http\Controllers\Backend\ManageEditorController;
 use App\Http\Controllers\Backend\ProductBrandController;
+use App\Http\Controllers\Backend\ProductBundleController;
 use App\Http\Controllers\Backend\ProductCategoryController;
 
 
@@ -59,8 +62,26 @@ Route::group(['middleware' => ['auth:admin,editor']], function () {
     Route::resource('/cupon', CuponController::class);
     Route::put('/cupon/status/{id}', [CuponController::class, 'status'])->name('cupon.status');
 
+    Route::post('/ckeditor/upload', [FileUploadController::class, 'temporaryUpload'])->name('ckeditor.upload');
+
+
     //create product
     Route::resource('/product', ProductController::class);
+    Route::put('/product/status/{id}', [ProductController::class, 'status'])->name('product.status');
+
+    //create product bundle
+    Route::resource('/product-bundle', ProductBundleController::class);
+    Route::put('/product-bundle/status/{id}', [ProductBundleController::class, 'status'])->name('product-bundle.status');
+
+    // create slider
+    Route::resource('/slider', SliderController::class);
+    Route::put('/slider/status/{id}', [SliderController::class, 'status'])->name('slider.status');
+
+    // manage product review
+    Route::get('/product-review', [ProductReviewController::class, 'index'])->name('product-review.index');
+    Route::put('/product-review/approve/{id}', [ProductReviewController::class, 'approve'])->name('product-review.approve');
+    Route::delete('/product-review/{id}', [ProductReviewController::class, 'destroy'])->name('product-review.destroy');
+
 
     //order details
     Route::get('/order-details/{id}', [OrderController::class, 'show'])->name('order.details');

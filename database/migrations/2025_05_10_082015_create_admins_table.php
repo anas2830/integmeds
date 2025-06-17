@@ -15,12 +15,14 @@ return new class extends Migration
         Schema::create('admins', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
+            $table->string('remember_token')->nullable();
             $table->string('email')->unique();
             $table->string('password');
             $table->string('file_name')->nullable();
             $table->string('file_original_name')->nullable();
             $table->string('file_size')->nullable();
             $table->string('file_extention')->nullable();
+            $table->string('remember_token')->nullable();
             $table->boolean('status')->default(true);
             $table->timestamps();
             $table->softDeletes();

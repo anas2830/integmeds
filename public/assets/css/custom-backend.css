@@ -28,3 +28,6 @@ table thead a{
     background-color: #00944C;
     color: white;
 }
+.invalid-feedback {
+    display: block !important;
+}

@@ -83,6 +83,36 @@
                         <li><a href="{{ route('cupon.create') }}">Create</a></li>
                     </ul>
                 </li>
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="bx bx-list-ul"></i>
+                        <span>Bundle</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{ route('product-bundle.index') }}">List</a></li>
+                        <li><a href="{{ route('product-bundle.create') }}">Create</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="bx bx-list-ul"></i>
+                        <span>Slider</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{ route('slider.index') }}">List</a></li>
+                        <li><a href="{{ route('slider.create') }}">Create</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="bx bx-list-ul"></i>
+                        <span>Review</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{ route('product-review.index') }}">List</a></li>
+                    </ul>
+                </li>
 
                 <li class="menu-title">Apps</li>
 
@@ -92,7 +122,8 @@
                         <span>Ecommerce</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="{{ route('product.index') }}">Add Product</a></li>
+                        <li><a href="{{ route('product.index') }}">List</a></li>
+                        <li><a href="{{ route('product.create') }}">Add Product</a></li>
                     </ul>
                 </li>
 

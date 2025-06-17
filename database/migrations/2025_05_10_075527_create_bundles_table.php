@@ -16,6 +16,10 @@ return new class extends Migration
             $table->string('name')->unique()->index();
             $table->text('description')->nullable();
             $table->boolean('status')->default(1)->index();
+            $table->string('icon_path')->nullable();        // full path or relative storage path
+            $table->string('file_original_name')->nullable();
+            $table->string('file_extension', 10)->nullable();
+            $table->integer('file_size')->nullable();       // in bytes
             $table->timestamps();
             $table->softDeletes();
         });

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->string('barcode')->nullable();
             $table->string('product_name')->index();
+            $table->string('slug')->unique();
             $table->string('sku')->unique();  // SKU (Stock Keeping Unit), should be unique
             $table->text('short_description')->nullable();
             $table->longText('description')->nullable();
@@ -23,6 +24,8 @@ return new class extends Migration
             $table->decimal('sale_price', 10, 2)->nullable();
             $table->decimal('discount_price', 10, 2)->nullable();
             $table->decimal('discount_percentage', 10, 2)->nullable();
+            $table->string('video_bn')->nullable(); // Bangla YouTube URL
+            $table->string('video_en')->nullable(); // English YouTube URL
             $table->string('meta_title')->nullable(); // Meta title for SEO
             $table->string('meta_description')->nullable(); // Meta description for SEO
             $table->string('meta_keywords')->nullable(); // Meta keywords for SEO

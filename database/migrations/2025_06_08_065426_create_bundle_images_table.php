@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product_images', function (Blueprint $table) {
+        Schema::create('bundle_images', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
-            $table->string('image_url');
+            $table->foreignId('bundle_id')->constrained('bundles')->onDelete('cascade'); 
+            $table->string('image_path')->nullable();
             $table->string('file_original_name')->nullable();
-            $table->string('file_size')->nullable();
-            $table->string('file_extension')->nullable();
+            $table->string('file_extension', 10)->nullable();
+            $table->integer('file_size')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('product_images');
+        Schema::dropIfExists('bundle_images');
     }
 };

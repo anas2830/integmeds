@@ -1,6 +1,6 @@
 @extends('Backend.Layout.app')
 
-@section('site-title', 'Product Category')
+@section('site-title', 'Product')
 
 @section('main-content')
 
@@ -19,7 +19,7 @@
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
                             <div class="search-form">
-                                <form action="{{ route('product-category.index') }}" method="GET" class="app-search d-none d-lg-block">
+                                <form action="{{ route('product.index') }}" method="GET" class="app-search d-none d-lg-block">
                                     <div class="input-group">
                                         <input type="text" name="search" class="form-control" placeholder="Search..." value="{{ request('search') }}">
                                         <div class="input-group-append">
@@ -30,7 +30,7 @@
                             </div>
                         </div>
                         <div class="page-title-right">
-                            <a href="{{ route('product-category.create') }}" class="btn btn-primary">+ Add New</a>
+                            <a href="{{ route('product.create') }}" class="btn btn-primary">+ Add New</a>
                         </div>
                     </div>
 
@@ -38,15 +38,16 @@
                         <thead>
                             <tr>
                                 <th>SL</th>
-                                <th>
-                                    <a href="{{ route('product-category.index', array_merge(request()->query(),
+                                <th>Product Image</th>
+                                <th width="20%">
+                                    <a href="{{ route('product.index', array_merge(request()->query(),
                                         [
-                                            'sort_by' => 'name',
-                                            'sort_direction' => request('sort_direction') === 'asc' && request('sort_by') === 'name' ? 'desc' : 'asc'
+                                            'sort_by' => 'product_name',
+                                            'sort_direction' => request('sort_direction') === 'asc' && request('sort_by') === 'product_name' ? 'desc' : 'asc'
                                         ])) }}"
                                     >
                                         Name
-                                        @if($sortBy === 'name')
+                                        @if($sortBy === 'product_name')
                                             @if(request('sort_direction') == 'asc')
                                                 ▲ <!-- Ascending arrow by default -->
                                             @else
@@ -57,33 +58,46 @@
                                         @endif
                                     </a>
                                 </th>
-                                <th>Parent</th>
-                                <th width="40%">Description</th>
+                                <th>Category</th>
+                                <th>Regular Price</th>
+                                <th>Sale Price</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
 
-
+                        {{-- @dd($products) --}}
                         <tbody>
-                            @forelse ($productCategories as $product_category)
+                            @forelse ($products as $product)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $product_category->name }}</td>
-                                    <td>{{ $product_category->parent?->name }}</td>
-                                    <td>{{ $product_category->description }}</td>
                                     <td>
-                                        @if($product_category->status == 1)
-                                            <a href="#" class="badge badge-success badge-sm status-update" data-id="{{ $product_category->id }}">Active</a>
+                                        @if($product->firstImage )
+                                            <img class="w-10 ms-3" src="{{ asset($product->firstImage->image_url) }}" alt="product" style="width:50px; height:50px;">
+                                        @else 
+                                            No image
+                                        @endif
+                                    </td>
+                                    <td>{{ $product->product_name }}</td>
+                                    <td>
+                                        @foreach($product->categories as $category)
+                                            <span class="badge badge-info">{{ $category->name }}</span><br>
+                                        @endforeach
+                                    </td>
+                                    <td>{{ $product->regular_price }}</td>
+                                    <td>{{ $product->sale_price }}</td>
+                                    <td>
+                                        @if($product->status == 1)
+                                            <a href="#" class="badge badge-success badge-sm status-update" data-id="{{ $product->id }}">Active</a>
                                         @else
-                                            <a href="#" class="badge badge-danger badge-sm status-update" data-id="{{ $product_category->id }}">Inactive</a>
+                                            <a href="#" class="badge badge-danger badge-sm status-update" data-id="{{ $product->id }}">Inactive</a>
                                         @endif
                                     </td>
                                     <td>
-                                        <a href="{{ route('product-category.edit', $product_category->id) }}" class="btn btn-sm btn-primary">
+                                        <a href="{{ route('product.edit', $product->id) }}" class="btn btn-sm btn-primary">
                                             <i class="bx bx-edit"></i> Edit
                                         </a>
-                                        <a href="#" class="btn btn-sm btn-danger delete-product-category" data-id="{{ $product_category->id }}">
+                                        <a href="#" class="btn btn-sm btn-danger delete-product" data-id="{{ $product->id }}">
                                             <i class="bx bx-trash"></i> Delete
                                         </a>
                                     </td>
@@ -99,22 +113,22 @@
                     </table>
                     <!-- Pagination -->
                     <div class="d-flex mt-4">
-                        {{ $productCategories->links() }}
+                        {{ $products->links() }}
                     </div>
                 </div>
             </div>
-        </div> <!-- end col -->
-    </div> <!-- end row -->
+        </div>
+    </div>
         
 @endsection
 
 @push('custom-scripts')
     <script>
-        const deleteProductCategoryUrl = '{{ route('product-category.destroy', ':id') }}';
-        $('.delete-product-category').on('click', function(e){
+        const deleteProductUrl = '{{ route('product.destroy', ':id') }}';
+        $('.delete-product').on('click', function(e){
             e.preventDefault();
-            var productCategoryId = $(this).data('id');
-            const url = deleteProductCategoryUrl.replace(':id', productCategoryId);
+            var productId = $(this).data('id');
+            const url = deleteProductUrl.replace(':id', productId);
             Swal.fire({
                 title: "Are you sure?",
                 text: "You won't be able to revert this!",
@@ -133,6 +147,7 @@
                         success: function(response) {
                             Swal.fire({
                                 title: "Deleted!",
+                                // text: response.message,
                                 type: "success",
                             }).then(function(t) {
                                 location.reload();
@@ -141,7 +156,7 @@
                         error: function(xhr) {
                             Swal.fire({
                                 title: "Error!",
-                                text: "There was a problem deleting the Product Category.",
+                                text: "There was a problem deleting the Product.",
                             });
                         }
                     });
@@ -151,9 +166,9 @@
 
         $('.status-update').on('click', function(e){
             e.preventDefault();
-            var productCategoryId = $(this).data('id');
-            const statusUpdateUrl = '{{ route('product-category.status', ':id') }}';
-            const url = statusUpdateUrl.replace(':id', productCategoryId);
+            var productId = $(this).data('id');
+            const statusUpdateUrl = '{{ route('product.status', ':id') }}';
+            const url = statusUpdateUrl.replace(':id', productId);
             Swal.fire({
                 title: "Are you sure?",
                 text: "Do you want to change the status?",

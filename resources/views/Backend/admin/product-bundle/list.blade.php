@@ -1,6 +1,6 @@
 @extends('Backend.Layout.app')
 
-@section('site-title', 'Product Category')
+@section('site-title', 'Product Bundle')
 
 @section('main-content')
 
@@ -19,7 +19,7 @@
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
                             <div class="search-form">
-                                <form action="{{ route('product-category.index') }}" method="GET" class="app-search d-none d-lg-block">
+                                <form action="{{ route('product-bundle.index') }}" method="GET" class="app-search d-none d-lg-block">
                                     <div class="input-group">
                                         <input type="text" name="search" class="form-control" placeholder="Search..." value="{{ request('search') }}">
                                         <div class="input-group-append">
@@ -30,7 +30,7 @@
                             </div>
                         </div>
                         <div class="page-title-right">
-                            <a href="{{ route('product-category.create') }}" class="btn btn-primary">+ Add New</a>
+                            <a href="{{ route('product-bundle.create') }}" class="btn btn-primary">+ Add New</a>
                         </div>
                     </div>
 
@@ -39,7 +39,7 @@
                             <tr>
                                 <th>SL</th>
                                 <th>
-                                    <a href="{{ route('product-category.index', array_merge(request()->query(),
+                                    <a href="{{ route('product-bundle.index', array_merge(request()->query(),
                                         [
                                             'sort_by' => 'name',
                                             'sort_direction' => request('sort_direction') === 'asc' && request('sort_by') === 'name' ? 'desc' : 'asc'
@@ -57,8 +57,6 @@
                                         @endif
                                     </a>
                                 </th>
-                                <th>Parent</th>
-                                <th width="40%">Description</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -66,24 +64,22 @@
 
 
                         <tbody>
-                            @forelse ($productCategories as $product_category)
+                            @forelse ($productBundle as $product_bundle)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $product_category->name }}</td>
-                                    <td>{{ $product_category->parent?->name }}</td>
-                                    <td>{{ $product_category->description }}</td>
+                                    <td>{{ $product_bundle->name }}</td>
                                     <td>
-                                        @if($product_category->status == 1)
-                                            <a href="#" class="badge badge-success badge-sm status-update" data-id="{{ $product_category->id }}">Active</a>
+                                        @if($product_bundle->status == 1)
+                                            <a href="#" class="badge badge-success badge-sm status-update" data-id="{{ $product_bundle->id }}">Active</a>
                                         @else
-                                            <a href="#" class="badge badge-danger badge-sm status-update" data-id="{{ $product_category->id }}">Inactive</a>
+                                            <a href="#" class="badge badge-danger badge-sm status-update" data-id="{{ $product_bundle->id }}">Inactive</a>
                                         @endif
                                     </td>
                                     <td>
-                                        <a href="{{ route('product-category.edit', $product_category->id) }}" class="btn btn-sm btn-primary">
+                                        <a href="{{ route('product-bundle.edit', $product_bundle->id) }}" class="btn btn-sm btn-primary">
                                             <i class="bx bx-edit"></i> Edit
                                         </a>
-                                        <a href="#" class="btn btn-sm btn-danger delete-product-category" data-id="{{ $product_category->id }}">
+                                        <a href="#" class="btn btn-sm btn-danger delete-product-bundle" data-id="{{ $product_bundle->id }}">
                                             <i class="bx bx-trash"></i> Delete
                                         </a>
                                     </td>
@@ -99,7 +95,7 @@
                     </table>
                     <!-- Pagination -->
                     <div class="d-flex mt-4">
-                        {{ $productCategories->links() }}
+                        {{ $productBundle->links() }}
                     </div>
                 </div>
             </div>
@@ -110,11 +106,11 @@
 
 @push('custom-scripts')
     <script>
-        const deleteProductCategoryUrl = '{{ route('product-category.destroy', ':id') }}';
-        $('.delete-product-category').on('click', function(e){
+        const deleteProductBundleUrl = '{{ route('product-bundle.destroy', ':id') }}';
+        $('.delete-product-bundle').on('click', function(e){
             e.preventDefault();
-            var productCategoryId = $(this).data('id');
-            const url = deleteProductCategoryUrl.replace(':id', productCategoryId);
+            var productBundleId = $(this).data('id');
+            const url = deleteProductBundleUrl.replace(':id', productBundleId);
             Swal.fire({
                 title: "Are you sure?",
                 text: "You won't be able to revert this!",
@@ -133,6 +129,7 @@
                         success: function(response) {
                             Swal.fire({
                                 title: "Deleted!",
+                                // text: response.message,
                                 type: "success",
                             }).then(function(t) {
                                 location.reload();
@@ -141,7 +138,7 @@
                         error: function(xhr) {
                             Swal.fire({
                                 title: "Error!",
-                                text: "There was a problem deleting the Product Category.",
+                                text: "There was a problem deleting the Product Bundle.",
                             });
                         }
                     });
@@ -151,9 +148,9 @@
 
         $('.status-update').on('click', function(e){
             e.preventDefault();
-            var productCategoryId = $(this).data('id');
-            const statusUpdateUrl = '{{ route('product-category.status', ':id') }}';
-            const url = statusUpdateUrl.replace(':id', productCategoryId);
+            var productBundleId = $(this).data('id');
+            const statusUpdateUrl = '{{ route('product-bundle.status', ':id') }}';
+            const url = statusUpdateUrl.replace(':id', productBundleId);
             Swal.fire({
                 title: "Are you sure?",
                 text: "Do you want to change the status?",

@@ -76,6 +76,21 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title mb-3">Product Images</h4>
+                
+                                        <div class="dropzone multiple-upload" data-max-size="2" data-max-files="15" data-accepted-files=".jpeg,.jpg,.png,.gif,.webp">
+                
+                                        </div>
+                                        <input type="hidden" name="product_images[]" id="uploaded_files">
+                                        <input type="hidden" name="files_to_delete" id="filesToDelete">
+                                    </div>
+                                </div> <!-- end card-->
+                            </div>
+                        </div>
 
                         <div>
                             <button type="submit" class="btn btn-primary w-md">Create</button>

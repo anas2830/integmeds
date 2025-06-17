@@ -1,6 +1,6 @@
 @extends('Backend.Layout.app')
 
-@section('site-title', 'Product Category')
+@section('site-title', 'Product Bundle')
 
 @section('main-content')
 
@@ -19,7 +19,7 @@
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
                             <div class="search-form">
-                                <form action="{{ route('product-category.index') }}" method="GET" class="app-search d-none d-lg-block">
+                                <form action="{{ route('slider.index') }}" method="GET" class="app-search d-none d-lg-block">
                                     <div class="input-group">
                                         <input type="text" name="search" class="form-control" placeholder="Search..." value="{{ request('search') }}">
                                         <div class="input-group-append">
@@ -30,7 +30,7 @@
                             </div>
                         </div>
                         <div class="page-title-right">
-                            <a href="{{ route('product-category.create') }}" class="btn btn-primary">+ Add New</a>
+                            <a href="{{ route('slider.create') }}" class="btn btn-primary">+ Add New</a>
                         </div>
                     </div>
 
@@ -38,15 +38,16 @@
                         <thead>
                             <tr>
                                 <th>SL</th>
+                                <th>Image</th>
                                 <th>
-                                    <a href="{{ route('product-category.index', array_merge(request()->query(),
+                                    <a href="{{ route('slider.index', array_merge(request()->query(),
                                         [
-                                            'sort_by' => 'name',
-                                            'sort_direction' => request('sort_direction') === 'asc' && request('sort_by') === 'name' ? 'desc' : 'asc'
+                                            'sort_by' => 'title',
+                                            'sort_direction' => request('sort_direction') === 'asc' && request('sort_by') === 'title' ? 'desc' : 'asc'
                                         ])) }}"
                                     >
-                                        Name
-                                        @if($sortBy === 'name')
+                                        Title
+                                        @if($sortBy === 'title')
                                             @if(request('sort_direction') == 'asc')
                                                 ▲ <!-- Ascending arrow by default -->
                                             @else
@@ -57,8 +58,9 @@
                                         @endif
                                     </a>
                                 </th>
-                                <th>Parent</th>
-                                <th width="40%">Description</th>
+                                <th>Subtitle</th>
+                                <th>Button Color</th>
+                                <th>Button Text</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -66,31 +68,33 @@
 
 
                         <tbody>
-                            @forelse ($productCategories as $product_category)
+                            @forelse ($sliders as $slider)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $product_category->name }}</td>
-                                    <td>{{ $product_category->parent?->name }}</td>
-                                    <td>{{ $product_category->description }}</td>
+                                    <td><img src="{{ asset($slider->slider_image) }}" alt="" width="50"></td>
+                                    <td>{{ $slider->title }}</td>
+                                    <td>{{ $slider->subtitle }}</td>
+                                    <td>{{ $slider->button_color }}</td>
+                                    <td>{{ $slider->button_text }}</td>
                                     <td>
-                                        @if($product_category->status == 1)
-                                            <a href="#" class="badge badge-success badge-sm status-update" data-id="{{ $product_category->id }}">Active</a>
+                                        @if($slider->status == 1)
+                                            <a href="#" class="badge badge-success badge-sm status-update" data-id="{{ $slider->id }}">Active</a>
                                         @else
-                                            <a href="#" class="badge badge-danger badge-sm status-update" data-id="{{ $product_category->id }}">Inactive</a>
+                                            <a href="#" class="badge badge-danger badge-sm status-update" data-id="{{ $slider->id }}">Inactive</a>
                                         @endif
                                     </td>
                                     <td>
-                                        <a href="{{ route('product-category.edit', $product_category->id) }}" class="btn btn-sm btn-primary">
+                                        <a href="{{ route('slider.edit', $slider->id) }}" class="btn btn-sm btn-primary">
                                             <i class="bx bx-edit"></i> Edit
                                         </a>
-                                        <a href="#" class="btn btn-sm btn-danger delete-product-category" data-id="{{ $product_category->id }}">
+                                        <a href="#" class="btn btn-sm btn-danger delete-product-bundle" data-id="{{ $slider->id }}">
                                             <i class="bx bx-trash"></i> Delete
                                         </a>
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="4" class="text-center">
+                                    <td colspan="8" class="text-center">
                                         <strong>No data found</strong>
                                     </td>
                                 </tr>
@@ -99,7 +103,7 @@
                     </table>
                     <!-- Pagination -->
                     <div class="d-flex mt-4">
-                        {{ $productCategories->links() }}
+                        {{ $sliders->links() }}
                     </div>
                 </div>
             </div>
@@ -110,11 +114,11 @@
 
 @push('custom-scripts')
     <script>
-        const deleteProductCategoryUrl = '{{ route('product-category.destroy', ':id') }}';
-        $('.delete-product-category').on('click', function(e){
+        const deleteSliderUrl = '{{ route('slider.destroy', ':id') }}';
+        $('.delete-product-bundle').on('click', function(e){
             e.preventDefault();
-            var productCategoryId = $(this).data('id');
-            const url = deleteProductCategoryUrl.replace(':id', productCategoryId);
+            var sliderId = $(this).data('id');
+            const url = deleteSliderUrl.replace(':id', sliderId);
             Swal.fire({
                 title: "Are you sure?",
                 text: "You won't be able to revert this!",
@@ -133,6 +137,7 @@
                         success: function(response) {
                             Swal.fire({
                                 title: "Deleted!",
+                                // text: response.message,
                                 type: "success",
                             }).then(function(t) {
                                 location.reload();
@@ -141,7 +146,7 @@
                         error: function(xhr) {
                             Swal.fire({
                                 title: "Error!",
-                                text: "There was a problem deleting the Product Category.",
+                                text: "There was a problem deleting the Slider.",
                             });
                         }
                     });
@@ -151,9 +156,9 @@
 
         $('.status-update').on('click', function(e){
             e.preventDefault();
-            var productCategoryId = $(this).data('id');
-            const statusUpdateUrl = '{{ route('product-category.status', ':id') }}';
-            const url = statusUpdateUrl.replace(':id', productCategoryId);
+            var sliderId = $(this).data('id');
+            const statusUpdateUrl = '{{ route('slider.status', ':id') }}';
+            const url = statusUpdateUrl.replace(':id', sliderId);
             Swal.fire({
                 title: "Are you sure?",
                 text: "Do you want to change the status?",
