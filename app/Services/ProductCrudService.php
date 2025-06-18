@@ -8,6 +8,7 @@ use App\Models\ProductSize;
 use Illuminate\Support\Str;
 use App\Models\ProductBrand;
 use App\Models\ProductImage;
+use App\Models\ProductVideo;
 use App\Models\ProductCategory;
 use Illuminate\Support\Facades\File;
 
@@ -33,6 +34,10 @@ class ProductCrudService
     public function createProduct(array $validated)
     {
         $product = $this->storeBasicInfo($validated);
+
+        if(!empty($validated['video_url'])){
+            $this->storeVideo($product, $validated['video_url']);
+        }
 
         $this->storeProductImages($product, $validated['product_images'] ?? []);
         $this->createStock($product, $validated['stock_quantity']);
@@ -83,7 +88,9 @@ class ProductCrudService
         $data['selectedCategories'] = $selectedCategories;
         $data['selectedBrands'] = $selectedBrands;
         $data['selectedTags'] = $selectedTags;
-        $data['selectedSizes'] = $selectedSizes;
+        // $data['selectedSizes'] = $selectedSizes;
+        $data['videoUrls'] = $product->videos()->pluck('video_url')->toArray();
+
 
         // dd($data);
 
@@ -102,6 +109,10 @@ class ProductCrudService
         if (!empty($validated['product_images'])) {
             $this->storeProductImages($product, $validated['product_images']);
         }
+        if (!empty($validated['video_url'])) {
+            $this->storeVideo($product, $validated['video_url']);
+        }
+
         if(request()->files_to_delete){
             $this->deleteProductImages(request()->files_to_delete);
         }
@@ -133,9 +144,11 @@ class ProductCrudService
             'product_name' => $validated['product_name'],
             'slug' => Str::slug($validated['product_name'], '-'),
             'barcode' => $validated['barcode'] ?? ($product->barcode ?? $this->generateBarcode()),
+            'ups_code' => $validated['ups_code'],
             'sku' => $validated['sku'],
             'short_description' => $validated['short_description'],
             'description' => $validated['description'],
+            'research' => $validated['research'],
             'video_en' => $validated['video_en'] ?? null,
             'video_bn' => $validated['video_bn'] ?? null,
             'meta_title' => $validated['meta_title'] ?? null,
@@ -157,6 +170,29 @@ class ProductCrudService
 
         return Product::create($data);
     }
+
+    private function storeVideo(Product $product, array $videoIntros)
+    {
+        $product->videos()->delete();
+
+        // Create new ones
+        $videoData = collect($videoIntros)
+            ->filter() // remove empty/null values
+            ->map(function ($url) use ($product) {
+                return [
+                    'product_id'  => $product->id,
+                    'video_url' => $url,
+                    'created_at'  => now(),
+                    'updated_at'  => now(),
+                ];
+            })->toArray();
+
+        // Insert all at once
+        if (!empty($videoData)) {
+            ProductVideo::insert($videoData);
+        }
+    }
+
 
     private function storeProductImages(Product $product, array $uploadedFiles): void
     {

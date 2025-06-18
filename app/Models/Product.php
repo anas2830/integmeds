@@ -23,6 +23,12 @@ class Product extends Model
         return $this->hasMany(ProductImage::class);
     }
 
+    public function videos()
+    {
+        return $this->hasMany(ProductVideo::class);
+    }
+
+
     public function categories()
     {
         return $this->belongsToMany(ProductCategory::class, 'product_product_categories');
