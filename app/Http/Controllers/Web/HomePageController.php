@@ -10,6 +10,6 @@ class HomePageController extends Controller
 
     public function index()
     {
-        echo "Hello World";
+        return view('Web.Layout.pages.index');
     }
 }
