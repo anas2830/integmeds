@@ -726,5 +726,41 @@
 @endsection
 
 @push('script')
+<script>
+    $(document).ready(function() {
+        function togglePaymentDetails() {
+            if ($('#creditCard').is(':checked')) {
+                $('.credit-card-info').slideDown();
+                $('.paypal-info').slideUp();
+            } else {
+                $('.credit-card-info').slideUp();
+                $('.paypal-info').slideDown();
+            }
+        }
+
+        // Initial check on page load
+        togglePaymentDetails();
+
+        // Listen for changes
+        $('input[name="paymentMethod"]').on('change', function() {
+            togglePaymentDetails();
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        function togglePaymentDetails() {
+            if ($('#ship-address').is(':checked')) {
+                $('.different-address-info').slideDown();
+            } else {
+                $('.different-address-info').slideUp();
+            }
+        }
+
+        $('#ship-address').on('change', togglePaymentDetails);
+        
+        togglePaymentDetails();
+    });
+</script>
 @endpush
 

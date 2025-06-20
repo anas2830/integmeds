@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Web\WebController;
 use App\Http\Controllers\Web\UserController;
+use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\Web\HomePageController;
 use App\Http\Controllers\Backend\AdminController;
 use App\Http\Controllers\Backend\EditorController;
@@ -26,44 +27,47 @@ Route::get('/terms-condition', [WebController::class, 'termsCondition'])->name('
 Route::get('/cart', [WebController::class, 'cart'])->name('cart');
 Route::get('/checkout', [WebController::class, 'checkout'])->name('checkout');
 Route::get('/wishlist', [WebController::class, 'wishlist'])->name('wishlist');
+Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
 
+
+// Route::prefix('user')->group(function () {
 Route::prefix('user')->group(function () {
-// Route::prefix('user')->middleware(['auth.user'])->group(function () {
 
-    //dashboard
-    Route::get('/dashboard', [UserController::class, 'dashboard'])->name('user.dashboard');
+    Route::middleware(['auth.user'])->group(function () {
+        //dashboard
+        Route::get('/dashboard', [UserController::class, 'dashboard'])->name('user.dashboard');
 
-    // Orders
-    Route::get('/orders', [UserController::class, 'orders'])->name('user.orders');
+        // Orders
+        Route::get('/orders', [UserController::class, 'orders'])->name('user.orders');
 
-    // Account Details
-    Route::get('/account', [UserController::class, 'accountDetails'])->name('user.account');
+        // Account Details
+        Route::get('/account', [UserController::class, 'accountDetails'])->name('user.account');
 
-    // Address
-    Route::get('/address', [UserController::class, 'address'])->name('user.address');
-    Route::post('/address', [UserController::class, 'updateAddress'])->name('user.address.update');
+        // Address
+        Route::get('/address', [UserController::class, 'address'])->name('user.address');
+        Route::post('/address', [UserController::class, 'updateAddress'])->name('user.address.update');
 
-    Route::get('/billing-shipping-address', [UserController::class, 'billingShippingAddress'])->name('user.billing-shipping-address');
+        Route::get('/billing-shipping-address', [UserController::class, 'billingShippingAddress'])->name('user.billing-shipping-address');
 
+        // Change Password
+        Route::get('/change-password', [UserController::class, 'changePasswordForm'])->name('user.change-password');
+        Route::post('/change-password', [UserController::class, 'changePassword'])->name('user.password.update');
 
+        // Wishlist
+        Route::get('/wishlist', [UserController::class, 'wishlist'])->name('user.wishlist');
 
-    // Change Password
-    Route::get('/change-password', [UserController::class, 'changePasswordForm'])->name('user.change-password');
-    Route::post('/change-password', [UserController::class, 'changePassword'])->name('user.password.update');
+        // Logout
+        Route::post('/logout', [UserController::class, 'logout'])->name('user.logout');
+    });
 
-    // Wishlist
-    Route::get('/wishlist', [UserController::class, 'wishlist'])->name('user.wishlist');
-
-    // Logout
-    Route::get('/logout', [UserController::class, 'logout'])->name('user.logout');
-
-    // });
+    // Registration and Login (no auth middleware)
     Route::get('register', [UserController::class, 'showRegisterForm'])->name('user.register');
-    Route::post('register', [UserController::class, 'register']);
+    Route::post('register', [UserController::class, 'register'])->name('user.register.post');
     
     Route::get('login', [UserController::class, 'showLoginForm'])->name('user.login');
-    Route::post('login', [UserController::class, 'login']);
+    Route::post('login', [UserController::class, 'login'])->name('user.login.post');
 });
+
 
 
 Route::get('admin/login', [AdminController::class, 'showLoginForm'])->name('admin.login');

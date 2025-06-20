@@ -29,26 +29,38 @@
                             <li><a href="#"><i class="fa-regular fa-heart"></i></a></li>
                             <li class="shopping-cart" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><a href="#"><i class="fa-solid fa-cart-shopping"></i></a><span>5</span></li>
                             <li>
-                                <a class="user-btn" href="#"><i class="fa-solid fa-user"></i></a>
-                                <div class="user-logininfo">
-                                    <div class="user-profile" id="user-hide">
-                                        <div class="user-name">
-                                            <div class="user-login-img">
-                                                <img class="img-fluid" src="{{asset('web_assets/images/bg/profile-photo.png')}}"
-                                                    alt="User Profile" title="User Profile">
+                                @auth
+                                    <a class="user-btn" href="#"><i class="fa-solid fa-user"></i></a>
+                                    <div class="user-logininfo">
+                                        <div class="user-profile" id="user-hide">
+                                            <div class="user-name">
+                                                <div class="user-login-img">
+                                                    <img class="img-fluid" src="{{asset('web_assets/images/bg/profile-photo.png')}}"
+                                                        alt="User Profile" title="User Profile">
+                                                </div>
+                                                <h5>{{Auth::user()->name}}</h5>
                                             </div>
-                                            <h5>Liton Dadal</h5>
-                                        </div>
-                                        <div class="user-iteme-wrapper">
-                                            <ul>
-                                                <li><a href="{{route('user.orders')}}"><i class="fa-regular fa-file-lines"></i>Orders</a> </li>
-                                                <li><a href="{{route('user.account')}}"><i class="fa-regular fa-user"></i>Account details</a></li>
-                                                <li><a href="{{route('user.address')}}"><i class="fa-solid fa-location-dot"></i>Addresses</a> </li>
-                                                <li><a href="wishlist.php"><i class="fa-solid fa-arrow-right-from-bracket"></i>Logout</a> </li>
-                                            </ul>
+                                            <div class="user-iteme-wrapper">
+                                                <ul>
+                                                    <li><a href="{{route('user.orders')}}"><i class="fa-regular fa-file-lines"></i>Orders</a> </li>
+                                                    <li><a href="{{route('user.account')}}"><i class="fa-regular fa-user"></i>Account details</a></li>
+                                                    <li><a href="{{route('user.address')}}"><i class="fa-solid fa-location-dot"></i>Addresses</a> </li>
+                                                    <li>
+                                                        <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                                            <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+                                                        </a>
+                                                    
+                                                        <form id="logout-form" action="{{ route('user.logout') }}" method="POST" style="display: none;">
+                                                            @csrf
+                                                        </form>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                @else
+                                    <a class="user-btn" href="{{route('user.login')}}"><i class="fa-solid fa-user"></i></a>
+                                @endauth
                             </li>
                         </ul>
                     </div>

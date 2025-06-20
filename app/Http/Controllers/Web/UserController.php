@@ -3,11 +3,17 @@
 namespace App\Http\Controllers\Web;
 
 use Illuminate\Http\Request;
+use App\Services\UserService;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    protected $userService;
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
     public function dashboard()
     {
         return view('Web.Layout.users.dashboard');
@@ -49,15 +55,23 @@ class UserController extends Controller
         return view('Web.Layout.users.login');
     }
     
-    public  function logout(Request $request){
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        return to_route('user.login');
+    public function login(Request $request)
+    {
+        return $this->userService->login($request);
     }
 
     public function showRegisterForm()
     {
         return view('Web.Layout.users.register');
+    }
+
+    public function register(Request $request)
+    {
+        return $this->userService->register($request);
+    }
+
+    public function  logout(Request $request)
+    {
+        return $this->userService->logout($request);
     }
 }

@@ -59,7 +59,7 @@
 
     @include('Web.Layout.partials.scripts')
     @stack('script')
-    
+    @include('Web.Layout.partials.custom-scripts')
 </body>
 
 </html>

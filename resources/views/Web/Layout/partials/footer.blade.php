@@ -42,12 +42,14 @@
 					<h5>Subscribe us</h5>
 					<p>Sign up for offers and exclusive discounts.</p>
                     <div class="subcription">
-                        <form action="">
-                            <div class="subcription-fill">
-                                <input type="email" class="form-control" placeholder="Email Address">
-                            </div>
-                            <input class="btn" type="text" type="submit" value="Submit">
-                        </form>
+						<form id="newsletterForm" action="{{ route('newsletter.subscribe') }}" method="POST">
+							@csrf
+							<div class="subscription-fill">
+								<input type="email" name="email" id="newsletterEmail" class="form-control" placeholder="Email Address" required maxlength="100">
+								<span id="newsletterMessage"></span>
+							</div>
+							<button class="btn mt-2" id="newsletterSubmit" type="button">Submit</button>
+						</form>						
                     </div>
                     
 				</div>
