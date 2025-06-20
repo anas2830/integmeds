@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\AdminController;
 use App\Http\Controllers\Backend\CuponController;
-use App\Http\Controllers\ProductReviewController;
 use App\Http\Controllers\Backend\EditorController;
 use App\Http\Controllers\Backend\SliderController;
 use App\Http\Controllers\Backend\ProductController;
@@ -13,6 +12,7 @@ use App\Http\Controllers\Backend\ProductSizeController;
 use App\Http\Controllers\Backend\ManageEditorController;
 use App\Http\Controllers\Backend\ProductBrandController;
 use App\Http\Controllers\Backend\ProductBundleController;
+use App\Http\Controllers\Backend\ProductReviewController;
 use App\Http\Controllers\Backend\ProductCategoryController;
 
 

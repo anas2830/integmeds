@@ -18,6 +18,7 @@ return new class extends Migration
             $table->tinyInteger('rating')->unsigned()->checkBetween(1, 5);
             $table->text('review');
             $table->boolean('is_approved')->default(false); // Admin approves review
+            $table->tinyInteger('review_type')->default(1)->comment('1=product, 2=bundle');
             $table->timestamps();
             $table->softDeletes(); // Adds deleted_at for soft deletes
             $table->unique(['product_id', 'user_id']);

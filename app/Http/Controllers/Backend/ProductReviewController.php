@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Backend;
 
-use App\Models\ProductReview;
+use App\Http\Controllers\Controller;
 use App\Services\ProductReviewService;
+
 class ProductReviewController extends Controller
 {
     protected ProductReviewService $reviewService;

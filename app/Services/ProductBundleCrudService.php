@@ -29,6 +29,8 @@ class ProductBundleCrudService
         $productBundle = new Bundle();
         $productBundle->name = $request->name;
         $productBundle->description = $request->description;
+        $productBundle->min_price = $request->min_price;
+        $productBundle->max_price = $request->max_price;
         $productBundle->status = $request->status ?? 0;
 
         $this->bundleIconUpload($productBundle, $request);
@@ -76,6 +78,8 @@ class ProductBundleCrudService
         // dd($request->bundle_products);
         $productBundle->name = $request->name;
         $productBundle->description = $request->description;
+        $productBundle->min_price = $request->min_price;
+        $productBundle->max_price = $request->max_price;
         $productBundle->status = $request->status ?? 0;
 
         $this->bundleIconUpload($productBundle, $request);

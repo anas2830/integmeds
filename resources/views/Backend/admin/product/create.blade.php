@@ -61,13 +61,27 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-12">
+                            <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="short_description">Short Description</label>
                                     <textarea id="short_description" name="short_description"
                                             class="form-control @error('short_description') is-invalid @enderror"
                                             rows="3">{{ old('short_description') }}</textarea>
                                     @error('short_description')
+                                        <small class="invalid-feedback">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="ups_code">
+                                        UPS Code
+                                    </label>
+                                    <input id="ups_code" name="ups_code" type="text"
+                                           class="form-control @error('ups_code') is-invalid @enderror"
+                                           value="{{ old('ups_code') }}"
+                                           placeholder="Enter UPS code" maxlength="255">
+                                    @error('ups_code')
                                         <small class="invalid-feedback">{{ $message }}</small>
                                     @enderror
                                 </div>
@@ -82,6 +96,19 @@
                                               class="form-control @error('description') is-invalid @enderror"
                                               rows="5">{{ old('description') }}</textarea>
                                     @error('description')
+                                        <small class="invalid-feedback">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="research">Research</label>
+                                    <textarea id="research" name="research"
+                                              class="form-control @error('research') is-invalid @enderror"
+                                              rows="5">{{ old('research') }}</textarea>
+                                    @error('research')
                                         <small class="invalid-feedback">{{ $message }}</small>
                                     @enderror
                                 </div>
@@ -212,7 +239,39 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <label for="video_en">YouTube Video Link (English)</label>
+                                    <label for="video_url_0">YouTube Video Link for Intro 1</label>
+                                    <input id="video_url_0" name="video_url[]" maxlength="255" type="url" class="form-control" placeholder="Enter YouTube video link for intro" value="{{ old('video_url.0') }}">
+                                    @error('video_url.0')
+                                        <small class="invalid-feedback">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                            </div>
+                            
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="video_url_1">YouTube Video Link for Intro 2</label>
+                                    <input id="video_url_1" name="video_url[]" maxlength="255" type="url" class="form-control" placeholder="Enter YouTube video link for intro" value="{{ old('video_url.1') }}">
+                                    @error('video_url.1')
+                                        <small class="invalid-feedback">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                            </div>
+                            
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="video_url_2">YouTube Video Link for Intro 3</label>
+                                    <input id="video_url_2" name="video_url[]" maxlength="255" type="url" class="form-control" placeholder="Enter YouTube video link for intro" value="{{ old('video_url.2') }}">
+                                    @error('video_url.2')
+                                        <small class="invalid-feedback">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="video_en">YouTube Video Link Details (English)</label>
                                     <input id="video_en" name="video_en" maxlength="255" type="url" class="form-control" placeholder="Enter YouTube video link (EN)" value="{{ old('video_en') }}">
                                     @error('video_en')
                                         <small class="invalid-feedback">{{ $message }}</small>
@@ -221,7 +280,7 @@
                             </div>
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <label for="video_bn">YouTube Video Link (Bangla)</label>
+                                    <label for="video_bn">YouTube Video Link Details (Bangla)</label>
                                     <input id="video_bn" name="video_bn" maxlength="255" type="url" class="form-control" placeholder="Enter YouTube video link (BN)" value="{{ old('video_bn') }}">
                                     @error('video_bn')
                                         <small class="invalid-feedback">{{ $message }}</small>
@@ -346,6 +405,22 @@
 
     ClassicEditor
         .create(document.querySelector('#description'), {
+            extraPlugins: [customUploadAdapterPlugin],
+            toolbar: [
+                'heading', '|',
+                'bold', 'italic', 'underline', '|',
+                'bulletedList', 'numberedList', '|',
+                'blockQuote', 'link', 'imageUpload', '|',
+                'undo', 'redo'
+            ],
+        })
+        .then(editor => {
+            editor.ui.view.editable.element.style.minHeight = '200px';
+        })
+        .catch(error => console.error(error));
+         
+        ClassicEditor
+        .create(document.querySelector('#research'), {
             extraPlugins: [customUploadAdapterPlugin],
             toolbar: [
                 'heading', '|',
