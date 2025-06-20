@@ -18,9 +18,11 @@ class UserController extends Controller
     {
         return view('Web.Layout.users.dashboard');
     }
-    public function orders()
+    public function orders(Request $request)
     {
-        return view('Web.Layout.users.orders');
+        $data['orders'] = $this->userService->getOrders($request);
+        $data['request'] = $request;
+        return view('Web.Layout.users.orders', $data);
     }
 
     public function accountDetails()

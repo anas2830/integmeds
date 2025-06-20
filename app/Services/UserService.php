@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Order;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -44,6 +45,23 @@ class UserService
         ]);
         Auth::login($user);
         return redirect()->route('user.dashboard');
+    }
+
+    //orders
+    public function getOrders($request)
+    {
+        $orders = Order::where('user_id', auth()->id())->latest('id');
+        if ($request->has('search')) {
+            $orders->where('order_number', 'like', '%' . $request->search . '%');
+        }
+        if ($request->has('status')) {
+            $orders->where('order_status', $request->status);
+        }
+        if ($request->has('sort')) {
+            $orders->orderBy('id', $request->sort);
+        }
+        $orders = $orders->paginate(10);
+        return $orders;
     }
 
 
