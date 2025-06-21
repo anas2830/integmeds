@@ -51,14 +51,14 @@ class UserService
     //orders
     public function getOrders($request)
     {
-        $orders = Order::where('user_id', auth()->id())->latest('id');
-        if ($request->has('search')) {
+        $orders = Order::where('user_id', auth()->id());
+        if ($request->filled('search')) {
             $orders->where('order_number', 'like', '%' . $request->search . '%');
         }
-        if ($request->has('status')) {
+        if ($request->filled('status')) {
             $orders->where('order_status', $request->status);
         }
-        if ($request->has('sort')) {
+        if ($request->filled('sort')) {
             if ($request->sort == 'oldest') {
                 $orders->orderBy('id', 'asc');
             } else if ($request->sort == 'newest') {
