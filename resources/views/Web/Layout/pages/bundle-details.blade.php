@@ -877,13 +877,13 @@
                                                         <div class="col-lg-6">
                                                             <div class="from-grp">
                                                                 <label for="name">Your name <span>*</span></label>
-                                                                <input type="text" id="name">
+                                                                <input class="form-control" type="text" id="name">
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <div class="from-grp">
                                                                 <label for="email">Your email <span>*</span></label>
-                                                                <input type="text" id="email">
+                                                                <input class="form-control" type="text" id="email">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -891,11 +891,11 @@
                                                         <label>your rating</label>
                                                         <ul>
                                                             <li>
-                                                                <i class="fas fa-star"></i>
-                                                                <i class="fas fa-star"></i>
-                                                                <i class="fas fa-star"></i>
-                                                                <i class="fas fa-star"></i>
-                                                                <i class="fas fa-star"></i>
+                                                                <i class="fas fa-star" data-rating="1"></i>
+                                                                <i class="fas fa-star" data-rating="2"></i>
+                                                                <i class="fas fa-star" data-rating="3"></i>
+                                                                <i class="fas fa-star" data-rating="4"></i>
+                                                                <i class="fas fa-star" data-rating="5"></i>
                                                             </li>
                                                         </ul>
                                                     </div>

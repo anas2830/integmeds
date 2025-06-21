@@ -348,6 +348,37 @@ $(document).ready(function () {
             Toolbar: true
         });
     });
+
+
+//    rating-select-js
+    $(document).ready(function () {
+    var selectedRating = 0;
+
+    $('.form-rating i').on('click', function () {
+        var rating = $(this).data('rating');
+
+        if (rating === selectedRating) {
+            $(this).parent().find('i').removeClass('selected');
+            selectedRating = 0;
+            console.log("Rating cleared");
+        } else {
+
+            $(this).parent().find('i').removeClass('selected');
+            $(this).parent().find('i').each(function (index) {
+                if (index < rating) {
+                    $(this).addClass('selected');
+                }
+            });
+            selectedRating = rating;
+            console.log("Selected rating: " + rating);
+        }
+
+        $('#rating-value').val(selectedRating);
+    });
+});
+
+
+
 });
 
 
