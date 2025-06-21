@@ -220,7 +220,15 @@ $(document).ready(function () {
     });
 });
 
-
+//  hearder-search-suggestions-js
+    $('.searchTerm').on('focus', function() {
+        $('.suggestions').show();
+    });
+    $(document).on('click', function(e) {
+        if (!$(e.target).closest('.search').length) {
+            $('.suggestions').hide();
+        }
+    });
 
 });
 
