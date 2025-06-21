@@ -4,12 +4,21 @@ namespace App\Http\Controllers\Web;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Services\HomePageService;
 
 class HomePageController extends Controller
 {
 
+    protected $homePageService;
+    public  function __construct(HomePageService $homePageService)
+    {
+        $this->homePageService = $homePageService;
+    }
     public function index()
     {
-        return view('Web.Layout.pages.index');
+        
+        $data = $this->homePageService->homePageData();
+        dd($data);
+        return view('Web.Layout.pages.index', $data);
     }
 }

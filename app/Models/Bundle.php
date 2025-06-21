@@ -17,4 +17,9 @@ class Bundle extends Model
     {
         return $this->hasMany(BundleImage::class);
     }
+
+    public function firstImage()
+    {
+        return $this->hasOne(BundleImage::class);
+    }
 }
