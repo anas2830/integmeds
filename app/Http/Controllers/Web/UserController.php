@@ -52,7 +52,10 @@ class UserController extends Controller
 
     public function showLoginForm()
     {
-        return view('Web.Layout.users.login');
+        if (!auth()->user()) {
+            return view('Web.Layout.users.login');
+        }
+        return redirect()->route('user.dashboard');
     }
     
     public function login(Request $request)
@@ -62,7 +65,10 @@ class UserController extends Controller
 
     public function showRegisterForm()
     {
-        return view('Web.Layout.users.register');
+        if(!auth()->user()){
+            return view('Web.Layout.users.register');
+        }
+        return redirect()->route('user.dashboard');
     }
 
     public function register(Request $request)

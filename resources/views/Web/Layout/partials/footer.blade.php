@@ -19,9 +19,9 @@
 				<div class="footer-info">
 					<h5>Account</h5>
 					<ul>
-						<li><a href="login.php">My Account</a></li>
+						<li><a href="{{ route('user.dashboard') }}">My Account</a></li>
 						<li><a href="{{route('cart')}}">Cart</a></li>
-						<li><a href="wishlist.php">Wishlist</a></li>
+						<li><a href="{{route('user.wishlist')}}">Wishlist</a></li>
 						<li><a href="{{route('category')}}">Shop</a></li>
 					</ul>
 				</div>
@@ -33,7 +33,7 @@
 						<li><a href="{{route('privacy-policy')}}">Privacy Policy</a></li>
 						<li><a href="{{route('terms-condition')}}">Terms Of Use</a></li>
 						<li><a href="{{route('contact')}}">Contact</a></li>
-						<li><a href="bundle.php">Bundle</a></li>
+						<li><a href="{{ route('bundle') }}">Bundle</a></li>
 					</ul>
 				</div>
 			</div>
