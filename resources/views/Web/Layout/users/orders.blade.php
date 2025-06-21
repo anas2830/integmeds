@@ -61,9 +61,20 @@
                                         <th scope="row">{{ $order->id }}</th>
                                         <td>{{ $order->created_at->format('d M Y') }}</td>
                                         <td>
-                                            <span class="status-bg-pn">
-                                                {{ $order->order_status == 'pending' ?  'Pending' : ($order->order_status == 'completed' ? 'Completed' : 'Cancelled') }}
-                                            </span>
+                                            @switch($order->order_status)
+                                                @case('pending')
+                                                    <span class="status-bg-pn">Pending</span>
+                                                    @break
+                                                @case('completed')
+                                                    <span class="status-bg-succ">Completed</span>
+                                                    @break
+                                                @case('cancelled')
+                                                    <span class="status-bg-canc">Cancelled</span>
+                                                    @break
+                                                @default
+                                                    <span class="status-bg-pn">Pending</span>
+                                                    @break
+                                            @endswitch
                                         </td>
                                         <td>{{config('settings.currency_symbol')}}{{ $order->total_amount }}</td>
                                         <td class="view-btn"><a href="#"><i class="far fa-eye"></i> View</a></td>

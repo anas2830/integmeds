@@ -16,40 +16,81 @@ class UserController extends Controller
 
     public function dashboard()
     {
-        return view('Web.Layout.users.dashboard');
+        $data['user'] = $this->userService->getUser();
+        return view('Web.Layout.users.dashboard', $data);
     }
     public function orders(Request $request)
     {
+        $data['user'] = $this->userService->getUser();
         $data['orders'] = $this->userService->getOrders($request);
         $data['request'] = $request;
         return view('Web.Layout.users.orders', $data);
     }
 
-    public function accountDetails()
+
+    //account
+    public function accountDetails(Request $request)
     {
-        return view('Web.Layout.users.account');
+        $data['user'] = $this->userService->getUser();
+        return view('Web.Layout.users.account', $data);
     }
 
+    public function updateAccount(Request $request)
+    {
+        return $this->userService->updateAccount($request);
+    }
+    //end account
+
+
+    //address
     public function address()
     {
-        return view('Web.Layout.users.address');
+        $data['user'] = $this->userService->getUser();
+        return view('Web.Layout.users.address', $data);
     }
 
-    public function billingShippingAddress()
+    public function billingAddress()
     {
-        return view('Web.Layout.users.billing-shipping-address');
+        $data['user'] = $this->userService->getUser();
+        $data['countries'] = countries();
+        return view('Web.Layout.users.billing-address', $data);
     }
 
+    public function updateBillingAddress(Request $request)
+    {
+        return $this->userService->updateBillingAddress($request);
+    }
 
+    public function shippingAddress()
+    {
+        $data['user'] = $this->userService->getUser();
+        return view('Web.Layout.users.shipping-address', $data);
+    }
+
+    public function updateShippingAddress(Request $request)
+    {
+        return $this->userService->updateShippingAddress($request);
+    }
+    //end address
+
+
+    //change password
     public function changePasswordForm()
     {
-        return view('Web.Layout.users.change-password');
+        $data['user'] = $this->userService->getUser();
+        return view('Web.Layout.users.change-password', $data);
     }
 
+    public function changePassword(Request $request)
+    {
+        return $this->userService->changePassword($request);
+    }
+    //end change password
 
     public function wishlist()
     {
-        return view('Web.Layout.users.wishlist');
+        $data['user'] = $this->userService->getUser();
+        return view('Web.Layout.users.wishlist', $data);
     }
 
     public function showLoginForm()

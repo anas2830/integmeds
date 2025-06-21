@@ -11,3 +11,17 @@ if (!function_exists('generateOrderNumber')) {
         return "ORD-{$date}{$number}";
     }
 }
+
+
+if (!function_exists('countries')) {
+    function countries()
+    {
+        $json = file_get_contents('https://countriesnow.space/api/v0.1/countries/iso');
+
+        if ($json === false) {
+            return [];
+        }
+        $parsed = json_decode($json, true);
+        return $parsed['data'];
+    }
+}

@@ -4,3 +4,4 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/11.0.5/swiper-bundle.min.css" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="{{asset('web_assets/common/css/style.css')}}">
   <link rel="stylesheet" type="text/css" href="{{asset('web_assets/common/css/custom.css')}}">
+  <link href="{{ asset('assets/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
