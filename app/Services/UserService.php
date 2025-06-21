@@ -58,7 +58,15 @@ class UserService
             $orders->where('order_status', $request->status);
         }
         if ($request->has('sort')) {
-            $orders->orderBy('id', $request->sort);
+            if ($request->sort == 'oldest') {
+                $orders->orderBy('id', 'asc');
+            } else if ($request->sort == 'newest') {
+                $orders->orderBy('id', 'desc');
+            } else if ($request->sort == 'price_low_to_high') {
+                $orders->orderBy('total_amount', 'asc');
+            } else if ($request->sort == 'price_high_to_low') {
+                $orders->orderBy('total_amount', 'desc');
+            }
         }
         $orders = $orders->paginate(10);
         return $orders;

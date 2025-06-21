@@ -28,14 +28,14 @@
                         <form action="{{ route('user.orders') }}" method="get">
                             <div class="order-search-box">
                                 <select class="form-select" aria-label="Default select example" name="status" id="status">
-                                    <option selected>Filter status</option>
+                                    <option value="">Filter status</option>
                                     <option value="all" {{ $request->status == 'all' ? 'selected' : '' }}>All</option>
                                     <option value="pending" {{ $request->status == 'pending' ? 'selected' : '' }}>Pending</option>
-                                    <option value="success" {{ $request->status == 'success' ? 'selected' : '' }}>Success</option>
-                                    <option value="canceled" {{ $request->status == 'canceled' ? 'selected' : '' }}>Canceled</option>
+                                    <option value="completed" {{ $request->status == 'completed' ? 'selected' : '' }}>Completed</option>
+                                    <option value="cancelled" {{ $request->status == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
                                 </select>
                                 <select class="form-select" aria-label="Default select example" name="sort" id="sort">
-                                    <option selected>Sort By</option>
+                                    <option value="">Sort By</option>
                                     <option value="oldest" {{ $request->sort == 'oldest' ? 'selected' : '' }}>Date Oldest to Newest</option>
                                     <option value="newest" {{ $request->sort == 'newest' ? 'selected' : '' }}>Date Newest to Oldest</option>
                                     <option value="price_low_to_high" {{ $request->sort == 'price_low_to_high' ? 'selected' : '' }}>Price Low to High</option>
@@ -62,7 +62,7 @@
                                         <td>{{ $order->created_at->format('d M Y') }}</td>
                                         <td>
                                             <span class="status-bg-pn">
-                                                {{ $order->order_status == 'pending' ?  'Pending' : ($order->order_status == 'success' ? 'Success' : 'Canceled') }}
+                                                {{ $order->order_status == 'pending' ?  'Pending' : ($order->order_status == 'completed' ? 'Completed' : 'Cancelled') }}
                                             </span>
                                         </td>
                                         <td>{{config('settings.currency_symbol')}}{{ $order->total_amount }}</td>
@@ -90,9 +90,16 @@
 
 @push('script')
     <script>
-
+        $(document).ready(function() {
             console.log('ready');
-     
-  
+            $('#status').on('change', function() {
+                console.log('status');
+                $(this).closest('form').submit();
+            });
+            $('#sort').on('change', function() {
+                console.log('sort');
+                $(this).closest('form').submit();
+            });
+        });
     </script>
 @endpush
