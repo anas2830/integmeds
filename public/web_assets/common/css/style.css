@@ -94,6 +94,7 @@ ul{padding:0;margin:0;}
 .search-suggestions-items { display: flex; align-items: center; gap: 10px; }
 .search-sugge-items-img img { width:50px;}
 .search .suggestions li:hover .search-sugge-items-title-price h5{color: var(--Secondary);}
+.search .suggestions { display: none; }
 
 /* header-area-bottom */
 .cart-login-wrap > ul { display: flex; gap: 25px; list-style: none; align-items: center; margin-bottom: 0; }
