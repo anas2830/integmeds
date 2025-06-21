@@ -1084,6 +1084,11 @@
 @endsection
 
 @push('script')
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/elevatezoom/2.2.3/jquery.elevatezoom.min.js"></script>
+<!-- Fancybox JS -->
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
 <script>
     $(".selectBox").on("click", function(e) {
         $(this).toggleClass("show");
@@ -1130,11 +1135,90 @@
     });
 </script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/elevatezoom/2.2.3/jquery.elevatezoom.min.js"></script>
-<!-- Fancybox JS -->
-<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
+<script>
+     /*Product Details*/
+     var productDetails = function () {
+        $('.product-image-slider').slick({
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            arrows: false,
+            fade: false,
+            asNavFor: '.slider-nav-thumbnails',
+        });
 
+        $('.slider-nav-thumbnails').slick({
+            slidesToShow: 4,
+            slidesToScroll: 1,
+            asNavFor: '.product-image-slider',
+            dots: false,
+            focusOnSelect: true,
+            prevArrow: '<button type="button" class="slick-prev"><i class="fa-solid fa-angle-left"></i></button>',
+            nextArrow: '<button type="button" class="slick-next"><i class="fa-solid fa-angle-right"></i></button>'
+        });
+
+        // Remove active class from all thumbnail slides
+        $('.slider-nav-thumbnails .slick-slide').removeClass('slick-active');
+
+        // Set active class to first thumbnail slides
+        $('.slider-nav-thumbnails .slick-slide').eq(0).addClass('slick-active');
+
+        // On before slide change match active thumbnail to current slide
+        $('.product-image-slider').on('beforeChange', function (event, slick, currentSlide, nextSlide) {
+            var mySlideNumber = nextSlide;
+            $('.slider-nav-thumbnails .slick-slide').removeClass('slick-active');
+            $('.slider-nav-thumbnails .slick-slide').eq(mySlideNumber).addClass('slick-active');
+        });
+
+        $('.product-image-slider').on('beforeChange', function (event, slick, currentSlide, nextSlide) {
+            var img = $(slick.$slides[nextSlide]).find("img");
+            $('.zoomWindowContainer,.zoomContainer').remove();
+            if ($(window).width() > 768) {
+                $(img).elevateZoom({
+                    zoomType: "inner",
+                    cursor: "crosshair",
+                    zoomWindowFadeIn: 500,
+                    zoomWindowFadeOut: 750
+                });
+            }
+        });
+        //Elevate Zoom
+        if ( $(".product-image-slider").length ) {
+            if ($(window).width() > 768) {
+                $('.product-image-slider .slick-active img').elevateZoom({
+                    zoomType: "inner",
+                    cursor: "crosshair",
+                    zoomWindowFadeIn: 500,
+                    zoomWindowFadeOut: 750
+                });
+            }
+        }
+    };
+
+    //Load functions
+    $(document).ready(function () {
+        productDetails();
+    });
+
+    $('.zoom-icon').on('click', function (e) {
+        e.preventDefault();
+
+        const images = $('.product-image-slider figure img').map(function () {
+            return {
+                src: $(this).attr('src'),
+                type: 'image'
+            };
+        }).get();
+
+        const currentIndex = $('.product-image-slider').slick('slickCurrentSlide') + 1;
+
+        Fancybox.show(images, {
+            startIndex: currentIndex,
+            Thumbs: false,
+            Toolbar: true
+        });
+    });
+
+</script>
 @endpush
 
 
