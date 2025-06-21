@@ -42,16 +42,22 @@ Route::prefix('user')->group(function () {
 
         // Account Details
         Route::get('/account', [UserController::class, 'accountDetails'])->name('user.account');
+        Route::put('/account', [UserController::class, 'updateAccount'])->name('user.account.update');
 
         // Address
         Route::get('/address', [UserController::class, 'address'])->name('user.address');
-        Route::post('/address', [UserController::class, 'updateAddress'])->name('user.address.update');
 
-        Route::get('/billing-shipping-address', [UserController::class, 'billingShippingAddress'])->name('user.billing-shipping-address');
+        // Billing Address
+        Route::get('/billing-address', [UserController::class, 'billingAddress'])->name('user.billing-address');
+        Route::put('/billing-address', [UserController::class, 'updateBillingAddress'])->name('user.billing-address.update');
+
+        // Shipping Address
+        Route::get('/shipping-address', [UserController::class, 'shippingAddress'])->name('user.shipping-address');
+        Route::put('/shipping-address', [UserController::class, 'updateShippingAddress'])->name('user.shipping-address.update');
 
         // Change Password
         Route::get('/change-password', [UserController::class, 'changePasswordForm'])->name('user.change-password');
-        Route::post('/change-password', [UserController::class, 'changePassword'])->name('user.password.update');
+        Route::put('/change-password', [UserController::class, 'changePassword'])->name('user.password.update');
 
         // Wishlist
         Route::get('/wishlist', [UserController::class, 'wishlist'])->name('user.wishlist');

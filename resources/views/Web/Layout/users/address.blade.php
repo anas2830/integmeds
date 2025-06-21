@@ -19,16 +19,19 @@
                             <div class="address-address-box-wrap">
                                 <div class="account-address-box">
                                     <h6>Billing address</h6>
-                                    <ul>
-                                        <li>Kashem Ali</li>
-                                        <li>Dhaka</li>
-                                        <li>Mobile: 012-345-6789</li>
-                                        <li>kashem@example.com</li>
-                                    </ul>
+                                    @if($user->billing_address)
+                                        <ul>
+                                            <li>Kashem Ali</li>
+                                            <li>Dhaka</li>
+                                            <li>Mobile: 012-345-6789</li>
+                                            <li>kashem@example.com</li>
+                                        </ul>
+                                    @else
+                                        <p>No billing address found</p>
+                                    @endif
                                 </div>
                                 <div class="account-address-bottom">                                
-                                    <a href="{{route('user.billing-shipping-address')}}"><i class="fa-solid fa-pen"></i>Edit</a>                                
-                                    <a href="#"><i class="fa-solid fa-trash-can"></i>Remove</a>
+                                    <a href="{{route('user.billing-address')}}"><i class="fa-solid fa-pen"></i>Edit</a>                                
                                 </div>
                             </div>
                         </div>
@@ -36,24 +39,20 @@
                             <div class="address-address-box-wrap">
                                 <div class="account-address-box">
                                     <h6>Shipping address</h6>
-                                    <ul>
-                                        <li>Kashem Ali</li>
-                                        <li>Dhaka</li>
-                                        <li>Mobile: 012-345-6789</li>
-                                        <li>kashem@example.com</li>
-                                    </ul>
+                                    @if($user->shipping_address)
+                                        <ul>
+                                            <li>Kashem Ali</li>
+                                            <li>Dhaka</li>
+                                            <li>Mobile: 012-345-6789</li>
+                                            <li>kashem@example.com</li>
+                                        </ul>
+                                    @else
+                                        <p>No shipping address found</p>
+                                    @endif
                                 </div>
                                 <div class="account-address-bottom">                                
-                                    <a href="{{route('user.billing-shipping-address')}}"><i class="fa-solid fa-pen"></i>Edit</a>                                
-                                    <a href="#"><i class="fa-solid fa-trash-can"></i>Remove</a>
+                                    <a href="{{route('user.shipping-address')}}"><i class="fa-solid fa-pen"></i>Edit</a>                                
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="add-address-btn-wrap">
-                                <a class="btn" href="{{route('user.billing-shipping-address')}}">New address add <i class="fa-solid fa-plus"></i></a>
                             </div>
                         </div>
                     </div>

@@ -3,8 +3,10 @@
 namespace App\Services;
 
 use App\Models\User;
+use App\Models\Order;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class UserService
 {
@@ -46,59 +48,89 @@ class UserService
         return redirect()->route('user.dashboard');
     }
 
+    //orders
+    public function getOrders($request)
+    {
+        $orders = Order::where('user_id', auth()->id())->latest('id');
+        if ($request->has('search')) {
+            $orders->where('order_number', 'like', '%' . $request->search . '%');
+        }
+        if ($request->has('status')) {
+            $orders->where('order_status', $request->status);
+        }
+        if ($request->has('sort')) {
+            if ($request->sort == 'oldest') {
+                $orders->orderBy('id', 'asc');
+            } else if ($request->sort == 'newest') {
+                $orders->orderBy('id', 'desc');
+            } else if ($request->sort == 'price_low_to_high') {
+                $orders->orderBy('total_amount', 'asc');
+            } else if ($request->sort == 'price_high_to_low') {
+                $orders->orderBy('total_amount', 'desc');
+            }
+        }
+        $orders = $orders->paginate(10);
+        return $orders;
+    }
+
+    //account
+    public function getUser()
+    {
+        return User::where('id', auth()->id())->first();
+    }
+
+    public function updateAccount($request)
+    {
+        if ($request->hasFile('profile_image')) {
+            $fileSize = $request->file('profile_image')->getSize();
+            $maxSize = 2 * 1024 * 1024;
+            if ($fileSize > $maxSize) {
+                return redirect()->route('user.account')->with('error', 'Profile image must be less than 2MB');
+            }
+        }
+
+        $user = User::where('id', auth()->id())->first();
+        $user->name = $request->name;
+        $user->phone = $request->phone;
+        $user->address = $request->address;
+        if ($request->hasFile('profile_image')) {
+            if ($user->profile_image && file_exists(public_path($user->profile_image))) {
+                unlink(public_path($user->profile_image));
+            }
+            $image = $request->file('profile_image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('uploads/users'), $imageName);
+            $fullpath = 'uploads/users/' . $imageName;
+            $user->profile_image = $fullpath;
+        }
+        $user->save();
+        return redirect()->route('user.account')->with('success', 'Account updated successfully!');
+    }
+    //end account
 
 
-    // public function  showAdminProfile()
-    // {
-    //     $authUser = Auth::guard('admin')->user()->id;
-    //     $data['admin'] = $admin = Admin::where('id', $authUser)->first();
-    //     $data['existingFilesArray'] = [];
-    //     if ($admin->file_name) {
-    //         $data['existingFilesArray'] = [
-    //             [
-    //                 'full_path' => url($admin->file_name),
-    //                 'name' => $admin->file_original_name,
-    //                 'size' => $admin->file_size,
-    //                 'path' => $admin->file_name
-    //             ],
-    //         ];
-    //     }
-    //     return $data;
-    // }
+    //change password
+    public function changePassword($request)
+    {
+        $validator = Validator::make($request->all(), [
+            'current_password' => 'required|string|min:8|max:50',
+            'new_password' => 'required|string|min:8|max:50',
+            'confirm_password' => 'required|string|min:8|max:50|same:new_password',
+        ]);
 
-    // public function profileUpdate($request)
-    // {
-    //     $request->validate([
-    //         'name' => 'required|string|max:255',
-    //         'admin_password' => 'nullable|min:8',
-    //         'admin_confirm_password' => 'nullable|same:admin_password',
-    //     ]);
-    //     $admin = Admin::findOrFail($request->id);
-    //     $admin->name =  $request->name ?? NULL;
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
-    //     if ($request->filled('admin_password')) {
-    //         $admin->password = Hash::make($request->input('admin_password'));
-    //     }
-    //     if ($request->profile_image) {
-    //         $fileUploadService = new FileUploadService();
-    //         $newDirectory = 'uploads/admins';
-    //         $fileData = $fileUploadService->handleFileUpload($request->profile_image, 'temp/' . $request->profile_image, $newDirectory);
-    //         $fullpath = $fileData['fullPath'] ?? NULL;
-    //         $fileOriginalName = $fileData['originalName'] ?? NULL;
-    //         $fileSize = $fileData['size'] ?? NULL;
-    //         $fileExtension = $fileData['extension'] ?? NULL;
-    //         $admin->file_name = $fullpath;
-    //         $admin->file_original_name = $fileOriginalName;
-    //         $admin->file_size = $fileSize;
-    //         $admin->file_extention = $fileExtension;
-    //     }
-    //     if ($request->filled('files_to_delete')) {
-    //         $filePath = public_path($request->files_to_delete);
-    //         if (File::exists($filePath)) {
-    //             File::delete($filePath);
-    //         }
-    //     }
-    //     $admin->save();
-    //     return redirect()->route('admin.profile')->with('success', 'Profile updated successfully!');
-    // }
+        $user = User::where('id', auth()->id())->first();
+        if (!Hash::check($request->current_password, $user->password)) {
+            return redirect()->route('user.change-password')->with('error', 'Current password is incorrect');
+        }
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+        return redirect()->route('user.change-password')->with('success', 'Password updated successfully');
+    }
+    //end change password
+
+
 }
