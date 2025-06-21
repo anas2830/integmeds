@@ -86,6 +86,15 @@ ul{padding:0;margin:0;}
 .header-top-right ul li a:hover { color: var(--primary); }
 .header-top-right p a { font-size: 14px; color: #fff; }
 
+.search .suggestions { position: absolute; left: 0; top: 100%; width:100%; max-height:350px; scrollbar-width: thin; overflow: auto; background: #fff; font-size: 13px; font-weight: 400; line-height: 20px; padding:10px; margin: 0; list-style: none; color: #6E6E6E; transition: 2s; z-index:100; border-radius: 0 0 24px 24px;}
+.search .suggestions li { margin-bottom:5px; padding-bottom:5px; border-bottom: 1px solid #eee; }
+.search .suggestions li:last-child{ border-bottom:0;padding-bottom:0;margin-bottom:0; }
+.search .suggestions li .search-sugge-items-title-price h5{ font-size: 14px; font-weight: 600; color: var(--primary);margin-bottom:5px;transition: all 0.3s ease;}
+.search .suggestions li .search-sugge-items-title-price span{ font-size: 14px; font-weight:700;}
+.search-suggestions-items { display: flex; align-items: center; gap: 10px; }
+.search-sugge-items-img img { width:50px;}
+.search .suggestions li:hover .search-sugge-items-title-price h5{color: var(--Secondary);}
+
 /* header-area-bottom */
 .cart-login-wrap > ul { display: flex; gap: 25px; list-style: none; align-items: center; margin-bottom: 0; }
 .cart-login-wrap > ul .shopping-cart { position: relative; }
@@ -589,7 +598,7 @@ ul{padding:0;margin:0;}
 .add-review .from-grp { margin-bottom: 25px; } 
 .add-review .from-grp label, .form-rating label { display: block; text-transform: capitalize; font-size: 15px; font-weight: 500; color: #222; margin-bottom: 6px; }
 .add-review .from-grp label span { color: var(--primary); }
-.add-review .from-grp input, .add-review .from-grp textarea { width: 100%; border: 1px solid #dfdfdf; padding:5px 25px; display: block; }
+.add-review .from-grp input, .add-review .from-grp textarea { width: 100%; border: 1px solid #dfdfdf; padding:10px; display: block; border-radius:0; }
 .add-review .checkbox-grp input { width: auto; margin-top: 3px; margin-right: 10px; }
 .add-review .checkbox-grp label { margin-bottom: 0; }
 .add-review .checkbox-grp { display: flex; }
@@ -599,7 +608,10 @@ ul{padding:0;margin:0;}
 .form-rating { margin-bottom: 25px; display: flex; align-items: center; }
 .form-rating label { font-size: 15px; text-transform: capitalize; margin-bottom: 0; margin-right: 10px; }
 .form-rating ul li { transition: .3s linear; letter-spacing: -1px; display: inline-block; font-size: 14px; }
-.form-rating ul li:hover { color: #ff9b26; }
+/* .form-rating ul li:hover { color: #ff9b26; } */
+.form-rating i { color: #ccc; cursor: pointer; }
+.form-rating i.selected { color: #f39c12;}
+
 .add-review .from-grp textarea { height: 170px; }
 .from-btn { background-image: linear-gradient(to right, rgb(255,86,0) 0%, rgb(255,167,5) 50%, rgb(255,86,0) 100%); }
 

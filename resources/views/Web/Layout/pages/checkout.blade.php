@@ -143,7 +143,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="sbar-sp-offer-list-wrap">
+                    <div class="sbar-sp-offer-list-wrap mt-4">
+                        <div class="sidebar-title">
+                            <h2>Special Offer</h2>
+                        </div>
                         <div class="sbar-best-seller-list">
                             <a href="#">
                                 <div class="row gx-3">
