@@ -934,6 +934,28 @@ ul{padding:0;margin:0;}
 .privacy-policy-page ul { margin-bottom: 15px; padding-left: 20px; }
 .privacy-policy-page ul li{font-size:16px;margin:10px 0;}
 
+/* forgot-password */
+.forgot-password-page { margin-top: 50px; }
+.feature-box{ border-bottom: 1px solid #dfdfdf; border-left: 1px solid #ececec; border-right: 1px solid #ececec; box-shadow: 0 2px 4px 0px rgba(0,0,0,0.05); }
+.feature-box .feature-box-content { border-top: 4px solid var(--primary); padding: 30px 20px 10px 20px; }
+.feature-box-content p { margin-bottom: 20px; }
+.feature-box-content label { margin-bottom:10px; color: inherit; font-size: 14px; }
+.feature-box-content .form-footer { display: flex; align-items: center; justify-content: space-between; margin-top:20px; font-size:16px; }
+.feature-box-content .form-footer a{color: var(--Secondary);}
+.feature-box-content .form-footer-btn { background: var(--primary); color: var(--white-color); padding: 7px 15px; font-size: 15px; }
+.feature-box-content span{font-size: 14px; color: var(--primary);}
+
+/* Category side sticky menu */
+.category-filter-wrap .sidemenu-sticky{z-index:999999;position:fixed;top:174px;overflow:hidden;}
+.sidemenu-sticky .sidemenu-sticky-d-none{display:none;}
+.category-filter-wrap{display:flex;gap:10px;align-items:center;}
+.category-filter-wrap .btn-primary{background-color:var(--primary);border:var(--primary);}
+.category-filter-wrap .offcanvas-start{width:280px;}
+.category-filter-wrap .btn-close{background-image:unset;font-size:24px;opacity:0.8; margin: -.5rem -.5rem -.5rem auto; }
+.category-filter-wrap .btn-close i{color:var(--primary);}
+.category-filter-wrap .sidemenu-sticky .offcanvas-header{padding:10px ;}
+.category-filter-wrap .category-list{margin-top: 20px;}
+
 /* footer-area */
 .footer-area { background:#1C2127; padding-top: 70px; margin-top:50px; }
 .Footer-logo { margin-bottom: 20px; }
@@ -949,19 +971,6 @@ ul{padding:0;margin:0;}
 .footer-bottom { padding:18px 0; margin-top:30px; border-top: 1px solid var(--white-color); }
 .footer-bottom .copy-right p{ color: var(--white-color); font-size: 14px; text-align: center; }
 .footer-bottom .copy-right p>a{ color: var(--white-color); }
-
-
-/* Category side sticky menu */
-.category-filter-wrap .sidemenu-sticky{z-index:999999;position:fixed;top:174px;overflow:hidden;}
-.sidemenu-sticky .sidemenu-sticky-d-none{display:none;}
-.category-filter-wrap{display:flex;gap:10px;align-items:center;}
-.category-filter-wrap .btn-primary{background-color:var(--primary);border:var(--primary);}
-.category-filter-wrap .offcanvas-start{width:280px;}
-.category-filter-wrap .btn-close{background-image:unset;font-size:24px;opacity:0.8; margin: -.5rem -.5rem -.5rem auto; }
-.category-filter-wrap .btn-close i{color:var(--primary);}
-.category-filter-wrap .sidemenu-sticky .offcanvas-header{padding:10px ;}
-
-.category-filter-wrap .category-list{margin-top: 20px;}
 
 
 /* XL Device :1200px. */
