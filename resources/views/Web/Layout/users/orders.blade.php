@@ -88,7 +88,9 @@
                     </div>
                     <div class="row">
                         <div class="col-lg-12 d-flex justify-content-end">
-                            {{ $orders->links() }}
+                            <div class="pagination-area">
+                                {{ $orders->links() }}
+                            </div>
                         </div>
                     </div>
                 </div>

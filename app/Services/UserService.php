@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Models\Order;
+use App\Models\Wishlist;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -175,6 +176,18 @@ class UserService
         return redirect()->route('user.change-password')->with('success', 'Password updated successfully');
     }
     //end change password
+
+    //wishlist
+    public function removeWishlist($id)
+    {
+        $wishlist = Wishlist::where('id', $id)->where('user_id', auth()->id())->first();
+        if (!$wishlist) {
+            return redirect()->route('user.wishlist')->with('error', 'Wishlist not found');
+        }
+        $wishlist->delete();
+        return redirect()->route('user.wishlist')->with('success', 'Wishlist removed successfully');
+    }
+    //end wishlist
 
 
 }

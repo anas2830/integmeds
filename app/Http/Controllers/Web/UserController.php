@@ -92,11 +92,20 @@ class UserController extends Controller
     }
     //end change password
 
+
+    //wishlist
     public function wishlist()
     {
         $data['user'] = $this->userService->getUser();
+        $data['wishlists'] = auth()->user()->wishlists()->with(['product','product.categories:id,name','product.images:id,product_id,image_url'])->paginate(10);
         return view('Web.Layout.users.wishlist', $data);
     }
+
+    public function removeWishlist($id)
+    {
+        return $this->userService->removeWishlist($id);
+    }
+    //end wishlist
 
     public function showLoginForm()
     {

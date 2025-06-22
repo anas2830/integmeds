@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\Wishlist;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 
 class Product extends Model
@@ -20,7 +21,7 @@ class Product extends Model
 
     public function images()
     {
-        return $this->hasMany(ProductImage::class);
+        return $this->hasMany(ProductImage::class, 'product_id');
     }
 
     public function videos()
@@ -67,5 +68,10 @@ class Product extends Model
     public function scopeValid($query)
     {
         return $query->where('status', 1);
+    }
+
+    public function wishlists()
+    {
+        return $this->hasMany(Wishlist::class);
     }
 }
