@@ -19,12 +19,17 @@
                             <div class="address-address-box-wrap">
                                 <div class="account-address-box">
                                     <h6>Billing address</h6>
-                                    @if($user->billing_address)
+                                    @if($billing_address)
                                         <ul>
-                                            <li>Kashem Ali</li>
-                                            <li>Dhaka</li>
-                                            <li>Mobile: 012-345-6789</li>
-                                            <li>kashem@example.com</li>
+                                            <li>Full Name: {{ $billing_address['first_name'] }} {{ $billing_address['last_name'] }}</li>
+                                            <li>Street Address: {{ $billing_address['address_line1'] }}</li>
+                                            <li>Apartment, Suite, etc: {{ $billing_address['address_line2'] }}</li>
+                                            <li>City: {{ $billing_address['city'] }} </li>
+                                            <li>State: {{ $billing_address['state'] }}</li>
+                                            <li>Postal Code: {{ $billing_address['postal_code'] }}</li>
+                                            <li>Country: {{ $billing_address['country'] }}</li>
+                                            <li>Phone: {{ $billing_address['phone'] }}</li>
+                                            <li>Email: {{ $billing_address['email'] }}</li>
                                         </ul>
                                     @else
                                         <p>No billing address found</p>
@@ -39,12 +44,17 @@
                             <div class="address-address-box-wrap">
                                 <div class="account-address-box">
                                     <h6>Shipping address</h6>
-                                    @if($user->shipping_address)
+                                    @if($shipping_address)
                                         <ul>
-                                            <li>Kashem Ali</li>
-                                            <li>Dhaka</li>
-                                            <li>Mobile: 012-345-6789</li>
-                                            <li>kashem@example.com</li>
+                                            <li>Full Name: {{ $shipping_address['first_name'] }} {{ $shipping_address['last_name'] }}</li>
+                                            <li>Street Address: {{ $shipping_address['address_line1'] }}</li>
+                                            <li>Apartment, Suite, etc: {{ $shipping_address['address_line2'] }}</li>
+                                            <li>City: {{ $shipping_address['city'] }} </li>
+                                            <li>State: {{ $shipping_address['state'] }}</li>
+                                            <li>Postal Code: {{ $shipping_address['postal_code'] }}</li>
+                                            <li>Country: {{ $shipping_address['country'] }}</li>
+                                            <li>Phone: {{ $shipping_address['phone'] }}</li>
+                                            <li>Email: {{ $shipping_address['email'] }}</li>
                                         </ul>
                                     @else
                                         <p>No shipping address found</p>

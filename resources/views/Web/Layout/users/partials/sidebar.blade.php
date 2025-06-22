@@ -10,12 +10,12 @@
         <h5>{{ $user->name ?? 'John Doe' }}</h5>
     </div>
     <ul class="sidebar">
-        <li class="active"><a href="{{route('user.dashboard')}}"><i class="bx bxs-dashboard"></i>Dashboard</a></li>
-        <li><a href="{{ route('user.orders') }}"><i class="bx bx-cart"></i>Order</a></li>
-        <li><a href="{{ route('user.account') }}"><i class="bx bx-user"></i>Account details</a></li>
-        <li><a href="{{ route('user.address') }}"><i class="bx bx-home"></i>Address</a></li>
-        <li><a href="{{ route('user.change-password') }}"> <i class="bx bx-lock-alt"></i>Change Password</a></li>
-        <li><a href="{{ route('user.wishlist') }}"> <i class="bx bx-file"></i>Wishlist</a></li>
+        <li class="{{ request()->routeIs('user.dashboard') ? 'active' : '' }}"><a href="{{route('user.dashboard')}}"><i class="bx bxs-dashboard"></i>Dashboard</a></li>
+        <li class="{{ request()->routeIs('user.orders') ? 'active' : '' }}"><a href="{{ route('user.orders') }}"><i class="bx bx-cart"></i>Order</a></li>
+        <li class="{{ request()->routeIs('user.account') ? 'active' : '' }}"><a href="{{ route('user.account') }}"><i class="bx bx-user"></i>Account details</a></li>
+        <li class="{{ request()->routeIs('user.address') ? 'active' : '' }}"><a href="{{ route('user.address') }}"><i class="bx bx-home"></i>Address</a></li>
+        <li class="{{ request()->routeIs('user.change-password') ? 'active' : '' }}"><a href="{{ route('user.change-password') }}"> <i class="bx bx-lock-alt"></i>Change Password</a></li>
+        <li class="{{ request()->routeIs('user.wishlist') ? 'active' : '' }}"><a href="{{ route('user.wishlist') }}"> <i class="bx bx-file"></i>Wishlist</a></li>
         <li>
             <form action="{{ route('user.logout') }}" method="post">
                 @csrf

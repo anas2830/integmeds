@@ -46,12 +46,15 @@ class UserController extends Controller
     public function address()
     {
         $data['user'] = $this->userService->getUser();
+        $data['billing_address'] = json_decode($data['user']->billing_address, true);
+        $data['shipping_address'] = json_decode($data['user']->shipping_address, true);
         return view('Web.Layout.users.address', $data);
     }
 
     public function billingAddress()
     {
         $data['user'] = $this->userService->getUser();
+        $data['billing_address'] = json_decode($data['user']->billing_address, true);
         $data['countries'] = countries();
         return view('Web.Layout.users.billing-address', $data);
     }
@@ -64,6 +67,7 @@ class UserController extends Controller
     public function shippingAddress()
     {
         $data['user'] = $this->userService->getUser();
+        $data['shipping_address'] = json_decode($data['user']->shipping_address, true);
         $data['countries'] = countries();
         return view('Web.Layout.users.shipping-address', $data);
     }
