@@ -16,9 +16,7 @@ class HomePageController extends Controller
     }
     public function index()
     {
-        
         $data = $this->homePageService->homePageData();
-        dd($data);
         return view('Web.Layout.pages.index', $data);
     }
 }
