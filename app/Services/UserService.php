@@ -109,6 +109,50 @@ class UserService
     //end account
 
 
+
+    //address
+    public function updateBillingAddress($request)
+    {
+        $user = User::where('id', auth()->id())->first();
+        $data = [
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'country' => $request->country,
+            'address_line1' => $request->address_line1,
+            'address_line2' => $request->address_line2,
+            'city' => $request->city,
+            'state' => $request->state,
+            'postal_code' => $request->postal_code,
+        ];
+        $user->billing_address = json_encode($data);
+        $user->save();
+        return redirect()->route('user.billing-address')->with('success', 'Billing address updated successfully');
+    }
+
+    public function updateShippingAddress($request)
+    {
+        $user = User::where('id', auth()->id())->first();
+        $data = [
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'country' => $request->country,
+            'address_line1' => $request->address_line1,
+            'address_line2' => $request->address_line2,
+            'city' => $request->city,
+            'state' => $request->state,
+            'postal_code' => $request->postal_code,
+        ];
+        $user->shipping_address = json_encode($data);
+        $user->save();
+        return redirect()->route('user.shipping-address')->with('success', 'Shipping address updated successfully');
+    }
+    //end address
+
+
     //change password
     public function changePassword($request)
     {
