@@ -21,6 +21,8 @@ Route::get('/bundle', [WebController::class, 'bundle'])->name('bundle');
 Route::get('/bundle-details', [WebController::class, 'bundleDetails'])->name('bundle-details');
 Route::get('/product-details', [WebController::class, 'productDetails'])->name('product-details');
 Route::get('/about-us', [WebController::class, 'aboutUs'])->name('about-us');
+Route::get('/search', [WebController::class, 'search'])->name('search');
+Route::get('/forgot-password', [WebController::class, 'forgotPassword'])->name('forgotPassword');
 Route::get('/contact', [WebController::class, 'contact'])->name('contact');
 Route::get('/privacy-policy', [WebController::class, 'privacyPolicy'])->name('privacy-policy');
 Route::get('/terms-condition', [WebController::class, 'termsCondition'])->name('terms-condition');
@@ -28,6 +30,8 @@ Route::get('/cart', [WebController::class, 'cart'])->name('cart');
 Route::get('/checkout', [WebController::class, 'checkout'])->name('checkout');
 Route::get('/wishlist', [WebController::class, 'wishlist'])->name('wishlist');
 Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
+
+
 
 
 // Route::prefix('user')->group(function () {

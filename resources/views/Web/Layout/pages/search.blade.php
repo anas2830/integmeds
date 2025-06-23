@@ -10,136 +10,277 @@
 <div class="category-and-sidebar">
     <div class="container">
         <div class="row">
-            <div class="col-lg-9 order-lg-2 order-1">
-                <section class="category-page-products">
-                    <div class="category-title-area mb-3">
-                        <div class="row">
-                            <div class="col-md-10 d-flex align-items-center">
-                                <div class="category-filter-wrap">
-                                    <div class="sidemenu-sticky">
-                                        <div class="sidemenu-sticky-d-none">
-                                            <a class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions"><i class="fa-solid fa-list"></i></a>
-                                            <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
-                                                <div class="offcanvas-header">
-                                                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"><i class="fa-solid fa-circle-xmark"></i></button>
-                                                </div>
-                                                <div class="offcanvas-body">
-                                                    <div class="category-list mt-0">
-                                                        <div class="sidebar-title">
-                                                            <h2>Categories</h2>
-                                                        </div>
-                                                        <div class="sidefilter-cat-wrap">
-                                                            <div class="sidef-cat-list">
-                                                                <div class="form-check">
-                                                                    <input class="form-check-input" type="checkbox" id="sidecatitem2">
-                                                                    <label class="form-check-label" for="sidecatitem2">Functional Food</label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="sidef-cat-list">
-                                                                <div class="form-check">
-                                                                    <input class="form-check-input" type="checkbox" id="sidecatitem3">
-                                                                    <label class="form-check-label" for="sidecatitem3">Natural Self Care</label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="category-list">
-                                                        <div class="sidebar-title">
-                                                            <h2>Brands</h2>
-                                                        </div>
-                                                        <div class="sidefilter-cat-wrap">
-                                                            <div class="sidef-cat-list">
-                                                                <div class="form-check">
-                                                                    <input class="form-check-input" type="checkbox" id="brand1">
-                                                                    <label class="form-check-label" for="brand1">Integmeds One</label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="sidef-cat-list">
-                                                                <div class="form-check">
-                                                                    <input class="form-check-input" type="checkbox" id="brand2">
-                                                                    <label class="form-check-label" for="brand2">Integmeds Two</label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="sidef-cat-list">
-                                                                <div class="form-check">
-                                                                    <input class="form-check-input" type="checkbox" id="brand3">
-                                                                    <label class="form-check-label" for="brand3">Integmeds Three</label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="sidef-cat-list">
-                                                                <div class="form-check">
-                                                                    <input class="form-check-input" type="checkbox" id="brand4">
-                                                                    <label class="form-check-label" for="brand4">Integmeds Four</label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="sidef-cat-list">
-                                                                <div class="form-check">
-                                                                    <input class="form-check-input" type="checkbox" id="brand5">
-                                                                    <label class="form-check-label" for="brand5">Integmeds Five</label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="sidef-cat-list">
-                                                                <div class="form-check">
-                                                                    <input class="form-check-input" type="checkbox" id="brand6">
-                                                                    <label class="form-check-label" for="brand6">Integmeds Six</label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="category-list">
-                                                        <div class="sidebar-title">
-                                                            <h2>Price</h2>
-                                                        </div>
-                                                        <div class="price-slider-area-wrapper">
-                                                            <form action="">
-                                                                <div class="skipstep"></div>
-                                                                <div class="filter-price-action d-flex align-items-center justify-content-between flex-wrap">
-                                                                    <div class="filter-price-text">
-                                                                        <span class="price-title">Price:</span>
-                                                                        <span class="skip-value-lower"></span> -
-                                                                        <span class="skip-value-upper"></span>
-                                                                    </div>
-                                                                    <a type="submit" class="btn price-submit-btn">Filter</a>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                        <!-- <div class="price-slider-area-wrapper">
-                                                            <form action="">
-                                                                <div id="skipstep"></div>
-                                                                <div
-                                                                    class="filter-price-action d-flex align-items-center justify-content-between flex-wrap">
-                                                                    <div class="filter-price-text">
-                                                                        <span class="price-title">Price:</span>
-                                                                        <span class="skip-value-lower"></span>
-                                                                        -
-                                                                        <span class="skip-value-upper"></span>
-                                                                    </div>
-                                                                    <a type="submit" class="btn price-submit-btn">Filter</a>
-                                                                </div>
-                                                            </form>
-                                                        </div> -->
-                                                    </div>
-                                                </div>
+            <div class="col-lg-3">
+                <div class="sidebar-bundle">
+                    <div class="sidebar-title">
+                        <h2>Product Bundle</h2>
+                    </div>
+                    <div class="sidebar-bundle-list-wrap">
+                        <div class="sidebar-bundle-list">
+                            <a href="#">
+                                <div class="row gx-2">
+                                    <div class="col-3">
+                                        <div class="sidebar-bundle-img">
+                                            <img class="img-fluid" src="{{asset('web_assets/images/bundle-img/Digestion-Constipation-Colon-Stomach-Gallbladder-support.png')}}" alt="" title="">
+                                        </div>
+                                    </div>
+                                    <div class="col-9 d-flex align-items-center">
+                                        <div class="sidebar-bundle-title">
+                                            <h3>Digestion, Constipation, Colon, Stomach, Gallbladder support</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="sidebar-bundle-list">
+                            <a href="#">
+                                <div class="row gx-2">
+                                    <div class="col-3">
+                                        <div class="sidebar-bundle-img">
+                                            <img class="img-fluid" src="{{asset('web_assets/images/bundle-img/Diabetes_Liver_Insulin-Resistance_weight-loss.png')}}" alt="" title="">
+                                        </div>
+                                    </div>
+                                    <div class="col-9 d-flex align-items-center">
+                                        <div class="sidebar-bundle-title">
+                                            <h3>Diabetes/Liver/Insulin Resistance/weight loss</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="sidebar-bundle-list">
+                            <a href="#">
+                                <div class="row gx-2">
+                                    <div class="col-3">
+                                        <div class="sidebar-bundle-img">
+                                            <img class="img-fluid" src="{{asset('web_assets/images/bundle-img/Woman_Female-Hormone_Thyroid.png')}}" alt="" title="">
+                                        </div>
+                                    </div>
+                                    <div class="col-9 d-flex align-items-center">
+                                        <div class="sidebar-bundle-title">
+                                            <h3>Woman/Female Hormone/Thyroid</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="sidebar-bundle-list">
+                            <a href="#">
+                                <div class="row gx-2">
+                                    <div class="col-3">
+                                        <div class="sidebar-bundle-img">
+                                            <img class="img-fluid" src="{{asset('web_assets/images/bundle-img/Cancer-Support-and-Prevention.png')}}" alt="" title="">
+                                        </div>
+                                    </div>
+                                    <div class="col-9 d-flex align-items-center">
+                                        <div class="sidebar-bundle-title">
+                                            <h3>Cancer Support and Prevention</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="sidebar-bundle-list">
+                            <a href="#">
+                                <div class="row gx-2">
+                                    <div class="col-3">
+                                        <div class="sidebar-bundle-img">
+                                            <img class="img-fluid" src="{{asset('web_assets/images/bundle-img/Autoimmune_Anti-Inflammatory.png')}}" alt="" title="">
+                                        </div>
+                                    </div>
+                                    <div class="col-9 d-flex align-items-center">
+                                        <div class="sidebar-bundle-title">
+                                            <h3>Autoimmune/Anti Inflammato</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="sidebar-bundle-list">
+                            <a href="#">
+                                <div class="row gx-2">
+                                    <div class="col-3">
+                                        <div class="sidebar-bundle-img">
+                                            <img class="img-fluid" src="{{asset('web_assets/images/bundle-img/Bone-Joint-and-Muscle.png')}}" alt="" title="">
+                                        </div>
+                                    </div>
+                                    <div class="col-9 d-flex align-items-center">
+                                        <div class="sidebar-bundle-title">
+                                            <h3>Bone, Joint, and Muscle</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="sidebar-bundle-list">
+                            <a href="#">
+                                <div class="row gx-2">
+                                    <div class="col-3">
+                                        <div class="sidebar-bundle-img">
+                                            <img class="img-fluid" src="{{asset('web_assets/images/bundle-img/Childrens-Health_-Children-Care-ages-4-and-older.png')}}" alt="" title="">
+                                        </div>
+                                    </div>
+                                    <div class="col-9 d-flex align-items-center">
+                                        <div class="sidebar-bundle-title">
+                                            <h3>Children’s Health/ Children Care (ages 4 and older)</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="sidebar-bundle-list">
+                            <a href="#">
+                                <div class="row gx-2">
+                                    <div class="col-3">
+                                        <div class="sidebar-bundle-img">
+                                            <img class="img-fluid" src="{{asset('web_assets/images/bundle-img/Skin-Disease_-Vitiligo-Psoriasis-dermatitis-etc.png')}}" alt="" title="">
+                                        </div>
+                                    </div>
+                                    <div class="col-9 d-flex align-items-center">
+                                        <div class="sidebar-bundle-title">
+                                            <h3>Skin Disease: Vitiligo, Psoriasis, dermatitis, etc.</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="sidebar-special-offer">
+                    <div class="sidebar-title">
+                        <h2>Special Offers</h2>
+                    </div>
+                    <div class="sbar-sp-offer-list-wrap">
+                        <div class="sbar-sp-offer-list">
+                            <a href="#">
+                                <div class="row gx-3">
+                                    <div class="col-4">
+                                        <div class="sbar-sp-offer-img">
+                                            <img class="img-fluid" src="{{asset('web_assets/images/product-img/Sugar-Balancer3.png')}}" alt="" title="">
+                                        </div>
+                                    </div>
+                                    <div class="col-8 d-flex align-items-center">
+                                        <div class="sbar-sp-offer-text">
+                                            <h3>Female Care</h3>
+                                            <div class="sdbar-product-price">
+                                                <span class="old-price">$64.95</span>
+                                                <span class="new-price">$25.08</span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="page-counter">
-                                    <p>Showing 1–12 of 16 results</p>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="category-filter-search">
-                                    <div class="selectBox">
-                                        <div class="selectBox__value">Filter</div>
-                                        <div class="dropdown-menu">
-                                        <a href="#" class="dropdown-item active">Newest</a>
-                                        <a href="#" class="dropdown-item">Best Selling</a>
-                                        <a href="#" class="dropdown-item">Low to High</a>
-                                        <a href="#" class="dropdown-item">High to Low</a>
-                                        <a href="#" class="dropdown-item">Best Rating</a>
+                            </a>
+                        </div>
+                        <div class="sbar-sp-offer-list">
+                            <a href="#">
+                                <div class="row gx-3">
+                                    <div class="col-4">
+                                        <div class="sbar-sp-offer-img">
+                                            <img class="img-fluid" src="{{asset('web_assets/images/product-img/Organic-Senna-Leaf-Powder-4-scaled.png')}}" alt="" title="">
                                         </div>
                                     </div>
+                                    <div class="col-8 d-flex align-items-center">
+                                        <div class="sbar-sp-offer-text">
+                                            <h3>Organic Senna Leaf Powder</h3>
+                                            <div class="sdbar-product-price">
+                                                <span class="old-price">$64.95</span>
+                                                <span class="new-price">$25.08</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="sbar-sp-offer-list">
+                            <a href="#">
+                                <div class="row gx-3">
+                                    <div class="col-4">
+                                        <div class="sbar-sp-offer-img">
+                                            <img class="img-fluid" src="{{asset('web_assets/images/product-img/Organic-Turmeric-Root-Powder-2-1-scaled.png')}}" alt="" title="">
+                                        </div>
+                                    </div>
+                                    <div class="col-8 d-flex align-items-center">
+                                        <div class="sbar-sp-offer-text">
+                                            <h3>Organic Stevia Leaf Powder</h3>
+                                            <div class="sdbar-product-price">
+                                                <span class="old-price">$64.95</span>
+                                                <span class="new-price">$25.08</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="sbar-sp-offer-list">
+                            <a href="#">
+                                <div class="row gx-3">
+                                    <div class="col-4">
+                                        <div class="sbar-sp-offer-img">
+                                            <img class="img-fluid" src="{{asset('web_assets/images/product-img/Sugar-Balancer3.png')}}" alt="" title="">
+                                        </div>
+                                    </div>
+                                    <div class="col-8 d-flex align-items-center">
+                                        <div class="sbar-sp-offer-text">
+                                            <h3>Female Care</h3>
+                                            <div class="sdbar-product-price">
+                                                <span class="old-price">$64.95</span>
+                                                <span class="new-price">$25.08</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="sbar-sp-offer-list">
+                            <a href="#">
+                                <div class="row gx-3">
+                                    <div class="col-4">
+                                        <div class="sbar-sp-offer-img">
+                                            <img class="img-fluid" src="{{asset('web_assets/images/product-img/Organic-Senna-Leaf-Powder-4-scaled.png')}}" alt="" title="">
+                                        </div>
+                                    </div>
+                                    <div class="col-8 d-flex align-items-center">
+                                        <div class="sbar-sp-offer-text">
+                                            <h3>Organic Senna Leaf Powder</h3>
+                                            <div class="sdbar-product-price">
+                                                <span class="old-price">$64.95</span>
+                                                <span class="new-price">$25.08</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="sbar-sp-offer-list">
+                            <a href="#">
+                                <div class="row gx-3">
+                                    <div class="col-4">
+                                        <div class="sbar-sp-offer-img">
+                                            <img class="img-fluid" src="{{asset('web_assets/images/product-img/Organic-Turmeric-Root-Powder-2-1-scaled.png')}}" alt="" title="">
+                                        </div>
+                                    </div>
+                                    <div class="col-8 d-flex align-items-center">
+                                        <div class="sbar-sp-offer-text">
+                                            <h3>Organic Stevia Leaf Powder</h3>
+                                            <div class="sdbar-product-price">
+                                                <span class="old-price">$64.95</span>
+                                                <span class="new-price">$25.08</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9 order-lg-2 order-1">
+                <section class="category-page-products">
+                    <div class="category-title-area mb-3">
+                        <div class="row">
+                            <div class="col-md-12 d-flex align-items-center">
+                                <div class="page-counter">
+                                    <p>Search by Sugar Balancer</p>
                                 </div>
                             </div>
                         </div>

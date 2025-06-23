@@ -27,6 +27,14 @@ class WebController extends Controller
     {
         return view('Web.Layout.pages.about-us');
     }
+    public function search()
+    {
+        return view('Web.Layout.pages.search');
+    }
+    public function forgotPassword()
+    {
+        return view('Web.Layout.pages.forgot-password');
+    }
     public function contact()
     {
         return view('Web.Layout.pages.contact');
