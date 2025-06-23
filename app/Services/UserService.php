@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Models\Order;
+use App\Models\Wishlist;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -51,14 +52,14 @@ class UserService
     //orders
     public function getOrders($request)
     {
-        $orders = Order::where('user_id', auth()->id())->latest('id');
-        if ($request->has('search')) {
+        $orders = Order::where('user_id', auth()->id());
+        if ($request->filled('search')) {
             $orders->where('order_number', 'like', '%' . $request->search . '%');
         }
-        if ($request->has('status')) {
+        if ($request->filled('status')) {
             $orders->where('order_status', $request->status);
         }
-        if ($request->has('sort')) {
+        if ($request->filled('sort')) {
             if ($request->sort == 'oldest') {
                 $orders->orderBy('id', 'asc');
             } else if ($request->sort == 'newest') {
@@ -109,6 +110,50 @@ class UserService
     //end account
 
 
+
+    //address
+    public function updateBillingAddress($request)
+    {
+        $user = User::where('id', auth()->id())->first();
+        $data = [
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'country' => $request->country,
+            'address_line1' => $request->address_line1,
+            'address_line2' => $request->address_line2,
+            'city' => $request->city,
+            'state' => $request->state,
+            'postal_code' => $request->postal_code,
+        ];
+        $user->billing_address = json_encode($data);
+        $user->save();
+        return redirect()->route('user.billing-address')->with('success', 'Billing address updated successfully');
+    }
+
+    public function updateShippingAddress($request)
+    {
+        $user = User::where('id', auth()->id())->first();
+        $data = [
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'country' => $request->country,
+            'address_line1' => $request->address_line1,
+            'address_line2' => $request->address_line2,
+            'city' => $request->city,
+            'state' => $request->state,
+            'postal_code' => $request->postal_code,
+        ];
+        $user->shipping_address = json_encode($data);
+        $user->save();
+        return redirect()->route('user.shipping-address')->with('success', 'Shipping address updated successfully');
+    }
+    //end address
+
+
     //change password
     public function changePassword($request)
     {
@@ -131,6 +176,18 @@ class UserService
         return redirect()->route('user.change-password')->with('success', 'Password updated successfully');
     }
     //end change password
+
+    //wishlist
+    public function removeWishlist($id)
+    {
+        $wishlist = Wishlist::where('id', $id)->where('user_id', auth()->id())->first();
+        if (!$wishlist) {
+            return redirect()->route('user.wishlist')->with('error', 'Wishlist not found');
+        }
+        $wishlist->delete();
+        return redirect()->route('user.wishlist')->with('success', 'Wishlist removed successfully');
+    }
+    //end wishlist
 
 
 }

@@ -29,7 +29,6 @@
                             <div class="order-search-box">
                                 <select class="form-select" aria-label="Default select example" name="status" id="status">
                                     <option value="">Filter status</option>
-                                    <option value="all" {{ $request->status == 'all' ? 'selected' : '' }}>All</option>
                                     <option value="pending" {{ $request->status == 'pending' ? 'selected' : '' }}>Pending</option>
                                     <option value="completed" {{ $request->status == 'completed' ? 'selected' : '' }}>Completed</option>
                                     <option value="cancelled" {{ $request->status == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
@@ -89,7 +88,9 @@
                     </div>
                     <div class="row">
                         <div class="col-lg-12 d-flex justify-content-end">
-                            {{ $orders->links() }}
+                            <div class="pagination-area">
+                                {{ $orders->links() }}
+                            </div>
                         </div>
                     </div>
                 </div>
