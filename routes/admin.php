@@ -6,6 +6,7 @@ use App\Http\Controllers\Backend\CuponController;
 use App\Http\Controllers\Backend\EditorController;
 use App\Http\Controllers\Backend\SliderController;
 use App\Http\Controllers\Backend\ProductController;
+use App\Http\Controllers\HomePageSettingsController;
 use App\Http\Controllers\Backend\FileUploadController;
 use App\Http\Controllers\Backend\ProductTagController;
 use App\Http\Controllers\Backend\ProductSizeController;
@@ -82,7 +83,9 @@ Route::group(['middleware' => ['auth:admin,editor']], function () {
     Route::put('/product-review/approve/{id}', [ProductReviewController::class, 'approve'])->name('product-review.approve');
     Route::delete('/product-review/{id}', [ProductReviewController::class, 'destroy'])->name('product-review.destroy');
 
-
+    // home page settings
+    Route::get('/home-page-settings', [HomePageSettingsController::class, 'homePageSidebarSettings'])->name('home.page.settings');
+    Route::put('/home-page-settings/update', [HomePageSettingsController::class, 'updateHomePageSidebarSettings'])->name('home.page.settings.update');
     //order details
     Route::get('/order-details/{id}', [OrderController::class, 'show'])->name('order.details');
 });
