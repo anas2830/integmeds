@@ -46,12 +46,15 @@ class UserController extends Controller
     public function address()
     {
         $data['user'] = $this->userService->getUser();
+        $data['billing_address'] = json_decode($data['user']->billing_address, true);
+        $data['shipping_address'] = json_decode($data['user']->shipping_address, true);
         return view('Web.Layout.users.address', $data);
     }
 
     public function billingAddress()
     {
         $data['user'] = $this->userService->getUser();
+        $data['billing_address'] = json_decode($data['user']->billing_address, true);
         $data['countries'] = countries();
         return view('Web.Layout.users.billing-address', $data);
     }
@@ -64,6 +67,8 @@ class UserController extends Controller
     public function shippingAddress()
     {
         $data['user'] = $this->userService->getUser();
+        $data['shipping_address'] = json_decode($data['user']->shipping_address, true);
+        $data['countries'] = countries();
         return view('Web.Layout.users.shipping-address', $data);
     }
 
@@ -87,11 +92,20 @@ class UserController extends Controller
     }
     //end change password
 
+
+    //wishlist
     public function wishlist()
     {
         $data['user'] = $this->userService->getUser();
+        $data['wishlists'] = auth()->user()->wishlists()->with(['product','product.categories:id,name','product.images:id,product_id,image_url'])->paginate(10);
         return view('Web.Layout.users.wishlist', $data);
     }
+
+    public function removeWishlist($id)
+    {
+        return $this->userService->removeWishlist($id);
+    }
+    //end wishlist
 
     public function showLoginForm()
     {

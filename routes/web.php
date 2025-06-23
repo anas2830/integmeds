@@ -61,6 +61,7 @@ Route::prefix('user')->group(function () {
 
         // Wishlist
         Route::get('/wishlist', [UserController::class, 'wishlist'])->name('user.wishlist');
+        Route::get('/wishlist/remove/{id}', [UserController::class, 'removeWishlist'])->name('user.wishlist.remove');
 
         // Logout
         Route::post('/logout', [UserController::class, 'logout'])->name('user.logout');

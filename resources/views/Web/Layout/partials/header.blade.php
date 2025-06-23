@@ -89,7 +89,12 @@
                                         <div class="user-profile" id="user-hide">
                                             <div class="user-name">
                                                 <div class="user-login-img">
-                                                    <img class="img-fluid" src="{{asset('web_assets/images/bg/profile-photo.png')}}"
+                                                    <img class="img-fluid" 
+                                                        @if(Auth::user()->profile_image)
+                                                            src="{{ asset(Auth::user()->profile_image) }}"
+                                                        @else
+                                                            src="{{asset('web_assets/images/bg/profile-photo.png')}}"
+                                                        @endif
                                                         alt="User Profile" title="User Profile">
                                                 </div>
                                                 <h5>{{Auth::user()->name}}</h5>
