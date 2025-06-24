@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Backend\PageController;
 use App\Http\Controllers\Backend\AdminController;
 use App\Http\Controllers\Backend\CuponController;
 use App\Http\Controllers\Backend\EditorController;
@@ -88,4 +89,13 @@ Route::group(['middleware' => ['auth:admin,editor']], function () {
     Route::put('/home-page-settings/update', [HomePageSettingsController::class, 'updateHomePageSidebarSettings'])->name('home.page.settings.update');
     //order details
     Route::get('/order-details/{id}', [OrderController::class, 'show'])->name('order.details');
+
+
+    //privacy policy
+    Route::get('/privacy-policy-settings', [PageController::class, 'privacyPolicy'])->name('privacy-policy-settings');
+    Route::put('/privacy-policy-settings/update', [PageController::class, 'updatePrivacyPolicy'])->name('privacy-policy-settings.update');
+
+    //terms & conditions
+    Route::get('/terms-condition-settings', [PageController::class, 'termsCondition'])->name('terms-condition-settings');
+    Route::put('/terms-condition-settings/update', [PageController::class, 'updateTermsCondition'])->name('terms-condition-settings.update');
 });

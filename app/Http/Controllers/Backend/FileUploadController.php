@@ -12,7 +12,12 @@ class FileUploadController extends Controller
         if ($request->hasFile('file')) {
             $file = $request->file('file');
             $filename = time() . '__' . $file->getClientOriginalName();
-            $file->storeAs('temp', $filename, 'public');
+
+            if ($request->input('type') == 'ckeditor') {
+                $file->move(public_path('uploads/ckeditor'), $filename);
+            } else {
+                $file->storeAs('temp', $filename, 'public');
+            }
 
             return response()->json(['file' => $filename]);
         }

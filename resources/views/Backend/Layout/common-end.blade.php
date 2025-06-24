@@ -125,4 +125,49 @@
         });
     }
 
+    //ckeditor script
+    class uploadAdapter {
+        constructor(loader) {
+            this.loader = loader;
+        }
+
+        // Starts the upload process.
+        upload() {
+            return this.loader.file.then(file => new Promise((resolve, reject) => {
+                const data = new FormData();
+                data.append('type', 'ckeditor');
+                data.append('file', file); // your backend expects 'file'
+
+                fetch('{{ route('ckeditor.upload') }}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: data
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.file) {
+                        // Return the URL for the uploaded image
+                        resolve({ default: '{{ asset('uploads/ckeditor/') }}/' + result.file });
+                    } else {
+                        reject('Upload failed');
+                    }
+                })
+                .catch(() => reject('Upload failed'));
+            }));
+        }
+
+        abort() {
+            // Reject the upload process if aborted
+        }
+    }
+
+    function customUploadAdapterPlugin(editor) {
+        editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+            return new uploadAdapter(loader);
+        };
+    }
+    //ckeditor script end
+
 </script>
