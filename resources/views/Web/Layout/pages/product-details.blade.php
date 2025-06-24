@@ -506,7 +506,8 @@
                                         <img class="img-fluid" src="{{asset('web_assets/images/product-img/882500_EBC_Thumbnail_05_GNC_AMP_CreatineHCl189_FactsPanel_CreatinePill_120ct.avif')}}" alt="product image" />
                                     </figure>
                                     <figure class="border-radius-10">
-                                        <img class="img-fluid" src="{{asset('web_assets/images/product-img/882500_EBC_Thumbnail_06_GNC_AMP_CreatineHCl189_RTB.avif')}}" alt="product image" />
+                                        <!-- <img class="img-fluid" src="{{asset('web_assets/images/product-img/882500_EBC_Thumbnail_06_GNC_AMP_CreatineHCl189_RTB.avif')}}" alt="product image" /> -->
+                                         <iframe width="100%" height="500" src="https://www.youtube.com/embed/0bz88GdFAyY?si=cjBn3m7cTNsIy-lS" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                                     </figure>
                                 </div>
                                 <!-- THUMBNAILS -->
