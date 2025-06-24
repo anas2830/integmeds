@@ -491,6 +491,10 @@
                     <div class="row gx-3">
                         <div class="col-lg-3 col-6">
                             <div class="common-product-box">
+                                <!-- sold-out-start-->
+                                <div class="sold-out"><span>Out Of Stock</span></div>
+                                <!-- sold-out-end-->
+                                 
                                 <div class="common-product-img">
                                     <a href="{{ route('product-details') }}">
                                         <img class="img-fluid" src="{{asset('web_assets/images/product-img/product-new-img2.png')}}" alt="" title="">
