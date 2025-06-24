@@ -85,6 +85,8 @@ return [
     'faker_locale' => env('APP_FAKER_LOCALE', 'en_US'),
 
     'currency_symbol' => env('CURRENCY_SYMBOL', '$'),
+    'admin_email' => env('ADMIN_EMAIL', 'admin@gmail.com'),
+    'mail_from_address' => env('MAIL_FROM_ADDRESS', 'support@gmail.com'),
 
     /*
     |--------------------------------------------------------------------------

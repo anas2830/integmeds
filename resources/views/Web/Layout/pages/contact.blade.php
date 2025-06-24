@@ -45,39 +45,66 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <form action="">
+                        @if(session('error'))
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert" style="font-size: 16px;">
+                                <strong>Error!</strong> {{ session('error') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        @endif
+                        @if(session('success'))
+                            <div class="alert alert-success alert-dismissible fade show" role="alert" style="font-size: 16px;">
+                                <strong>Success!</strong> {{ session('success') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        @endif
+                        <form action="{{ route('contact.submit') }}" method="POST">
+                            @csrf
                             <div class="contact-from">
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <input class="form-control" type="text" value="" placeholder="Name">
+                                            <input class="form-control" type="text" value="" placeholder="Name" name="name" required>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <input class="form-control" type="text" value="" placeholder="Email">
+                                            <input class="form-control" type="email" value="" placeholder="Email" name="email" required>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <input class="form-control" type="text" value="" placeholder="Phone">
+                                            <input class="form-control" type="text" value="" placeholder="Phone" name="phone">
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <input class="form-control" type="text" value="" placeholder="Subject">
+                                            <input class="form-control" type="text" value="" placeholder="Subject" name="subject" required>
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="form-group">
-                                            <textarea class="form-control" rows="3"
-                                                placeholder="Write a Message"></textarea>
+                                            <textarea class="form-control" rows="3" placeholder="Write a Message" name="message" required></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <div class="d-flex align-items-center mb-2">
+                                                {!! Captcha::img('flat') !!}
+                                                <button type="button" class="btn btn-sm btn-outline-secondary ml-2" id="reloadCaptcha">
+                                                    &#x21bb;
+                                                </button>
+                                            </div>
+                                            <input type="text" class="form-control" name="captcha" placeholder="Enter Captcha" required>
+                                            @if($errors->has('captcha'))
+                                                <small class="text-danger">{{ $errors->first('captcha') }}</small>
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="col-lg-12 mt-15">
                                         <button class="btn submitBtn" type="submit">Send Message</button>
                                     </div>
                                 </div>
+                                
                             </div>
                         </form>
                     </div>
@@ -94,50 +121,18 @@
 @endsection
 
 @push('script')
-<script>
-    $(".selectBox").on("click", function(e) {
-        $(this).toggleClass("show");
-        var dropdownItem = e.target;
-        var container = $(this).find(".selectBox__value");
-        container.text(dropdownItem.text);
-        $(dropdownItem)
-            .addClass("active")
-            .siblings()
-            .removeClass("active");
-    });
-</script>
- <!-- price-range-js  -->
-<script>
-    document.querySelectorAll('.price-slider-area-wrapper').forEach(wrapper => {
-        const slider = wrapper.querySelector('.skipstep');
-        const lower = wrapper.querySelector('.skip-value-lower');
-        const upper = wrapper.querySelector('.skip-value-upper');
 
-        if (!slider || !lower || !upper) return;
-
-        noUiSlider.create(slider, {
-            start: [0, 1000],
-            connect: true,
-            behaviour: "drag",
-            step: 1,
-            range: {
-                min: 1,
-                max: 1000
-            },
-            format: {
-                from: value => parseInt(value),
-                to: value => parseInt(value)
-            }
+    <script>
+       $('#reloadCaptcha').on('click', function () {
+            $.ajax({
+                type: 'GET',
+                url: '{{ route('reload.captcha') }}',
+                success: function (data) {
+                    $('.contact-from img').attr('src', data.captcha_src);
+                }
+            });
         });
+    </script>
 
-        slider.noUiSlider.on("update", function (values, handle) {
-            if (handle === 0) {
-                lower.textContent = '$' + values[0];
-            } else {
-                upper.textContent = '$' + values[1];
-            }
-        });
-    });
-</script>
 @endpush
 

@@ -22,8 +22,24 @@ Route::get('/bundle-details', [WebController::class, 'bundleDetails'])->name('bu
 Route::get('/product-details', [WebController::class, 'productDetails'])->name('product-details');
 Route::get('/about-us', [WebController::class, 'aboutUs'])->name('about-us');
 Route::get('/search', [WebController::class, 'search'])->name('search');
-Route::get('/forgot-password', [WebController::class, 'forgotPassword'])->name('forgotPassword');
+
+//forgot password
+Route::get('/forgot-password', [WebController::class, 'forgotPassword'])->name('forgot-password');
+Route::post('/forgot-password', [WebController::class, 'forgotPasswordPost'])->name('forgot-password.post');
+Route::get('/reset-password/{token}', [WebController::class, 'resetPassword'])->name('reset-password');
+Route::post('/reset-password/{token}', [WebController::class, 'resetPasswordPost'])->name('reset-password.post');
+
 Route::get('/contact', [WebController::class, 'contact'])->name('contact');
+Route::get('/reload-captcha', function () {
+    $src = Captcha::src('flat'); // gets only the URL
+    $src .= (Str::contains($src, '?') ? '&' : '?') . 'reload=' . uniqid();
+    return response()->json(['captcha_src' => $src]);
+})->name('reload.captcha');
+Route::post('/contact-submit', [WebController::class, 'contactSubmit'])->name('contact.submit');
+
+
+
+
 Route::get('/privacy-policy', [WebController::class, 'privacyPolicy'])->name('privacy-policy');
 Route::get('/terms-condition', [WebController::class, 'termsCondition'])->name('terms-condition');
 Route::get('/cart', [WebController::class, 'cart'])->name('cart');

@@ -2,8 +2,16 @@
 
 namespace App\Http\Controllers\Web;
 
-use App\Http\Controllers\Controller;
+use Carbon\Carbon;
+use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Jobs\SendContactEmailJob;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use App\Jobs\SendResetPasswordEmailJob;
+use Illuminate\Support\Facades\Validator;
 
 class WebController extends Controller
 {
@@ -31,14 +39,101 @@ class WebController extends Controller
     {
         return view('Web.Layout.pages.search');
     }
+
+    //forgot password
     public function forgotPassword()
     {
         return view('Web.Layout.pages.forgot-password');
     }
+
+    //forgot password post
+    public function forgotPasswordPost(Request $request)
+    {
+        $user = User::where('email', $request->email)->first();
+        if (!$user) {
+            return redirect()->back()->with('error', 'User not found');
+        }
+
+        $token = Str::random(60);
+        DB::table('password_reset_tokens')->updateOrInsert(
+            ['email' => $request->email],
+            [
+                'token' => $token,
+                'created_at' => now(),
+            ]
+        );
+
+        $url = url('/reset-password/' . $token);
+        SendResetPasswordEmailJob::dispatch($user, $url);
+        
+        return redirect()->back()->with('success', 'We have e-mailed your password reset link!');
+    }
+
+    //reset password
+    public function resetPassword($token)
+    {
+        return view('Web.Layout.pages.reset-password', compact('token'));
+    }
+
+    //reset password post
+    public function resetPasswordPost(Request $request, $token)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'password' => 'required|string|min:8|max:50',
+            'password_confirmation' => 'required|string|min:8|max:50|same:password',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        //check if token is expired
+        $passwordReset = DB::table('password_reset_tokens')->where('token', $token)->first();
+        if (!$passwordReset) {
+            return redirect()->back()->with('error', 'Invalid token');
+        }
+        if (Carbon::parse($passwordReset->created_at)->addMinutes(60)->isPast()) {
+            return redirect()->back()->with('error', 'Token expired');
+        }
+
+        $user = User::where('email', $passwordReset->email)->first();
+        if (!$user) {
+            return redirect()->back()->with('error', 'User not found');
+        }
+        $user->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+        DB::table('password_reset_tokens')->where('email', $user->email)->delete();
+        return redirect()->back()->with('success', 'Password reset successfully');
+    }
+
+    //contact
     public function contact()
     {
         return view('Web.Layout.pages.contact');
     }
+
+    //contact submit
+    public function contactSubmit(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'subject' => 'required|string|max:255',
+            'message' => 'required|string',
+            'captcha' => 'required|captcha',
+        ]);
+    
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+        SendContactEmailJob::dispatch($request->only('name', 'email', 'subject', 'message'), config('app.admin_email'));
+        return redirect()->back()->with('success', 'Your message has been sent successfully!');
+    }
+
+
     public function privacyPolicy()
     {
         return view('Web.Layout.pages.privacy-policy');
