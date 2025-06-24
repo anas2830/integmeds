@@ -84,8 +84,10 @@ Route::group(['middleware' => ['auth:admin,editor']], function () {
     Route::delete('/product-review/{id}', [ProductReviewController::class, 'destroy'])->name('product-review.destroy');
 
     // home page settings
-    Route::get('/home-page-settings', [HomePageSettingsController::class, 'homePageSidebarSettings'])->name('home.page.settings');
-    Route::put('/home-page-settings/update', [HomePageSettingsController::class, 'updateHomePageSidebarSettings'])->name('home.page.settings.update');
+    Route::get('/home-page-sidebar-settings', [HomePageSettingsController::class, 'homePageSidebarSettings'])->name('home.page.sidebar.settings');
+    Route::put('/home-page-sidebar-settings/update', [HomePageSettingsController::class, 'updateHomePageSidebarSettings'])->name('home.page.sidebar.settings.update');
+    Route::get('/home-page-body-settings', [HomePageSettingsController::class, 'homePageBodySettings'])->name('home.page.body.settings');
+    Route::put('/home-page-body-settings/update', [HomePageSettingsController::class, 'updateHomePageBodySettings'])->name('home.page.body.settings.update');
     //order details
     Route::get('/order-details/{id}', [OrderController::class, 'show'])->name('order.details');
 });

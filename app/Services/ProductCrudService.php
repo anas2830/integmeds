@@ -67,7 +67,7 @@ class ProductCrudService
         $selectedCategories = $product->categories->pluck('id')->toArray();
         $selectedBrands = $product->brands->pluck('id')->toArray();
         $selectedTags = $product->tags->pluck('id')->toArray();
-        $selectedSizes = $product->sizes->pluck('id')->toArray();
+        // $selectedSizes = $product->sizes->pluck('id')->toArray();
 
 
 
