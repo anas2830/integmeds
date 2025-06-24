@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use Carbon\Carbon;
+use App\Models\Page;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -136,11 +137,13 @@ class WebController extends Controller
 
     public function privacyPolicy()
     {
-        return view('Web.Layout.pages.privacy-policy');
+        $data['privacyPolicy'] = Page::where('slug', 'privacy-policy')->first();
+        return view('Web.Layout.pages.privacy-policy', $data);
     }
     public function termsCondition()
     {
-        return view('Web.Layout.pages.terms-condition');
+        $data['termsCondition'] = Page::where('slug', 'terms-condition')->first();
+        return view('Web.Layout.pages.terms-condition', $data);
     }
     public function cart()
     {
