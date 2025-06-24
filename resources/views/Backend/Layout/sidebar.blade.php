@@ -42,7 +42,7 @@
 
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
-                        <i class="bx bx-list-ul"></i>
+                        <i class="bx bx-crown"></i>
                         <span>Brand</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
@@ -53,7 +53,7 @@
 
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
-                        <i class="bx bx-list-ul"></i>
+                        <i class="bx bx-tag"></i>
                         <span>Tag</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
@@ -64,7 +64,7 @@
 
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
-                        <i class="bx bx-list-ul"></i>
+                        <i class='bx  bx-ruler'></i>
                         <span>Size</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
@@ -75,8 +75,8 @@
 
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
-                        <i class="bx bx-list-ul"></i>
-                        <span>Cupon</span>
+                        <i class="bx bx-gift"></i>
+                        <span>Coupon</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="{{ route('cupon.index') }}">List</a></li>
@@ -85,7 +85,7 @@
                 </li>
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
-                        <i class="bx bx-list-ul"></i>
+                        <i class="bx bx-box"></i>
                         <span>Bundle</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
@@ -95,7 +95,7 @@
                 </li>
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
-                        <i class="bx bx-list-ul"></i>
+                        <i class="bx bx-image"></i>
                         <span>Slider</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
@@ -106,7 +106,7 @@
 
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
-                        <i class="bx bx-list-ul"></i>
+                        <i class="bx bx-comment"></i>
                         <span>Review</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
@@ -129,17 +129,17 @@
 
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
-                        <i class="bx bx-share-alt"></i>
-                        <span>Multi Level</span>
+                        <i class="bx bx-cog"></i>
+                        <span>Settings</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="true">
-                        <li><a href="javascript: void(0);">Level 1.1</a></li>
-                        <li><a href="javascript: void(0);" class="has-arrow">Level 1.2</a>
+                        <li><a href="{{ route('home.page.settings') }}">Home Page Settings</a></li>
+                        {{-- <li><a href="javascript: void(0);" class="has-arrow">Level 1.2</a>
                             <ul class="sub-menu" aria-expanded="true">
                                 <li><a href="javascript: void(0);">Level 2.1</a></li>
                                 <li><a href="javascript: void(0);">Level 2.2</a></li>
                             </ul>
-                        </li>
+                        </li> --}}
                     </ul>
                 </li>
 

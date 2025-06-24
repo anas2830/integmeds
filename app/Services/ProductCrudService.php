@@ -345,7 +345,8 @@ class ProductCrudService
 
     private function calculateDiscounts(float $regular, float $sale): array
     {
-        $discountPrice = $sale - $regular;
+        // Regular price will always be bigger
+        $discountPrice = $regular - $sale;
         $discountPercentage = ($regular != 0.0)
             ? round(($discountPrice / $regular) * 100, 2)
             : 0.0;

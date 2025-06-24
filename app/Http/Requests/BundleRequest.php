@@ -24,6 +24,7 @@ class BundleRequest extends FormRequest
 
     public function rules(): array
     {
+        
         $bundleId = $this->route('id');
         return [
             'name' => [

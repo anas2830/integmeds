@@ -35,6 +35,14 @@ class Product extends Model
         return $this->belongsToMany(ProductCategory::class, 'product_product_categories');
     }
 
+    public function firstCategory()
+    {
+        return $this->belongsToMany(ProductCategory::class, 'product_product_categories')
+            ->orderBy('product_product_categories.product_category_id') // or order by 'id' if you want
+            ->limit(1);
+    }
+
+
     public function brands()
     {
         return $this->belongsToMany(ProductBrand::class, 'product_product_brands');
@@ -70,6 +78,12 @@ class Product extends Model
         return $query->where('status', 1);
     }
 
+    public function productReviews()
+    {
+        return $this->hasMany(ProductReview::class, 'product_id')
+            ->where('review_type', 1)      // if review_type = 1 means product
+            ->where('is_approved', 1);
+    }
     public function wishlists()
     {
         return $this->hasMany(Wishlist::class);

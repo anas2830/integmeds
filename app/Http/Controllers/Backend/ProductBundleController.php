@@ -42,7 +42,7 @@ class ProductBundleController extends Controller
         return view('Backend.admin.product-bundle.edit', $data);
     }
 
-    public function update(Request $request, $id)
+    public function update(BundleRequest $request, $id)
     {
         $this->productBundleCrudService->updateProductBundle($request, $id);
         return redirect()->route('product-bundle.index')->with('success', 'Product bundle updated successfully');
