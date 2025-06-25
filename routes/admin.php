@@ -6,6 +6,7 @@ use App\Http\Controllers\Backend\AdminController;
 use App\Http\Controllers\Backend\CuponController;
 use App\Http\Controllers\Backend\EditorController;
 use App\Http\Controllers\Backend\SliderController;
+use App\Http\Controllers\Backend\ClientsController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\HomePageSettingsController;
 use App\Http\Controllers\Backend\FileUploadController;
@@ -84,6 +85,10 @@ Route::group(['middleware' => ['auth:admin,editor']], function () {
     Route::put('/product-review/approve/{id}', [ProductReviewController::class, 'approve'])->name('product-review.approve');
     Route::delete('/product-review/{id}', [ProductReviewController::class, 'destroy'])->name('product-review.destroy');
 
+    //clients
+    Route::resource('/clients', ClientsController::class);
+    Route::put('/clients/status/{id}', [ClientsController::class, 'status'])->name('clients.status');
+
     // home page settings
     Route::get('/home-page-sidebar-settings', [HomePageSettingsController::class, 'homePageSidebarSettings'])->name('home.page.sidebar.settings');
     Route::put('/home-page-sidebar-settings/update', [HomePageSettingsController::class, 'updateHomePageSidebarSettings'])->name('home.page.sidebar.settings.update');
@@ -100,4 +105,8 @@ Route::group(['middleware' => ['auth:admin,editor']], function () {
     //terms & conditions
     Route::get('/terms-condition-settings', [PageController::class, 'termsCondition'])->name('terms-condition-settings');
     Route::put('/terms-condition-settings/update', [PageController::class, 'updateTermsCondition'])->name('terms-condition-settings.update');
+
+    //about us
+    Route::get('/about-us-settings', [PageController::class, 'aboutUs'])->name('about-us-settings');
+    Route::put('/about-us-settings/update', [PageController::class, 'updateAboutUs'])->name('about-us-settings.update');
 });

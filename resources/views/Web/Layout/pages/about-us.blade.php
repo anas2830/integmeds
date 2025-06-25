@@ -2,606 +2,16 @@
 
 @section('site-title', 'About Us')
 
+@push('css')
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.css">
+@endpush
+
 @section('content')
 <div class="product-and-sidebar mt-5">
     <div class="container">
         <div class="row">
-            <div class="col-lg-3 order-lg-1 order-2">
-                <div class="sidebar-bundle">
-                    <div class="sidebar-title">
-                        <h2>Product Bundle</h2>
-                    </div>
-                    <div class="sidebar-bundle-list-wrap">
-                        <div class="sidebar-bundle-list">
-                            <a href="#">
-                                <div class="row gx-2">
-                                    <div class="col-3">
-                                        <div class="sidebar-bundle-img">
-                                            <img class="img-fluid" src="{{asset('web_assets/images/bundle-img/Digestion-Constipation-Colon-Stomach-Gallbladder-support.png')}}" alt="" title="">
-                                        </div>
-                                    </div>
-                                    <div class="col-9 d-flex align-items-center">
-                                        <div class="sidebar-bundle-title">
-                                            <h3>Digestion, Constipation, Colon, Stomach, Gallbladder support</h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="sidebar-bundle-list">
-                            <a href="#">
-                                <div class="row gx-2">
-                                    <div class="col-3">
-                                        <div class="sidebar-bundle-img">
-                                            <img class="img-fluid" src="{{asset('web_assets/images/bundle-img/Diabetes_Liver_Insulin-Resistance_weight-loss.png')}}" alt="" title="">
-                                        </div>
-                                    </div>
-                                    <div class="col-9 d-flex align-items-center">
-                                        <div class="sidebar-bundle-title">
-                                            <h3>Diabetes/Liver/Insulin Resistance/weight loss</h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="sidebar-bundle-list">
-                            <a href="#">
-                                <div class="row gx-2">
-                                    <div class="col-3">
-                                        <div class="sidebar-bundle-img">
-                                            <img class="img-fluid" src="{{asset('web_assets/images/bundle-img/Woman_Female-Hormone_Thyroid.png')}}" alt="" title="">
-                                        </div>
-                                    </div>
-                                    <div class="col-9 d-flex align-items-center">
-                                        <div class="sidebar-bundle-title">
-                                            <h3>Woman/Female Hormone/Thyroid</h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="sidebar-bundle-list">
-                            <a href="#">
-                                <div class="row gx-2">
-                                    <div class="col-3">
-                                        <div class="sidebar-bundle-img">
-                                            <img class="img-fluid" src="{{asset('web_assets/images/bundle-img/Cancer-Support-and-Prevention.png')}}" alt="" title="">
-                                        </div>
-                                    </div>
-                                    <div class="col-9 d-flex align-items-center">
-                                        <div class="sidebar-bundle-title">
-                                            <h3>Cancer Support and Prevention</h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="sidebar-bundle-list">
-                            <a href="#">
-                                <div class="row gx-2">
-                                    <div class="col-3">
-                                        <div class="sidebar-bundle-img">
-                                            <img class="img-fluid" src="{{asset('web_assets/images/bundle-img/Autoimmune_Anti-Inflammatory.png')}}" alt="" title="">
-                                        </div>
-                                    </div>
-                                    <div class="col-9 d-flex align-items-center">
-                                        <div class="sidebar-bundle-title">
-                                            <h3>Autoimmune/Anti Inflammato</h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="sidebar-bundle-list">
-                            <a href="#">
-                                <div class="row gx-2">
-                                    <div class="col-3">
-                                        <div class="sidebar-bundle-img">
-                                            <img class="img-fluid" src="{{asset('web_assets/images/bundle-img/Bone-Joint-and-Muscle.png')}}" alt="" title="">
-                                        </div>
-                                    </div>
-                                    <div class="col-9 d-flex align-items-center">
-                                        <div class="sidebar-bundle-title">
-                                            <h3>Bone, Joint, and Muscle</h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="sidebar-bundle-list">
-                            <a href="#">
-                                <div class="row gx-2">
-                                    <div class="col-3">
-                                        <div class="sidebar-bundle-img">
-                                            <img class="img-fluid" src="{{asset('web_assets/images/bundle-img/Childrens-Health_-Children-Care-ages-4-and-older.png')}}" alt="" title="">
-                                        </div>
-                                    </div>
-                                    <div class="col-9 d-flex align-items-center">
-                                        <div class="sidebar-bundle-title">
-                                            <h3>Children’s Health/ Children Care (ages 4 and older)</h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="sidebar-bundle-list">
-                            <a href="#">
-                                <div class="row gx-2">
-                                    <div class="col-3">
-                                        <div class="sidebar-bundle-img">
-                                            <img class="img-fluid" src="{{asset('web_assets/images/bundle-img/Skin-Disease_-Vitiligo-Psoriasis-dermatitis-etc.png')}}" alt="" title="">
-                                        </div>
-                                    </div>
-                                    <div class="col-9 d-flex align-items-center">
-                                        <div class="sidebar-bundle-title">
-                                            <h3>Skin Disease: Vitiligo, Psoriasis, dermatitis, etc.</h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="sidebar-special-offer">
-                    <div class="sidebar-title">
-                        <h2>Special Offers</h2>
-                    </div>
-                    <div class="sbar-sp-offer-list-wrap">
-                        <div class="sbar-sp-offer-list">
-                            <a href="#">
-                                <div class="row gx-3">
-                                    <div class="col-4">
-                                        <div class="sbar-sp-offer-img">
-                                            <img class="img-fluid" src="{{asset('web_assets/images/product-img/Sugar-Balancer3.png')}}" alt="" title="">
-                                        </div>
-                                    </div>
-                                    <div class="col-8 d-flex align-items-center">
-                                        <div class="sbar-sp-offer-text">
-                                            <h3>Female Care</h3>
-                                            <div class="sdbar-product-price">
-                                                <span class="old-price">$64.95</span>
-                                                <span class="new-price">$25.08</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="sbar-sp-offer-list">
-                            <a href="#">
-                                <div class="row gx-3">
-                                    <div class="col-4">
-                                        <div class="sbar-sp-offer-img">
-                                            <img class="img-fluid" src="{{asset('web_assets/images/product-img/Organic-Senna-Leaf-Powder-4-scaled.png')}}" alt="" title="">
-                                        </div>
-                                    </div>
-                                    <div class="col-8 d-flex align-items-center">
-                                        <div class="sbar-sp-offer-text">
-                                            <h3>Organic Senna Leaf Powder</h3>
-                                            <div class="sdbar-product-price">
-                                                <span class="old-price">$64.95</span>
-                                                <span class="new-price">$25.08</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="sbar-sp-offer-list">
-                            <a href="#">
-                                <div class="row gx-3">
-                                    <div class="col-4">
-                                        <div class="sbar-sp-offer-img">
-                                            <img class="img-fluid" src="{{asset('web_assets/images/product-img/Organic-Turmeric-Root-Powder-2-1-scaled.png')}}" alt="" title="">
-                                        </div>
-                                    </div>
-                                    <div class="col-8 d-flex align-items-center">
-                                        <div class="sbar-sp-offer-text">
-                                            <h3>Organic Stevia Leaf Powder</h3>
-                                            <div class="sdbar-product-price">
-                                                <span class="old-price">$64.95</span>
-                                                <span class="new-price">$25.08</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="sbar-sp-offer-list">
-                            <a href="#">
-                                <div class="row gx-3">
-                                    <div class="col-4">
-                                        <div class="sbar-sp-offer-img">
-                                            <img class="img-fluid" src="{{asset('web_assets/images/product-img/Sugar-Balancer3.png')}}" alt="" title="">
-                                        </div>
-                                    </div>
-                                    <div class="col-8 d-flex align-items-center">
-                                        <div class="sbar-sp-offer-text">
-                                            <h3>Female Care</h3>
-                                            <div class="sdbar-product-price">
-                                                <span class="old-price">$64.95</span>
-                                                <span class="new-price">$25.08</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="sbar-sp-offer-list">
-                            <a href="#">
-                                <div class="row gx-3">
-                                    <div class="col-4">
-                                        <div class="sbar-sp-offer-img">
-                                            <img class="img-fluid" src="{{asset('web_assets/images/product-img/Organic-Senna-Leaf-Powder-4-scaled.png')}}" alt="" title="">
-                                        </div>
-                                    </div>
-                                    <div class="col-8 d-flex align-items-center">
-                                        <div class="sbar-sp-offer-text">
-                                            <h3>Organic Senna Leaf Powder</h3>
-                                            <div class="sdbar-product-price">
-                                                <span class="old-price">$64.95</span>
-                                                <span class="new-price">$25.08</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="sbar-sp-offer-list">
-                            <a href="#">
-                                <div class="row gx-3">
-                                    <div class="col-4">
-                                        <div class="sbar-sp-offer-img">
-                                            <img class="img-fluid" src="{{asset('web_assets/images/product-img/Organic-Turmeric-Root-Powder-2-1-scaled.png')}}" alt="" title="">
-                                        </div>
-                                    </div>
-                                    <div class="col-8 d-flex align-items-center">
-                                        <div class="sbar-sp-offer-text">
-                                            <h3>Organic Stevia Leaf Powder</h3>
-                                            <div class="sdbar-product-price">
-                                                <span class="old-price">$64.95</span>
-                                                <span class="new-price">$25.08</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="sidebar-best-seller">
-                    <div class="sidebar-title">
-                        <h2>Best Seller</h2>
-                    </div>
-                    <div class="sbar-sp-offer-list-wrap">
-                        <div class="sbar-best-seller-list">
-                            <a href="#">
-                                <div class="row gx-3">
-                                    <div class="col-4">
-                                        <div class="sbar-best-seller-img">
-                                            <img class="img-fluid" src="{{asset('web_assets/images/product-img/Sugar-Balancer3.png')}}" alt="" title="">
-                                        </div>
-                                    </div>
-                                    <div class="col-8 d-flex align-items-center">
-                                        <div class="sbar-best-seller-text">
-                                            <h3>Female Care</h3>
-                                            <div class="sb-rating-start">
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                            </div>
-                                            <div class="sdbar-product-price">
-                                                <span class="old-price">$64.95</span>
-                                                <span class="new-price">$25.08</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="sbar-best-seller-list">
-                            <a href="#">
-                                <div class="row gx-3">
-                                    <div class="col-4">
-                                        <div class="sbar-best-seller-img">
-                                            <img class="img-fluid" src="{{asset('web_assets/images/product-img/Organic-Senna-Leaf-Powder-4-scaled.png')}}" alt="" title="">
-                                        </div>
-                                    </div>
-                                    <div class="col-8 d-flex align-items-center">
-                                        <div class="sbar-best-seller-text">
-                                            <h3>Organic Senna Leaf Powder</h3>
-                                            <div class="sb-rating-start">
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                            </div>
-                                            <div class="sdbar-product-price">
-                                                <span class="old-price">$64.95</span>
-                                                <span class="new-price">$25.08</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="sbar-best-seller-list">
-                            <a href="#">
-                                <div class="row gx-3">
-                                    <div class="col-4">
-                                        <div class="sbar-best-seller-img">
-                                            <img class="img-fluid" src="{{asset('web_assets/images/product-img/Organic-Turmeric-Root-Powder-2-1-scaled.png')}}" alt="" title="">
-                                        </div>
-                                    </div>
-                                    <div class="col-8 d-flex align-items-center">
-                                        <div class="sbar-best-seller-text">
-                                            <h3>Organic Stevia Leaf Powder</h3>
-                                            <div class="sb-rating-start">
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                            </div>
-                                            <div class="sdbar-product-price">
-                                                <span class="old-price">$64.95</span>
-                                                <span class="new-price">$25.08</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="sbar-best-seller-list">
-                            <a href="#">
-                                <div class="row gx-3">
-                                    <div class="col-4">
-                                        <div class="sbar-best-seller-img">
-                                            <img class="img-fluid" src="{{asset('web_assets/images/product-img/Sugar-Balancer3.png')}}" alt="" title="">
-                                        </div>
-                                    </div>
-                                    <div class="col-8 d-flex align-items-center">
-                                        <div class="sbar-best-seller-text">
-                                            <h3>Female Care</h3>
-                                            <div class="sb-rating-start">
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                            </div>
-                                            <div class="sdbar-product-price">
-                                                <span class="old-price">$64.95</span>
-                                                <span class="new-price">$25.08</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="sbar-best-seller-list">
-                            <a href="#">
-                                <div class="row gx-3">
-                                    <div class="col-4">
-                                        <div class="sbar-best-seller-img">
-                                            <img class="img-fluid" src="{{asset('web_assets/images/product-img/Organic-Senna-Leaf-Powder-4-scaled.png')}}" alt="" title="">
-                                        </div>
-                                    </div>
-                                    <div class="col-8 d-flex align-items-center">
-                                        <div class="sbar-best-seller-text">
-                                            <h3>Organic Senna Leaf Powder</h3>
-                                            <div class="sb-rating-start">
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                            </div>
-                                            <div class="sdbar-product-price">
-                                                <span class="old-price">$64.95</span>
-                                                <span class="new-price">$25.08</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="sbar-best-seller-list">
-                            <a href="#">
-                                <div class="row gx-3">
-                                    <div class="col-4">
-                                        <div class="sbar-best-seller-img">
-                                            <img class="img-fluid" src="{{asset('web_assets/images/product-img/Organic-Turmeric-Root-Powder-2-1-scaled.png')}}" alt="" title="">
-                                        </div>
-                                    </div>
-                                    <div class="col-8 d-flex align-items-center">
-                                        <div class="sbar-best-seller-text">
-                                            <h3>Organic Stevia Leaf Powder</h3>
-                                            <div class="sb-rating-start">
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                            </div>
-                                            <div class="sdbar-product-price">
-                                                <span class="old-price">$64.95</span>
-                                                <span class="new-price">$25.08</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="sbar-best-seller-list">
-                            <a href="#">
-                                <div class="row gx-3">
-                                    <div class="col-4">
-                                        <div class="sbar-best-seller-img">
-                                            <img class="img-fluid" src="{{asset('web_assets/images/product-img/Sugar-Balancer3.png')}}" alt="" title="">
-                                        </div>
-                                    </div>
-                                    <div class="col-8 d-flex align-items-center">
-                                        <div class="sbar-best-seller-text">
-                                            <h3>Female Care</h3>
-                                            <div class="sb-rating-start">
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                            </div>
-                                            <div class="sdbar-product-price">
-                                                <span class="old-price">$64.95</span>
-                                                <span class="new-price">$25.08</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="sbar-best-seller-list">
-                            <a href="#">
-                                <div class="row gx-3">
-                                    <div class="col-4">
-                                        <div class="sbar-best-seller-img">
-                                            <img class="img-fluid" src="{{asset('web_assets/images/product-img/Organic-Senna-Leaf-Powder-4-scaled.png')}}" alt="" title="">
-                                        </div>
-                                    </div>
-                                    <div class="col-8 d-flex align-items-center">
-                                        <div class="sbar-best-seller-text">
-                                            <h3>Organic Senna Leaf Powder</h3>
-                                            <div class="sb-rating-start">
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                            </div>
-                                            <div class="sdbar-product-price">
-                                                <span class="old-price">$64.95</span>
-                                                <span class="new-price">$25.08</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="sbar-best-seller-list">
-                            <a href="#">
-                                <div class="row gx-3">
-                                    <div class="col-4">
-                                        <div class="sbar-best-seller-img">
-                                            <img class="img-fluid" src="{{asset('web_assets/images/product-img/Organic-Turmeric-Root-Powder-2-1-scaled.png')}}" alt="" title="">
-                                        </div>
-                                    </div>
-                                    <div class="col-8 d-flex align-items-center">
-                                        <div class="sbar-best-seller-text">
-                                            <h3>Organic Stevia Leaf Powder</h3>
-                                            <div class="sb-rating-start">
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                            </div>
-                                            <div class="sdbar-product-price">
-                                                <span class="old-price">$64.95</span>
-                                                <span class="new-price">$25.08</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="sbar-best-seller-list">
-                            <a href="#">
-                                <div class="row gx-3">
-                                    <div class="col-4">
-                                        <div class="sbar-best-seller-img">
-                                            <img class="img-fluid" src="{{asset('web_assets/images/product-img/Sugar-Balancer3.png')}}" alt="" title="">
-                                        </div>
-                                    </div>
-                                    <div class="col-8 d-flex align-items-center">
-                                        <div class="sbar-best-seller-text">
-                                            <h3>Female Care</h3>
-                                            <div class="sb-rating-start">
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                            </div>
-                                            <div class="sdbar-product-price">
-                                                <span class="old-price">$64.95</span>
-                                                <span class="new-price">$25.08</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="sbar-best-seller-list">
-                            <a href="#">
-                                <div class="row gx-3">
-                                    <div class="col-4">
-                                        <div class="sbar-best-seller-img">
-                                            <img class="img-fluid" src="{{asset('web_assets/images/product-img/Organic-Senna-Leaf-Powder-4-scaled.png')}}" alt="" title="">
-                                        </div>
-                                    </div>
-                                    <div class="col-8 d-flex align-items-center">
-                                        <div class="sbar-best-seller-text">
-                                            <h3>Organic Senna Leaf Powder</h3>
-                                            <div class="sb-rating-start">
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                            </div>
-                                            <div class="sdbar-product-price">
-                                                <span class="old-price">$64.95</span>
-                                                <span class="new-price">$25.08</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="sbar-best-seller-list">
-                            <a href="#">
-                                <div class="row gx-3">
-                                    <div class="col-4">
-                                        <div class="sbar-best-seller-img">
-                                            <img class="img-fluid" src="{{asset('web_assets/images/product-img/Organic-Turmeric-Root-Powder-2-1-scaled.png')}}" alt="" title="">
-                                        </div>
-                                    </div>
-                                    <div class="col-8 d-flex align-items-center">
-                                        <div class="sbar-best-seller-text">
-                                            <h3>Organic Stevia Leaf Powder</h3>
-                                            <div class="sb-rating-start">
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                            </div>
-                                            <div class="sdbar-product-price">
-                                                <span class="old-price">$64.95</span>
-                                                <span class="new-price">$25.08</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-9 order-lg-2 order-1">
+            <div class="col-lg-12 order-lg-2 order-1">
                 <div class="number-no-one-content-area">
                     <div class="row">
                         <div class="col-lg-12">
@@ -632,27 +42,27 @@
                                 <div class="partner-slider-wrap">
                                     <div class="items">
                                         <div class="partner-img">
-                                            <img class="img-fluid" src="images/partner-slider/GMP.png')}}" alt="" title="">
+                                            <img class="img-fluid" src="{{asset('web_assets/images/partner-slider/GMP.png')}}" alt="" title="">
                                         </div>
                                     </div>
                                     <div class="items">
                                         <div class="partner-img">
-                                            <img class="img-fluid" src="images/partner-slider/FDA.png')}}" alt="" title="">
+                                            <img class="img-fluid" src="{{asset('web_assets/images/partner-slider/FDA.png')}}" alt="" title="">
                                         </div>
                                     </div>
                                     <div class="items">
                                         <div class="partner-img">
-                                            <img class="img-fluid" src="images/partner-slider/Made-in-USA.png')}}" alt="" title="">
+                                            <img class="img-fluid" src="{{asset('web_assets/images/partner-slider/Made-in-USA.png')}}" alt="" title="">
                                         </div>
                                     </div>
                                     <div class="items">
                                         <div class="partner-img">
-                                            <img class="img-fluid" src="images/partner-slider/ISO-1.png')}}" alt="" title="">
+                                            <img class="img-fluid" src="{{asset('web_assets/images/partner-slider/ISO-1.png')}}" alt="" title="">
                                         </div>
                                     </div>
                                     <div class="items">
                                         <div class="partner-img">
-                                            <img class="img-fluid" src="images/partner-slider/GMP.png')}}" alt="" title="">
+                                            <img class="img-fluid" src="{{asset('web_assets/images/partner-slider/GMP.png')}}" alt="" title="">
                                         </div>
                                     </div>
                                 </div>
@@ -688,6 +98,26 @@
 @endsection
 
 @push('script')
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $('.partner-slider-wrap').slick({
+            slidesToShow: 4,
+            slidesToScroll: 1,
+            autoplay: true,
+            autoplaySpeed: 2000, 
+            arrows: false,
+            dots: true,
+            responsive: [{
+                breakpoint: 768,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 1, 
+                    dots: false
+                }
+            }]
+        });
+    });
+</script>
 @endpush
 
