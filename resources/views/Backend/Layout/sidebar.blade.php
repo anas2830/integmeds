@@ -135,7 +135,6 @@
                     <ul class="sub-menu" aria-expanded="true">
                         <li><a href="{{ route('home.page.sidebar.settings') }}">Home Page Sidebar Banner</a></li>
                         <li><a href="{{ route('home.page.body.settings') }}">Home Page Body Banner</a></li>
-                        {{-- <li><a href="{{ route('home.page.settings') }}">Home Page Settings</a></li> --}}
                     </ul>
                 </li>
 
@@ -147,8 +146,6 @@
                     <ul class="sub-menu" aria-expanded="true">
                         <li><a href="{{ route('privacy-policy-settings') }}">Privacy Policy</a></li>
                         <li><a href="{{ route('terms-condition-settings') }}">Terms & Conditions</a></li>
-                        <li><a href="{{ route('home.page.sidebar.settings') }}">Home Page Sidebar Banner</a></li>
-                        <li><a href="{{ route('home.page.body.settings') }}">Home Page Body Banner</a></li>
                         <li><a href="{{ route('about-us-settings') }}">About Us</a></li> 
                     </ul>
                 </li>
