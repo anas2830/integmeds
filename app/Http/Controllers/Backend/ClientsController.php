@@ -18,35 +18,36 @@ class ClientsController extends Controller
     public function index(Request $request)
     {
         $data = $this->clientsCrudService->getClientsList($request);
-        return view('Backend.admin.clients.index', $data);
+        return view('Backend.admin.clients.list', $data);
     }
 
     public function create()
     {
-        return view('Backend.admin.clients.create');
+        $data['existingFilesArray'] = [];
+        return view('Backend.admin.clients.create', $data);
     }
 
     public function store(Request $request)
     {
-        $this->clientsCrudService->createClients($request);
+        $this->clientsCrudService->createClient($request);
         return redirect()->route('clients.index')->with('success', 'Clients created successfully');
     }
 
     public function edit($id)
     {
-        $data = $this->clientsCrudService->editClients($id);
+        $data = $this->clientsCrudService->editClient($id);
         return view('Backend.admin.clients.edit', $data);
     }
 
     public function update(Request $request, $id)
     {
-        $this->clientsCrudService->updateClients($request, $id);
+        $this->clientsCrudService->updateClient($request, $id);
         return redirect()->route('clients.index')->with('success', 'Clients updated successfully');
     }
 
     public function destroy($id)
     {
-        $this->clientsCrudService->deleteClients($id);
+        $this->clientsCrudService->deleteClient($id);
         session()->flash('success', 'Clients deleted successfully');
     }
 

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->nullable();
             $table->string('client_image')->nullable();
             $table->string('file_original_name')->nullable();
             $table->string('file_size')->nullable();

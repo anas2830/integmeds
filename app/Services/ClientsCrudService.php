@@ -24,7 +24,6 @@ class ClientsCrudService
     public function createClient($request)
     {
         $client = new Client();
-        $client->name = $request->name;
         $client->status = $request->status ?? 0;
 
         $this->clientImageUpload($client, $request);

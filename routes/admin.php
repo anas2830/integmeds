@@ -73,6 +73,10 @@ Route::group(['middleware' => 'auth.admin'], function () {
         Route::resource('/slider', SliderController::class);
         Route::put('/slider/status/{id}', [SliderController::class, 'status'])->name('slider.status');
 
+        // Clients
+        Route::resource('/clients', ClientsController::class);
+        Route::put('/clients/status/{id}', [ClientsController::class, 'status'])->name('clients.status');
+
         // Product review
         Route::get('/product-review', [ProductReviewController::class, 'index'])->name('product-review.index');
         Route::put('/product-review/approve/{id}', [ProductReviewController::class, 'approve'])->name('product-review.approve');
