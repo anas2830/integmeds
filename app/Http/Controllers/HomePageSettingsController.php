@@ -18,8 +18,8 @@ class HomePageSettingsController extends Controller
      */
     public function homePageSidebarSettings()
     {
-        $data = $this->homePageSettingsService->getHomePageSettingsData();
-        return view('Backend.admin.settings.home-page-settings', $data);
+        $data = $this->homePageSettingsService->getHomePageSidebarSettingsData();
+        return view('Backend.admin.settings.sidebar.home-page-settings', $data);
     }
 
     /**
@@ -28,6 +28,21 @@ class HomePageSettingsController extends Controller
     public function updateHomePageSidebarSettings(Request $request)
     {
         $this->homePageSettingsService->updateHomePageSidebarSettings($request);
+        return redirect()->back()->with('success', 'Home page settings updated successfully.');
+    }
+
+    public function homePageBodySettings()
+    {
+        $data = $this->homePageSettingsService->getHomePageBodySettingsData();
+        return view('Backend.admin.settings.body.home-page-settings', $data);
+    }
+
+    /**
+     * Update the home page settings.
+     */
+    public function updateHomePageBodySettings(Request $request)
+    {
+        $this->homePageSettingsService->updateHomePageBodySettings($request);
         return redirect()->back()->with('success', 'Home page settings updated successfully.');
     }
 }

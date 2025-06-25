@@ -26,7 +26,7 @@
 
     <div class="row">
         <div class="col-12">
-            <form method="POST" action="{{ route('home.page.settings.update') }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('home.page.sidebar.settings.update') }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
     
@@ -49,7 +49,7 @@
                                     </div>
             
                                     <input type="hidden" name="banner_{{ $id }}[image_path]" id="banner_{{ $id }}_image_path" value="{{ $banner->image_path }}">
-                                    <input type="hidden" name="filesToDelete_{{ $id }}" id="filesToDelete_{{ $id }}">
+                                    <input type="hidden" name="filesToDelete[]" id="filesToDelete_{{ $id }}">
                                 </div>
                             </div>
                             <div class="row">
@@ -116,12 +116,6 @@
 <script src="https://cdn.ckeditor.com/ckeditor5/41.2.1/classic/ckeditor.js"></script>
 <script>
     $(document).ready(function () {
-        // Initialize Select2
-        $('.select2').select2({
-            placeholder: "Select an option",
-            width: '100%',
-            allowClear: true
-        });
         // Initialize Dropzone
         const uploadedFiles1 = [];
         const uploadedFiles2 = [];
