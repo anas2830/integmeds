@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Backend\PageController;
 use App\Http\Controllers\Backend\AdminController;
 use App\Http\Controllers\Backend\CuponController;
 use App\Http\Controllers\Backend\EditorController;
@@ -18,7 +19,7 @@ use App\Http\Controllers\Backend\ProductCategoryController;
 
 
 Route::group(['middleware' => 'auth.admin'], function () {
-    Route::get('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
+    
 
     // Backend prefix group
     Route::prefix('backend')->group(function () {
@@ -87,11 +88,19 @@ Route::group(['middleware' => 'auth.admin'], function () {
     }); // end backend group
 
     // Editor logout route (outside backend prefix)
+    Route::get('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
     Route::get('/editor/logout', [EditorController::class, 'logout'])->name('editor.logout');
-
     // Editor prefix group
     Route::prefix('editor')->group(function () {
         Route::get('/editor-profile', [EditorController::class, 'showEditorProfile'])->name('editor.profile');
         Route::post('/update-editor-profile', [EditorController::class, 'editorProfileUpdate'])->name('editor-profile.update');
     });
+
+    //privacy policy
+    Route::get('/privacy-policy-settings', [PageController::class, 'privacyPolicy'])->name('privacy-policy-settings');
+    Route::put('/privacy-policy-settings/update', [PageController::class, 'updatePrivacyPolicy'])->name('privacy-policy-settings.update');
+
+    //terms & conditions
+    Route::get('/terms-condition-settings', [PageController::class, 'termsCondition'])->name('terms-condition-settings');
+    Route::put('/terms-condition-settings/update', [PageController::class, 'updateTermsCondition'])->name('terms-condition-settings.update');
 });

@@ -577,6 +577,7 @@
                                         </form>
                                     </div>
                                     <a href="#" class="cart-btn">add to cart</a>
+                                    <a class="cart-btn sold-out-cart">Out of stock</a>
                                     <a href="#" class="wishlist-btn" title="Wishlist"><i class="fas fa-heart"></i></a>
                                 </div>
                                 <div class="inner-shop-details-bottom">
