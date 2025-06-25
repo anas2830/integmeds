@@ -135,6 +135,7 @@
                     <ul class="sub-menu" aria-expanded="true">
                         <li><a href="{{ route('home.page.sidebar.settings') }}">Home Page Sidebar Banner</a></li>
                         <li><a href="{{ route('home.page.body.settings') }}">Home Page Body Banner</a></li>
+                        {{-- <li><a href="{{ route('home.page.settings') }}">Home Page Settings</a></li> --}}
                     </ul>
                 </li>
 
@@ -148,12 +149,7 @@
                         <li><a href="{{ route('terms-condition-settings') }}">Terms & Conditions</a></li>
                         <li><a href="{{ route('home.page.sidebar.settings') }}">Home Page Sidebar Banner</a></li>
                         <li><a href="{{ route('home.page.body.settings') }}">Home Page Body Banner</a></li>
-                        {{-- <li><a href="javascript: void(0); " class="has-arrow">Sidebar Banner Settings</a> --}}
-                            {{-- <ul class="sub-menu" aria-expanded="true">
-                                <li><a href="javascript: void(0);">Level 2.1</a></li>
-                                <li><a href="javascript: void(0);">Level 2.2</a></li>
-                            </ul> --}}
-                        </li> 
+                        <li><a href="{{ route('about-us-settings') }}">About Us</a></li> 
                     </ul>
                 </li>
 
