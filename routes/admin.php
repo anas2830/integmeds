@@ -19,20 +19,79 @@ use App\Http\Controllers\Backend\ProductReviewController;
 use App\Http\Controllers\Backend\ProductCategoryController;
 
 
-Route::group(['middleware' => 'auth:admin'], function () {
-    Route::get('/admin/logout', [Admincontroller::class, 'logout'])->name('admin.logout');
+Route::group(['middleware' => 'auth.admin'], function () {
+    
+
+    // Backend prefix group
     Route::prefix('backend')->group(function () {
         Route::resource('manage-editor', ManageEditorController::class);
         Route::put('/manage-editor/statusUpdate/{id}', [ManageEditorController::class, 'statusUpdate'])->name('manage-editor.status-update');
-        //admin profile
+
+        // Admin profile routes
         Route::get('/admin-profile', [AdminController::class, 'showAdminProfile'])->name('admin.profile');
         Route::post('/update-profile', [AdminController::class, 'profileUpdate'])->name('profile.update');
-    });
-});
 
-// Protected Editor Routes
-Route::group(['middleware' => 'auth:editor'], function () {
+        // Dashboard
+        Route::get('dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+
+        // File upload routes
+        Route::post('/temp-file-upload', [FileUploadController::class, 'temporaryUpload'])->name('temp-file-upload');
+        Route::post('/delete-temp-file', [FileUploadController::class, 'deleteTempFile'])->name('delete-temp-file');
+
+        // Product category
+        Route::resource('/product-category', ProductCategoryController::class);
+        Route::put('/product-category/status/{id}', [ProductCategoryController::class, 'status'])->name('product-category.status');
+
+        // Product brand
+        Route::resource('/product-brand', ProductBrandController::class);
+        Route::put('/product-brand/status/{id}', [ProductBrandController::class, 'status'])->name('product-brand.status');
+
+        // Product tag
+        Route::resource('/product-tag', ProductTagController::class);
+        Route::put('/product-tag/status/{id}', [ProductTagController::class, 'status'])->name('product-tag.status');
+
+        // Product size
+        Route::resource('/product-size', ProductSizeController::class);
+        Route::put('/product-size/status/{id}', [ProductSizeController::class, 'status'])->name('product-size.status');
+
+        // Coupon
+        Route::resource('/cupon', CuponController::class);
+        Route::put('/cupon/status/{id}', [CuponController::class, 'status'])->name('cupon.status');
+
+        // CKEditor upload
+        Route::post('/ckeditor/upload', [FileUploadController::class, 'temporaryUpload'])->name('ckeditor.upload');
+
+        // Product
+        Route::resource('/product', ProductController::class);
+        Route::put('/product/status/{id}', [ProductController::class, 'status'])->name('product.status');
+
+        // Product bundle
+        Route::resource('/product-bundle', ProductBundleController::class);
+        Route::put('/product-bundle/status/{id}', [ProductBundleController::class, 'status'])->name('product-bundle.status');
+
+        // Slider
+        Route::resource('/slider', SliderController::class);
+        Route::put('/slider/status/{id}', [SliderController::class, 'status'])->name('slider.status');
+
+        // Product review
+        Route::get('/product-review', [ProductReviewController::class, 'index'])->name('product-review.index');
+        Route::put('/product-review/approve/{id}', [ProductReviewController::class, 'approve'])->name('product-review.approve');
+        Route::delete('/product-review/{id}', [ProductReviewController::class, 'destroy'])->name('product-review.destroy');
+
+        // Home page settings
+        Route::get('/home-page-sidebar-settings', [HomePageSettingsController::class, 'homePageSidebarSettings'])->name('home.page.sidebar.settings');
+        Route::put('/home-page-sidebar-settings/update', [HomePageSettingsController::class, 'updateHomePageSidebarSettings'])->name('home.page.sidebar.settings.update');
+        Route::get('/home-page-body-settings', [HomePageSettingsController::class, 'homePageBodySettings'])->name('home.page.body.settings');
+        Route::put('/home-page-body-settings/update', [HomePageSettingsController::class, 'updateHomePageBodySettings'])->name('home.page.body.settings.update');
+
+        // Order details
+        // Route::get('/order-details/{id}', [OrderController::class, 'show'])->name('order.details');
+    }); // end backend group
+
+    // Editor logout route (outside backend prefix)
+    Route::get('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
     Route::get('/editor/logout', [EditorController::class, 'logout'])->name('editor.logout');
+    // Editor prefix group
     Route::prefix('editor')->group(function () {
         Route::get('/editor-profile', [EditorController::class, 'showEditorProfile'])->name('editor.profile');
         Route::post('/update-editor-profile', [EditorController::class, 'editorProfileUpdate'])->name('editor-profile.update');

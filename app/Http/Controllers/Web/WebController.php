@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use Carbon\Carbon;
 use App\Models\Page;
 use App\Models\User;
+use App\Models\Product;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Jobs\SendContactEmailJob;
@@ -13,6 +14,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use App\Jobs\SendResetPasswordEmailJob;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Porduct; // Assuming Porduct is a model for products
 
 class WebController extends Controller
 {
@@ -28,10 +30,23 @@ class WebController extends Controller
     {
         return view('Web.Layout.pages.bundle-details');
     }
-    public function productDetails()
+    public function productDetails($slug)
     {
-        return view('Web.Layout.pages.product-details');
+        $product = Product::with([
+            'brands:id,name',
+            'categories:id,name,slug',
+            'tags:id,name',
+            'images:id,product_id,image_url',
+            'videos:id,product_id,video_url',
+            'productReviews:id,product_id,rating,review,user_id',
+        ])
+        ->withAvg('productReviews', 'rating')
+        ->where('slug', $slug)
+        ->where('status', 1) // ✅ Only fetch if product is active
+        ->firstOrFail();
+        return view('Web.Layout.pages.product-details', compact('product'));
     }
+
     public function aboutUs()
     {
         return view('Web.Layout.pages.about-us');

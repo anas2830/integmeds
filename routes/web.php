@@ -1,8 +1,10 @@
 <?php
 
+use Illuminate\Support\Str;
+use Mews\Captcha\Facades\Captcha;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\Web\WebController;
 use App\Http\Controllers\Web\UserController;
 use App\Http\Controllers\NewsletterController;
@@ -19,7 +21,7 @@ Route::get('/', [HomePageController::class, 'index'])->name('/');
 Route::get('/category', [WebController::class, 'category'])->name('category');
 Route::get('/bundle', [WebController::class, 'bundle'])->name('bundle');
 Route::get('/bundle-details', [WebController::class, 'bundleDetails'])->name('bundle-details');
-Route::get('/product-details', [WebController::class, 'productDetails'])->name('product-details');
+Route::get('/product-details/{slug}', [WebController::class, 'productDetails'])->name('product-details');
 Route::get('/about-us', [WebController::class, 'aboutUs'])->name('about-us');
 Route::get('/search', [WebController::class, 'search'])->name('search');
 
