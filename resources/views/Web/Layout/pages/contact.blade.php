@@ -83,24 +83,28 @@
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="form-group">
-                                            <textarea class="form-control" rows="3" placeholder="Write a Message" name="message" required></textarea>
+                                            <textarea class="form-control" rows="5" placeholder="Write a Message" name="message" required></textarea>
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
-                                        <div class="form-group">
-                                            <div class="d-flex align-items-center mb-2">
-                                                {!! Captcha::img('flat') !!}
-                                                <button type="button" class="btn btn-sm btn-outline-secondary ml-2" id="reloadCaptcha">
-                                                    &#x21bb;
-                                                </button>
+                                        <div class="capcacha-wap">
+                                            <div class="form-group">
+                                                <div class="d-flex align-items-center mb-2">
+                                                    {!! Captcha::img('flat') !!}
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary ml-2" id="reloadCaptcha">
+                                                        &#x21bb;
+                                                    </button>
+                                                </div>
+                                                
+                                                    <input type="text" class="form-control" name="captcha" placeholder="Enter Captcha" required>
+                                                
+                                                @if($errors->has('captcha'))
+                                                    <small class="text-danger">{{ $errors->first('captcha') }}</small>
+                                                @endif
                                             </div>
-                                            <input type="text" class="form-control" name="captcha" placeholder="Enter Captcha" required>
-                                            @if($errors->has('captcha'))
-                                                <small class="text-danger">{{ $errors->first('captcha') }}</small>
-                                            @endif
                                         </div>
                                     </div>
-                                    <div class="col-lg-12 mt-15">
+                                    <div class="col-lg-12">
                                         <button class="btn submitBtn" type="submit">Send Message</button>
                                     </div>
                                 </div>
@@ -110,7 +114,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="contact-info-text">
-                            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d443977.47070738726!2d-95.211955!3d29.616068000000002!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x864099e9ec866d19%3A0xc7d24f6bb6a99e91!2s12727%20Featherwood%20Dr%20%23%20104%2C%20Houston%2C%20TX%2077034!5e0!3m2!1sen!2sus!4v1749890590345!5m2!1sen!2sus" style="border:0" width="100%" height="380" frameborder="0"></iframe>
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d443977.47070738726!2d-95.211955!3d29.616068000000002!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x864099e9ec866d19%3A0xc7d24f6bb6a99e91!2s12727%20Featherwood%20Dr%20%23%20104%2C%20Houston%2C%20TX%2077034!5e0!3m2!1sen!2sus!4v1749890590345!5m2!1sen!2sus" style="border:0" width="100%" height="480" frameborder="0"></iframe>
                         </div>
                     </div>
                 </div>
