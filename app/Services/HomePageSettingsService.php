@@ -33,13 +33,12 @@ class HomePageSettingsService {
     }
 
     public  function updateHomePageSidebarSettings($request){
-        // dd($request->all());
         $updates = [];
-
+        
         foreach ([1, 2, 3] as $id) {
             $input = $request->input("banner_{$id}");
             if (!$input) continue;
-
+            
             $banner = HomeSidebarBanner::find($id);
             if (!$banner) continue;
 
@@ -71,6 +70,7 @@ class HomePageSettingsService {
     {
         // Delete files requested from frontend first
         if (!empty($filesToDelete)) {
+            // dd($filesToDelete);
             foreach ((array) $filesToDelete as $fileToDelete) {
                 $deletePath = public_path($fileToDelete);
                 if (File::exists($deletePath)) {
@@ -98,15 +98,18 @@ class HomePageSettingsService {
 
         // Now handle new image upload if given
         if (!empty($newImagePath)) {
-            $fileUploadService = new FileUploadService();
-            $newDirectory = 'uploads/sidebar-banners';
-            $fileData = $fileUploadService->handleFileUpload($newImagePath, 'temp/' . $newImagePath, $newDirectory);
-            return [
-                'fullPath'       => $fileData['fullPath'] ?? null,
-                'originalName'   => $fileData['originalName'] ?? null,
-                'size'           => $fileData['size'] ?? null,
-                'extension'      => $fileData['extension'] ?? null,
-            ];
+            foreach ((array) $newImagePath as $image) {
+                $newImagePath = $image;
+                $fileUploadService = new FileUploadService();
+                $newDirectory = 'uploads/sidebar-banners';
+                $fileData = $fileUploadService->handleFileUpload($newImagePath, 'temp/' . $newImagePath, $newDirectory);
+                return [
+                    'fullPath'       => $fileData['fullPath'] ?? null,
+                    'originalName'   => $fileData['originalName'] ?? null,
+                    'size'           => $fileData['size'] ?? null,
+                    'extension'      => $fileData['extension'] ?? null,
+                ];
+            }
         }
     }
 
@@ -129,14 +132,6 @@ class HomePageSettingsService {
         }
 
         $existingFilesArray = [
-            'banner_1_image' => $banner->banner_1_image ? [
-                [
-                    'full_path' => $banner->banner_1_image,
-                    'name'      => $banner->banner_1_image_original_name,
-                    'size'      => $banner->banner_1_image_size ?? 0,
-                    'path'      => $banner->banner_1_image,
-                ]
-            ] : [],
 
             'banner_1_featured_image' => $banner->banner_1_featured_image ? [
                 [

@@ -18,59 +18,15 @@
                 <div class="col-lg-3 order-lg-1 order-2">
                     <x-Web.common.sidebar.sidebar-product-bundle :productBundles="$productBundles" />
 
-                    <div class="sidebar-product-banner">
-                        <div class="sidebar-product-banner-img">
-                            <img class="img-fluid" src="{{ asset('web_assets/images/bg/New-Side-banner.png') }}"
-                                alt="" title="">
-                        </div>
-                        <div class="s-product-banner-text">
-                            <h2>Integmeds New Arrivals</h2>
-                            <p>At Integmeds, we are committed to enhancing your health and well-being through the power of
-                                nature, offering a range of organic and nutrient-dense products designed to support a
-                                holistic lifestyle, nurture vitality, and promote sustainable wellness.</p>
-                            <div class="common-btn-wrap mt-4">
-                                <div class="common-btn-borders">
-                                    <a class="common-btn" href="#">Shop Now</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <x-Web.home.sidebar.sidebar-banner :banner="$sidebarBanners[0] ?? null" />
 
                     <x-Web.common.sidebar.sidebar-special-offer :specialOffers="$specialOffers" />
 
-                    <div class="sidebar-product-banner">
-                        <div class="sidebar-product-banner-img">
-                            <img class="img-fluid" src="{{ asset('web_assets/images/bg/New-Side-banner-4.png') }}"
-                                alt="" title="">
-                        </div>
-                        <div class="s-product-banner-text">
-                            <h2>Integmeds New Arrivals</h2>
-                            <p>Integmeds is dedicated to improving your health naturally.</p>
-                            <div class="common-btn-wrap mt-4">
-                                <div class="common-btn-borders">
-                                    <a class="common-btn" href="#">Shop Now</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <x-Web.home.sidebar.sidebar-banner :banner="$sidebarBanners[1] ?? null" />
 
                     <x-Web.common.sidebar.sidebar-best-seller :bestSellingProducts="$bestSellingProducts" />
-                    
-                    <div class="sidebar-product-banner">
-                        <div class="sidebar-product-banner-img">
-                            <img class="img-fluid" src="{{ asset('web_assets/images/bg/New-Banner-New-.png') }}"
-                                alt="" title="">
-                        </div>
-                        <div class="s-product-banner-text">
-                            <h2>Integmeds Medicine</h2>
-                            <p>American Number #1 Natural Supplement For Your Happy Life</p>
-                            <div class="common-btn-wrap mt-4">
-                                <div class="common-btn-borders">
-                                    <a class="common-btn" href="#">Shop Now</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
+                    <x-Web.home.sidebar.sidebar-banner :banner="$sidebarBanners[2] ?? null" />
                 </div>
                 <div class="col-lg-9 order-lg-2 order-1">
                     {{-- Most Popular --}}
@@ -87,135 +43,23 @@
                         </div>
                     </x-Web.common.product-bundle>
 
-                    <section class="offer-segment-area">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="offer-segment-img-wrap">
-                                    <div class="offer-segment-img">
-                                        <img class="img-fluid"
-                                            src="{{ asset('web_assets/images/bg/offer-segment-bg.png') }}" alt=""
-                                            title="">
-                                    </div>
-                                    <div class="offer-segment-img-text">
-                                        <img class="img-fluid"
-                                            src="{{ asset('web_assets/images/bg/offer-segment-text.png') }}"
-                                            alt="" title="">
-                                    </div>
-                                </div>
-                                <div class="offer-segment-text-wrap">
-                                    <div class="row">
-                                        <div class="col-lg-6 col-md-6 d-flex align-items-center">
-                                            <div class="offer-segment-text">
-                                                <h2>Beyond Raw® LIT®</h2>
-                                                <p>Your go-to pre-workout for intense energy, focus, and pumps in flavors
-                                                    that always deliver*.</p>
-                                                <div class="common-btn-wrap mt-4">
-                                                    <div class="common-btn-borders">
-                                                        <a class="common-btn" href="#">Shop Now</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-md-6">
-                                            <div class="offer-product-img">
-                                                <img class="img-fluid"
-                                                    src="{{ asset('web_assets/images/bg/offer-product.png') }}"
-                                                    alt="" title="">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
+
+
+                    <x-Web.home.home-banner-1 :banner="$HomePageBanners['home_banner_1']" />
+
                     {{-- New Arrivals --}}
                     <x-Web.home.product-grid title="New Arrivals" class="new-arrivals-area" :products="$newArrivals" />
+                    
 
-                    <section class="brand-area">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="brand-banner">
-                                    <img class="img-fluid"
-                                        src="{{ asset('web_assets/images/bg/American-Number-1-Brand.png') }}"
-                                        alt="" title="">
-                                    <div class="brand-text">
-                                        <h2>American Number #1 Brand</h2>
-                                        <p>We help patients identify the root cause of their health condition and regain
-                                            perfect health with proper nutrition, evidence based functional alternative</p>
-                                        <div class="common-btn-wrap mt-3">
-                                            <div class="common-btn-borders">
-                                                <a class="common-btn" href="#">Shop Now</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
+                    <x-Web.home.home-banner-2 :banner="$HomePageBanners['home_banner_2']" />
+
+                    
                     {{-- Top Rated  --}}
                     <x-Web.home.product-grid title="Top Rated" class="top-rated-area" :products="$topRatedProducts" />
 
-                    <section class="special-products-area">
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <div class="special-product-wrap">
-                                    <div class="sp-product-img">
-                                        <img class="img-fluid"
-                                            src="{{ asset('web_assets/images/product-img/Sugar-Balancer3.png') }}"
-                                            alt="" title="">
-                                    </div>
-                                    <div class="special-product-text">
-                                        <h3>IMMUNE PLUS</h3>
-                                        <p>Elevate Your Health with Nature’s Finest, Nutrient-Packed Essentials for a
-                                            Stronger, Balanced Immune System and Vibrant Well-Being</p>
-                                    </div>
-                                    <div class="common-btn-wrap mt-3 d-flex justify-content-center">
-                                        <div class="common-btn-borders">
-                                            <a class="common-btn" href="#">Shop Now</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="special-product-wrap">
-                                    <div class="sp-product-img">
-                                        <img class="img-fluid"
-                                            src="{{ asset('web_assets/images/product-img/Sugar-Balancer3.png') }}"
-                                            alt="" title="">
-                                    </div>
-                                    <div class="special-product-text">
-                                        <h3>GALL BLADDER CARE</h3>
-                                        <p>Holistic, Natural Solutions to Promote and Maintain Optimal Gallbladder Function
-                                            and Enhance Your Digestive Health for Long-Term Well-being</p>
-                                    </div>
-                                    <div class="common-btn-wrap mt-3 d-flex justify-content-center">
-                                        <div class="common-btn-borders">
-                                            <a class="common-btn" href="#">Shop Now</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="special-product-wrap">
-                                    <div class="sp-product-img">
-                                        <img class="img-fluid"
-                                            src="{{ asset('web_assets/images/product-img/Sugar-Balancer3.png') }}"
-                                            alt="" title="">
-                                    </div>
-                                    <div class="special-product-text">
-                                        <h3>DIGEST PRO</h3>
-                                        <p>Enhance Healthy Digestion and Inflammatory Support with Natural, Targeted
-                                            Solutions for a Balanced and Comforted Digestive System</p>
-                                    </div>
-                                    <div class="common-btn-wrap mt-3 d-flex justify-content-center">
-                                        <div class="common-btn-borders">
-                                            <a class="common-btn" href="#">Shop Now</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
+                    <x-Web.home.featured-products :featuredProducts="$featuredProducts" />
+
+                    {{-- Partner Slider --}}
                 </div>
             </div>
         </div>

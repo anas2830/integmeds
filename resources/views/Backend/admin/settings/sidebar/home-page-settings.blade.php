@@ -49,7 +49,7 @@
                                     </div>
             
                                     <input type="hidden" name="banner_{{ $id }}[image_path]" id="banner_{{ $id }}_image_path" value="{{ $banner->image_path }}">
-                                    <input type="hidden" name="filesToDelete_{{ $id }}" id="filesToDelete_{{ $id }}">
+                                    <input type="hidden" name="filesToDelete[]" id="filesToDelete_{{ $id }}">
                                 </div>
                             </div>
                             <div class="row">
