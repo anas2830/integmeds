@@ -9,7 +9,7 @@
         <div class="common-product-img">
             <a href="{{ route('product-details', $product->slug ?? '') }}">
                 <img class="img-fluid"
-                     src="{{ asset($product->firstImage->image_url) }}"
+                     src="{{ asset($product->firstImage?->image_url) }}"
                      alt="{{ $product->product_name ?? '' }}"
                      title="{{ $product->product_name ?? '' }}">
             </a>
@@ -22,7 +22,7 @@
                         {{ $product->product_name ?? '' }}
                     </a>
                 </h3>
-                <p><a href="#">{{ optional($product->firstCategory[0])->name}}</a></p>
+                <p><a href="#">{{ count($product->firstCategory) > 0 ? $product->firstCategory[0]->name : '' }}</a></p>
             </div>
 
             <div class="rating">
