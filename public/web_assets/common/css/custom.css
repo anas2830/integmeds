@@ -1,3 +1,18 @@
 .is-invalid~.invalid-feedback{
     font-size: 15px;
 }
+
+.star-selected {
+    color: #ff9b26 !important;
+    cursor: pointer;
+}
+
+/* Apply to your message container */
+#success-msg {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;  /* adjust if your sidebar is wider */
+    width: 400px;
+    z-index: 9999;
+}
+  

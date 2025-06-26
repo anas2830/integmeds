@@ -81,7 +81,6 @@ class Product extends Model
     public function productReviews()
     {
         return $this->hasMany(ProductReview::class, 'product_id')
-            ->where('review_type', 1)      // if review_type = 1 means product
             ->where('is_approved', 1);
     }
     public function wishlists()

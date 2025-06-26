@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Web;
 use Illuminate\Http\Request;
 use App\Services\UserService;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ReviewSubmitRequest;
+use App\Http\Requests\BundleReviewSubmitRequest;
 
 class UserController extends Controller
 {
@@ -78,6 +80,14 @@ class UserController extends Controller
     }
     //end address
 
+    public  function wishlistStore(Request $request)
+    {
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+        ]);
+
+        return $this->userService->addToWishlist($request);
+    }
 
     //change password
     public function changePasswordForm()
@@ -99,6 +109,15 @@ class UserController extends Controller
         $data['user'] = $this->userService->getUser();
         $data['wishlists'] = auth()->user()->wishlists()->with(['product','product.categories:id,name','product.images:id,product_id,image_url'])->paginate(10);
         return view('Web.Layout.users.wishlist', $data);
+    }
+
+    public  function addToWishlist(Request $request)
+    {
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+        ]);
+
+        return $this->userService->addToWishlist($request);
     }
 
     public function removeWishlist($id)
@@ -137,4 +156,21 @@ class UserController extends Controller
     {
         return $this->userService->logout($request);
     }
+
+
+    public function reviewStoreOrUpdate(ReviewSubmitRequest  $request)
+    {
+        $response = $this->userService->reviewStoreOrUpdate($request->validated());
+
+        return response()->json($response);
+    }
+
+    public function bundleReviewStoreOrUpdate(BundleReviewSubmitRequest  $request)
+    {
+        $response = $this->userService->bundleReviewStoreOrUpdate($request->validated());
+
+        return response()->json($response);
+    }
+
+    
 }

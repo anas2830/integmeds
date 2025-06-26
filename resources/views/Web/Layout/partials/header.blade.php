@@ -80,7 +80,11 @@
                 <div class="col-lg-3 d-flex align-items-center justify-content-end">
                     <div class="cart-login-wrap d-none d-lg-block">
                         <ul>
-                            <li><a href="#"><i class="fa-regular fa-heart"></i></a></li>
+                            @auth
+                                <li><a href="{{ route('user.wishlist') }}"><i class="fa-regular fa-heart"></i></a></li>
+                            @else
+                                <li><a href="{{ route('user.login') }}"><i class="fa-regular fa-heart"></i></a></li>
+                            @endauth
                             <li class="shopping-cart" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><a><i class="fa-solid fa-cart-shopping"></i></a><span>5</span></li>
                             <li>
                                 @auth
@@ -165,117 +169,117 @@
                                                             <ul>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}">Digestion support, Colon, Stomach, Gallbladder Support</a>
+                                                                        <a href="">Digestion support, Colon, Stomach, Gallbladder Support</a>
                                                                     </div>
                                                                 </li>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}"> Diabetes, Insulin Resistance, weight loss </a>
+                                                                        <a href=""> Diabetes, Insulin Resistance, weight loss </a>
                                                                     </div>
                                                                 </li>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}"> Woman, Female Hormone, Thyroid </a>
+                                                                        <a href=""> Woman, Female Hormone, Thyroid </a>
                                                                     </div>
                                                                 </li>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}"> Cancer Support and Prevention </a>
+                                                                        <a href=""> Cancer Support and Prevention </a>
                                                                     </div>
                                                                 </li>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}"> Autoimmune, Anti Inflamatory </a>
+                                                                        <a href=""> Autoimmune, Anti Inflamatory </a>
                                                                     </div>
                                                                 </li>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}"> Bone, Joint, and Muscle </a>
+                                                                        <a href=""> Bone, Joint, and Muscle </a>
                                                                     </div>
                                                                 </li>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}"> Children’s Health/ Children Care (ages 4 and older) </a>
+                                                                        <a href=""> Children’s Health/ Children Care (ages 4 and older) </a>
                                                                     </div>
                                                                 </li>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}"> Skin Disease: Vitiligo, Psoriasis, dermatitis, etc. </a>
+                                                                        <a href=""> Skin Disease: Vitiligo, Psoriasis, dermatitis, etc. </a>
                                                                     </div>
                                                                 </li>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}"> ASD, Neurological support, Autistic Brain and Cognitive enhenser </a>
+                                                                        <a href=""> ASD, Neurological support, Autistic Brain and Cognitive enhenser </a>
                                                                     </div>
                                                                 </li>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}">Immune support and Vitality</a>
+                                                                        <a href="">Immune support and Vitality</a>
                                                                     </div>
                                                                 </li>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}">Fitness / Body Building / Protein</a>
+                                                                        <a href="">Fitness / Body Building / Protein</a>
                                                                     </div>
                                                                 </li>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}">Vitamins and Minerals</a>
+                                                                        <a href="">Vitamins and Minerals</a>
                                                                     </div>
                                                                 </li>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}">Heavy Metal Cleanse</a>
+                                                                        <a href="">Heavy Metal Cleanse</a>
                                                                     </div>
                                                                 </li>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}">Organ Support (Liver, Kidney)</a>
+                                                                        <a href="">Organ Support (Liver, Kidney)</a>
                                                                     </div>
                                                                 </li>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}">Fish Oils and Omegas</a>
+                                                                        <a href="">Fish Oils and Omegas</a>
                                                                     </div>
                                                                 </li>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}">Energy Support</a>
+                                                                        <a href="">Energy Support</a>
                                                                     </div>
                                                                 </li>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}">Integrated Shampoo & Conditioner Bundle</a>
+                                                                        <a href="">Integrated Shampoo & Conditioner Bundle</a>
                                                                     </div>
                                                                 </li>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}">Man’s health</a>
+                                                                        <a href="">Man’s health</a>
                                                                     </div>
                                                                 </li>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}">Heart support</a>
+                                                                        <a href="">Heart support</a>
                                                                     </div>
                                                                 </li>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}">Eye Support</a>
+                                                                        <a href="">Eye Support</a>
                                                                     </div>
                                                                 </li>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}">Nose ear throat</a>
+                                                                        <a href="">Nose ear throat</a>
                                                                     </div>
                                                                 </li>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}">Functional Foods</a>
+                                                                        <a href="">Functional Foods</a>
                                                                     </div>
                                                                 </li>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}">Natural Self Care</a>
+                                                                        <a href="">Natural Self Care</a>
                                                                     </div>
                                                                 </li>
                                                             </ul>
@@ -297,7 +301,11 @@
                                 <div class="sticky-menu-cart">
                                     <div class="cart-login-wrap">
                                         <ul>
-                                            <li><a href="#"><i class="fa-regular fa-heart"></i></a></li>
+                                            @auth
+                                                <li><a href="{{ route('user.wishlist') }}"><i class="fa-regular fa-heart"></i></a></li>
+                                            @else
+                                                <li><a href="{{ route('user.login') }}"><i class="fa-regular fa-heart"></i></a></li>
+                                            @endauth
                                             <li class="shopping-cart" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><a><i class="fa-solid fa-cart-shopping"></i></a><span>5</span></li>
                                             <li>
                                                 @auth
@@ -361,29 +369,45 @@
                                             </div>
                                             <div class="cart-login-wrap">
                                                 <ul>
-                                                    <li><a href="#"><i class="fa-regular fa-heart"></i></a></li>
+                                                    @auth
+                                                        <li><a href="#"><i class="fa-regular fa-heart"></i></a></li>
+                                                    @else
+                                                        <li><a href="{{ route('user.login') }}"><i class="fa-regular fa-heart"></i></a></li>
+                                                    @endauth
                                                     <li class="shopping-cart" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><a><i class="fa-solid fa-cart-shopping"></i></a><span>5</span></li>
                                                     <li>
-                                                        <a class="user-btn" href="#"><i class="fa-solid fa-user"></i></a>
-                                                        <div class="user-logininfo">
-                                                            <div class="user-profile" id="user-hide">
-                                                                <div class="user-name">
-                                                                    <div class="user-login-img">
-                                                                        <img class="img-fluid" src="{{asset('web_assets/images/bg/profile-photo.png')}}"
-                                                                            alt="User Profile" title="User Profile">
+                                                        @auth
+                                                            <a class="user-btn" href="#"><i class="fa-solid fa-user"></i></a>
+                                                            <div class="user-logininfo">
+                                                                <div class="user-profile" id="user-hide">
+                                                                    <div class="user-name">
+                                                                        <div class="user-login-img">
+                                                                            <img class="img-fluid" src="{{Auth::user()->profile_image ?? asset('web_assets/images/bg/profile-photo.png')}}"
+                                                                                alt="User Profile" title="User Profile">
+                                                                        </div>
+                                                                        <h5>{{Auth::user()->name}}</h5>
                                                                     </div>
-                                                                    <h5>Liton Dadal</h5>
-                                                                </div>
-                                                                <div class="user-iteme-wrapper">
-                                                                    <ul>
-                                                                        <li><a href="{{route('user.orders')}}"><i class="fa-regular fa-file-lines"></i>Orders</a> </li>
-                                                                        <li><a href="{{route('user.account')}}"><i class="fa-regular fa-user"></i>Account details</a></li>
-                                                                        <li><a href="{{route('user.address')}}"><i class="fa-solid fa-location-dot"></i>Addresses</a> </li>
-                                                                        <li><a href="wishlist.php"><i class="fa-solid fa-arrow-right-from-bracket"></i>Logout</a> </li>
-                                                                    </ul>
+                                                                    <div class="user-iteme-wrapper">
+                                                                        <ul>
+                                                                            <li><a href="{{route('user.orders')}}"><i class="fa-regular fa-file-lines"></i>Orders</a> </li>
+                                                                            <li><a href="{{route('user.account')}}"><i class="fa-regular fa-user"></i>Account details</a></li>
+                                                                            <li><a href="{{route('user.address')}}"><i class="fa-solid fa-location-dot"></i>Addresses</a> </li>
+                                                                            <li>
+                                                                                <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                                                                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+                                                                                </a>
+                                                                            
+                                                                                <form id="logout-form" action="{{ route('user.logout') }}" method="POST" style="display: none;">
+                                                                                    @csrf
+                                                                                </form>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        @else
+                                                            <a class="user-btn" href="{{ route('user.login') }}"><i class="fa-solid fa-user"></i></a>
+                                                        @endauth
                                                     </li>
                                                 </ul>
                                             </div>
@@ -426,21 +450,21 @@
                                                             <span class="accordion-click"><i class="fas fa-angle-down"></i></span>
                                                         </div>
                                                         <ul class="list-unstyled">
-                                                            <li><a href="{{route('bundle-details')}}">Digestion support, Colon, Stomach, Gallbladder Support</a></li>
-                                                            <li><a href="{{route('bundle-details')}}">Diabetes, Insulin Resistance, weight loss </a></li>
-                                                            <li><a href="{{route('bundle-details')}}">Woman, Female Hormone, Thyroid </a></li>
-                                                            <li><a href="{{route('bundle-details')}}">Cancer Support and Prevention </a></li>
-                                                            <li><a href="{{route('bundle-details')}}">Autoimmune, Anti Inflamatory </a></li>
-                                                            <li><a href="{{route('bundle-details')}}">Bone, Joint, and Muscle </a></li>
-                                                            <li><a href="{{route('bundle-details')}}">Children’s Health/ Children Care (ages 4 and older) </a></li>
-                                                            <li><a href="{{route('bundle-details')}}">Skin Disease: Vitiligo, Psoriasis, dermatitis, etc. </a></li>
-                                                            <li><a href="{{route('bundle-details')}}">ASD, Neurological support, Autistic Brain and Cognitive enhenser </a></li>
-                                                            <li><a href="{{route('bundle-details')}}">Immune support and Vitality</a></li>
-                                                            <li><a href="{{route('bundle-details')}}">Fitness / Body Building / Protein</a></li>
-                                                            <li><a href="{{route('bundle-details')}}">Vitamins and Minerals</a></li>
-                                                            <li><a href="{{route('bundle-details')}}">Heavy Metal Cleanse</a></li>
-                                                            <li><a href="{{route('bundle-details')}}">Organ Support (Liver, Kidney)</a></li>
-                                                            <li><a href="{{route('bundle-details')}}">Fish Oils and Omegas</a></li>
+                                                            <li><a href="">Digestion support, Colon, Stomach, Gallbladder Support</a></li>
+                                                            <li><a href="">Diabetes, Insulin Resistance, weight loss </a></li>
+                                                            <li><a href="">Woman, Female Hormone, Thyroid </a></li>
+                                                            <li><a href="">Cancer Support and Prevention </a></li>
+                                                            <li><a href="">Autoimmune, Anti Inflamatory </a></li>
+                                                            <li><a href="">Bone, Joint, and Muscle </a></li>
+                                                            <li><a href="">Children’s Health/ Children Care (ages 4 and older) </a></li>
+                                                            <li><a href="">Skin Disease: Vitiligo, Psoriasis, dermatitis, etc. </a></li>
+                                                            <li><a href="">ASD, Neurological support, Autistic Brain and Cognitive enhenser </a></li>
+                                                            <li><a href="">Immune support and Vitality</a></li>
+                                                            <li><a href="">Fitness / Body Building / Protein</a></li>
+                                                            <li><a href="">Vitamins and Minerals</a></li>
+                                                            <li><a href="">Heavy Metal Cleanse</a></li>
+                                                            <li><a href="">Organ Support (Liver, Kidney)</a></li>
+                                                            <li><a href="">Fish Oils and Omegas</a></li>
                                                         </ul>
                                                     </li>
                                                     <li class="sub-mobile-menu">
@@ -450,7 +474,7 @@
                                                         <a href="{{route('contact')}}">Contact</a>
                                                     </li>
                                                     <li class="sub-mobile-menu">
-                                                        <a href="#">My account</a>
+                                                        <a href="{{route('user.account')}}">My account</a>
                                                     </li>
                                                 </ul>
                                             </div>

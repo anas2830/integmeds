@@ -31,3 +31,23 @@
 });
 </script>
 <script src="{{asset('web_assets/common/js/main.js')}}"></script>
+
+<script>
+    function showSuccessMessage(message) {
+        console.log('showSuccessMessage called with:', message);
+
+        const html = `
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="alert alert-success alert-dismissible fade show text-success p-2 small" role="alert">
+              <span class="text-sm">
+                <i class="fa-solid fa-circle-check me-1"></i> ${message}
+              </span>
+            </div>
+          </div>
+        </div>`;
+
+        const $container = $('#success-msg');
+        $container.stop(true, true).hide().html(html).fadeIn().delay(4000).fadeOut();
+    }
+</script>

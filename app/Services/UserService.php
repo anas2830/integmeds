@@ -5,6 +5,8 @@ namespace App\Services;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\Wishlist;
+use App\Models\BundleReview;
+use App\Models\ProductReview;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -189,5 +191,69 @@ class UserService
     }
     //end wishlist
 
+    public function addToWishlist($request)
+    {
+        $wishlist = Wishlist::where('user_id', auth()->id())
+            ->where('product_id', $request->product_id)
+            ->first();
+
+        if ($wishlist) {
+            return [
+                'message' => 'Product already in wishlist.',
+                'status' => false,
+            ];
+        }
+
+        Wishlist::create([
+            'user_id' => auth()->id(),
+            'product_id' => $request->product_id,
+        ]);
+
+        return [
+            'message' => 'Product added to wishlist successfully.',
+            'status' => true,
+        ];
+    }
+
+    public function reviewStoreOrUpdate(array $data)
+    {
+        $review = ProductReview::updateOrCreate(
+            [
+                'product_id' => $data['product_id'],
+                'user_id' => Auth::id(),
+            ],
+            [
+                'rating' => $data['rating'],
+                'review' => $data['review'],
+            ]
+        );
+
+        return [
+            'message' => 'Review submitted successfully.',
+            'review' => $review,
+            'status' => true,
+        ];
+    }
+
+    public function bundleReviewStoreOrUpdate(array $data)
+    {
+        $review = BundleReview::updateOrCreate(
+            [
+                'bundle_id' => $data['bundle_id'],
+                'user_id' => Auth::id(),
+            ],
+            [
+                'rating' => $data['rating'],
+                'review' => $data['review'],
+
+            ]
+        );
+
+        return [
+            'message' => 'Review submitted successfully.',
+            'review' => $review,
+            'status' => true,
+        ];
+    }
 
 }

@@ -61,10 +61,10 @@ class ProductBundleCrudService
             ]] : [],
             'existingFilesArray' => $bundle->bundleImages->map(function ($image) {
                 return [
-                    'full_path' => url($image->image_path),
+                    'full_path' => url($image->image_url),
                     'name'      => $image->file_original_name ?? basename($image->image_url),
                     'size'      => (int) ($image->file_size ?? 0),
-                    'path'      => $image->image_path,
+                    'path'      => $image->image_url,
                 ];
             })->toArray(),
         ];
@@ -138,7 +138,7 @@ class ProductBundleCrudService
                 if ($fullPath) {
                     $bundleImagesData[] = [
                         'bundle_id' => $bundle->id,
-                        'image_path' => $fullPath,
+                        'image_url' => $fullPath,
                         'file_original_name' => $fileOriginalName,
                         'file_size' => $fileSize,
                         'file_extension' => $fileExtension,
@@ -206,7 +206,7 @@ class ProductBundleCrudService
             if (file_exists($filePath) && is_file($filePath)) {
                 unlink($filePath);
             }
-            BundleImage::where('image_path', $relativePath)->delete();
+            BundleImage::where('image_url', $relativePath)->delete();
         }
     }
 }

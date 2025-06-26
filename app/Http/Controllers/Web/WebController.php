@@ -6,19 +6,23 @@ use Carbon\Carbon;
 use App\Models\Page;
 use App\Models\User;
 use App\Models\Client;
+use App\Models\Bundle;
 use App\Models\Product;
 use Illuminate\Support\Str;
+use App\Models\BundleReview;
 use Illuminate\Http\Request;
 use App\Services\PageService;
+use App\Models\ProductReview;
 use App\Jobs\SendContactEmailJob;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Services\Web\SidebarService;
 use Illuminate\Support\Facades\Hash;
 use App\Jobs\SendResetPasswordEmailJob;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Porduct; // Assuming Porduct is a model for products
 
-class WebController extends Controller
+class WebController extends SidebarService
 {
     public function category()
     {
@@ -26,14 +30,36 @@ class WebController extends Controller
     }
     public function bundle()
     {
-        return view('Web.Layout.pages.bundle');
+        $productBundles = $this->productBundles();
+        return view('Web.Layout.pages.bundle', compact('productBundles'));
     }
-    public function bundleDetails()
+    public function bundleDetails($id)
     {
-        return view('Web.Layout.pages.bundle-details');
+
+        $bundle = Bundle::with([
+            'bundleImages:id,bundle_id,image_url',
+            'products:id,product_name,slug,regular_price,sale_price,discount_percentage',
+            'bundleReviews:id,bundle_id,rating,review,user_id',
+        ])
+        ->withAvg('bundleReviews', 'rating')
+        ->where('id', $id)
+        ->where('status', 1) // ✅ Only fetch if product is active
+        ->firstOrFail();
+
+        $userReview = null;
+        if (auth()->check()) {
+            $userReview = BundleReview::where('bundle_id', $bundle->id)
+                ->where('user_id', auth()->id())
+                ->first();
+        }
+
+        $productBundles = $this->productBundles();
+        $bestSellingProducts = $this->bestSellingProducts();
+        return view('Web.Layout.pages.bundle-details', compact('bundle', 'productBundles', 'bestSellingProducts', 'userReview'));
     }
     public function productDetails($slug)
     {
+
         $product = Product::with([
             'brands:id,name',
             'categories:id,name,slug',
@@ -46,8 +72,48 @@ class WebController extends Controller
         ->where('slug', $slug)
         ->where('status', 1) // ✅ Only fetch if product is active
         ->firstOrFail();
-        return view('Web.Layout.pages.product-details', compact('product'));
+
+        $userReview = null;
+        if (auth()->check()) {
+            $userReview = ProductReview::where('product_id', $product->id)
+                ->where('user_id', auth()->id())
+                ->first();
+        }
+
+        $productBundles = $this->productBundles();
+        $bestSellingProducts = $this->bestSellingProducts();
+        $relatedProducts = $this->getRelatedProducts($product);
+        $alreadyInWishlist = false;
+        if (auth()->check()) {
+            $alreadyInWishlist = auth()->user()->wishlists()
+                ->where('product_id', $product->id)
+                ->exists();
+        }
+
+        return view('Web.Layout.pages.product-details', compact('product', 'productBundles', 'bestSellingProducts', 'userReview', 'relatedProducts', 'alreadyInWishlist'));
     }
+    private function getRelatedProducts(Product $product)
+    {
+        // Ensure categories are loaded
+        $categoryIds = $product->categories()->pluck('id');
+
+        return Product::select('id', 'product_name', 'regular_price', 'sale_price', 'discount_percentage', 'slug')
+            ->with(['firstImage:id,product_id,image_url'])
+            ->where('status', 1)
+            ->where('id', '!=', $product->id)
+            ->whereHas('categories', function ($query) use ($categoryIds) {
+                $query->whereIn('id', $categoryIds);
+            })
+            ->inRandomOrder()
+            ->take(4)
+            ->get();
+    }
+
+    /**
+     * Shows the about us page.
+     *
+     * @return \Illuminate\Http\Response
+     */
 
     public function aboutUs()
     {
