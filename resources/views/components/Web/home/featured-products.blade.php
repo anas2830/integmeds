@@ -5,7 +5,7 @@
                 <div class="special-product-wrap">
                     <div class="sp-product-img">
                         <img class="img-fluid"
-                            src="{{ asset(optional($featuredProduct->product->firstImage)->image_url ?? 'web_assets/images/default-product.png') }}"
+                            src="{{ asset(optional($featuredProduct->product?->firstImage)->image_url ?? 'web_assets/images/default-product.png') }}"
                             alt="{{ optional($featuredProduct->product)->product_name }}" title="{{ optional($featuredProduct->product)->product_name }}">
                     </div>
                     <div class="special-product-text">
