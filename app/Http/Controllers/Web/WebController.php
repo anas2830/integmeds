@@ -8,15 +8,17 @@ use App\Models\User;
 use App\Models\Product;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\ProductReview;
 use App\Jobs\SendContactEmailJob;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Services\Web\SidebarService;
 use Illuminate\Support\Facades\Hash;
 use App\Jobs\SendResetPasswordEmailJob;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Porduct; // Assuming Porduct is a model for products
 
-class WebController extends Controller
+class WebController extends SidebarService
 {
     public function category()
     {
@@ -32,6 +34,7 @@ class WebController extends Controller
     }
     public function productDetails($slug)
     {
+
         $product = Product::with([
             'brands:id,name',
             'categories:id,name,slug',
@@ -44,8 +47,48 @@ class WebController extends Controller
         ->where('slug', $slug)
         ->where('status', 1) // ✅ Only fetch if product is active
         ->firstOrFail();
-        return view('Web.Layout.pages.product-details', compact('product'));
+
+        $userReview = null;
+        if (auth()->check()) {
+            $userReview = ProductReview::where('product_id', $product->id)
+                ->where('user_id', auth()->id())
+                ->first();
+        }
+
+        $productBundles = $this->productBundles();
+        $bestSellingProducts = $this->bestSellingProducts();
+        $relatedProducts = $this->getRelatedProducts($product);
+        $alreadyInWishlist = false;
+        if (auth()->check()) {
+            $alreadyInWishlist = auth()->user()->wishlists()
+                ->where('product_id', $product->id)
+                ->exists();
+        }
+
+        return view('Web.Layout.pages.product-details', compact('product', 'productBundles', 'bestSellingProducts', 'userReview', 'relatedProducts', 'alreadyInWishlist'));
     }
+    private function getRelatedProducts(Product $product)
+    {
+        // Ensure categories are loaded
+        $categoryIds = $product->categories()->pluck('id');
+
+        return Product::select('id', 'product_name', 'regular_price', 'sale_price', 'discount_percentage', 'slug')
+            ->with(['firstImage:id,product_id,image_url'])
+            ->where('status', 1)
+            ->where('id', '!=', $product->id)
+            ->whereHas('categories', function ($query) use ($categoryIds) {
+                $query->whereIn('id', $categoryIds);
+            })
+            ->inRandomOrder()
+            ->take(4)
+            ->get();
+    }
+
+    /**
+     * Shows the about us page.
+     *
+     * @return \Illuminate\Http\Response
+     */
 
     public function aboutUs()
     {

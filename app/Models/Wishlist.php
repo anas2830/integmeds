@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Wishlist extends Model
 {
-    protected $gurded = [];
+    protected $guarded = [];
 
     public function user()
     {

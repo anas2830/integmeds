@@ -19,10 +19,19 @@
             </div>
         </div>
     </div>
+    
     <!-- end page title -->
 
     <div class="row">
         <div class="col-12">
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show text-white" role="alert">
+                    <span class="text-sm">{{ session('success') }}</span>
+                    <button type="button" class="close text-white" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
             <form method="POST" action="{{ route('home.page.body.settings.update') }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')

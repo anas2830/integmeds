@@ -83,8 +83,10 @@ Route::prefix('user')->group(function () {
 
         // Wishlist
         Route::get('/wishlist', [UserController::class, 'wishlist'])->name('user.wishlist');
+        Route::post('/wishlist/add', [UserController::class, 'wishlistStore'])->name('user.wishlist.add');
         Route::get('/wishlist/remove/{id}', [UserController::class, 'removeWishlist'])->name('user.wishlist.remove');
 
+        Route::post('/product/review', [UserController::class, 'reviewStoreOrUpdate']) ->name('product.review.submit'); 
         // Logout
         Route::post('/logout', [UserController::class, 'logout'])->name('user.logout');
     });
