@@ -49,4 +49,33 @@ class PageController extends Controller
         $this->pageService->updateTermsCondition($request);
         return redirect()->back()->with('success', 'Terms and conditions updated successfully.');
     }
+
+    //contact us
+    public function contactUs()
+    {
+        $data['contact'] = $this->pageService->getContactUsData();
+        return view('Backend.admin.pages.contact-us', $data);
+    }
+
+    //update contact us
+    public function updateContactUs(Request $request)
+    {
+        $this->pageService->updateContactUs($request);
+        return redirect()->back()->with('success', 'Contact us updated successfully.');
+    }
+
+    //about us
+    public function aboutUs()
+    {
+        $data = $this->pageService->getAboutUsData();
+        return view('Backend.admin.pages.about-us', $data);
+    }
+
+    //update about us
+    public function updateAboutUs(Request $request)
+    {
+        $this->pageService->updateAboutUs($request);
+        return redirect()->back()->with('success', 'About us updated successfully.');
+    }
+    
 }
