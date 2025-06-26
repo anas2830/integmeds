@@ -13,14 +13,14 @@
                             <div class="contact-page-infoCard">
                                 <i class="fa-solid fa-phone"></i>
                                 <h5>Telephone:</h5>
-                                <p><a href="tel:+1346346">+1(346)346 - 0732</a></p>
+                                <p><a href="tel:+1346346">{{ $contact['telephone'] ?? '' }}</a></p>
                             </div>
                         </div>
                         <div class="col-sm-6 col-lg-4 d-flex">
                             <div class="contact-page-infoCard">
                                 <i class="fa-regular fa-envelope"></i>
                                 <h5>Email:</h5>
-                                <p><a href="mailto:jhingephul@gmail.com"> jhingephul@gmail.com </a></p>
+                                <p><a href="mailto:jhingephul@gmail.com"> {{ $contact['email'] ?? '' }} </a></p>
                             </div>
                         </div>
                         <div class="col-sm-6 col-lg-4 d-flex">
@@ -28,7 +28,7 @@
                                 <address>
                                     <i class="fa-solid fa-location-dot"></i>
                                     <h5>Address:</h5>
-                                    <p>12727 Featherwood Drive Suite 104 Houston, Texas 77034</p>
+                                    <p>{{ $contact['address'] ?? '' }}</p>
                                 </address>
                             </div>
                         </div>
@@ -37,9 +37,8 @@
                 <div class="contact-page-title">
                     <div class="row">
                         <div class="col-lg-12">
-                            <h3>Let's get in touch </h3>
-                            <p>We will answer any questions you may have about our online sales, rights or
-                                partnership service right here. </p>
+                            <h3>{{ $contact['form_title'] ?? '' }}</h3>
+                            <p>{{ $contact['form_subtitle'] ?? '' }}</p>
                         </div>
                     </div>
                 </div>
@@ -114,7 +113,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="contact-info-text">
-                            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d443977.47070738726!2d-95.211955!3d29.616068000000002!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x864099e9ec866d19%3A0xc7d24f6bb6a99e91!2s12727%20Featherwood%20Dr%20%23%20104%2C%20Houston%2C%20TX%2077034!5e0!3m2!1sen!2sus!4v1749890590345!5m2!1sen!2sus" style="border:0" width="100%" height="480" frameborder="0"></iframe>
+                            <iframe src="{{ $contact['map_iframe'] ?? '' }}" style="border:0" width="100%" height="480" frameborder="0"></iframe>
                         </div>
                     </div>
                 </div>

@@ -165,6 +165,10 @@ Route::group(['middleware' => ['auth:admin,editor']], function () {
     Route::get('/privacy-policy-settings', [PageController::class, 'privacyPolicy'])->name('privacy-policy-settings');
     Route::put('/privacy-policy-settings/update', [PageController::class, 'updatePrivacyPolicy'])->name('privacy-policy-settings.update');
 
+    //contact us
+    Route::get('/contact-us-settings', [PageController::class, 'contactUs'])->name('contact-us-settings');
+    Route::put('/contact-us-settings/update', [PageController::class, 'updateContactUs'])->name('contact-us-settings.update');
+
     //terms & conditions
     Route::get('/terms-condition-settings', [PageController::class, 'termsCondition'])->name('terms-condition-settings');
     Route::put('/terms-condition-settings/update', [PageController::class, 'updateTermsCondition'])->name('terms-condition-settings.update');

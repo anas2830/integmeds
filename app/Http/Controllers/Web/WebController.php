@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Web;
 use Carbon\Carbon;
 use App\Models\Page;
 use App\Models\User;
+use App\Models\Client;
 use App\Models\Product;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Services\PageService;
 use App\Jobs\SendContactEmailJob;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -49,7 +51,9 @@ class WebController extends Controller
 
     public function aboutUs()
     {
-        return view('Web.Layout.pages.about-us');
+        $data = (new PageService)->getAboutUsData();
+        $data['clients'] = Client::where('status', 1)->get();
+        return view('Web.Layout.pages.about-us', $data);
     }
     public function search()
     {
@@ -128,7 +132,8 @@ class WebController extends Controller
     //contact
     public function contact()
     {
-        return view('Web.Layout.pages.contact');
+        $data['contact'] = (new PageService)->getContactUsData();
+        return view('Web.Layout.pages.contact', $data);
     }
 
     //contact submit

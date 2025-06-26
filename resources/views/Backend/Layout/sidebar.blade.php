@@ -106,6 +106,17 @@
 
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="bx bx-image"></i>
+                        <span>Clients</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{ route('clients.index') }}">List</a></li>    
+                        <li><a href="{{ route('clients.create') }}">Create</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="bx bx-comment"></i>
                         <span>Review</span>
                     </a>
@@ -147,6 +158,7 @@
                         <li><a href="{{ route('privacy-policy-settings') }}">Privacy Policy</a></li>
                         <li><a href="{{ route('terms-condition-settings') }}">Terms & Conditions</a></li>
                         <li><a href="{{ route('about-us-settings') }}">About Us</a></li> 
+                        <li><a href="{{ route('contact-us-settings') }}">Contact Us</a></li>
                     </ul>
                 </li>
 
