@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class BundleProduct extends Model
 {
-    protected $gurded = [];
+    protected $guarded = [];
 }

@@ -131,7 +131,7 @@
                                     <li class="nav-item">
                                         <a href="#" class="nav-link" id="review-tab" data-bs-toggle="tab"
                                             data-bs-target="#review" role="tab" aria-controls="review"
-                                            aria-selected="false">Reviews (3)</a>
+                                            aria-selected="false">Reviews ({{ count($product->productReviews) }})</a>
                                     </li>
                                 </ul>
                                 <div class="tab-content" id="myTabContentTwo">
@@ -173,7 +173,7 @@
                                             </div>
                                             <div class="add-review">
                                                 @auth
-                                                    <x-Web.product.review-submit :product="$product" :userReview="$userReview" />
+                                                    <x-Web.product.review-submit :instance="$product" :userReview="$userReview" type="product" />
                                                 @else
                                                     <a href="{{ route('user.login') }}" class="btn gradient-btn">Login to add a review <i
                                                         class="fas fa-paper-plane"></i></a>

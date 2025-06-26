@@ -10,7 +10,7 @@
                         <a href="{{ route('bundle-details', $productBundle->id) }}">
                             <div class="bundle-img">
                                 <img class="img-fluid"
-                                    src="{{ asset(optional($productBundle->firstImage)->image_path) }}"
+                                    src="{{ asset(optional($productBundle->firstImage)->image_url) }}"
                                     alt="{{ $productBundle->name }}" title="{{ $productBundle->name }}">
                             </div>
                             <div class="bundle-title">

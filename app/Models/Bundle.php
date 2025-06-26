@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Bundle extends Model
 {
-    protected $gurded = [];
+    protected $guarded = [];
+
 
     public function products()
     {
@@ -16,6 +17,12 @@ class Bundle extends Model
     public function bundleImages()
     {
         return $this->hasMany(BundleImage::class);
+    }
+
+    public function bundleReviews()
+    {
+        return $this->hasMany(BundleReview::class, 'bundle_id')
+            ->where('is_approved', 1);
     }
 
     public function firstImage()

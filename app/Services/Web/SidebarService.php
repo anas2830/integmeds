@@ -11,7 +11,7 @@ class SidebarService
 {
     public  function productBundles()
     {
-        return Bundle::select('id', 'name', 'icon_path')->with(['firstImage:id,bundle_id,image_path'])->where('status', 1)->orderBy('id', 'desc')->take(8)->get();
+        return Bundle::select('id', 'name', 'icon_path')->with(['firstImage:id,bundle_id,image_url'])->where('status', 1)->orderBy('id', 'desc')->take(8)->get();
     }
 
     public function specialOffers()

@@ -1,4 +1,3 @@
-<div id="success-msg"></div>
 
 <h4 class="title">{{ $userReview ? 'Update your review' : 'Add a review' }}</h4>
 <form id="reviewForm">
@@ -17,6 +16,10 @@
         <label for="comment">Write Your Comment <span>*</span></label>
         <textarea name="review" id="review" cols="30" rows="5" required>{{ $userReview->review ?? '' }}</textarea>
     </div>
-    <input type="hidden" name="product_id" value="{{ $product->id }}">
+    @if ($type === 'bundle')
+        <input type="hidden" name="bundle_id" value="{{ $instance->id }}">
+    @else
+        <input type="hidden" name="product_id" value="{{ $instance->id }}">
+    @endif
     <button type="submit" class="btn gradient-btn">Submit Now <i class="fas fa-paper-plane"></i></button>
 </form>

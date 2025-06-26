@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('bundle_images', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->foreignId('bundle_id')->constrained('bundles')->onDelete('cascade'); 
-            $table->string('image_path')->nullable();
+            $table->string('image_url')->nullable();
             $table->string('file_original_name')->nullable();
             $table->string('file_extension', 10)->nullable();
             $table->integer('file_size')->nullable();

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\Wishlist;
+use App\Models\BundleReview;
 use App\Models\ProductReview;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -224,6 +225,27 @@ class UserService
             [
                 'rating' => $data['rating'],
                 'review' => $data['review'],
+            ]
+        );
+
+        return [
+            'message' => 'Review submitted successfully.',
+            'review' => $review,
+            'status' => true,
+        ];
+    }
+
+    public function bundleReviewStoreOrUpdate(array $data)
+    {
+        $review = BundleReview::updateOrCreate(
+            [
+                'bundle_id' => $data['bundle_id'],
+                'user_id' => Auth::id(),
+            ],
+            [
+                'rating' => $data['rating'],
+                'review' => $data['review'],
+
             ]
         );
 

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Services\UserService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ReviewSubmitRequest;
+use App\Http\Requests\BundleReviewSubmitRequest;
 
 class UserController extends Controller
 {
@@ -163,4 +164,13 @@ class UserController extends Controller
 
         return response()->json($response);
     }
+
+    public function bundleReviewStoreOrUpdate(BundleReviewSubmitRequest  $request)
+    {
+        $response = $this->userService->bundleReviewStoreOrUpdate($request->validated());
+
+        return response()->json($response);
+    }
+
+    
 }

@@ -11,16 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product_reviews', function (Blueprint $table) {
+        Schema::create('bundle_reviews', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('bundle_id')->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->tinyInteger('rating')->unsigned()->checkBetween(1, 5);
             $table->text('review');
             $table->boolean('is_approved')->default(false); // Admin approves review
             $table->timestamps();
             $table->softDeletes(); // Adds deleted_at for soft deletes
-            $table->unique(['product_id', 'user_id']);
+            $table->unique(['bundle_id', 'user_id']);
         });
     }
 
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('product_reviews');
+        Schema::dropIfExists('bundle_reviews');
     }
 };

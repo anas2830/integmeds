@@ -20,7 +20,7 @@ Auth::routes([ 'verify' => true, 'register' => false, 'reset' => true, 'login'=>
 Route::get('/', [HomePageController::class, 'index'])->name('/');
 Route::get('/category', [WebController::class, 'category'])->name('category');
 Route::get('/bundle', [WebController::class, 'bundle'])->name('bundle');
-Route::get('/bundle-details', [WebController::class, 'bundleDetails'])->name('bundle-details');
+Route::get('/bundle-details/{id}', [WebController::class, 'bundleDetails'])->name('bundle-details');
 Route::get('/product-details/{slug}', [WebController::class, 'productDetails'])->name('product-details');
 Route::get('/about-us', [WebController::class, 'aboutUs'])->name('about-us');
 Route::get('/search', [WebController::class, 'search'])->name('search');
@@ -87,6 +87,7 @@ Route::prefix('user')->group(function () {
         Route::get('/wishlist/remove/{id}', [UserController::class, 'removeWishlist'])->name('user.wishlist.remove');
 
         Route::post('/product/review', [UserController::class, 'reviewStoreOrUpdate']) ->name('product.review.submit'); 
+        Route::post('/bundle/review', [UserController::class, 'bundleReviewStoreOrUpdate']) ->name('bundle.review.submit'); 
         // Logout
         Route::post('/logout', [UserController::class, 'logout'])->name('user.logout');
     });

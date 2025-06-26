@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Web;
 use Carbon\Carbon;
 use App\Models\Page;
 use App\Models\User;
+use App\Models\Bundle;
 use App\Models\Product;
 use Illuminate\Support\Str;
+use App\Models\BundleReview;
 use Illuminate\Http\Request;
 use App\Models\ProductReview;
 use App\Jobs\SendContactEmailJob;
@@ -26,11 +28,32 @@ class WebController extends SidebarService
     }
     public function bundle()
     {
-        return view('Web.Layout.pages.bundle');
+        $productBundles = $this->productBundles();
+        return view('Web.Layout.pages.bundle', compact('productBundles'));
     }
-    public function bundleDetails()
+    public function bundleDetails($id)
     {
-        return view('Web.Layout.pages.bundle-details');
+
+        $bundle = Bundle::with([
+            'bundleImages:id,bundle_id,image_url',
+            'products:id,product_name,slug,regular_price,sale_price,discount_percentage',
+            'bundleReviews:id,bundle_id,rating,review,user_id',
+        ])
+        ->withAvg('bundleReviews', 'rating')
+        ->where('id', $id)
+        ->where('status', 1) // ✅ Only fetch if product is active
+        ->firstOrFail();
+
+        $userReview = null;
+        if (auth()->check()) {
+            $userReview = BundleReview::where('bundle_id', $bundle->id)
+                ->where('user_id', auth()->id())
+                ->first();
+        }
+
+        $productBundles = $this->productBundles();
+        $bestSellingProducts = $this->bestSellingProducts();
+        return view('Web.Layout.pages.bundle-details', compact('bundle', 'productBundles', 'bestSellingProducts', 'userReview'));
     }
     public function productDetails($slug)
     {

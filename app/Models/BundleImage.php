@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class BundleImage extends Model
 {
-    protected $gurded = [];
+    protected $guarded = [];
 }

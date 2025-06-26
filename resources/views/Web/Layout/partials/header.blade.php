@@ -169,117 +169,117 @@
                                                             <ul>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}">Digestion support, Colon, Stomach, Gallbladder Support</a>
+                                                                        <a href="">Digestion support, Colon, Stomach, Gallbladder Support</a>
                                                                     </div>
                                                                 </li>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}"> Diabetes, Insulin Resistance, weight loss </a>
+                                                                        <a href=""> Diabetes, Insulin Resistance, weight loss </a>
                                                                     </div>
                                                                 </li>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}"> Woman, Female Hormone, Thyroid </a>
+                                                                        <a href=""> Woman, Female Hormone, Thyroid </a>
                                                                     </div>
                                                                 </li>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}"> Cancer Support and Prevention </a>
+                                                                        <a href=""> Cancer Support and Prevention </a>
                                                                     </div>
                                                                 </li>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}"> Autoimmune, Anti Inflamatory </a>
+                                                                        <a href=""> Autoimmune, Anti Inflamatory </a>
                                                                     </div>
                                                                 </li>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}"> Bone, Joint, and Muscle </a>
+                                                                        <a href=""> Bone, Joint, and Muscle </a>
                                                                     </div>
                                                                 </li>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}"> Children’s Health/ Children Care (ages 4 and older) </a>
+                                                                        <a href=""> Children’s Health/ Children Care (ages 4 and older) </a>
                                                                     </div>
                                                                 </li>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}"> Skin Disease: Vitiligo, Psoriasis, dermatitis, etc. </a>
+                                                                        <a href=""> Skin Disease: Vitiligo, Psoriasis, dermatitis, etc. </a>
                                                                     </div>
                                                                 </li>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}"> ASD, Neurological support, Autistic Brain and Cognitive enhenser </a>
+                                                                        <a href=""> ASD, Neurological support, Autistic Brain and Cognitive enhenser </a>
                                                                     </div>
                                                                 </li>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}">Immune support and Vitality</a>
+                                                                        <a href="">Immune support and Vitality</a>
                                                                     </div>
                                                                 </li>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}">Fitness / Body Building / Protein</a>
+                                                                        <a href="">Fitness / Body Building / Protein</a>
                                                                     </div>
                                                                 </li>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}">Vitamins and Minerals</a>
+                                                                        <a href="">Vitamins and Minerals</a>
                                                                     </div>
                                                                 </li>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}">Heavy Metal Cleanse</a>
+                                                                        <a href="">Heavy Metal Cleanse</a>
                                                                     </div>
                                                                 </li>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}">Organ Support (Liver, Kidney)</a>
+                                                                        <a href="">Organ Support (Liver, Kidney)</a>
                                                                     </div>
                                                                 </li>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}">Fish Oils and Omegas</a>
+                                                                        <a href="">Fish Oils and Omegas</a>
                                                                     </div>
                                                                 </li>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}">Energy Support</a>
+                                                                        <a href="">Energy Support</a>
                                                                     </div>
                                                                 </li>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}">Integrated Shampoo & Conditioner Bundle</a>
+                                                                        <a href="">Integrated Shampoo & Conditioner Bundle</a>
                                                                     </div>
                                                                 </li>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}">Man’s health</a>
+                                                                        <a href="">Man’s health</a>
                                                                     </div>
                                                                 </li>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}">Heart support</a>
+                                                                        <a href="">Heart support</a>
                                                                     </div>
                                                                 </li>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}">Eye Support</a>
+                                                                        <a href="">Eye Support</a>
                                                                     </div>
                                                                 </li>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}">Nose ear throat</a>
+                                                                        <a href="">Nose ear throat</a>
                                                                     </div>
                                                                 </li>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}">Functional Foods</a>
+                                                                        <a href="">Functional Foods</a>
                                                                     </div>
                                                                 </li>
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="{{route('bundle-details')}}">Natural Self Care</a>
+                                                                        <a href="">Natural Self Care</a>
                                                                     </div>
                                                                 </li>
                                                             </ul>
@@ -450,21 +450,21 @@
                                                             <span class="accordion-click"><i class="fas fa-angle-down"></i></span>
                                                         </div>
                                                         <ul class="list-unstyled">
-                                                            <li><a href="{{route('bundle-details')}}">Digestion support, Colon, Stomach, Gallbladder Support</a></li>
-                                                            <li><a href="{{route('bundle-details')}}">Diabetes, Insulin Resistance, weight loss </a></li>
-                                                            <li><a href="{{route('bundle-details')}}">Woman, Female Hormone, Thyroid </a></li>
-                                                            <li><a href="{{route('bundle-details')}}">Cancer Support and Prevention </a></li>
-                                                            <li><a href="{{route('bundle-details')}}">Autoimmune, Anti Inflamatory </a></li>
-                                                            <li><a href="{{route('bundle-details')}}">Bone, Joint, and Muscle </a></li>
-                                                            <li><a href="{{route('bundle-details')}}">Children’s Health/ Children Care (ages 4 and older) </a></li>
-                                                            <li><a href="{{route('bundle-details')}}">Skin Disease: Vitiligo, Psoriasis, dermatitis, etc. </a></li>
-                                                            <li><a href="{{route('bundle-details')}}">ASD, Neurological support, Autistic Brain and Cognitive enhenser </a></li>
-                                                            <li><a href="{{route('bundle-details')}}">Immune support and Vitality</a></li>
-                                                            <li><a href="{{route('bundle-details')}}">Fitness / Body Building / Protein</a></li>
-                                                            <li><a href="{{route('bundle-details')}}">Vitamins and Minerals</a></li>
-                                                            <li><a href="{{route('bundle-details')}}">Heavy Metal Cleanse</a></li>
-                                                            <li><a href="{{route('bundle-details')}}">Organ Support (Liver, Kidney)</a></li>
-                                                            <li><a href="{{route('bundle-details')}}">Fish Oils and Omegas</a></li>
+                                                            <li><a href="">Digestion support, Colon, Stomach, Gallbladder Support</a></li>
+                                                            <li><a href="">Diabetes, Insulin Resistance, weight loss </a></li>
+                                                            <li><a href="">Woman, Female Hormone, Thyroid </a></li>
+                                                            <li><a href="">Cancer Support and Prevention </a></li>
+                                                            <li><a href="">Autoimmune, Anti Inflamatory </a></li>
+                                                            <li><a href="">Bone, Joint, and Muscle </a></li>
+                                                            <li><a href="">Children’s Health/ Children Care (ages 4 and older) </a></li>
+                                                            <li><a href="">Skin Disease: Vitiligo, Psoriasis, dermatitis, etc. </a></li>
+                                                            <li><a href="">ASD, Neurological support, Autistic Brain and Cognitive enhenser </a></li>
+                                                            <li><a href="">Immune support and Vitality</a></li>
+                                                            <li><a href="">Fitness / Body Building / Protein</a></li>
+                                                            <li><a href="">Vitamins and Minerals</a></li>
+                                                            <li><a href="">Heavy Metal Cleanse</a></li>
+                                                            <li><a href="">Organ Support (Liver, Kidney)</a></li>
+                                                            <li><a href="">Fish Oils and Omegas</a></li>
                                                         </ul>
                                                     </li>
                                                     <li class="sub-mobile-menu">
