@@ -123,9 +123,11 @@ class WebController extends SidebarService
     }
 
     //search
-    public function search()
+    public function search(Request $request)
     {
-        return view('Web.Layout.pages.search');
+        $data['search'] = $request->search;
+        $data['products'] = Product::with('firstImage')->where('product_name', 'like', '%' . $data['search'] . '%')->paginate(16);
+        return view('Web.Layout.pages.search', $data);
     }
 
     //search suggestions

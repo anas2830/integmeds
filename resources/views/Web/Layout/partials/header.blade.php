@@ -13,9 +13,9 @@
                 </div>
                 <div class="col-lg-6 d-flex align-items-center">
                 <div class="wrap">
-                    <form action="">
+                    <form action="{{route('search')}}" method="GET">
                         <div class="search">
-                            <input type="text" class="searchTerm" placeholder="Search Products...." data-url="{{ route('search-suggestions') }}">
+                            <input type="text" class="searchTerm" placeholder="Search Products...." data-url="{{ route('search-suggestions') }}" name="search">
                             <button type="submit" class="searchButton">
                                 <i class="fa fa-search"></i>
                             </button>

@@ -10,7 +10,7 @@
                     <div class="col-4">
                         <div class="sbar-best-seller-img">
                             <img class="img-fluid"
-                                src="{{ asset($bestSeller->firstImage->image_url) }}"
+                                src="{{ asset($bestSeller->firstImage?->image_url) }}"
                                 alt="{{ $bestSeller->product_name }}" title="{{ $bestSeller->product_name }}">
                         </div>
                     </div>
