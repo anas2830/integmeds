@@ -18,7 +18,7 @@ Auth::routes([ 'verify' => true, 'register' => false, 'reset' => true, 'login'=>
 
 
 Route::get('/', [HomePageController::class, 'index'])->name('/');
-Route::get('/category', [WebController::class, 'category'])->name('category');
+Route::get('/category/{slug?}', [WebController::class, 'category'])->name('category');
 Route::get('/bundle', [WebController::class, 'bundle'])->name('bundle');
 Route::get('/bundle-details/{id}', [WebController::class, 'bundleDetails'])->name('bundle-details');
 Route::get('/product-details/{slug}', [WebController::class, 'productDetails'])->name('product-details');

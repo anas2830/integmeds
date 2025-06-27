@@ -155,133 +155,25 @@
                                     <li class="nav-item dropdown">
                                         <a class="nav-link dropdown-toggle" href="{{route('category')}}" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
                                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                            <li><a class="dropdown-item" href="{{route('category')}}">Supplement, Natural Medicine</a></li>
-                                            <li><a class="dropdown-item" href="{{route('category')}}">Functional Food</a></li>
-                                            <li><a class="dropdown-item" href="{{route('category')}}">Natural Self Care</a></li>
+                                            @foreach ($categories as $category)
+                                                <li><a class="dropdown-item" href="{{route('category', $category->slug)}}">{{$category->name}}</a></li>
+                                            @endforeach
                                         </ul>
                                     </li>
                                     <li class="nav-item dropdown has-megamenu">
-                                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Product Bundle</a>
+                                        <a class="nav-link dropdown-toggle" href="{{ route('bundle') }}" data-bs-toggle="dropdown">Product Bundle</a>
                                             <div class="dropdown-menu megamenu" role="menu">
                                                 <div class="row w-100 ">
                                                     <div class="col-lg-12">
                                                         <div class="mega-items-wrap">
                                                             <ul>
+                                                                @foreach ($bundles as $bundle)
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href="">Digestion support, Colon, Stomach, Gallbladder Support</a>
+                                                                        <a href={{ route('bundle', $bundle->id)  }}>{{$bundle->name}}</a>
                                                                     </div>
                                                                 </li>
-                                                                <li>
-                                                                    <div class="items-list">
-                                                                        <a href=""> Diabetes, Insulin Resistance, weight loss </a>
-                                                                    </div>
-                                                                </li>
-                                                                <li>
-                                                                    <div class="items-list">
-                                                                        <a href=""> Woman, Female Hormone, Thyroid </a>
-                                                                    </div>
-                                                                </li>
-                                                                <li>
-                                                                    <div class="items-list">
-                                                                        <a href=""> Cancer Support and Prevention </a>
-                                                                    </div>
-                                                                </li>
-                                                                <li>
-                                                                    <div class="items-list">
-                                                                        <a href=""> Autoimmune, Anti Inflamatory </a>
-                                                                    </div>
-                                                                </li>
-                                                                <li>
-                                                                    <div class="items-list">
-                                                                        <a href=""> Bone, Joint, and Muscle </a>
-                                                                    </div>
-                                                                </li>
-                                                                <li>
-                                                                    <div class="items-list">
-                                                                        <a href=""> Children’s Health/ Children Care (ages 4 and older) </a>
-                                                                    </div>
-                                                                </li>
-                                                                <li>
-                                                                    <div class="items-list">
-                                                                        <a href=""> Skin Disease: Vitiligo, Psoriasis, dermatitis, etc. </a>
-                                                                    </div>
-                                                                </li>
-                                                                <li>
-                                                                    <div class="items-list">
-                                                                        <a href=""> ASD, Neurological support, Autistic Brain and Cognitive enhenser </a>
-                                                                    </div>
-                                                                </li>
-                                                                <li>
-                                                                    <div class="items-list">
-                                                                        <a href="">Immune support and Vitality</a>
-                                                                    </div>
-                                                                </li>
-                                                                <li>
-                                                                    <div class="items-list">
-                                                                        <a href="">Fitness / Body Building / Protein</a>
-                                                                    </div>
-                                                                </li>
-                                                                <li>
-                                                                    <div class="items-list">
-                                                                        <a href="">Vitamins and Minerals</a>
-                                                                    </div>
-                                                                </li>
-                                                                <li>
-                                                                    <div class="items-list">
-                                                                        <a href="">Heavy Metal Cleanse</a>
-                                                                    </div>
-                                                                </li>
-                                                                <li>
-                                                                    <div class="items-list">
-                                                                        <a href="">Organ Support (Liver, Kidney)</a>
-                                                                    </div>
-                                                                </li>
-                                                                <li>
-                                                                    <div class="items-list">
-                                                                        <a href="">Fish Oils and Omegas</a>
-                                                                    </div>
-                                                                </li>
-                                                                <li>
-                                                                    <div class="items-list">
-                                                                        <a href="">Energy Support</a>
-                                                                    </div>
-                                                                </li>
-                                                                <li>
-                                                                    <div class="items-list">
-                                                                        <a href="">Integrated Shampoo & Conditioner Bundle</a>
-                                                                    </div>
-                                                                </li>
-                                                                <li>
-                                                                    <div class="items-list">
-                                                                        <a href="">Man’s health</a>
-                                                                    </div>
-                                                                </li>
-                                                                <li>
-                                                                    <div class="items-list">
-                                                                        <a href="">Heart support</a>
-                                                                    </div>
-                                                                </li>
-                                                                <li>
-                                                                    <div class="items-list">
-                                                                        <a href="">Eye Support</a>
-                                                                    </div>
-                                                                </li>
-                                                                <li>
-                                                                    <div class="items-list">
-                                                                        <a href="">Nose ear throat</a>
-                                                                    </div>
-                                                                </li>
-                                                                <li>
-                                                                    <div class="items-list">
-                                                                        <a href="">Functional Foods</a>
-                                                                    </div>
-                                                                </li>
-                                                                <li>
-                                                                    <div class="items-list">
-                                                                        <a href="">Natural Self Care</a>
-                                                                    </div>
-                                                                </li>
+                                                                @endforeach
                                                             </ul>
                                                         </div>
                                                     </div>

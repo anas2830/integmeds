@@ -21,12 +21,38 @@ use Illuminate\Support\Facades\Hash;
 use App\Jobs\SendResetPasswordEmailJob;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Porduct; // Assuming Porduct is a model for products
+use App\Models\ProductCategory;
 
 class WebController extends SidebarService
 {
-    public function category()
+
+    public function category($slug = null)
     {
-        return view('Web.Layout.pages.category');
+        if (!$slug) {
+            // No slug → Show latest products from all categories
+            $categoryProducts = Product::where('status', 1)
+                ->select('id', 'product_name', 'slug', 'regular_price', 'sale_price', 'discount_percentage')
+                ->orderBy('created_at', 'desc')
+                ->paginate(12); // Adjust the number of products per page as needed
+        // dd($categoryProducts);
+        } else {
+            // With slug → Show products under this category
+            $category = ProductCategory::where('slug', $slug)->firstOrFail();
+
+            // Paginate the related products directly
+            $products = $category->products()
+                ->where('status', 1)
+                ->with(['firstImage:id,product_id,image_url'])
+                ->select('id', 'product_name', 'slug', 'regular_price', 'sale_price', 'discount_percentage')
+                ->orderBy('created_at', 'desc')
+                ->paginate(12); // Use paginate instead of take/get
+            $categoryProducts = $products->appends(request()->query()); // Preserve query parameters for pagination
+        }
+
+        $productBundles = $this->productBundles();
+        $specialOffers = $this->specialOffers();
+        $categories = ProductCategory::where('status', 1)->get(['id', 'name', 'slug']);
+        return view('Web.Layout.pages.category', compact('categoryProducts', 'productBundles', 'specialOffers', 'categories'));
     }
     public function bundle()
     {

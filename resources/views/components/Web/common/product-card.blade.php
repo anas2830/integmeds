@@ -3,7 +3,6 @@
 @php
     $product = (object) $product; // In case array is passed
 @endphp
-
 <div class="items">
     <div class="common-product-box">
         <div class="common-product-img">
