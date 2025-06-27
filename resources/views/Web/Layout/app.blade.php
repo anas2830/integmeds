@@ -50,7 +50,7 @@
 	<a id="button"><i class="fas fa-angle-double-up"></i></a>
 
     <!-- quick-view-modal -->
-    @include('Web.Layout.partials.quick-view-modal')
+    <div id="quick-view-container"></div>
 
     <main>
         @yield('content')

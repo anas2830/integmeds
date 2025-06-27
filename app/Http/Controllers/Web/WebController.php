@@ -224,6 +224,32 @@ class WebController extends SidebarService
         return redirect()->back()->with('success', 'Password reset successfully');
     }
 
+    public function productQuickView(Request $request)
+    {
+        $product = Product::with([
+            'brands:id,name',
+            'categories:id,name,slug',
+            'tags:id,name',
+            'images:id,product_id,image_url',
+            'productReviews:id,product_id,rating,review,user_id',
+        ])
+        ->withAvg('productReviews', 'rating')
+        ->where('id', $request->id)
+        ->where('status', 1)
+        ->firstOrFail();
+
+        $alreadyInWishlist = false;
+        if (auth()->check()) {
+            $alreadyInWishlist = auth()->user()->wishlists()
+                ->where('product_id', $product->id)
+                ->exists();
+        }
+
+        $html = view('Web.Layout.partials.product.quick-view-modal', compact('product', 'alreadyInWishlist'))->render();
+
+        return response()->json(['html' => $html]);
+    }
+
     //contact
     public function contact()
     {

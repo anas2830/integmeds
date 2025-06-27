@@ -24,6 +24,7 @@ Route::get('/bundle-details/{id}', [WebController::class, 'bundleDetails'])->nam
 Route::get('/product-details/{slug}', [WebController::class, 'productDetails'])->name('product-details');
 Route::get('/about-us', [WebController::class, 'aboutUs'])->name('about-us');
 Route::get('/search', [WebController::class, 'search'])->name('search');
+Route::get('/product/quick-view', [WebController::class, 'productQuickView'])->name('product.quick.view');
 
 //forgot password
 Route::get('/forgot-password', [WebController::class, 'forgotPassword'])->name('forgot-password');

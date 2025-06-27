@@ -36,7 +36,7 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="inner-shop-details-content">
-                                <h4 class="title">{{$product->name}}</h4>
+                                <h4 class="title">{{$product->product_name}}</h4>
                                 <div class="inner-shop-details-meta">
                                     <ul>
                                         <li>Brands : <a href="#">Integmeds</a></li>
@@ -56,7 +56,6 @@
                                     @else
                                         <h5 class="stock-status text-danger">- Out of Stock</h5>
                                     @endif
-
                                 </div>
                                 <p>{{$product->short_description}}</p>
                                 <div class="inner-shop-details-list">
@@ -85,7 +84,6 @@
                                         <a class="cart-btn sold-out-cart">Out of Stock</a>
                                     @endif
                                     @auth
-                                        
                                         <a href="#" data-prod-id="{{ $product->id }}" class="wishlist-btn {{ $alreadyInWishlist ? 'bg-success' : '' }}" title="Wishlist"><i class="fas fa-heart"></i></a>
                                     @else
                                         <a href="{{ route('user.login') }}" class="wishlist-btn" title="Wishlist"><i class="fas fa-heart"></i></a>
@@ -341,27 +339,6 @@
             }
         });
     });
-    $(document).on('click', '.wishlist-btn', function(e) {
-            e.preventDefault();
-            const $btn = $(this);
-            const productId = $(this).data('prod-id');
-
-            $.ajax({
-                url: '{{ route("user.wishlist.add") }}',
-                method: 'POST',
-                data: {
-                    product_id: productId,
-                    _token: '{{ csrf_token() }}'
-                },
-                success: function(res) {
-                    showSuccessMessage(res.message);
-                    $btn.addClass('bg-success');
-                },
-                error: function(xhr) {
-                    
-                }
-            });
-        });
 </script>
 @endpush
 

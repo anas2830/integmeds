@@ -370,7 +370,6 @@ ul{padding:0;margin:0;}
 /* mini-cart-area */
 .mini-cart-area .offcanvas-end { width: 350px; }
 .mini-cart-area .offcanvas-body { position: relative; padding-top: 0; padding-bottom: 0; scrollbar-width: thin;}
-.mini-cart-area .offcanvas-body {  }
 .mini-cart-area .offcanvas-header{border-bottom: 1px solid #eee;}
 .mini-cart-area .offcanvas-header h5{font-size: 20px; line-height: 30px; color: var(--primary);}
 /* .mini-cart-area{ width: 324px; z-index: 10000000; } */
