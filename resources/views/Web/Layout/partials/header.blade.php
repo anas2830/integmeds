@@ -7,7 +7,7 @@
                 <div class="col-lg-3 d-flex align-items-center">
                     <a class="" href="{{route('/')}}">
                         <div class="logo d-none d-lg-block">
-                            <img class="img-fluid" src="{{asset('web_assets/images/logo/Integmeds-Logo.png')}}.webp" alt="" title="">
+                            <img class="img-fluid" src="{{asset('assets/images/logo-light.png')}}" alt="" title="">
                         </div>
                     </a>
                 </div>
@@ -15,63 +15,12 @@
                 <div class="wrap">
                     <form action="">
                         <div class="search">
-                            <input type="text" class="searchTerm" placeholder="Search Products....">
+                            <input type="text" class="searchTerm" placeholder="Search Products...." data-url="{{ route('search-suggestions') }}">
                             <button type="submit" class="searchButton">
                                 <i class="fa fa-search"></i>
                             </button>
-                            <ul class="suggestions">
-                                <li>
-                                    <a href="#">
-                                        <div class="search-suggestions-items">
-                                            <div class="search-sugge-items-img">
-                                                <img class="img-fluid" src="web_assets/images/product-img/product-new-img2.png" alt="" title="">
-                                            </div>
-                                            <div class="search-sugge-items-title-price">
-                                                <h5>Ashwagandha</h5>
-                                                <span>$21.00</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <div class="search-suggestions-items">
-                                            <div class="search-sugge-items-img">
-                                                <img class="img-fluid" src="web_assets/images/product-img/product-new-img2.png" alt="" title="">
-                                            </div>
-                                            <div class="search-sugge-items-title-price">
-                                                <h5>Ashwagandha</h5>
-                                                <span>$21.00</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <div class="search-suggestions-items">
-                                            <div class="search-sugge-items-img">
-                                                <img class="img-fluid" src="web_assets/images/product-img/product-new-img2.png" alt="" title="">
-                                            </div>
-                                            <div class="search-sugge-items-title-price">
-                                                <h5>Ashwagandha</h5>
-                                                <span>$21.00</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <div class="search-suggestions-items">
-                                            <div class="search-sugge-items-img">
-                                                <img class="img-fluid" src="web_assets/images/product-img/product-new-img2.png" alt="" title="">
-                                            </div>
-                                            <div class="search-sugge-items-title-price">
-                                                <h5>Ashwagandha</h5>
-                                                <span>$21.00</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
+                            <ul class="suggestions" >
+
                             </ul>
                         </div>
                     </form>

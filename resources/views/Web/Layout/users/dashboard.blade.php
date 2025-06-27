@@ -15,7 +15,7 @@
                         <h1>Dashboard</h1>
                     </div>
                     <div class="dashboard-content text-center">
-                        <h5>Welcome to Dashboard</h5>
+                        <h5>Welcome to Integmeds Dashboard</h5>
                     </div>
                     <div class="dashboard-info-show">
                         <div class="row">
@@ -27,7 +27,7 @@
                                                 <i class="fa-brands fa-dropbox"></i>
                                                 <div class="dashorder-box-content">
                                                     <h3>TOTAL ORDERS</h3>
-                                                    <span>40</span>
+                                                    <span>{{$user->orders->count()}}</span>
                                                 </div>
                                             </a>
                                         </div>
@@ -38,7 +38,7 @@
                                                 <i class="fa-solid fa-spinner"></i>
                                                 <div class="dashorder-box-content">
                                                     <h3>TOTAL PENDING ORDER</h3>
-                                                    <span>17</span>
+                                                    <span>{{$user->orders->where('order_status', 'pending')->count()}}</span>
                                                 </div>
                                             </a>
                                         </div>
@@ -49,7 +49,7 @@
                                                 <i class="fa-solid fa-check-double"></i>
                                                 <div class="dashorder-box-content">
                                                     <h3>TOTAL SUCCESS ORDERS</h3>
-                                                    <span>34</span>
+                                                    <span>{{$user->orders->where('order_status', 'completed')->count()}}</span>
                                                 </div>
                                             </a>
                                         </div>

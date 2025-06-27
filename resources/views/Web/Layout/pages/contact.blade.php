@@ -98,7 +98,7 @@
                                                     <input type="text" class="form-control" name="captcha" placeholder="Enter Captcha" required>
                                                 
                                                 @if($errors->has('captcha'))
-                                                    <small class="text-danger">{{ $errors->first('captcha') }}</small>
+                                                    <small class="text-danger">Captcha is required</small>
                                                 @endif
                                             </div>
                                         </div>

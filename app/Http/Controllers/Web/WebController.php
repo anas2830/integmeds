@@ -121,9 +121,34 @@ class WebController extends SidebarService
         $data['clients'] = Client::where('status', 1)->get();
         return view('Web.Layout.pages.about-us', $data);
     }
+
+    //search
     public function search()
     {
         return view('Web.Layout.pages.search');
+    }
+
+    //search suggestions
+    public function searchSuggestions(Request $request)
+    {
+        $query = $request->query('query');
+        $products = Product::with('firstImage')
+        ->where('product_name', 'like', '%' . $query . '%')
+        ->select('id', 'product_name', 'regular_price', 'sale_price', 'discount_percentage', 'slug')
+        ->take(5)
+        ->get()
+        ->map(function($product){
+            return [
+                'id' => $product->id,
+                'product_name' => $product->product_name,
+                'regular_price' => $product->regular_price,
+                'sale_price' => $product->sale_price,
+                'discount_percentage' => $product->discount_percentage, 
+                'slug' => $product->slug,
+                'image_url' => $product->firstImage?->image_url ? asset($product->firstImage?->image_url) : asset('web_assets/images/product-img/default.jpg'),
+            ];
+        });
+        return response()->json($products);
     }
 
     //forgot password

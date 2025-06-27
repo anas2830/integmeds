@@ -24,6 +24,7 @@ Route::get('/bundle-details/{id}', [WebController::class, 'bundleDetails'])->nam
 Route::get('/product-details/{slug}', [WebController::class, 'productDetails'])->name('product-details');
 Route::get('/about-us', [WebController::class, 'aboutUs'])->name('about-us');
 Route::get('/search', [WebController::class, 'search'])->name('search');
+Route::get('/search-suggestions', [WebController::class, 'searchSuggestions'])->name('search-suggestions');
 
 //forgot password
 Route::get('/forgot-password', [WebController::class, 'forgotPassword'])->name('forgot-password');
@@ -61,6 +62,7 @@ Route::prefix('user')->group(function () {
 
         // Orders
         Route::get('/orders', [UserController::class, 'orders'])->name('user.orders');
+        Route::get('/order-invoice/{id}', [UserController::class, 'orderInvoice'])->name('order-invoice');
 
         // Account Details
         Route::get('/account', [UserController::class, 'accountDetails'])->name('user.account');

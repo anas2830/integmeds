@@ -289,13 +289,13 @@
                         <div class="col-lg-3 col-6">
                             <div class="common-product-box">
                                 <div class="common-product-img">
-                                    <a href="{{ route('product-details') }}">
+                                    <a href="#">
                                         <img class="img-fluid" src="{{asset('web_assets/images/product-img/product-new-img2.png')}}" alt="" title="">
                                     </a>
                                 </div>
                                 <div class="common-products-info-wrap">
                                     <div class="comm-products-title">
-                                        <h3><a href="{{ route('product-details') }}">Sugar Balancer</a></h3>
+                                        <h3><a href="#">Sugar Balancer</a></h3>
                                         <p><a href="{{ route('category') }}"> Diabetes, Insulin Resistance</a></p>
                                     </div>
                                     <div class="rating">
@@ -325,13 +325,13 @@
                         <div class="col-lg-3 col-6">
                             <div class="common-product-box">
                                 <div class="common-product-img">
-                                    <a href="{{ route('product-details') }}">
+                                    <a href="#">
                                         <img class="img-fluid" src="{{asset('web_assets/images/product-img/product-new-img2.png')}}" alt="" title="">
                                     </a>
                                 </div>
                                 <div class="common-products-info-wrap">
                                     <div class="comm-products-title">
-                                        <h3><a href="{{ route('product-details') }}">Sugar Balancer</a></h3>
+                                        <h3><a href="#">Sugar Balancer</a></h3>
                                         <p><a href="{{ route('category') }}"> Diabetes, Insulin Resistance</a></p>
                                     </div>
                                     <div class="rating">
@@ -361,13 +361,13 @@
                         <div class="col-lg-3 col-6">
                             <div class="common-product-box">
                                 <div class="common-product-img">
-                                    <a href="{{ route('product-details') }}">
+                                    <a href="#">
                                         <img class="img-fluid" src="{{asset('web_assets/images/product-img/product-new-img2.png')}}" alt="" title="">
                                     </a>
                                 </div>
                                 <div class="common-products-info-wrap">
                                     <div class="comm-products-title">
-                                        <h3><a href="{{ route('product-details') }}">Sugar Balancer</a></h3>
+                                        <h3><a href="#">Sugar Balancer</a></h3>
                                         <p><a href="{{ route('category') }}"> Diabetes, Insulin Resistance</a></p>
                                     </div>
                                     <div class="rating">
@@ -397,13 +397,13 @@
                         <div class="col-lg-3 col-6">
                             <div class="common-product-box">
                                 <div class="common-product-img">
-                                    <a href="{{ route('product-details') }}">
+                                    <a href="#">
                                         <img class="img-fluid" src="{{asset('web_assets/images/product-img/product-new-img2.png')}}" alt="" title="">
                                     </a>
                                 </div>
                                 <div class="common-products-info-wrap">
                                     <div class="comm-products-title">
-                                        <h3><a href="{{ route('product-details') }}">Sugar Balancer</a></h3>
+                                        <h3><a href="#">Sugar Balancer</a></h3>
                                         <p><a href="{{ route('category') }}"> Diabetes, Insulin Resistance</a></p>
                                     </div>
                                     <div class="rating">
@@ -433,13 +433,13 @@
                         <div class="col-lg-3 col-6">
                             <div class="common-product-box">
                                 <div class="common-product-img">
-                                    <a href="{{ route('product-details') }}">
+                                    <a href="#">
                                         <img class="img-fluid" src="{{asset('web_assets/images/product-img/product-new-img2.png')}}" alt="" title="">
                                     </a>
                                 </div>
                                 <div class="common-products-info-wrap">
                                     <div class="comm-products-title">
-                                        <h3><a href="{{ route('product-details') }}">Sugar Balancer</a></h3>
+                                        <h3><a href="#">Sugar Balancer</a></h3>
                                         <p><a href="{{ route('category') }}"> Diabetes, Insulin Resistance</a></p>
                                     </div>
                                     <div class="rating">
@@ -469,13 +469,13 @@
                         <div class="col-lg-3 col-6">
                             <div class="common-product-box">
                                 <div class="common-product-img">
-                                    <a href="{{ route('product-details') }}">
+                                    <a href="#">
                                         <img class="img-fluid" src="{{asset('web_assets/images/product-img/product-new-img2.png')}}" alt="" title="">
                                     </a>
                                 </div>
                                 <div class="common-products-info-wrap">
                                     <div class="comm-products-title">
-                                        <h3><a href="{{ route('product-details') }}">Sugar Balancer</a></h3>
+                                        <h3><a href="#">Sugar Balancer</a></h3>
                                         <p><a href="{{ route('category') }}"> Diabetes, Insulin Resistance</a></p>
                                     </div>
                                     <div class="rating">
@@ -505,13 +505,13 @@
                         <div class="col-lg-3 col-6">
                             <div class="common-product-box">
                                 <div class="common-product-img">
-                                    <a href="{{ route('product-details') }}">
+                                    <a href="#">
                                         <img class="img-fluid" src="{{asset('web_assets/images/product-img/product-new-img2.png')}}" alt="" title="">
                                     </a>
                                 </div>
                                 <div class="common-products-info-wrap">
                                     <div class="comm-products-title">
-                                        <h3><a href="{{ route('product-details') }}">Sugar Balancer</a></h3>
+                                        <h3><a href="#">Sugar Balancer</a></h3>
                                         <p><a href="{{ route('category') }}"> Diabetes, Insulin Resistance</a></p>
                                     </div>
                                     <div class="rating">
@@ -541,13 +541,13 @@
                         <div class="col-lg-3 col-6">
                             <div class="common-product-box">
                                 <div class="common-product-img">
-                                    <a href="{{ route('product-details') }}">
+                                    <a href="#">
                                         <img class="img-fluid" src="{{asset('web_assets/images/product-img/product-new-img2.png')}}" alt="" title="">
                                     </a>
                                 </div>
                                 <div class="common-products-info-wrap">
                                     <div class="comm-products-title">
-                                        <h3><a href="{{ route('product-details') }}">Sugar Balancer</a></h3>
+                                        <h3><a href="#">Sugar Balancer</a></h3>
                                         <p><a href="{{ route('category') }}"> Diabetes, Insulin Resistance</a></p>
                                     </div>
                                     <div class="rating">
@@ -577,13 +577,13 @@
                         <div class="col-lg-3 col-6">
                             <div class="common-product-box">
                                 <div class="common-product-img">
-                                    <a href="{{ route('product-details') }}">
+                                    <a href="#">
                                         <img class="img-fluid" src="{{asset('web_assets/images/product-img/product-new-img2.png')}}" alt="" title="">
                                     </a>
                                 </div>
                                 <div class="common-products-info-wrap">
                                     <div class="comm-products-title">
-                                        <h3><a href="{{ route('product-details') }}">Sugar Balancer</a></h3>
+                                        <h3><a href="#">Sugar Balancer</a></h3>
                                         <p><a href="{{ route('category') }}"> Diabetes, Insulin Resistance</a></p>
                                     </div>
                                     <div class="rating">
@@ -613,13 +613,13 @@
                         <div class="col-lg-3 col-6">
                             <div class="common-product-box">
                                 <div class="common-product-img">
-                                    <a href="{{ route('product-details') }}">
+                                    <a href="#">
                                         <img class="img-fluid" src="{{asset('web_assets/images/product-img/product-new-img2.png')}}" alt="" title="">
                                     </a>
                                 </div>
                                 <div class="common-products-info-wrap">
                                     <div class="comm-products-title">
-                                        <h3><a href="{{ route('product-details') }}">Sugar Balancer</a></h3>
+                                        <h3><a href="#">Sugar Balancer</a></h3>
                                         <p><a href="{{ route('category') }}"> Diabetes, Insulin Resistance</a></p>
                                     </div>
                                     <div class="rating">
@@ -649,13 +649,13 @@
                         <div class="col-lg-3 col-6">
                             <div class="common-product-box">
                                 <div class="common-product-img">
-                                    <a href="{{ route('product-details') }}">
+                                    <a href="#">
                                         <img class="img-fluid" src="{{asset('web_assets/images/product-img/product-new-img2.png')}}" alt="" title="">
                                     </a>
                                 </div>
                                 <div class="common-products-info-wrap">
                                     <div class="comm-products-title">
-                                        <h3><a href="{{ route('product-details') }}">Sugar Balancer</a></h3>
+                                        <h3><a href="#">Sugar Balancer</a></h3>
                                         <p><a href="{{ route('category') }}"> Diabetes, Insulin Resistance</a></p>
                                     </div>
                                     <div class="rating">
@@ -685,13 +685,13 @@
                         <div class="col-lg-3 col-6">
                             <div class="common-product-box">
                                 <div class="common-product-img">
-                                    <a href="{{ route('product-details') }}">
+                                    <a href="#">
                                         <img class="img-fluid" src="{{asset('web_assets/images/product-img/product-new-img2.png')}}" alt="" title="">
                                     </a>
                                 </div>
                                 <div class="common-products-info-wrap">
                                     <div class="comm-products-title">
-                                        <h3><a href="{{ route('product-details') }}">Sugar Balancer</a></h3>
+                                        <h3><a href="#">Sugar Balancer</a></h3>
                                         <p><a href="{{ route('category') }}"> Diabetes, Insulin Resistance</a></p>
                                     </div>
                                     <div class="rating">
