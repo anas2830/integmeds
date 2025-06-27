@@ -62,7 +62,7 @@ Route::group(['middleware' => 'auth.admin'], function () {
         Route::post('/ckeditor/upload', [FileUploadController::class, 'temporaryUpload'])->name('ckeditor.upload');
 
         // Product
-        Route::resource('/product', ProductController::class);
+        Route::resource('/product', ProductController::class)->except(['show']);
         Route::put('/product/status/{id}', [ProductController::class, 'status'])->name('product.status');
 
         // Product bundle

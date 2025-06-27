@@ -18,13 +18,14 @@ Auth::routes([ 'verify' => true, 'register' => false, 'reset' => true, 'login'=>
 
 
 Route::get('/', [HomePageController::class, 'index'])->name('/');
-Route::get('/category', [WebController::class, 'category'])->name('category');
+Route::get('/category/{slug?}', [WebController::class, 'category'])->name('category');
 Route::get('/bundle', [WebController::class, 'bundle'])->name('bundle');
 Route::get('/bundle-details/{id}', [WebController::class, 'bundleDetails'])->name('bundle-details');
 Route::get('/product-details/{slug}', [WebController::class, 'productDetails'])->name('product-details');
 Route::get('/about-us', [WebController::class, 'aboutUs'])->name('about-us');
 Route::get('/search', [WebController::class, 'search'])->name('search');
 Route::get('/search-suggestions', [WebController::class, 'searchSuggestions'])->name('search-suggestions');
+Route::get('/product/quick-view', [WebController::class, 'productQuickView'])->name('product.quick.view');
 
 //forgot password
 Route::get('/forgot-password', [WebController::class, 'forgotPassword'])->name('forgot-password');

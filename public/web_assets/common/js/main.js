@@ -70,27 +70,27 @@ $(document).ready(function () {
     });
 
   //  quick-view-modal-slider-js 
-    $(document).ready(function () {
-        var swiper = new Swiper(".modal-slide-2", {
-            spaceBetween: 10,
-            slidesPerView: 4,
-            spaceBetween: 10,
-            loop: true,
-            freeMode: true,
-            watchSlidesProgress: true,
-        });
-        var swiper2 = new Swiper(".modal-slide-1", {
-            spaceBetween: 10,
-            loop: true,
-            navigation: {
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev",
-            },
-            thumbs: {
-                swiper: swiper,
-            },
-        });
-    }); 
+    // $(document).ready(function () {
+    //     var swiper = new Swiper(".modal-slide-2", {
+    //         spaceBetween: 10,
+    //         slidesPerView: 4,
+    //         spaceBetween: 10,
+    //         loop: true,
+    //         freeMode: true,
+    //         watchSlidesProgress: true,
+    //     });
+    //     var swiper2 = new Swiper(".modal-slide-1", {
+    //         spaceBetween: 10,
+    //         loop: true,
+    //         navigation: {
+    //             nextEl: ".swiper-button-next",
+    //             prevEl: ".swiper-button-prev",
+    //         },
+    //         thumbs: {
+    //             swiper: swiper,
+    //         },
+    //     });
+    // }); 
 
 // cart-plus-minus
     $(".quickview-cart-plus-minus").append('<div class="dec qtybutton">-</div><div class="inc qtybutton">+</div>');

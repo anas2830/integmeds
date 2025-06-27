@@ -3,7 +3,6 @@
 @php
     $product = (object) $product; // In case array is passed
 @endphp
-
 <div class="items">
     <div class="common-product-box">
         <div class="common-product-img">
@@ -51,9 +50,7 @@
         @endif
 
         <div class="quick-view">
-            <a href="#" title="Quick View" data-bs-toggle="modal" data-bs-target="#quick-view-modal">
-                <i class="fa-regular fa-eye"></i>
-            </a>
+            <a href="#" class="quick-view-btn" title="Quick View" data-id="{{ $product->id ?? '' }}"> <i class="fa-regular fa-eye"></i> </a>
         </div>
     </div>
 </div>
