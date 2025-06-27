@@ -76,10 +76,16 @@ class UserService
         return $orders;
     }
 
+    public function getOrder($id)
+    {
+        $order = Order::with('items.product')->find($id);
+        return $order;
+    }
+
     //account
     public function getUser()
     {
-        return User::where('id', auth()->id())->first();
+        return User::with('orders')->where('id', auth()->id())->first();
     }
 
     public function updateAccount($request)

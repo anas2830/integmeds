@@ -280,467 +280,56 @@
                         <div class="row">
                             <div class="col-md-12 d-flex align-items-center">
                                 <div class="page-counter">
-                                    <p>Search by Sugar Balancer</p>
+                                    <h6>Search by : <span class="">{{$search}}</span></h6>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row gx-3">
-                        <div class="col-lg-3 col-6">
-                            <div class="common-product-box">
-                                <div class="common-product-img">
-                                    <a href="{{ route('product-details') }}">
-                                        <img class="img-fluid" src="{{asset('web_assets/images/product-img/product-new-img2.png')}}" alt="" title="">
-                                    </a>
-                                </div>
-                                <div class="common-products-info-wrap">
-                                    <div class="comm-products-title">
-                                        <h3><a href="{{ route('product-details') }}">Sugar Balancer</a></h3>
-                                        <p><a href="{{ route('category') }}"> Diabetes, Insulin Resistance</a></p>
+                        @foreach ($products as $product)
+                            <div class="col-lg-3 col-6">
+                                <div class="common-product-box">
+                                    <div class="common-product-img">
+                                        <a href="#">
+                                            <img class="img-fluid" src="{{asset('web_assets/images/product-img/product-new-img2.png')}}" alt="" title="">
+                                        </a>
                                     </div>
-                                    <div class="rating">
-                                        <div class="rating-start">
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star-half"></i>
+                                    <div class="common-products-info-wrap">
+                                        <div class="comm-products-title">
+                                            <h3><a href="#">Sugar Balancer</a></h3>
+                                            <p><a href="{{ route('category') }}"> Diabetes, Insulin Resistance</a></p>
+                                        </div>
+                                        <div class="rating">
+                                            <div class="rating-start">
+                                                <i class="fa-solid fa-star"></i>
+                                                <i class="fa-solid fa-star"></i>
+                                                <i class="fa-solid fa-star"></i>
+                                                <i class="fa-solid fa-star"></i>
+                                                <i class="fa-solid fa-star-half"></i>
+                                            </div>
+                                        </div>
+                                        <div class="common-price-and-card">
+                                            <div class="common-product-price">
+                                                <span class="old-price">$64.95</span>
+                                                <span class="new-price">$25.08</span>
+                                            </div>
+                                            <div class="common-cart-wrap">
+                                                <a class="btn" href="#">Add to cart</a>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="common-price-and-card">
-                                        <div class="common-product-price">
-                                            <span class="old-price">$64.95</span>
-                                            <span class="new-price">$25.08</span>
-                                        </div>
-                                        <div class="common-cart-wrap">
-                                            <a class="btn" href="#">Add to cart</a>
-                                        </div>
+                                    <div class="quick-view">
+                                        <a href="#" title="Quick View" data-bs-toggle="modal" data-bs-target="#quick-view-modal" ><i class="fa-regular fa-eye"></i></a>
                                     </div>
-                                </div>
-                                <div class="quick-view">
-                                    <a href="#" title="Quick View" data-bs-toggle="modal" data-bs-target="#quick-view-modal" ><i class="fa-regular fa-eye"></i></a>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-3 col-6">
-                            <div class="common-product-box">
-                                <div class="common-product-img">
-                                    <a href="{{ route('product-details') }}">
-                                        <img class="img-fluid" src="{{asset('web_assets/images/product-img/product-new-img2.png')}}" alt="" title="">
-                                    </a>
-                                </div>
-                                <div class="common-products-info-wrap">
-                                    <div class="comm-products-title">
-                                        <h3><a href="{{ route('product-details') }}">Sugar Balancer</a></h3>
-                                        <p><a href="{{ route('category') }}"> Diabetes, Insulin Resistance</a></p>
-                                    </div>
-                                    <div class="rating">
-                                        <div class="rating-start">
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star-half"></i>
-                                        </div>
-                                    </div>
-                                    <div class="common-price-and-card">
-                                        <div class="common-product-price">
-                                            <span class="old-price">$64.95</span>
-                                            <span class="new-price">$25.08</span>
-                                        </div>
-                                        <div class="common-cart-wrap">
-                                            <a class="btn" href="#">Add to cart</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="quick-view">
-                                    <a href="#"><i class="fa-regular fa-eye"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-6">
-                            <div class="common-product-box">
-                                <div class="common-product-img">
-                                    <a href="{{ route('product-details') }}">
-                                        <img class="img-fluid" src="{{asset('web_assets/images/product-img/product-new-img2.png')}}" alt="" title="">
-                                    </a>
-                                </div>
-                                <div class="common-products-info-wrap">
-                                    <div class="comm-products-title">
-                                        <h3><a href="{{ route('product-details') }}">Sugar Balancer</a></h3>
-                                        <p><a href="{{ route('category') }}"> Diabetes, Insulin Resistance</a></p>
-                                    </div>
-                                    <div class="rating">
-                                        <div class="rating-start">
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star-half"></i>
-                                        </div>
-                                    </div>
-                                    <div class="common-price-and-card">
-                                        <div class="common-product-price">
-                                            <span class="old-price">$64.95</span>
-                                            <span class="new-price">$25.08</span>
-                                        </div>
-                                        <div class="common-cart-wrap">
-                                            <a class="btn" href="#">Add to cart</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="quick-view">
-                                    <a href="#"><i class="fa-regular fa-eye"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-6">
-                            <div class="common-product-box">
-                                <div class="common-product-img">
-                                    <a href="{{ route('product-details') }}">
-                                        <img class="img-fluid" src="{{asset('web_assets/images/product-img/product-new-img2.png')}}" alt="" title="">
-                                    </a>
-                                </div>
-                                <div class="common-products-info-wrap">
-                                    <div class="comm-products-title">
-                                        <h3><a href="{{ route('product-details') }}">Sugar Balancer</a></h3>
-                                        <p><a href="{{ route('category') }}"> Diabetes, Insulin Resistance</a></p>
-                                    </div>
-                                    <div class="rating">
-                                        <div class="rating-start">
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star-half"></i>
-                                        </div>
-                                    </div>
-                                    <div class="common-price-and-card">
-                                        <div class="common-product-price">
-                                            <span class="old-price">$64.95</span>
-                                            <span class="new-price">$25.08</span>
-                                        </div>
-                                        <div class="common-cart-wrap">
-                                            <a class="btn" href="#">Add to cart</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="quick-view">
-                                    <a href="#"><i class="fa-regular fa-eye"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-6">
-                            <div class="common-product-box">
-                                <div class="common-product-img">
-                                    <a href="{{ route('product-details') }}">
-                                        <img class="img-fluid" src="{{asset('web_assets/images/product-img/product-new-img2.png')}}" alt="" title="">
-                                    </a>
-                                </div>
-                                <div class="common-products-info-wrap">
-                                    <div class="comm-products-title">
-                                        <h3><a href="{{ route('product-details') }}">Sugar Balancer</a></h3>
-                                        <p><a href="{{ route('category') }}"> Diabetes, Insulin Resistance</a></p>
-                                    </div>
-                                    <div class="rating">
-                                        <div class="rating-start">
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star-half"></i>
-                                        </div>
-                                    </div>
-                                    <div class="common-price-and-card">
-                                        <div class="common-product-price">
-                                            <span class="old-price">$64.95</span>
-                                            <span class="new-price">$25.08</span>
-                                        </div>
-                                        <div class="common-cart-wrap">
-                                            <a class="btn" href="#">Add to cart</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="quick-view">
-                                    <a href="#"><i class="fa-regular fa-eye"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-6">
-                            <div class="common-product-box">
-                                <div class="common-product-img">
-                                    <a href="{{ route('product-details') }}">
-                                        <img class="img-fluid" src="{{asset('web_assets/images/product-img/product-new-img2.png')}}" alt="" title="">
-                                    </a>
-                                </div>
-                                <div class="common-products-info-wrap">
-                                    <div class="comm-products-title">
-                                        <h3><a href="{{ route('product-details') }}">Sugar Balancer</a></h3>
-                                        <p><a href="{{ route('category') }}"> Diabetes, Insulin Resistance</a></p>
-                                    </div>
-                                    <div class="rating">
-                                        <div class="rating-start">
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star-half"></i>
-                                        </div>
-                                    </div>
-                                    <div class="common-price-and-card">
-                                        <div class="common-product-price">
-                                            <span class="old-price">$64.95</span>
-                                            <span class="new-price">$25.08</span>
-                                        </div>
-                                        <div class="common-cart-wrap">
-                                            <a class="btn" href="#">Add to cart</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="quick-view">
-                                    <a href="#"><i class="fa-regular fa-eye"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-6">
-                            <div class="common-product-box">
-                                <div class="common-product-img">
-                                    <a href="{{ route('product-details') }}">
-                                        <img class="img-fluid" src="{{asset('web_assets/images/product-img/product-new-img2.png')}}" alt="" title="">
-                                    </a>
-                                </div>
-                                <div class="common-products-info-wrap">
-                                    <div class="comm-products-title">
-                                        <h3><a href="{{ route('product-details') }}">Sugar Balancer</a></h3>
-                                        <p><a href="{{ route('category') }}"> Diabetes, Insulin Resistance</a></p>
-                                    </div>
-                                    <div class="rating">
-                                        <div class="rating-start">
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star-half"></i>
-                                        </div>
-                                    </div>
-                                    <div class="common-price-and-card">
-                                        <div class="common-product-price">
-                                            <span class="old-price">$64.95</span>
-                                            <span class="new-price">$25.08</span>
-                                        </div>
-                                        <div class="common-cart-wrap">
-                                            <a class="btn" href="#">Add to cart</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="quick-view">
-                                    <a href="#"><i class="fa-regular fa-eye"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-6">
-                            <div class="common-product-box">
-                                <div class="common-product-img">
-                                    <a href="{{ route('product-details') }}">
-                                        <img class="img-fluid" src="{{asset('web_assets/images/product-img/product-new-img2.png')}}" alt="" title="">
-                                    </a>
-                                </div>
-                                <div class="common-products-info-wrap">
-                                    <div class="comm-products-title">
-                                        <h3><a href="{{ route('product-details') }}">Sugar Balancer</a></h3>
-                                        <p><a href="{{ route('category') }}"> Diabetes, Insulin Resistance</a></p>
-                                    </div>
-                                    <div class="rating">
-                                        <div class="rating-start">
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star-half"></i>
-                                        </div>
-                                    </div>
-                                    <div class="common-price-and-card">
-                                        <div class="common-product-price">
-                                            <span class="old-price">$64.95</span>
-                                            <span class="new-price">$25.08</span>
-                                        </div>
-                                        <div class="common-cart-wrap">
-                                            <a class="btn" href="#">Add to cart</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="quick-view">
-                                    <a href="#"><i class="fa-regular fa-eye"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-6">
-                            <div class="common-product-box">
-                                <div class="common-product-img">
-                                    <a href="{{ route('product-details') }}">
-                                        <img class="img-fluid" src="{{asset('web_assets/images/product-img/product-new-img2.png')}}" alt="" title="">
-                                    </a>
-                                </div>
-                                <div class="common-products-info-wrap">
-                                    <div class="comm-products-title">
-                                        <h3><a href="{{ route('product-details') }}">Sugar Balancer</a></h3>
-                                        <p><a href="{{ route('category') }}"> Diabetes, Insulin Resistance</a></p>
-                                    </div>
-                                    <div class="rating">
-                                        <div class="rating-start">
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star-half"></i>
-                                        </div>
-                                    </div>
-                                    <div class="common-price-and-card">
-                                        <div class="common-product-price">
-                                            <span class="old-price">$64.95</span>
-                                            <span class="new-price">$25.08</span>
-                                        </div>
-                                        <div class="common-cart-wrap">
-                                            <a class="btn" href="#">Add to cart</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="quick-view">
-                                    <a href="#"><i class="fa-regular fa-eye"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-6">
-                            <div class="common-product-box">
-                                <div class="common-product-img">
-                                    <a href="{{ route('product-details') }}">
-                                        <img class="img-fluid" src="{{asset('web_assets/images/product-img/product-new-img2.png')}}" alt="" title="">
-                                    </a>
-                                </div>
-                                <div class="common-products-info-wrap">
-                                    <div class="comm-products-title">
-                                        <h3><a href="{{ route('product-details') }}">Sugar Balancer</a></h3>
-                                        <p><a href="{{ route('category') }}"> Diabetes, Insulin Resistance</a></p>
-                                    </div>
-                                    <div class="rating">
-                                        <div class="rating-start">
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star-half"></i>
-                                        </div>
-                                    </div>
-                                    <div class="common-price-and-card">
-                                        <div class="common-product-price">
-                                            <span class="old-price">$64.95</span>
-                                            <span class="new-price">$25.08</span>
-                                        </div>
-                                        <div class="common-cart-wrap">
-                                            <a class="btn" href="#">Add to cart</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="quick-view">
-                                    <a href="#"><i class="fa-regular fa-eye"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-6">
-                            <div class="common-product-box">
-                                <div class="common-product-img">
-                                    <a href="{{ route('product-details') }}">
-                                        <img class="img-fluid" src="{{asset('web_assets/images/product-img/product-new-img2.png')}}" alt="" title="">
-                                    </a>
-                                </div>
-                                <div class="common-products-info-wrap">
-                                    <div class="comm-products-title">
-                                        <h3><a href="{{ route('product-details') }}">Sugar Balancer</a></h3>
-                                        <p><a href="{{ route('category') }}"> Diabetes, Insulin Resistance</a></p>
-                                    </div>
-                                    <div class="rating">
-                                        <div class="rating-start">
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star-half"></i>
-                                        </div>
-                                    </div>
-                                    <div class="common-price-and-card">
-                                        <div class="common-product-price">
-                                            <span class="old-price">$64.95</span>
-                                            <span class="new-price">$25.08</span>
-                                        </div>
-                                        <div class="common-cart-wrap">
-                                            <a class="btn" href="#">Add to cart</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="quick-view">
-                                    <a href="#"><i class="fa-regular fa-eye"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-6">
-                            <div class="common-product-box">
-                                <div class="common-product-img">
-                                    <a href="{{ route('product-details') }}">
-                                        <img class="img-fluid" src="{{asset('web_assets/images/product-img/product-new-img2.png')}}" alt="" title="">
-                                    </a>
-                                </div>
-                                <div class="common-products-info-wrap">
-                                    <div class="comm-products-title">
-                                        <h3><a href="{{ route('product-details') }}">Sugar Balancer</a></h3>
-                                        <p><a href="{{ route('category') }}"> Diabetes, Insulin Resistance</a></p>
-                                    </div>
-                                    <div class="rating">
-                                        <div class="rating-start">
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star-half"></i>
-                                        </div>
-                                    </div>
-                                    <div class="common-price-and-card">
-                                        <div class="common-product-price">
-                                            <span class="old-price">$64.95</span>
-                                            <span class="new-price">$25.08</span>
-                                        </div>
-                                        <div class="common-cart-wrap">
-                                            <a class="btn" href="#">Add to cart</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="quick-view">
-                                    <a href="#"><i class="fa-regular fa-eye"></i></a>
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
+
                     <div class="row">
                         <div class="col-lg-12 d-flex justify-content-end">
                             <div class="pagination-area">
-                                <nav aria-label="Page navigation example">
-                                    <ul class="pagination">
-                                        <li class="page-item">
-                                            <a class="page-link" href="#" aria-label="Previous">
-                                                <span aria-hidden="true">&laquo;</span>
-                                            </a>
-                                        </li>
-                                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                        <li class="page-item" aria-current="page">
-                                        <a class="page-link" href="#">2</a>
-                                        </li>
-                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#" aria-label="Next">
-                                                <span aria-hidden="true">&raquo;</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </nav>
+                                {{ $products->appends(request()->except('page'))->links() }}
                             </div>
                         </div>
                     </div>

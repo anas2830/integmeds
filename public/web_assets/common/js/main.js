@@ -132,41 +132,88 @@ $(document).ready(function () {
 
 //    rating-select-js
     $(document).ready(function () {
-    var selectedRating = 0;
+        var selectedRating = 0;
 
-    $('.form-rating i').on('click', function () {
-        var rating = $(this).data('rating');
+        $('.form-rating i').on('click', function () {
+            var rating = $(this).data('rating');
 
-        if (rating === selectedRating) {
-            $(this).parent().find('i').removeClass('selected');
-            selectedRating = 0;
-            console.log("Rating cleared");
-        } else {
+            if (rating === selectedRating) {
+                $(this).parent().find('i').removeClass('selected');
+                selectedRating = 0;
+                console.log("Rating cleared");
+            } else {
 
-            $(this).parent().find('i').removeClass('selected');
-            $(this).parent().find('i').each(function (index) {
-                if (index < rating) {
-                    $(this).addClass('selected');
+                $(this).parent().find('i').removeClass('selected');
+                $(this).parent().find('i').each(function (index) {
+                    if (index < rating) {
+                        $(this).addClass('selected');
+                    }
+                });
+                selectedRating = rating;
+                console.log("Selected rating: " + rating);
+            }
+
+            $('#rating-value').val(selectedRating);
+        });
+    });
+
+    //  hearder-search-suggestions-js
+    $('.searchTerm').on('input', function () {
+        console.log('input');
+        let query = $(this).val();
+        let url = $(this).data('url');
+        if (query.length > 2) {
+            $.ajax({
+                url: url,
+                method: "GET",
+                data: { query: query },
+                success: function (response) {
+                    let html = '';
+                    if (response.length > 0) {
+                        $.each(response, function (i, product) {
+                            html += `
+                                <li>
+                                    <a href="/product/${product.slug}">
+                                        <div class="search-suggestions-items">
+                                            <div class="search-sugge-items-img">
+                                                <img class="img-fluid" src="${product.image_url}" alt="${product.product_name}">
+                                            </div>
+                                            <div class="search-sugge-items-title-price">
+                                                <h5>${product.product_name}</h5>
+                                                <div class="price-info">
+                                                    <span class="sale-price">৳${product.sale_price}</span>
+                                                    ${product.regular_price && product.regular_price != product.sale_price ? `<del class="regular-price">৳${product.regular_price}</del>` : ''}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            `;
+                        });
+
+                        if (response.length === 5) {
+                            html += `
+                                <li class="view-all-suggestion">
+                                    <a href="/search?query=${encodeURIComponent(query)}">View all results</a>
+                                </li> 
+                            `;
+                        }
+                    } else {
+                        html = `<li class="no-product-found"><p>No product found</p></li>`;
+                    }
+
+                    $('.suggestions').html(html).show();
                 }
             });
-            selectedRating = rating;
-            console.log("Selected rating: " + rating);
+        } else {
+            $('.suggestions').hide();
         }
-
-        $('#rating-value').val(selectedRating);
-    });
-});
-
-//  hearder-search-suggestions-js
-    $('.searchTerm').on('focus', function() {
-        $('.suggestions').show();
     });
     $(document).on('click', function(e) {
         if (!$(e.target).closest('.search').length) {
             $('.suggestions').hide();
         }
     });
-
 });
 
 

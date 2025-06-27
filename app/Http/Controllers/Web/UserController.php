@@ -21,12 +21,20 @@ class UserController extends Controller
         $data['user'] = $this->userService->getUser();
         return view('Web.Layout.users.dashboard', $data);
     }
+
+
     public function orders(Request $request)
     {
         $data['user'] = $this->userService->getUser();
         $data['orders'] = $this->userService->getOrders($request);
         $data['request'] = $request;
         return view('Web.Layout.users.orders', $data);
+    }
+
+    public function orderInvoice($id)
+    {
+        $data['order'] = $this->userService->getOrder($id);
+        return view('order-invoice', $data);
     }
 
 

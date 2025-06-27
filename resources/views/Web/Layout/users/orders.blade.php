@@ -76,7 +76,7 @@
                                             @endswitch
                                         </td>
                                         <td>{{config('settings.currency_symbol')}}{{ $order->total_amount }}</td>
-                                        <td class="view-btn"><a href="#"><i class="far fa-eye"></i> View</a></td>
+                                        <td class="view-btn"><a href="{{ route('order-invoice', $order->id) }}"><i class="far fa-eye"></i> View</a></td>
                                     </tr>
                                 @empty
                                     <tr>
