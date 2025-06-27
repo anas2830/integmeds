@@ -12,86 +12,15 @@
         <div class="row">
             <div class="col-lg-3 order-lg-1 order-2">
                 <x-Web.common.sidebar.sidebar-product-bundle :productBundles="$productBundles" />
+                
                 <div class="category-list d-lg-block d-none">
-                    <div class="sidebar-title">
-                        <h2>Categories</h2>
-                    </div>
-                    <div class="sidefilter-cat-wrap">
-                        @foreach ($categories as $category)
-                        <div class="sidef-cat-list">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox"
-                                       id="sidecatitem{{ $loop->index + 1 }}"
-                                       value="{{ $category->slug }}"
-                                       {{ $category->slug === request()->route('slug') ? 'checked' : '' }}>
-                                <label class="form-check-label" for="sidecatitem{{ $loop->index + 1 }}">
-                                    {{ $category->name }}
-                                </label>
-                            </div>
-                        </div>
-                    @endforeach
-                    </div>
+                    <x-Web.category.sidebar-cat-filter :categories="$categories" />
                 </div>
-                {{-- <div class="category-list d-lg-block d-none">
-                    <div class="sidebar-title">
-                        <h2>Brands</h2>
-                    </div>
-                    <div class="sidefilter-cat-wrap">
-                        <div class="sidef-cat-list">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="brand1">
-                                <label class="form-check-label" for="brand1">Integmeds One</label>
-                            </div>
-                        </div>
-                        <div class="sidef-cat-list">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="brand2">
-                                <label class="form-check-label" for="brand2">Integmeds Two</label>
-                            </div>
-                        </div>
-                        <div class="sidef-cat-list">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="brand3">
-                                <label class="form-check-label" for="brand3">Integmeds Three</label>
-                            </div>
-                        </div>
-                        <div class="sidef-cat-list">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="brand4">
-                                <label class="form-check-label" for="brand4">Integmeds Four</label>
-                            </div>
-                        </div>
-                        <div class="sidef-cat-list">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="brand5">
-                                <label class="form-check-label" for="brand5">Integmeds Five</label>
-                            </div>
-                        </div>
-                        <div class="sidef-cat-list">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="brand6">
-                                <label class="form-check-label" for="brand6">Integmeds Six</label>
-                            </div>
-                        </div>
-                    </div>
-                </div> --}}
                 <div class="category-list d-lg-block d-none">
-                    <div class="sidebar-title">
-                        <h2>Price</h2>
-                    </div>
-                    <div class="price-slider-area-wrapper">
-                        <form action="">
-                            <div class="skipstep"></div>
-                            <div class="filter-price-action d-flex align-items-center justify-content-between flex-wrap">
-                                <div class="filter-price-text">
-                                    <span class="price-title">Price:</span>
-                                    <span class="skip-value-lower"></span> -
-                                    <span class="skip-value-upper"></span>
-                                </div>
-                                <a type="submit" class="btn price-submit-btn">Filter</a>
-                            </div>
-                        </form>
-                    </div>
+                    <x-Web.category.sidebar-tag-filter :tags="$tags" />
+                </div>
+                <div class="category-list d-lg-block d-none">
+                   <x-Web.category.sidebar-price-filter />
                 </div>
                 <x-Web.common.sidebar.sidebar-special-offer :specialOffers="$specialOffers" />
             </div>
@@ -110,99 +39,13 @@
                                                 </div>
                                                 <div class="offcanvas-body">
                                                     <div class="category-list mt-0">
-                                                        <div class="sidebar-title">
-                                                            <h2>Categories</h2>
-                                                        </div>
-                                                        <div class="sidefilter-cat-wrap">
-                                                            <div class="sidef-cat-list">
-                                                                <div class="form-check">
-                                                                    <input class="form-check-input" type="checkbox" id="sidecatitem2">
-                                                                    <label class="form-check-label" for="sidecatitem2">Functional Food</label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="sidef-cat-list">
-                                                                <div class="form-check">
-                                                                    <input class="form-check-input" type="checkbox" id="sidecatitem3">
-                                                                    <label class="form-check-label" for="sidecatitem3">Natural Self Care</label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                        <x-Web.category.sidebar-cat-filter :categories="$categories" />
                                                     </div>
                                                     <div class="category-list">
-                                                        <div class="sidebar-title">
-                                                            <h2>Brands</h2>
-                                                        </div>
-                                                        <div class="sidefilter-cat-wrap">
-                                                            <div class="sidef-cat-list">
-                                                                <div class="form-check">
-                                                                    <input class="form-check-input" type="checkbox" id="brand1">
-                                                                    <label class="form-check-label" for="brand1">Integmeds One</label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="sidef-cat-list">
-                                                                <div class="form-check">
-                                                                    <input class="form-check-input" type="checkbox" id="brand2">
-                                                                    <label class="form-check-label" for="brand2">Integmeds Two</label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="sidef-cat-list">
-                                                                <div class="form-check">
-                                                                    <input class="form-check-input" type="checkbox" id="brand3">
-                                                                    <label class="form-check-label" for="brand3">Integmeds Three</label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="sidef-cat-list">
-                                                                <div class="form-check">
-                                                                    <input class="form-check-input" type="checkbox" id="brand4">
-                                                                    <label class="form-check-label" for="brand4">Integmeds Four</label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="sidef-cat-list">
-                                                                <div class="form-check">
-                                                                    <input class="form-check-input" type="checkbox" id="brand5">
-                                                                    <label class="form-check-label" for="brand5">Integmeds Five</label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="sidef-cat-list">
-                                                                <div class="form-check">
-                                                                    <input class="form-check-input" type="checkbox" id="brand6">
-                                                                    <label class="form-check-label" for="brand6">Integmeds Six</label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                        <x-Web.category.sidebar-tag-filter :tags="$tags" />
                                                     </div>
                                                     <div class="category-list">
-                                                        <div class="sidebar-title">
-                                                            <h2>Price</h2>
-                                                        </div>
-                                                        <div class="price-slider-area-wrapper">
-                                                            <form action="">
-                                                                <div class="skipstep"></div>
-                                                                <div class="filter-price-action d-flex align-items-center justify-content-between flex-wrap">
-                                                                    <div class="filter-price-text">
-                                                                        <span class="price-title">Price:</span>
-                                                                        <span class="skip-value-lower"></span> -
-                                                                        <span class="skip-value-upper"></span>
-                                                                    </div>
-                                                                    <a type="submit" class="btn price-submit-btn">Filter</a>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                        <!-- <div class="price-slider-area-wrapper">
-                                                            <form action="">
-                                                                <div id="skipstep"></div>
-                                                                <div
-                                                                    class="filter-price-action d-flex align-items-center justify-content-between flex-wrap">
-                                                                    <div class="filter-price-text">
-                                                                        <span class="price-title">Price:</span>
-                                                                        <span class="skip-value-lower"></span>
-                                                                        -
-                                                                        <span class="skip-value-upper"></span>
-                                                                    </div>
-                                                                    <a type="submit" class="btn price-submit-btn">Filter</a>
-                                                                </div>
-                                                            </form>
-                                                        </div> -->
+                                                        <x-Web.category.sidebar-price-filter />
                                                     </div>
                                                 </div>
                                             </div>
@@ -240,25 +83,6 @@
                     <div class="row">
                         <div class="col-lg-12 d-flex justify-content-end">
                             <div class="pagination-area">
-                                {{-- <nav aria-label="Page navigation example">
-                                    <ul class="pagination">
-                                        <li class="page-item">
-                                            <a class="page-link" href="#" aria-label="Previous">
-                                                <span aria-hidden="true">&laquo;</span>
-                                            </a>
-                                        </li>
-                                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                        <li class="page-item" aria-current="page">
-                                        <a class="page-link" href="#">2</a>
-                                        </li>
-                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#" aria-label="Next">
-                                                <span aria-hidden="true">&raquo;</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </nav> --}}
                                 {{ $categoryProducts->links() }}
                             </div>
                         </div>

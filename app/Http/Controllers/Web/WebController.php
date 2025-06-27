@@ -22,6 +22,7 @@ use App\Jobs\SendResetPasswordEmailJob;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Porduct; // Assuming Porduct is a model for products
 use App\Models\ProductCategory;
+use App\Models\ProductTag;
 
 class WebController extends SidebarService
 {
@@ -52,7 +53,9 @@ class WebController extends SidebarService
         $productBundles = $this->productBundles();
         $specialOffers = $this->specialOffers();
         $categories = ProductCategory::where('status', 1)->get(['id', 'name', 'slug']);
-        return view('Web.Layout.pages.category', compact('categoryProducts', 'productBundles', 'specialOffers', 'categories'));
+        $tags =ProductTag::where('status', 1)->get(['id', 'name', 'slug']);
+
+        return view('Web.Layout.pages.category', compact('categoryProducts', 'productBundles', 'specialOffers', 'categories', 'tags'));
     }
     public function bundle()
     {
