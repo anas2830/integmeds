@@ -58,9 +58,9 @@ class Product extends Model
         return $this->belongsToMany(ProductSize::class, 'product_product_sizes');
     }
 
-    public function orders()
+    public function orderDetails()
     {
-        return $this->hasMany(Order::class, 'order_details');
+        return $this->hasMany(OrderDetails::class, 'product_id');
     }
 
     public function inventory()

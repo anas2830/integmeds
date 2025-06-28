@@ -5,12 +5,22 @@
 @endphp
 <div class="items">
     <div class="common-product-box">
+        @if($product->quantity == 0)
+            <div class="sold-out"><span>Out Of Stock</span></div>
+        @endif
         <div class="common-product-img">
             <a href="{{ route('product-details', $product->slug ?? '') }}">
-                <img class="img-fluid"
-                     src="{{ asset($product->firstImage?->image_url) }}"
-                     alt="{{ $product->product_name ?? '' }}"
-                     title="{{ $product->product_name ?? '' }}">
+                @if(isset($product->firstImage) && !empty($product->firstImage->image_url))
+                    <img class="img-fluid"
+                        src="{{ asset($product->firstImage?->image_url) }}"
+                        alt="{{ $product->product_name ?? '' }}"
+                        title="{{ $product->product_name ?? '' }}">
+                @else
+                    <img class="img-fluid"
+                         src="{{ asset('web_assets/images/product-img/default.jpg') }}"
+                         alt="{{ $product->product_name ?? '' }}"
+                         title="{{ $product->product_name ?? '' }}">
+                @endif
             </a>
         </div>
 

@@ -53,7 +53,7 @@
                                     </div>
                                 </div>
                                 <div class="page-counter">
-                                    <p>Showing 1–12 of 16 results</p>
+                                    <p>Showing 1–12 of {{$categoryProducts->total()}} results</p>
                                 </div>
                             </div>
                             <div class="col-md-2">
@@ -61,11 +61,11 @@
                                     <div class="selectBox">
                                         <div class="selectBox__value">Filter</div>
                                         <div class="dropdown-menu">
-                                        <a href="#" class="dropdown-item active">Newest</a>
-                                        <a href="#" class="dropdown-item">Best Selling</a>
-                                        <a href="#" class="dropdown-item">Low to High</a>
-                                        <a href="#" class="dropdown-item">High to Low</a>
-                                        <a href="#" class="dropdown-item">Best Rating</a>
+                                            <a href="{{ request()->fullUrlWithQuery(['sort' => 'latest']) }}" class="dropdown-item {{ request('sort') == 'latest' || !request('sort') ? 'active' : '' }}">Latest</a>
+                                            <a href="{{ request()->fullUrlWithQuery(['sort' => 'best_selling']) }}" class="dropdown-item {{ request('sort') == 'best_selling' ? 'active' : '' }}">Best Selling</a>
+                                            <a href="{{ request()->fullUrlWithQuery(['sort' => 'price_asc']) }}" class="dropdown-item {{ request('sort') == 'price_asc' ? 'active' : '' }}">Price: Low to High</a>
+                                            <a href="{{ request()->fullUrlWithQuery(['sort' => 'price_desc']) }}" class="dropdown-item {{ request('sort') == 'price_desc' ? 'active' : '' }}">Price: High to Low</a>
+                                            <a href="{{ request()->fullUrlWithQuery(['sort' => 'rating']) }}" class="dropdown-item {{ request('sort') == 'rating' ? 'active' : '' }}">Best Rating</a>
                                         </div>
                                     </div>
                                 </div>
@@ -73,7 +73,6 @@
                         </div>
                     </div>
                     <div class="row gx-3">
-                        {{-- @dd($categoryProducts) --}}
                         @foreach ($categoryProducts as $product)
                             <div class="col-lg-3 col-6">
                                 <x-Web.common.product-card :product="$product" />
@@ -112,13 +111,19 @@
 <script>
     document.querySelectorAll('.price-slider-area-wrapper').forEach(wrapper => {
         const slider = wrapper.querySelector('.skipstep');
-        const lower = wrapper.querySelector('.skip-value-lower');
-        const upper = wrapper.querySelector('.skip-value-upper');
+        const lower = wrapper.querySelector('.skip-value-lower-label');
+        const upper = wrapper.querySelector('.skip-value-upper-label');
+        const minPrice = wrapper.querySelector('.skip-value-lower');
+        const maxPrice = wrapper.querySelector('.skip-value-upper');
 
-        if (!slider || !lower || !upper) return;
+        if (!slider || !lower || !upper || !minPrice || !maxPrice) return;
+
+        // ✅ Use existing input values from request() as initial slider values
+        const startMin = parseInt(minPrice.value) || 0;
+        const startMax = parseInt(maxPrice.value) || 1000;
 
         noUiSlider.create(slider, {
-            start: [0, 1000],
+            start: [startMin, startMax],
             connect: true,
             behaviour: "drag",
             step: 1,
@@ -132,14 +137,45 @@
             }
         });
 
+        // ✅ Set initial label values
+        lower.textContent = '$' + startMin;
+        upper.textContent = '$' + startMax;
+
+        // ✅ Update on slide
         slider.noUiSlider.on("update", function (values, handle) {
             if (handle === 0) {
-                lower.textContent = '$' + values[0];
+                lower.textContent = '$' + values[0]; 
+                minPrice.value = values[0];
             } else {
                 upper.textContent = '$' + values[1];
+                maxPrice.value = values[1];
             }
         });
     });
+
+
+    var urlParams = new URLSearchParams(window.location.search);
+    var tags = urlParams.getAll('tags[]');
+
+    $('.tag-filter').on('change', function () {
+        if($(this).is(':checked')) {
+            tags.push($(this).val());
+        } else {
+            tags = tags.filter(tag => tag !== $(this).val());
+        }
+        const uniqueTags = [...new Set(tags)];
+        urlParams.delete('tags[]');
+        uniqueTags.forEach(tag => urlParams.append('tags[]', tag));
+        window.location.href = window.location.pathname + '?' + urlParams.toString();
+    });
+
+
+
+
+
+
+
+
 </script>
 
 @endpush
