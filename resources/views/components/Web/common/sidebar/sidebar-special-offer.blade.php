@@ -9,9 +9,15 @@
                     <div class="row gx-3">
                         <div class="col-4">
                             <div class="sbar-sp-offer-img">
-                                <img class="img-fluid"
-                                    src="{{ asset(optional($specialOffer->firstImage)->image_url) }}"
-                                    alt="{{ $specialOffer->product_name }}" title="{{ $specialOffer->product_name }}">
+                                @if(isset($specialOffer->firstImage) && !empty($specialOffer->firstImage->image_url))
+                                    <img class="img-fluid"
+                                        src="{{ asset(optional($specialOffer->firstImage)->image_url) }}"
+                                        alt="{{ $specialOffer->product_name }}" title="{{ $specialOffer->product_name }}">
+                                @else
+                                    <img class="img-fluid"
+                                        src="{{ asset('web_assets/images/product-img/default.jpg') }}"
+                                        alt="{{ $specialOffer->product_name }}" title="{{ $specialOffer->product_name }}">
+                                @endif
                             </div>
                         </div>
                         <div class="col-8 d-flex align-items-center">
