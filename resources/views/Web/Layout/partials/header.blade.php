@@ -101,8 +101,10 @@
                                     <li class="nav-item ">
                                         <a class="nav-link" href="{{route('/')}}">Home</a>
                                     </li>
-                                    <li class="nav-item dropdown">
-                                        <a class="nav-link dropdown-toggle" href="{{route('category')}}" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
+                                    <li class="nav-item dropdown position-relative">
+                                        <a class="nav-link" href="{{ url('category') }}">Shop</a>
+                                        <a class="nav-link dropdown-toggle position-absolute top-0 end-0 pe-2" href="#" id="navbarDropdown"
+                                           role="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 20px;"></a>
                                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                             @foreach ($categories as $category)
                                                 <li><a class="dropdown-item" href="{{route('category', $category->slug)}}">{{$category->name}}</a></li>

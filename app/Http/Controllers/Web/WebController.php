@@ -29,26 +29,49 @@ class WebController extends SidebarService
 
     public function category($slug = null)
     {
-        if (!$slug) {
-            // No slug → Show latest products from all categories
-            $categoryProducts = Product::where('status', 1)
-                ->select('id', 'product_name', 'slug', 'regular_price', 'sale_price', 'discount_percentage')
-                ->orderBy('created_at', 'desc')
-                ->paginate(12); // Adjust the number of products per page as needed
-        // dd($categoryProducts);
-        } else {
-            // With slug → Show products under this category
+        $minPrice = request('min_price', 0);
+        $maxPrice = request('max_price', 10000);
+        $sort = request('sort');
+        $sort = $sort ?? 'latest';
+        $tagIds = request('tags', []);
+        if ($slug) {
             $category = ProductCategory::where('slug', $slug)->firstOrFail();
-
-            // Paginate the related products directly
-            $products = $category->products()
-                ->where('status', 1)
-                ->with(['firstImage:id,product_id,image_url'])
-                ->select('id', 'product_name', 'slug', 'regular_price', 'sale_price', 'discount_percentage')
-                ->orderBy('created_at', 'desc')
-                ->paginate(12); // Use paginate instead of take/get
-            $categoryProducts = $products->appends(request()->query()); // Preserve query parameters for pagination
+            $query = $category->products()->where('status', 1)->with(['firstImage:id,product_id,image_url']);
+        }else{
+            $query = Product::where('status', 1)->with(['firstImage:id,product_id,image_url']);
         }
+
+        $query->select('id', 'product_name', 'slug', 'regular_price', 'sale_price', 'discount_percentage');
+
+        if ($minPrice !== null && $maxPrice !== null) {
+            $query->whereBetween('sale_price', [$minPrice, $maxPrice]);
+        }
+
+        // Tag filter
+        if (!empty($tagIds)) {
+            $query->whereHas('tags', function ($q) use ($tagIds) {
+                $q->whereIn('product_tags.id', $tagIds);
+            });
+        }
+
+        switch ($sort) {
+            case 'price_asc':
+                $query->orderBy('sale_price', 'asc');
+                break;
+            case 'price_desc':
+                $query->orderBy('sale_price', 'desc');
+                break;
+            case 'best_selling':
+                $query->withSum('orderDetails', 'quantity')->orderBy('order_details_sum_quantity', 'desc');
+                break;
+            case 'rating':
+                $query->withAvg('productReviews', 'rating')->orderBy('product_reviews_avg_rating', 'desc');
+                break;
+            default:
+                $query->orderBy('created_at', 'desc');
+                break;
+        }
+        $categoryProducts = $query->paginate(12)->appends(request()->query());
 
         $productBundles = $this->productBundles();
         $specialOffers = $this->specialOffers();
@@ -57,6 +80,8 @@ class WebController extends SidebarService
 
         return view('Web.Layout.pages.category', compact('categoryProducts', 'productBundles', 'specialOffers', 'categories', 'tags'));
     }
+
+
     public function bundle()
     {
         $productBundles = Bundle::select('id', 'name', 'icon_path')->with(['firstImage:id,bundle_id,image_url'])->where('status', 1)->orderBy('id', 'desc')->paginate(10);
@@ -72,7 +97,7 @@ class WebController extends SidebarService
         ])
         ->withAvg('bundleReviews', 'rating')
         ->where('id', $id)
-        ->where('status', 1) // ✅ Only fetch if product is active
+        ->where('status', 1)
         ->firstOrFail();
 
         $userReview = null;
@@ -156,6 +181,8 @@ class WebController extends SidebarService
     {
         $data['search'] = $request->search;
         $data['products'] = Product::with('firstImage')->where('product_name', 'like', '%' . $data['search'] . '%')->paginate(16);
+        $data['productBundles'] = $this->productBundles();
+        $data['specialOffers'] = $this->specialOffers();
         return view('Web.Layout.pages.search', $data);
     }
 
