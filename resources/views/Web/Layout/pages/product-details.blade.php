@@ -198,6 +198,7 @@
 <script>
     /*Product Details*/
     var productDetails = function () {
+        // Product Image Slider
         $('.product-image-slider').slick({
             slidesToShow: 1,
             slidesToScroll: 1,
@@ -206,6 +207,7 @@
             asNavFor: '.slider-nav-thumbnails',
         });
 
+        // Product Image Slider Thumbnails
         $('.slider-nav-thumbnails').slick({
             slidesToShow: 4,
             slidesToScroll: 1,
@@ -215,7 +217,7 @@
             prevArrow: '<button type="button" class="slick-prev"><i class="fa-solid fa-angle-left"></i></button>',
             nextArrow: '<button type="button" class="slick-next"><i class="fa-solid fa-angle-right"></i></button>'
         });
-
+        
         // Remove active class from all thumbnail slides
         $('.slider-nav-thumbnails .slick-slide').removeClass('slick-active');
 
@@ -259,6 +261,7 @@
         productDetails();
     });
 
+    // Fancybox 
     $('.zoom-icon').on('click', function (e) {
         e.preventDefault();
 
@@ -278,6 +281,7 @@
         });
     });
 
+    // Rating
     let hasClickedRating = false;
     $('.rating-stars i').on('click', function() {
         hasClickedRating = true;
@@ -294,6 +298,7 @@
         });
     });
 
+    // Review Submit    
     $('#reviewForm').on('submit', function(e) {
         e.preventDefault();
 

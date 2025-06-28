@@ -313,12 +313,4 @@ class WebController extends SidebarService
         $data['termsCondition'] = Page::where('slug', 'terms-condition')->first();
         return view('Web.Layout.pages.terms-condition', $data);
     }
-    public function cart()
-    {
-        return view('Web.Layout.pages.cart');
-    }
-    public function checkout()
-    {
-        return view('Web.Layout.pages.checkout');
-    }
 }

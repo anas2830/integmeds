@@ -7,10 +7,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\WebController;
 use App\Http\Controllers\Web\UserController;
-use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\Web\ShoppingCartController;
 use App\Http\Controllers\Web\HomePageController;
 use App\Http\Controllers\Backend\AdminController;
 use App\Http\Controllers\Backend\EditorController;
+use App\Http\Controllers\Web\NewsletterController;
 
 require __DIR__ . '/admin.php';
 
@@ -52,6 +53,17 @@ Route::get('/wishlist', [WebController::class, 'wishlist'])->name('wishlist');
 Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
 
 
+Route::controller(ShoppingCartController::class)->group(function () {
+    Route::get('/cart', 'cart')->name('shopping.cart');
+    Route::post('/cart', 'addToCart')->name('shopping.cart.submit');
+    Route::post('/update/cart', 'updateCart')->name('shopping.cart.update');
+    Route::get('/remove/cart/single/{rowId}', 'removeSingleItem')->name('shopping.cart.remove.single');
+    Route::get('/ajax/remove/cart/single/{rowId}', 'removeSingleItemAjax')->name('shopping.cart.remove.single.ajax');
+    Route::get('/remove/cart/all', 'removeAllItem')->name('shopping.cart.remove.all');
+    Route::get('/checkout', 'checkout')->name('checkout');
+    Route::post('/apply/coupon', 'applyCoupon')->name('coupon.apply');
+    Route::get('/remove/coupon', 'removeCoupon')->name('coupon.remove');
+});
 
 
 // Route::prefix('user')->group(function () {
