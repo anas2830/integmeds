@@ -5,24 +5,25 @@ namespace App\Http\Controllers\Web;
 use Carbon\Carbon;
 use App\Models\Page;
 use App\Models\User;
-use App\Models\Client;
 use App\Models\Bundle;
+use App\Models\Client;
 use App\Models\Product;
+use App\Models\ProductTag;
 use Illuminate\Support\Str;
 use App\Models\BundleReview;
 use Illuminate\Http\Request;
-use App\Services\PageService;
 use App\Models\ProductReview;
+use App\Services\PageService;
+use App\Models\ProductCategory;
 use App\Jobs\SendContactEmailJob;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Web\SidebarService;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Cache;
 use App\Jobs\SendResetPasswordEmailJob;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Porduct; // Assuming Porduct is a model for products
-use App\Models\ProductCategory;
-use App\Models\ProductTag;
 
 class WebController extends SidebarService
 {
@@ -41,7 +42,7 @@ class WebController extends SidebarService
             $query = Product::where('status', 1)->with(['firstImage:id,product_id,image_url']);
         }
 
-        $query->select('id', 'product_name', 'slug', 'regular_price', 'sale_price', 'discount_percentage');
+        $query->select('id', 'product_name', 'slug', 'regular_price', 'sale_price', 'discount_percentage', 'quantity');
 
         if ($minPrice !== null && $maxPrice !== null) {
             $query->whereBetween('sale_price', [$minPrice, $maxPrice]);
@@ -64,8 +65,12 @@ class WebController extends SidebarService
 
         $productBundles = $this->productBundles();
         $specialOffers = $this->specialOffers();
-        $categories = ProductCategory::where('status', 1)->get(['id', 'name', 'slug']);
-        $tags =ProductTag::where('status', 1)->get(['id', 'name', 'slug']);
+        $categories = Cache::rememberForever('ProductCategory', function () {
+            return ProductCategory::where('status', 1)->get(['id', 'name', 'slug']);
+        });
+        $tags = Cache::rememberForever('ProductTag', function () {
+            return ProductTag::where('status', 1)->get(['id', 'name', 'slug']);
+        });
 
         return view('Web.Layout.pages.category', compact('categoryProducts', 'productBundles', 'specialOffers', 'categories', 'tags'));
     }

@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\RemoveModelCache;
 
 class Bundle extends Model
 {
+    use RemoveModelCache;
+
     protected $guarded = [];
 
 
