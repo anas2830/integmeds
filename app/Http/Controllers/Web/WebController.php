@@ -53,24 +53,13 @@ class WebController extends SidebarService
                 $q->whereIn('product_tags.id', $tagIds);
             });
         }
-
-        switch ($sort) {
-            case 'price_asc':
-                $query->orderBy('sale_price', 'asc');
-                break;
-            case 'price_desc':
-                $query->orderBy('sale_price', 'desc');
-                break;
-            case 'best_selling':
-                $query->withSum('orderDetails', 'quantity')->orderBy('order_details_sum_quantity', 'desc');
-                break;
-            case 'rating':
-                $query->withAvg('productReviews', 'rating')->orderBy('product_reviews_avg_rating', 'desc');
-                break;
-            default:
-                $query->orderBy('created_at', 'desc');
-                break;
-        }
+        match($sort){
+            'price_asc' => $query->orderBy('sale_price', 'asc'),
+            'price_desc' => $query->orderBy('sale_price', 'desc'),
+            'best_selling' => $query->withSum('orderDetails', 'quantity')->orderBy('order_details_sum_quantity', 'desc'),
+            'rating' => $query->withAvg('productReviews', 'rating')->orderBy('product_reviews_avg_rating', 'desc'),
+            default => $query->orderBy('created_at', 'desc'),
+        };
         $categoryProducts = $query->paginate(12)->appends(request()->query());
 
         $productBundles = $this->productBundles();
