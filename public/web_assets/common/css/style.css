@@ -603,8 +603,8 @@ ul{padding:0;margin:0;}
 .product-desc-content .table-sm th { color: #222; font-size: 15px; font-weight: 700; text-transform: capitalize; }
 .product-desc-content .table-sm td { color: #777777; font-weight: 500; font-style: italic; }
 .reviews-comment .review-info { display: flex; align-items: flex-start; margin-bottom: 35px; }
-.review-img { margin-right: 20px; width: 100px; flex: 0 0 100px; }
-.review-img img { border-radius: 50%; }
+.review-img { margin-right: 20px; /* width: 100px; flex: 0 0 100px;  */ }
+.review-img img { border-radius: 50%; width: 100px;height: 100px;}
 .review-rating li { color: #ff9b26; letter-spacing: -1px; font-size: 13px; margin-bottom: 7px; list-style:none;}
 .review-meta h6 { color: #222; font-size: 16px; margin-bottom: 8px; }
 .review-meta h6 span { color: #777777; font-size: 13px; font-weight: 400; margin-left: 5px; }

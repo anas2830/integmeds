@@ -20,6 +20,11 @@ class ProductReviewController extends Controller
         return view('Backend.admin.product-review.list', compact('reviews'));
     }
 
+    public function create()
+    {
+        return view('Backend.admin.product-review.create');
+    }
+
     public function approve($id)
     {
         $this->reviewService->approve($id);
