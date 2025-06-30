@@ -20,7 +20,7 @@
 					<h5>Account</h5>
 					<ul>
 						<li><a href="{{ route('user.dashboard') }}">My Account</a></li>
-						<li><a href="{{route('cart')}}">Cart</a></li>
+						<li><a href="{{route('shopping.cart')}}">Cart</a></li>
 						<li><a href="{{route('user.wishlist')}}">Wishlist</a></li>
 						<li><a href="{{route('category')}}">Shop</a></li>
 					</ul>

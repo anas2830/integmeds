@@ -51,11 +51,13 @@
                                 </div>
                                 <div class="inner-shop-details-price">
                                     <h2 class="price">${{$product->sale_price}}</h2>
-                                    @if($product->quantity > 0)
-                                        <h5 class="stock-status text-success">- In Stock</h5>
-                                    @else
-                                        <h5 class="stock-status text-danger">- Out of Stock</h5>
-                                    @endif
+                                    <span class="stock-info">
+                                        @if($product->quantity > 0)
+                                            <h5 class="stock-status text-success">- In Stock</h5>
+                                        @else
+                                            <h5 class="stock-status text-danger">- Out of Stock</h5>
+                                        @endif
+                                    </span>
                                 </div>
                                 <p>{{$product->short_description}}</p>
                                 <div class="inner-shop-details-list">
@@ -68,35 +70,19 @@
                                         </li>
                                     </ul>
                                 </div>
-                                <div class="inner-shop-perched-info">
-                                    <div class="sd-cart-wrap">
-                                        <form action="#">
-                                            <div class="quickview-cart-plus-minus">
-                                                <input type="text" value="1">
-                                                <div class="dec qtybutton">-</div>
-                                                <div class="inc qtybutton">+</div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    @if($product->quantity > 0)
-                                        <a href="#" class="cart-btn">Add to Cart</a>
-                                    @else
-                                        <a class="cart-btn sold-out-cart">Out of Stock</a>
-                                    @endif
-                                    @auth
-                                        <a href="#" data-prod-id="{{ $product->id }}" class="wishlist-btn {{ $alreadyInWishlist ? 'bg-success' : '' }}" title="Wishlist"><i class="fas fa-heart"></i></a>
-                                    @else
-                                        <a href="{{ route('user.login') }}" class="wishlist-btn" title="Wishlist"><i class="fas fa-heart"></i></a>
-                                    @endauth
+                                <div class="inner-shop-perched-info product-buy-section">
+                                    <x-Web.common.product-buy :product="$product" :alreadyInWishlist="$alreadyInWishlist" />
                                 </div>
                                 <div class="inner-shop-details-bottom">
                                     <ul>
-                                        <li>
-                                            <span>Tag:</span>
-                                            @foreach($product->tags as $tag)
-                                                <a href="#">{{$tag->name}}</a> @if(!$loop->last) , @endif
-                                            @endforeach
-                                        </li>
+                                        @if($product->tags->isNotEmpty())
+                                            <li>
+                                                <span>Tag:</span>
+                                                @foreach($product->tags as $tag)
+                                                    <a href="#">{{$tag->name}}</a> @if(!$loop->last) , @endif
+                                                @endforeach
+                                            </li>
+                                        @endif
                                         
                                         <li>
                                             <span>Share :</span>
@@ -216,6 +202,7 @@
 <script>
     /*Product Details*/
     var productDetails = function () {
+        // Product Image Slider
         $('.product-image-slider').slick({
             slidesToShow: 1,
             slidesToScroll: 1,
@@ -224,6 +211,7 @@
             asNavFor: '.slider-nav-thumbnails',
         });
 
+        // Product Image Slider Thumbnails
         $('.slider-nav-thumbnails').slick({
             slidesToShow: 4,
             slidesToScroll: 1,
@@ -233,7 +221,7 @@
             prevArrow: '<button type="button" class="slick-prev"><i class="fa-solid fa-angle-left"></i></button>',
             nextArrow: '<button type="button" class="slick-next"><i class="fa-solid fa-angle-right"></i></button>'
         });
-
+        
         // Remove active class from all thumbnail slides
         $('.slider-nav-thumbnails .slick-slide').removeClass('slick-active');
 
@@ -277,6 +265,7 @@
         productDetails();
     });
 
+    // Fancybox 
     $('.zoom-icon').on('click', function (e) {
         e.preventDefault();
 
@@ -296,9 +285,8 @@
         });
     });
 
-    let hasClickedRating = false;
+    // Rating
     $('.rating-stars i').on('click', function() {
-        hasClickedRating = true;
         var rating = $(this).data('rating');
         $('#rating').val(rating);
 
@@ -312,6 +300,7 @@
         });
     });
 
+    // Review Submit    
     $('#reviewForm').on('submit', function(e) {
         e.preventDefault();
 
@@ -324,18 +313,15 @@
             },
             success: function(response) {
                 showSuccessMessage(response.message);
-                if (hasClickedRating) {
-                    $('#rating').val(0);
-                    $('.rating-stars i').removeClass('star-selected');
-                    hasClickedRating = false;
-                }
+                $('#rating').val(0);
+                $('.rating-stars i').removeClass('star-selected selected');
+                $('#form-review').val('');    
             },
             error: function(xhr) {
                 let message = 'Submission failed!';
                 if (xhr.responseJSON && xhr.responseJSON.message) {
                     message = xhr.responseJSON.message;
                 }
-                console.log(message);
             }
         });
     });

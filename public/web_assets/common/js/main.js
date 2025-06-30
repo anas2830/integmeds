@@ -92,23 +92,39 @@ $(document).ready(function () {
     //     });
     // }); 
 
-// cart-plus-minus
+    // cart-plus-minus
     $(".quickview-cart-plus-minus").append('<div class="dec qtybutton">-</div><div class="inc qtybutton">+</div>');
-    $(".qtybutton").on("click", function () {
+    $(document).on("click", ".qtybutton", function () {
         var $button = $(this);
-        var oldValue = $button.parent().find("input").val();
+        var oldValue = parseFloat($button.parent().find("input").val());
+
         if ($button.text() == "+") {
-            var newVal = parseFloat(oldValue) + 1;
+            var newVal = oldValue + 1;
         } else {
-            // Don't allow decrementing below zero
-            if (oldValue > 0) {
-                var newVal = parseFloat(oldValue) - 1;
+            // Don't allow decrementing below 1
+            if (oldValue > 1) {
+                var newVal = oldValue - 1;
             } else {
-                newVal = 0;
+                var newVal = 1;
             }
         }
+
         $button.parent().find("input").val(newVal);
     });
+
+    $(document).on("change", ".qtybutton-input", function () {
+        var val = parseInt($(this).val());
+        if (isNaN(val) || val < 1) {
+            $(this).val(1);
+        }
+    });
+    // Restrict input to digits only and validate on input
+    $(document).on("input", ".qtybutton-input", function () {
+        let val = $(this).val().replace(/[^\d]/g, ''); // Remove non-digit characters
+        $(this).val(val);
+    });
+
+    
 
     $('.zoom-icon').on('click', function (e) {
         e.preventDefault();
@@ -213,6 +229,9 @@ $(document).ready(function () {
         if (!$(e.target).closest('.search').length) {
             $('.suggestions').hide();
         }
+    });
+    $(document).ready(function () {
+        $('#success-msg').fadeIn().delay(4000).fadeOut();
     });
 });
 

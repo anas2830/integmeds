@@ -39,6 +39,7 @@ class SidebarService
             ->withAvg('productReviews', 'rating')
             ->whereIn('id', $topProductIds)
             // ->orderByRaw('FIELD(id, ' . $topProductIds->implode(',') . ')') // optional: maintain order
+            ->where('quantity', '>', 0) // Ensure products are in stock
             ->where('status', 1)
             ->get();
         });

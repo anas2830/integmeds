@@ -78,7 +78,7 @@ class WebController extends SidebarService
 
     public function bundle()
     {
-        $productBundles = $this->productBundles();
+        $productBundles = Bundle::select('id', 'name', 'icon_path')->with(['firstImage:id,bundle_id,image_url'])->where('status', 1)->orderBy('id', 'desc')->paginate(10);
         return view('Web.Layout.pages.bundle', compact('productBundles'));
     }
     public function bundleDetails($id)
@@ -145,7 +145,7 @@ class WebController extends SidebarService
         // Ensure categories are loaded
         $categoryIds = $product->categories()->pluck('id');
 
-        return Product::select('id', 'product_name', 'regular_price', 'sale_price', 'discount_percentage', 'slug')
+        return Product::select('id', 'product_name', 'regular_price', 'sale_price', 'discount_percentage', 'slug', 'quantity')
             ->with(['firstImage:id,product_id,image_url'])
             ->where('status', 1)
             ->where('id', '!=', $product->id)
@@ -186,7 +186,7 @@ class WebController extends SidebarService
         $query = $request->query('query');
         $products = Product::with('firstImage')
         ->where('product_name', 'like', '%' . $query . '%')
-        ->select('id', 'product_name', 'regular_price', 'sale_price', 'discount_percentage', 'slug')
+        ->select('id', 'product_name', 'regular_price', 'sale_price', 'discount_percentage', 'slug', 'quantity')
         ->take(5)
         ->get()
         ->map(function($product){
@@ -333,13 +333,5 @@ class WebController extends SidebarService
     {
         $data['termsCondition'] = Page::where('slug', 'terms-condition')->first();
         return view('Web.Layout.pages.terms-condition', $data);
-    }
-    public function cart()
-    {
-        return view('Web.Layout.pages.cart');
-    }
-    public function checkout()
-    {
-        return view('Web.Layout.pages.checkout');
     }
 }

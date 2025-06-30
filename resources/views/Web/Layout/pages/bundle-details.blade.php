@@ -207,9 +207,8 @@
         });
     });
 
-    let hasClickedRating = false;
+    // Rating
     $('.rating-stars i').on('click', function() {
-        hasClickedRating = true;
         var rating = $(this).data('rating');
         $('#rating').val(rating);
 
@@ -223,6 +222,7 @@
         });
     });
 
+    // Review Submit    
     $('#reviewForm').on('submit', function(e) {
         e.preventDefault();
 
@@ -235,18 +235,15 @@
             },
             success: function(response) {
                 showSuccessMessage(response.message);
-                if (hasClickedRating) {
-                    $('#rating').val(0);
-                    $('.rating-stars i').removeClass('star-selected');
-                    hasClickedRating = false;
-                }
+                $('#rating').val(0);
+                $('.rating-stars i').removeClass('star-selected selected');
+                $('#form-review').val('');    
             },
             error: function(xhr) {
                 let message = 'Submission failed!';
                 if (xhr.responseJSON && xhr.responseJSON.message) {
                     message = xhr.responseJSON.message;
                 }
-                console.log(message);
             }
         });
     });

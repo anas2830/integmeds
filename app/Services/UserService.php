@@ -221,18 +221,14 @@ class UserService
         ];
     }
 
-    public function reviewStoreOrUpdate(array $data)
+    public function productReviewStore(array $data)
     {
-        $review = ProductReview::updateOrCreate(
-            [
-                'product_id' => $data['product_id'],
-                'user_id' => Auth::id(),
-            ],
-            [
-                'rating' => $data['rating'],
-                'review' => $data['review'],
-            ]
-        );
+        $review = ProductReview::create([
+            'product_id' => $data['product_id'],
+            'user_id' => Auth::id(),
+            'rating' => $data['rating'],
+            'review' => $data['review'],
+        ]);
 
         return [
             'message' => 'Review submitted successfully.',
@@ -241,19 +237,14 @@ class UserService
         ];
     }
 
-    public function bundleReviewStoreOrUpdate(array $data)
+    public function bundleReviewStore(array $data)
     {
-        $review = BundleReview::updateOrCreate(
-            [
-                'bundle_id' => $data['bundle_id'],
-                'user_id' => Auth::id(),
-            ],
-            [
-                'rating' => $data['rating'],
-                'review' => $data['review'],
-
-            ]
-        );
+        $review = BundleReview::create([
+            'bundle_id' => $data['bundle_id'],
+            'user_id' => Auth::id(),
+            'rating' => $data['rating'],
+            'review' => $data['review'],
+        ]);
 
         return [
             'message' => 'Review submitted successfully.',

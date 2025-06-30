@@ -168,14 +168,14 @@ class UserController extends Controller
 
     public function reviewStoreOrUpdate(ReviewSubmitRequest  $request)
     {
-        $response = $this->userService->reviewStoreOrUpdate($request->validated());
+        $response = $this->userService->productReviewStore($request->validated());
 
         return response()->json($response);
     }
 
     public function bundleReviewStoreOrUpdate(BundleReviewSubmitRequest  $request)
     {
-        $response = $this->userService->bundleReviewStoreOrUpdate($request->validated());
+        $response = $this->userService->bundleReviewStore($request->validated());
 
         return response()->json($response);
     }

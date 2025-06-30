@@ -12,6 +12,7 @@ use App\Http\Controllers\HomePageSettingsController;
 use App\Http\Controllers\Backend\FileUploadController;
 use App\Http\Controllers\Backend\ProductTagController;
 use App\Http\Controllers\Backend\ProductSizeController;
+use App\Http\Controllers\Backend\BundleReviewController;
 use App\Http\Controllers\Backend\ManageEditorController;
 use App\Http\Controllers\Backend\ProductBrandController;
 use App\Http\Controllers\Backend\ProductBundleController;
@@ -77,6 +78,11 @@ Route::group(['middleware' => 'auth.admin'], function () {
         Route::get('/product-review', [ProductReviewController::class, 'index'])->name('product-review.index');
         Route::put('/product-review/approve/{id}', [ProductReviewController::class, 'approve'])->name('product-review.approve');
         Route::delete('/product-review/{id}', [ProductReviewController::class, 'destroy'])->name('product-review.destroy');
+
+        //bundle review
+        Route::get('/bundle-review', [BundleReviewController::class, 'index'])->name('bundle-review.index');
+        Route::put('/bundle-review/approve/{id}', [BundleReviewController::class, 'approve'])->name('bundle-review.approve');
+        Route::delete('/bundle-review/{id}', [BundleReviewController::class, 'destroy'])->name('bundle-review.destroy');
 
         // Clients
         Route::resource('/clients', ClientsController::class);
