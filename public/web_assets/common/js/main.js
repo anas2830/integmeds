@@ -230,6 +230,9 @@ $(document).ready(function () {
             $('.suggestions').hide();
         }
     });
+    $(document).ready(function () {
+        $('#success-msg').fadeIn().delay(4000).fadeOut();
+    });
 });
 
 

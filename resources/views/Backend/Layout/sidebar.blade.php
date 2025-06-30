@@ -121,7 +121,8 @@
                         <span>Review</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="{{ route('product-review.index') }}">List</a></li>
+                        <li><a href="{{ route('product-review.index') }}">Product Review</a></li>
+                        <li><a href="{{ route('bundle-review.index') }}">Bundle Review</a></li>
                     </ul>
                 </li>
 

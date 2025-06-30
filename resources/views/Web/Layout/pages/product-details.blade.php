@@ -51,11 +51,13 @@
                                 </div>
                                 <div class="inner-shop-details-price">
                                     <h2 class="price">${{$product->sale_price}}</h2>
-                                    @if($product->quantity > 0)
-                                        <h5 class="stock-status text-success">- In Stock</h5>
-                                    @else
-                                        <h5 class="stock-status text-danger">- Out of Stock</h5>
-                                    @endif
+                                    <span class="stock-info">
+                                        @if($product->quantity > 0)
+                                            <h5 class="stock-status text-success">- In Stock</h5>
+                                        @else
+                                            <h5 class="stock-status text-danger">- Out of Stock</h5>
+                                        @endif
+                                    </span>
                                 </div>
                                 <p>{{$product->short_description}}</p>
                                 <div class="inner-shop-details-list">
@@ -68,17 +70,19 @@
                                         </li>
                                     </ul>
                                 </div>
-                                <div class="inner-shop-perched-info">
+                                <div class="inner-shop-perched-info product-buy-section">
                                     <x-Web.common.product-buy :product="$product" :alreadyInWishlist="$alreadyInWishlist" />
                                 </div>
                                 <div class="inner-shop-details-bottom">
                                     <ul>
-                                        <li>
-                                            <span>Tag:</span>
-                                            @foreach($product->tags as $tag)
-                                                <a href="#">{{$tag->name}}</a> @if(!$loop->last) , @endif
-                                            @endforeach
-                                        </li>
+                                        @if($product->tags->isNotEmpty())
+                                            <li>
+                                                <span>Tag:</span>
+                                                @foreach($product->tags as $tag)
+                                                    <a href="#">{{$tag->name}}</a> @if(!$loop->last) , @endif
+                                                @endforeach
+                                            </li>
+                                        @endif
                                         
                                         <li>
                                             <span>Share :</span>
@@ -282,9 +286,7 @@
     });
 
     // Rating
-    let hasClickedRating = false;
     $('.rating-stars i').on('click', function() {
-        hasClickedRating = true;
         var rating = $(this).data('rating');
         $('#rating').val(rating);
 
@@ -311,18 +313,15 @@
             },
             success: function(response) {
                 showSuccessMessage(response.message);
-                if (hasClickedRating) {
-                    $('#rating').val(0);
-                    $('.rating-stars i').removeClass('star-selected');
-                    hasClickedRating = false;
-                }
+                $('#rating').val(0);
+                $('.rating-stars i').removeClass('star-selected selected');
+                $('#form-review').val('');    
             },
             error: function(xhr) {
                 let message = 'Submission failed!';
                 if (xhr.responseJSON && xhr.responseJSON.message) {
                     message = xhr.responseJSON.message;
                 }
-                console.log(message);
             }
         });
     });

@@ -16,7 +16,10 @@ class SidebarService
 
     public function specialOffers()
     {
-        return Product::select('id', 'product_name', 'slug', 'regular_price', 'sale_price', 'discount_percentage')->with(['firstImage:id,product_id,image_url'])->where('status', 1)->orderBy('discount_percentage', 'desc')->take(10)->get();
+        return Product::select('id', 'product_name', 'slug', 'regular_price', 'sale_price', 'discount_percentage')->with(['firstImage:id,product_id,image_url'])
+        ->where('status', 1)
+        ->where('quantity', '>', 0)
+        ->orderBy('discount_percentage', 'desc')->take(10)->get();
     }
 
     public function bestSellingProducts()
@@ -25,7 +28,7 @@ class SidebarService
         $topProductIds = $this->getTopSoldProductIds();
 
         // Return products with related data and average rating
-        return Product::select('id', 'product_name', 'regular_price', 'sale_price', 'discount_percentage', 'slug')
+        return Product::select('id', 'product_name', 'regular_price', 'sale_price', 'discount_percentage', 'slug', 'quantity')
             ->with([
                 'firstImage:id,product_id,image_url',
                 'firstCategory:id,name,slug',
@@ -33,6 +36,7 @@ class SidebarService
             ->withAvg('productReviews', 'rating')
             ->whereIn('id', $topProductIds)
             // ->orderByRaw('FIELD(id, ' . $topProductIds->implode(',') . ')') // optional: maintain order
+            ->where('quantity', '>', 0) // Ensure products are in stock
             ->where('status', 1)
             ->get();
     }

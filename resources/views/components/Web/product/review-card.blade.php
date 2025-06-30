@@ -7,7 +7,7 @@
     <div class="review-content">
         <ul class="review-rating">
             <li>
-                <x-Web.common.star-rating :rating="$review->rating" />
+                {{-- <x-Web.common.star-rating :rating="$review->rating" /> --}}
             </li>
         </ul>
         <div class="review-meta">

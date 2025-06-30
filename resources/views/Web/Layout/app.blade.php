@@ -43,6 +43,7 @@
 
 <body>
     <div id="success-msg"></div>
+    @include('Web.Layout.common.success')
     @include('Web.Layout.partials.header')
 
 

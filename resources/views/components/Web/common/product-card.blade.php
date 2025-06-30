@@ -4,7 +4,7 @@
     $product = (object) $product; // In case array is passed
 @endphp
 <div class="items">
-    <div class="common-product-box">
+    <div class="common-product-box" id="product-box-{{ $product->id}}">
         @if($product->quantity == 0)
             <div class="sold-out"><span>Out Of Stock</span></div>
         @endif
@@ -49,7 +49,7 @@
                     <span class="new-price">${{ $product->sale_price }}</span>
                 </div>
                 <div class="common-cart-wrap">
-                    <a class="btn" href="#">Add to cart</a>
+                    <a class="btn add-to-cart" href="#" data-product-id="{{ $product->id }}"> Add to cart</a>
                 </div>
             </div>
         </div>

@@ -8,11 +8,30 @@
 }
 
 /* Apply to your message container */
-#success-msg {
+.success-msg {
     position: fixed;
     bottom: 20px;
     left: 20px;  /* adjust if your sidebar is wider */
     width: 400px;
     z-index: 9999;
 }
+
+.cart-update-btn {
+    background: var(--primary) !important;
+    padding: 9.5px 25px;
+    border-radius: 6px;
+    border: 0;
+    color: var(--white-color) !important;
+    text-transform: capitalize;
+    font-weight: 500;
+    font-size: 15px;
+    text-align: center;
+    overflow: hidden;
+    z-index: 1;
+    transition: all .3s ease;
+}
   
+.wishlist-0-stock{
+    opacity: .5;
+    pointer-events: none;
+}

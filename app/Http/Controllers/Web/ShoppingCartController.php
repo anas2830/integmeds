@@ -20,37 +20,34 @@ use App\Models\VariantOption;
 use App\Models\ProductVariant;
 use App\Services\CouponService;
 
-use App\Services\ProductService;
 use App\Http\Controllers\Controller;
+use App\Services\Web\ProductService;
+use App\Services\Web\SidebarService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
-class ShoppingCartController extends Controller
+class ShoppingCartController extends SidebarService
 {
     protected $productService;
     protected $couponService;
 
-    // public function __construct(ProductService $productService, CouponService $couponService)
-    // {
-    //     $this->productService = $productService;
-    //     $this->couponService = $couponService;
-    // }
+    public function __construct(ProductService $productService)
+    {
+        $this->productService = $productService;
+        // $this->couponService = $couponService;
+    }
     public function cart(){
 
         $cartContents = Cart::getContent();
-        dd($cartContents);
         $cartSubtotal = Cart::getSubTotal();
         // $outOfStockItems = $this->productService->productStockCheck($cartContents);
         $outOfStockItems = [];
-        $wishlistProductIds = [];
-        if (Auth::check()) {
-            $wishlistProductIds = Wishlist::where('user_id', Auth::id())
-                ->where('status', 1)
-                ->pluck('product_id')
-                ->toArray();
-        }
+
+        $productBundles = $this->productBundles();
+        $bestSellingProducts = $this->bestSellingProducts();
+
         // dd($cartContents, $outOfStockItems);
-        return view('Web.Layout.pages.cart', compact('cartContents','cartSubtotal','outOfStockItems','wishlistProductIds'));
+        return view('Web.Layout.pages.cart', compact('cartContents','cartSubtotal','outOfStockItems','productBundles','bestSellingProducts'));
     } 
 
     public function addToCart(Request $request)
@@ -106,176 +103,88 @@ class ShoppingCartController extends Controller
             return response()->json(['status'=> 'out-of-stock', 'message'=>'Product out of stock']);
         }
         
-        // else{
-        //     if ($request->has('variantOptionsData')) {
-        //         $selectedVariants = $request->variantOptionsData;
-        //         // $conditions= [];
-        //         $selectedWithOptions = '';
-        //         $variantExists = false;
-        //         foreach ($selectedVariants as $variant) {
-        //             $conditions[] = [
-        //                 'var_id' => $variant['variant_id'],
-        //                 'var_option_id' => $variant['variant_option_id'],
-        //             ];
-        //             $selectedWithOptions .= $variant['variant_id'] . $variant['variant_option_id'];
-
-        //             $variantExists = ProductVariant::where('product_id', $request->product_id)
-        //                 ->where('var_id', $variant['variant_id'])
-        //                 ->where('var_option_id', $variant['variant_option_id'])
-        //                 ->exists();
-
-        //                 // Fetch the names from Variant and VariantOption models
-        //                 $variantName = Variant::where('id', $variant['variant_id'])->value('name'); // Fetch variant name
-        //                 $variantOptionName = VariantOption::where('id', $variant['variant_option_id'])->value('name'); // Fetch variant option name
-
-        //                 // Combine the names
-        //                 $combinedVariants[] = $variantName . ': ' . $variantOptionName; // Store the combined name
-
-        //             if (!$variantExists) {
-        //                 $productVariantExists = false; // If any variant does not exist, set to false
-        //                 break; // Exit the loop early since we already know the result
-        //             }
-        //         }
-                
-        //         // Ensure the variantOption contains the necessary keys
-        //         if ($selectedVariants) {
-                    
-        //             if(!$variantExists){
-        //                 return response()->json(['status'=> 'not-available', 'message'=>'Some of the selected variants data not available.']);
-        //             }
-
-        //             $product = Product::with('product_variant_prices.product_variant_relations')->where('id',$selectedVariants[0]['product_id'])->first();
-        //             $product_id = $product->id;
-        //             $product_variant_prices = $product->product_variant_prices;
-                    
-        //             $price = $product_variant_prices->filter(function ($variantPrice) use ($conditions) {
-        //                 return collect($conditions)->every(function ($condition) use ($variantPrice) {
-        //                     return $variantPrice->product_variant_relations->contains(function ($relation) use ($condition) {
-        //                         // Check if the relation matches the condition
-        //                         return $relation->var_id == $condition['var_id'] && $relation->var_option_id == $condition['var_option_id'];
-        //                     });
-        //                 });
-        //             })->first();
-
-        //             // Check if the product is already in the cart
-        //             $existingItem = Cart::get($product->id . $selectedWithOptions);
-
-        //             if (!empty($existingItem)) {
-        //                 $totalQty = $existingItem->quantity + $request->quantity;
-        //             } else {
-        //                 $totalQty = $request->quantity;
-        //             }
-        //             // return response()->json($existingItem);  
-
-        //             if (!empty($price) && ($price->attribute_stock === null || ($price->attribute_stock > 0 && $totalQty <= $price->attribute_stock))) {
- 
-        //                 $salePrice = $price->sale_price;
-        //                 $regularPrice = $price->regular_price;
-        //                 $data = array();
-        //                 $data['id'] = $product->id.$selectedWithOptions;
-        //                 $data['name'] = $product->title;
-        //                 $data['price'] = $salePrice ?? $regularPrice;
-        //                 $data['attributes']['slug'] = $product->slug;
-        //                 $data['attributes']['regular_price'] = $regularPrice;
-        //                 $data['attributes']['sale_price'] = $salePrice;
-        //                 $data['attributes']['product_id'] = $product->id;
-        //                 $data['attributes']['product_image'] = $product_image;
-        //                 $data['attributes']['variants'][] = $conditions;
-        //                 $data['attributes']['variant_names'][] = $combinedVariants;
-
-        //                 if ($existingItem) {
-        //                     // If the product exists, increase its quantity
-        //                     // Increment the quantity
-        //                     Cart::update($product->id.$selectedWithOptions, array(
-        //                         'quantity' => $request->quantity ?? 1
-        //                     ));
-        //                 } else {
-        //                     // If the product doesn't exist in the cart, set quantity to 1 and add it
-        //                     $data['quantity'] = $request->quantity ?? 1; // Set quantity to 1
-        //                     Cart::add($data);
-        //                 }
-        //             }else{
-        //                 return response()->json(['status'=> 'out-of-stock', 'message'=>'Product out of stock']);
-        //             }
-        //         }
-        //     }
-        // }
-        
         $cartData = Cart::getContent();
         $cartSubtotal = Cart::getSubTotal();
         $miniart = view('Web.Layout.partials.cart.minicart', compact('cartData','cartSubtotal'))->render();
         return response()->json(['status' => 'success', 'message' => 'Product added to cart successfully!', 'cart_count' => Cart::getTotalQuantity(),'minicart'=>$miniart]);
     }
-    public function updateCart(Request $request){
-        $outOfStockItems = [];
-        $request->validate([
-            'rowId' => ['required', 'array'],
-            'rowId.*' => ['required', 'integer'],
-            'qty' => ['required', 'array'],
-            'qty.*' => ['required', 'integer', 'min:1', 'max:100'],
-        ]);
-        // Prepare arrays for valid and invalid items
-        $validItems = [];
-        $invalidItems = [];
+    // public function updateCart(Request $request){
+    //     $request->validate([
+    //         'rowId' => ['required', 'array'],
+    //         'rowId.*' => ['required', 'integer'],
+    //         'qty' => ['required', 'array'],
+    //         'qty.*' => ['required', 'integer', 'min:1', 'max:100'],
+    //     ]);
 
-        // Check each item's stock availability
-        foreach ($request->rowId as $key => $cartRow) {
-            // Fetch the cart item by its row ID
-            $cartItem = Cart::get($cartRow);
-            // dd($cartItem);
-            if ($cartItem) {
-                $outOfStockItems = $this->productService->productStockCheck([$cartItem], $request->qty[$key]);
+    //     foreach ($request->rowId as $key => $rowId) {
+    //         $cartItem = Cart::get($rowId);
+    //         if ($cartItem) {
+    //             $quantity = $request->qty[$key];
 
-                if (!empty($outOfStockItems)) {
-                    // Add to invalid items if out of stock or exceeds available stock
-                    $invalidItems[] = [
-                        'cart_row' => $cartRow,
-                        'error_message' => $outOfStockItems[0]['error_message'], // Use the first error message
-                    ];
-                } else {
-                    // Add to valid items if stock is sufficient
-                    $validItems[] = [
-                        'rowId' => $cartRow,
-                        'quantity' => $request->qty[$key],
-                    ];
-                }
-            }
+    //             Cart::update($rowId, [
+    //                 'quantity' => [
+    //                     'relative' => false,
+    //                     'value' => $quantity,
+    //                 ],
+    //             ]);
+    //         }
+    //     }
+    //     // $this->couponService->couponReValidate();
+    //     return back()->with('success', 'Cart updated successfully');
+    // }
+    public function updateCart(Request $request)
+    {
+        $cart = Cart::getContent();
+
+        // Build a map of [rowId => requestedQty]
+        $requestedQuantities = [];
+        foreach ($request->rowId as $index => $rowId) {
+            $requestedQuantities[$rowId] = $request->qty[$index];
         }
-       
-        // Update only the valid items in the cart
-        // dd(Cart::getContent());
-        foreach ($validItems as $item) {
-            // Fetch the cart item by its row ID
-            $cartItem = Cart::get($item['rowId']);
-            if ($cartItem) {
-                // Update the cart item in the cart
-                Cart::update($item['rowId'], [
-                    'quantity' => [
-                        'relative' => false,
-                        'value' => $item['quantity'],
-                    ],
-                ]);
-            }
+
+        // Pass cart and requested quantities for validation
+        $stockIssues = $this->productService->productCartStockCheck($cart, $requestedQuantities);
+
+        $failedRowIds = array_column($stockIssues, 'rowId');
+        $messages = array_column($stockIssues, 'message');
+
+        foreach ($requestedQuantities as $rowId => $quantity) {
+            if (in_array($rowId, $failedRowIds)) continue;
+
+            Cart::update($rowId, [
+                'quantity' => [
+                    'relative' => false,
+                    'value' => $quantity,
+                ],
+            ]);
         }
-        // dd($outOfStockItems, $invalidItems);
-        $this->couponService->couponReValidate();
-        return back()->with(['success','Cart updated successfully', 'invalidItems'=> $invalidItems]);
+
+        if (!empty($messages)) {
+            return back()->withErrors([
+                'stock_errors' => $messages,
+                'out_of_stock_ids' => $failedRowIds,
+            ]);
+        }
+
+        return back()->with('success', 'Cart updated successfully');
     }
+
+
+
 
     public  function removeSingleItem($rowID){
         Cart::remove($rowID);
-        $this->couponService->couponReValidate();
+        // $this->couponService->couponReValidate();
         return back()->with('success','Item successfully removed from cart');
     }
 
     public function removeSingleItemAjax($rowID){
         Cart::remove($rowID);
-        $this->couponService->couponReValidate();
         return response()->json([
             'status' => 'success',
             'message' => 'Product successfully removed from cart!',
             'cart_count' => Cart::getTotalQuantity(),
-            'cartSubTotal'=> Cart::getSubTotal(), 
+            'cartSubtotal'=> Cart::getSubTotal(), 
             'couponDiscountAmount'=> Session::get('coupon_amount'),
             'coupon_code'=>Session::get('coupon_code')
         ]);
@@ -289,70 +198,6 @@ class ShoppingCartController extends Controller
 
     public function applyCoupon(Request $request)
     {
-        // $request->validate([
-        //     'coupon_code' => 'nullable|string|max:100',
-        // ]);
-
-        // $couponSession = Session::get('coupon_code');
-        // if (!empty($couponSession)) {
-        //     return back()->with('coupon-error', 'You can apply only one coupon at a time');
-        // } else {
-        //     if (Auth::check()) {
-        //         $coupon = Coupon::where('coupon_code', $request->coupon_code)->where('status', 1)->first();
-        //         if (!empty($coupon)) {
-        //             $couponUsed = 0;
-        //             $couponUsed = Order::where('user_id', Auth::id())->where('coupon_id', $coupon->id)->count();
-        //             if (empty($coupon)) {
-        //                 return back()->with('coupon-error', 'Coupon is invalid');
-        //             } else {
-        //                 // dd('here');
-        //                 $today = now()->format('Y-m-d');
-        //                 $couponStartDate = $coupon->start_date->format('Y-m-d');
-        //                 $couponExpireDate = $coupon->expire_date ? $coupon->expire_date->format('Y-m-d') : null;
-
-
-        //                 // $couponExpireDate = $coupon->expire_date->format('Y-m-d');
-        //                 // dd($today,  $couponStartDate, $couponExpireDate);
-        //                 if (!empty($coupon->expire_date) && $today > $couponExpireDate) {
-        //                     return back()->with('coupon-error', 'Coupon is expired');
-        //                 } else if ($today < $couponStartDate) {
-        //                     return back()->with('coupon-error', 'Coupon is invalid');
-        //                 } else {
-        //                     // coupon usage type (multiple - 1  & unlimited - 2)
-        //                     // multiple - 1
-        //                     if ($coupon->coupon_usage === 1) {
-        //                         if ($coupon->usage_limit) {
-        //                             if ($coupon->usage_limit <= $couponUsed) {
-        //                                 return back()->with('coupon-error', 'Coupon usage limit reached');
-        //                             } else {
-        //                                 $result = $this->couponAmountByType($coupon);
-        //                                 if ($result['coupon-error']) {
-        //                                     return back()->with('coupon-error', $result['message']);
-        //                                 } else {
-        //                                     return back()->with('success', $result['message']);
-        //                                 }
-        //                             }
-        //                         }
-        //                     }
-        //                     // unlimited - 2
-        //                     elseif ($coupon->coupon_usage === 2) {
-        //                         $result = $this->couponAmountByType($coupon);
-        //                         if ($result['coupon-error']) {
-        //                             return back()->with('coupon-error', $result['message']);
-        //                         } else {
-        //                             return back()->with('success', $result['message']);
-        //                         }
-        //                     }
-        //                 }
-        //             }
-        //         } else {
-        //             return back()->with('coupon-error', 'Coupon is invalid');
-        //         }
-        //     } else {
-        //         return to_route('home')->with('login_required', 'Please login to continue');
-        //     }
-        // }
-        
         $request->validate([
             'coupon_code' => 'nullable|string|max:100',
         ]);
@@ -651,22 +496,14 @@ class ShoppingCartController extends Controller
     }
     public function checkout()
     {
+        $specialOffers = $this->specialOffers();
+        $productBundles = $this->productBundles();
         $cartSubtotal = Cart::getSubTotal();
         $cartContents = Cart::getContent();
         $cart_count = $cartContents->count();
-        $countries = Country::orderBy('country_name', 'ASC')->where('status', 1)->get();
-
-        $payments = Payment::where('status', 1)->get();
-
-        if (!empty($cart_count)) {
-            if (Auth::user()) {
-                $shipping_states = State::where('country_id', old('shipping_country_id'))->where('status', 1)->get();
-                $shipping_cities = City::where('state_id', old('shipping_state_id'))->where('status', 1)->get();
-                $billing_states = State::where('country_id', old('billing_country_id'))->where('status', 1)->get();
-                $billing_cities = City::where('state_id', old('billing_state_id'))->where('status', 1)->get();
-                return view('Web.Layout.pages.checkout', compact('cartContents', 'cartSubtotal', 'countries', 'shipping_states', 'shipping_cities', 'billing_states', 'billing_cities', 'payments'));
-            }
-            return to_route('/')->with('login_required', 'Please login to continue');
+        $countries = Country::all();
+        if ($cart_count > 0) {
+            return view('Web.Layout.pages.checkout', compact('cartContents', 'cartSubtotal', 'countries', 'productBundles', 'specialOffers'));
         }
         return to_route('shopping.cart');
     }

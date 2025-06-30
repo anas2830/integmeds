@@ -34,7 +34,7 @@
                             @else
                                 <li><a href="{{ route('user.login') }}"><i class="fa-regular fa-heart"></i></a></li>
                             @endauth
-                            <li class="shopping-cart" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><a><i class="fa-solid fa-cart-shopping"></i></a><span class="cart_count">0</span></li>
+                            <li class="shopping-cart" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><a><i class="fa-solid fa-cart-shopping"></i></a><span class="cart_count">{{ $cartDataCount }}</span></li>
                             <li>
                                 @auth
                                     <a class="user-btn" href="#"><i class="fa-solid fa-user"></i></a>
@@ -121,7 +121,7 @@
                                                                 @foreach ($bundles as $bundle)
                                                                 <li>
                                                                     <div class="items-list">
-                                                                        <a href={{ route('bundle', $bundle->id)  }}>{{$bundle->name}}</a>
+                                                                        <a href={{ route('bundle-details', $bundle->id)  }}>{{$bundle->name}}</a>
                                                                     </div>
                                                                 </li>
                                                                 @endforeach
@@ -149,7 +149,7 @@
                                             @else
                                                 <li><a href="{{ route('user.login') }}"><i class="fa-regular fa-heart"></i></a></li>
                                             @endauth
-                                            <li class="shopping-cart" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><a><i class="fa-solid fa-cart-shopping"></i></a><span class="cart_count">0</span></li>
+                                            <li class="shopping-cart" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><a><i class="fa-solid fa-cart-shopping"></i></a><span class="cart_count">{{ $cartDataCount }}</span></li>
                                             <li>
                                                 @auth
                                                     <a class="user-btn" href="#"><i class="fa-solid fa-user"></i></a>
@@ -217,7 +217,7 @@
                                                     @else
                                                         <li><a href="{{ route('user.login') }}"><i class="fa-regular fa-heart"></i></a></li>
                                                     @endauth
-                                                    <li class="shopping-cart" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><a><i class="fa-solid fa-cart-shopping"></i></a><span class="cart_count">0</span></li>
+                                                    <li class="shopping-cart" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><a><i class="fa-solid fa-cart-shopping"></i></a><span class="cart_count">{{ $cartDataCount }}</span></li>
                                                     <li>
                                                         @auth
                                                             <a class="user-btn" href="#"><i class="fa-solid fa-user"></i></a>

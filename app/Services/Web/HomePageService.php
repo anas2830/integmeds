@@ -33,7 +33,7 @@ class HomePageService extends SidebarService
     }
     public function newArrivals()
     {
-        return Product::select('id', 'product_name', 'regular_price', 'sale_price', 'discount_percentage', 'slug')
+        return Product::select('id', 'product_name', 'regular_price', 'sale_price', 'discount_percentage', 'slug', 'quantity')
             ->with(['firstImage:id,product_id,image_url'])
             ->where('status', 1)
             ->latest('created_at')
@@ -43,7 +43,7 @@ class HomePageService extends SidebarService
 
     public function topRatedProducts()
     {
-        return Product::select('id', 'product_name', 'regular_price', 'sale_price', 'discount_percentage', 'slug')
+        return Product::select('id', 'product_name', 'regular_price', 'sale_price', 'discount_percentage', 'slug', 'quantity')
             ->with(['firstImage:id,product_id,image_url'])
             ->withAvg('productReviews', 'rating')
             ->where('status', 1)
