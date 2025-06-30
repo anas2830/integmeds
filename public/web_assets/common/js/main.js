@@ -194,7 +194,7 @@ $(document).ready(function () {
                         if (response.length === 5) {
                             html += `
                                 <li class="view-all-suggestion">
-                                    <a href="/search?query=${encodeURIComponent(query)}">View all results</a>
+                                    <a href="/search?search=${encodeURIComponent(query)}">View all results</a>
                                 </li> 
                             `;
                         }
