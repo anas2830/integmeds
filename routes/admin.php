@@ -78,11 +78,17 @@ Route::group(['middleware' => 'auth.admin'], function () {
         Route::get('/product-review', [ProductReviewController::class, 'index'])->name('product-review.index');
         Route::get('/product-review/create', [ProductReviewController::class, 'create'])->name('product-review.create');
         Route::post('/product-review/store', [ProductReviewController::class, 'store'])->name('product-review.store');
+        Route::get('/product-review/edit/{id}', [ProductReviewController::class, 'edit'])->name('product-review.edit');
+        Route::put('/product-review/update/{id}', [ProductReviewController::class, 'update'])->name('product-review.update');
         Route::put('/product-review/approve/{id}', [ProductReviewController::class, 'approve'])->name('product-review.approve');
         Route::delete('/product-review/{id}', [ProductReviewController::class, 'destroy'])->name('product-review.destroy');
 
         //bundle review
         Route::get('/bundle-review', [BundleReviewController::class, 'index'])->name('bundle-review.index');
+        Route::get('/bundle-review/create', [BundleReviewController::class, 'create'])->name('bundle-review.create');
+        Route::post('/bundle-review/store', [BundleReviewController::class, 'store'])->name('bundle-review.store');
+        Route::get('/bundle-review/edit/{id}', [BundleReviewController::class, 'edit'])->name('bundle-review.edit');
+        Route::put('/bundle-review/update/{id}', [BundleReviewController::class, 'update'])->name('bundle-review.update');
         Route::put('/bundle-review/approve/{id}', [BundleReviewController::class, 'approve'])->name('bundle-review.approve');
         Route::delete('/bundle-review/{id}', [BundleReviewController::class, 'destroy'])->name('bundle-review.destroy');
 

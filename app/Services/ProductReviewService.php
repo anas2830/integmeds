@@ -13,6 +13,38 @@ class ProductReviewService
             ->latest()
             ->paginate(20);
     }
+
+    public function create($request)
+    {
+        if(count($request['product_id']) > 0){
+            foreach($request['product_id'] as $product_id){
+                ProductReview::create([
+                    'product_id' => $product_id,
+                    'user_id' => $request['user_id'],
+                    'rating' => $request['rating'],
+                    'review' => $request['review'],
+                    'is_approved' => 1,
+                ]);
+            }
+        }
+    }
+
+    public function getReviewById($id)
+    {
+        return ProductReview::find($id);
+    }
+
+    public function update($request, $id)
+    {
+        $review = ProductReview::find($id);
+        $review->update([
+            'product_id' => $request['product_id'],
+            'user_id' => $request['user_id'],
+            'rating' => $request['rating'],
+            'review' => $request['review'],
+        ]);
+    }
+
     public function approve($id)
     {
         $review = ProductReview::find($id);

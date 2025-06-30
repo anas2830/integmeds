@@ -13,6 +13,38 @@ class BundleReviewService
             ->latest()
             ->paginate(20);
     }
+
+    public function create($request)
+    {
+        if(count($request['bundle_id']) > 0){
+            foreach($request['bundle_id'] as $bundle_id){
+                BundleReview::create([
+                    'bundle_id' => $bundle_id,
+                    'user_id' => $request['user_id'],
+                    'rating' => $request['rating'],
+                    'review' => $request['review'],
+                    'is_approved' => 1,
+                ]);
+            }
+        }
+    }
+
+    public function getReviewById($id)
+    {
+        return BundleReview::find($id);
+    }
+
+    public function update($request, $id)
+    {
+        $review = BundleReview::find($id);
+        $review->update([
+            'bundle_id' => $request['bundle_id'],
+            'user_id' => $request['user_id'],
+            'rating' => $request['rating'],
+            'review' => $request['review'],
+        ]);
+    }
+
     public function approve($id)
     {
         $review = BundleReview::find($id);

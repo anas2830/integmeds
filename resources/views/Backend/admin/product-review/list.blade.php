@@ -72,7 +72,10 @@
                                         data-id="{{ $review->id }}">
                                         {{ $review->is_approved ? 'Disapprove' : 'Approve' }}
                                     </a>
-                                                                  
+                                    
+                                    <a href="{{ route('product-review.edit', $review->id) }}" class="btn btn-sm btn-primary">
+                                        Edit
+                                    </a>
                                     
                                     <a href="#" class="btn btn-sm btn-danger delete-review" data-id="{{ $review->id }}">
                                         Delete

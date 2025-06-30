@@ -20,7 +20,6 @@ return new class extends Migration
             $table->boolean('is_approved')->default(false); // Admin approves review
             $table->timestamps();
             $table->softDeletes(); // Adds deleted_at for soft deletes
-            $table->unique(['product_id', 'user_id']);
         });
     }
 

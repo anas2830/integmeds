@@ -32,4 +32,9 @@ class Bundle extends Model
     {
         return $this->hasOne(BundleImage::class);
     }
+
+    public function scopeValid($query)
+    {
+        return $query->where('status', 1);
+    }
 }
