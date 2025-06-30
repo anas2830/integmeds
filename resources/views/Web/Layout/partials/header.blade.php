@@ -112,24 +112,27 @@
                                         </ul>
                                     </li>
                                     <li class="nav-item dropdown has-megamenu">
-                                        <a class="nav-link dropdown-toggle" href="{{ route('bundle') }}" data-bs-toggle="dropdown">Product Bundle</a>
-                                            <div class="dropdown-menu megamenu" role="menu">
-                                                <div class="row w-100 ">
-                                                    <div class="col-lg-12">
-                                                        <div class="mega-items-wrap">
-                                                            <ul>
-                                                                @foreach ($bundles as $bundle)
-                                                                <li>
-                                                                    <div class="items-list">
-                                                                        <a href={{ route('bundle', $bundle->id)  }}>{{$bundle->name}}</a>
-                                                                    </div>
-                                                                </li>
-                                                                @endforeach
-                                                            </ul>
-                                                        </div>
+                                        <div class="mega-drop-wrap position-relative">
+                                            <a class="nav-link" href="{{ route('bundle') }}">Product Bundle</a>
+                                            <a class="nav-link dropdown-toggle position-absolute top-0 end-0 pe-2" href="{{ route('bundle') }}" data-bs-toggle="dropdown"></a>
+                                        </div>
+                                        <div class="dropdown-menu megamenu" role="menu">
+                                            <div class="row w-100 ">
+                                                <div class="col-lg-12">
+                                                    <div class="mega-items-wrap">
+                                                        <ul>
+                                                            @foreach ($bundles as $bundle)
+                                                            <li>
+                                                                <div class="items-list">
+                                                                    <a href={{ route('bundle', $bundle->id)  }}>{{$bundle->name}}</a>
+                                                                </div>
+                                                            </li>
+                                                            @endforeach
+                                                        </ul>
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{route('about-us')}}">About No.1 US Brand</a>
@@ -272,7 +275,7 @@
                                                     </li>
                                                     <li class="sub-mobile-menu">
                                                         <div class="sub-menu-mobile-link">
-                                                            <a href="#">Shop</a>
+                                                            <a href="{{ url('category') }}">Shop</a>
                                                             <span class="accordion-click"><i class="fas fa-angle-down"></i></span>
                                                         </div>
                                                         <ul class="list-unstyled">
