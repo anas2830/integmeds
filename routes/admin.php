@@ -75,6 +75,8 @@ Route::group(['middleware' => 'auth.admin'], function () {
 
         // Product review
         Route::get('/product-review', [ProductReviewController::class, 'index'])->name('product-review.index');
+        Route::get('/product-review/create', [ProductReviewController::class, 'create'])->name('product-review.create');
+        Route::post('/product-review/store', [ProductReviewController::class, 'store'])->name('product-review.store');
         Route::put('/product-review/approve/{id}', [ProductReviewController::class, 'approve'])->name('product-review.approve');
         Route::delete('/product-review/{id}', [ProductReviewController::class, 'destroy'])->name('product-review.destroy');
 

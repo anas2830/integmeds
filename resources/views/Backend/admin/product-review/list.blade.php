@@ -20,14 +20,21 @@
 
                 {{-- Search --}}
                 <div class="d-flex align-items-center justify-content-between mb-3">
-                    <form action="{{ route('product-review.index') }}" method="GET" class="app-search">
-                        <div class="input-group">
-                            <input type="text" name="search" class="form-control" placeholder="Search..." value="{{ request('search') }}">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="submit">Go</button>
-                            </div>
+                    <div>
+                        <div class="search-form">
+                            <form action="{{ route('product-review.index') }}" method="GET" class="app-search">
+                                <div class="input-group">
+                                    <input type="text" name="search" class="form-control" placeholder="Search..." value="{{ request('search') }}">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="submit">Go</button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
-                    </form>
+                    </div>
+                    <div class="page-title-right">
+                        <a href="{{ route('product-review.create') }}" class="btn btn-primary">+ Add New</a>
+                    </div>
                 </div>
 
                 {{-- Review Table --}}
