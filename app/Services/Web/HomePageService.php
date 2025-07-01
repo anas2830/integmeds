@@ -36,21 +36,25 @@ class HomePageService extends SidebarService
     }
     public function newArrivals()
     {
-        return Cache::rememberForever('Product', function() {
-            return Product::select('id', 'product_name', 'regular_price', 'sale_price', 'discount_percentage', 'slug')
-            ->with(['firstImage:id,product_id,image_url'])
-            ->where('status', 1)
-            ->latest('created_at')
-            ->take(10)
-            ->get();
+
+        $productIds = Cache::rememberForever('new_arrival_product_ids', function () {
+            return Product::where('status', 1)
+                ->latest('created_at')
+                ->take(10)
+                ->pluck('id');
         });
+
+        return Product::select('id', 'product_name', 'regular_price', 'sale_price', 'discount_percentage', 'slug', 'quantity')
+            ->with(['firstImage:id,product_id,image_url', 'firstCategory:id,name,slug'])
+            ->whereIn('id', $productIds)
+            ->get();
     }
 
     public function topRatedProducts()
     {
         return Cache::remember('topRatedProducts', 60, function() {
-            return Product::select('id', 'product_name', 'regular_price', 'sale_price', 'discount_percentage', 'slug')
-            ->with(['firstImage:id,product_id,image_url'])
+            return Product::select('id', 'product_name', 'regular_price', 'sale_price', 'discount_percentage', 'slug', 'quantity')
+            ->with(['firstImage:id,product_id,image_url', 'firstCategory:id,name,slug'])
             ->withAvg('productReviews', 'rating')
             ->where('status', 1)
             ->having('product_reviews_avg_rating', '>', 0) // Exclude products with NULL or 0 rating
@@ -72,7 +76,7 @@ class HomePageService extends SidebarService
         return Cache::rememberForever('HomePageFeaturedProduct', function() {
             return HomePageFeaturedProduct::with([
                 'product:id,product_name,slug,regular_price,sale_price',
-                'product.firstImage:id,product_id,image_url'
+                'product.firstImage:id,product_id,image_url,'
             ])
             ->select('id', 'product_id', 'btn_text', 'btn_url')
             ->limit(3)

@@ -62,7 +62,7 @@ Route::controller(ShoppingCartController::class)->group(function () {
     Route::get('/remove/cart/all', 'removeAllItem')->name('shopping.cart.remove.all');
     Route::get('/checkout', 'checkout')->name('checkout');
     Route::post('/apply/coupon', 'applyCoupon')->name('coupon.apply');
-    Route::get('/remove/coupon', 'removeCoupon')->name('coupon.remove');
+    Route::get('/remove/coupon/{coupon_code}', 'removeCoupon')->name('coupon.remove');
 });
 
 
