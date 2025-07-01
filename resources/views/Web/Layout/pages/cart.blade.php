@@ -188,7 +188,7 @@
                     );
                     $couponName.text(couponCode);
                     $discountDiv.text(response.coupon_amount);
-                    $toallPriceDiv.text(subtotal - response.coupon_amount);
+                    $toallPriceDiv.text(subtotal - poarseInt(response.coupon_amount));
                     $appliedCoupon.show();
                     $input.remove();
                     $applyBtn.remove();
