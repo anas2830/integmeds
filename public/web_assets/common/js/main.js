@@ -189,7 +189,7 @@ $(document).ready(function () {
                         $.each(response, function (i, product) {
                             html += `
                                 <li>
-                                    <a href="/product/${product.slug}">
+                                    <a href="/product-details/${product.slug}">
                                         <div class="search-suggestions-items">
                                             <div class="search-sugge-items-img">
                                                 <img class="img-fluid" src="${product.image_url}" alt="${product.product_name}">

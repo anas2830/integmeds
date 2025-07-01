@@ -10,8 +10,15 @@ class Order extends Model
 {
     use SoftDeletes;
 
+    protected $guarded = [];
+
     public function items()
     {
         return $this->hasMany(OrderDetails::class);
     }
+
+    protected $casts = [
+        'billing_address'  => 'array',
+        'shipping_address' => 'array',
+    ];
 }

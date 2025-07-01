@@ -78,7 +78,7 @@ class HomePageService extends SidebarService
                 'product:id,product_name,slug,regular_price,sale_price',
                 'product.firstImage:id,product_id,image_url,'
             ])
-            ->select('id', 'product_id', 'btn_text', 'btn_url')
+            ->select('id','btn_text', 'btn_url')
             ->limit(3)
             ->get();
         });

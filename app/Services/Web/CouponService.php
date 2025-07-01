@@ -80,7 +80,7 @@ class CouponService
     }
 
 
-    protected function removeSessionCoupon(): void
+    public function removeSessionCoupon(): void
     {
         Session::forget([
             'coupon_id',
@@ -140,16 +140,22 @@ class CouponService
 
     public function removeCoupon(string $code)
     {
-        $couponExist = Cupon::where('code', $code)->exists();
+        $coupon = Cupon::where('code', $code)->first();
 
-        if (!$couponExist) {
+        if (!$coupon) {
             return false;
         }
+
         if (Session::get('coupon_code') !== $code) {
             return false;
         }
 
+        // Example: mark as not used (you can adjust based on your column)
+        $coupon->used = false; // or $coupon->is_active = false; or increment remaining_uses etc.
+        $coupon->save();
+
         $this->removeCouponFromSession();
+
         return true;
     }
 }

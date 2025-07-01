@@ -1,6 +1,6 @@
 @extends('Web.Layout.app')
 
-@section('site-title', 'Category')
+@section('site-title', 'Checkout')
 
 @section('content')
 <section class="checkout-page-area">
@@ -12,253 +12,87 @@
                     <x-Web.common.sidebar.sidebar-special-offer :specialOffers="$specialOffers" />
                 </div>
                 <div class="col-lg-9 order-lg-2 order-1">
-                    <div class="row">
-                        <div class="col-lg-8">
-                            <form>
-                                <h4 class="mb-3">Billing Address</h4>
-                                <div class="shipping-form-wrap">
-                                    <div class="row">
-                                        <div class="col-md-6 mb-3">
-                                            <label for="firstName">Name <span class="required">*</span></label>
-                                            <input type="text" class="form-control" placeholder="" value=""
-                                                required="">
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label for="firstName">Phone Number <span
-                                                    class="required">*</span></label>
-                                            <input type="text" class="form-control" placeholder="" value=""
-                                                required="">
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label for="email">Email <span class="required">*</span></label>
-                                            <input type="email" class="form-control" placeholder="">
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label for="country">Region <span class="required">*</span></label>
-                                            <select class="custom-select d-block w-100" required="">
-                                                <option value="">Please choose your region</option>
-                                                <option>Barishal</option>
-                                                <option>Chattogram</option>
-                                                <option>Dhaka</option>
-                                                <option>Khulna</option>
-                                                <option>Mymensingh</option>
-                                                <option>Rajshahi</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label for="state">City <span class="required">*</span></label>
-                                            <select class="custom-select d-block w-100" required="">
-                                                <option value="">Please choose your city</option>
-                                                <option>Bandarban</option>
-                                                <option>Brahmanbaria</option>
-                                                <option>Brahmanbaria - Kasba</option>
-                                                <option>Chandpur - Hayemchar</option>
-                                                <option>Chattogram Sadar</option>
-                                                <option>Feni - Sadar</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label for="country">Area</label>
-                                            <select class="custom-select d-block w-100" required="">
-                                                <option value="">Please choose your area</option>
-                                                <option>Agrabad</option>
-                                                <option>AK Khan</option>
-                                                <option>Chandgaon</option>
-                                                <option>Chawkbazar</option>
-                                                <option>Khulshi</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-lg-12 mb-5">
-                                            <label for="address">Address <span class="required">*</span></label>
-                                            <input type="text" class="form-control"
-                                                placeholder="For Example: House# 123, Street# 123, ABC Road"
-                                                required="">
+                    <form action="{{ route('place.order') }}" method="post">
+                        @csrf
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <form>
+                                    <h4 class="mb-3">Billing Address</h4>
+                                    <x-Web.checkout.billing-address :billingAddress="$billingAddress" :countries="$countries" />
+                                    <div class="different-address-checkbox mb-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="ship_to_different_address" value="1" id="ship-address"
+                                                {{ old('ship_to_different_address') ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="ship-address">
+                                                Ship to a different address?
+                                            </label>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="different-address-checkbox mb-4">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="ship-address">
-                                        <label class="form-check-label" for="ship-address">
-                                            Ship to a different address?
-                                        </label>
+                                    
+                                    <div class="different-address-info">
+                                        <x-Web.checkout.shipping-address :shippingAddress="$shippingAddress" :countries="$countries" />
                                     </div>
-                                </div>
-                                <div class="different-address-info">
-                                    <div class="shipping-form-wrap">
-                                        <div class="row">
-                                            <div class="col-md-6 mb-3">
-                                                <label for="firstName">Name <span
-                                                        class="required">*</span></label>
-                                                <input type="text" class="form-control" placeholder="" value=""
-                                                    required="">
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label for="firstName">Phone Number <span
-                                                        class="required">*</span></label>
-                                                <input type="text" class="form-control" placeholder="" value=""
-                                                    required="">
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label for="email">Email <span class="required">*</span></label>
-                                                <input type="email" class="form-control" placeholder="">
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label for="country">Region <span
-                                                        class="required">*</span></label>
-                                                <select class="custom-select d-block w-100" required="">
-                                                    <option value="">Please choose your region</option>
-                                                    <option>Barishal</option>
-                                                    <option>Chattogram</option>
-                                                    <option>Dhaka</option>
-                                                    <option>Khulna</option>
-                                                    <option>Mymensingh</option>
-                                                    <option>Rajshahi</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label for="state">City <span class="required">*</span></label>
-                                                <select class="custom-select d-block w-100" required="">
-                                                    <option value="">Please choose your city</option>
-                                                    <option>Bandarban</option>
-                                                    <option>Brahmanbaria</option>
-                                                    <option>Brahmanbaria - Kasba</option>
-                                                    <option>Chandpur - Hayemchar</option>
-                                                    <option>Chattogram Sadar</option>
-                                                    <option>Feni - Sadar</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label for="country">Area</label>
-                                                <select class="custom-select d-block w-100" required="">
-                                                    <option value="">Please choose your area</option>
-                                                    <option>Agrabad</option>
-                                                    <option>AK Khan</option>
-                                                    <option>Chandgaon</option>
-                                                    <option>Chawkbazar</option>
-                                                    <option>Khulshi</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-lg-12 mb-5">
-                                                <label for="address">Address <span
-                                                        class="required">*</span></label>
-                                                <input type="text" class="form-control"
-                                                    placeholder="For Example: House# 123, Street# 123, ABC Road"
-                                                    required="">
-                                            </div>
+                                </form>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="checkout-order-summary-container">
+                                    <h5 class="center">Your Order</h5>
+                                    <div class="checkout-oder-sub-total-wrap">
+                                        <div class="checkout-oder-sub-total">
+                                            <p>Total ({{$cartCount}}items)</p>
+                                            <p>$<span class="cart-subtotal">{{$cartSubtotal}}</span></p>
+                                        </div>
+                                        <div class="checkout-oder-sub-total">
+                                            <p>Discount</p>
+                                            <p>-$<span class="coupon-amount">{{$couponAmount ?? 0}}</span></p>
                                         </div>
                                     </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="checkout-order-summary-container">
-                                <h5 class="center">Your Order</h5>
-                                <div class="checkout-oder-sub-total-wrap">
-                                    <div class="checkout-oder-sub-total">
-                                        <p>Total (5 items)</p>
-                                        <p>$557</p>
-                                    </div>
-                                    <div class="checkout-oder-sub-total">
-                                        <p>Delivery Charge</p>
-                                        <p>$150</p>
-                                    </div>
-                                    <div class="checkout-oder-sub-total">
-                                        <p>Shipping Discount and Voucher</p>
-                                        <p>-$55</p>
-                                    </div>
-                                </div>
-                                <div class="checkout-oder-sub-total-wrap">
-                                    <div class="checkout-oder-sub-total">
-                                        <p>Grand Total:</p>
-                                        <span class="Big-text">$557</span>
-                                    </div>
-                                </div>
-                                <div class="sidebar-payment-method">
-                                    <form>
-                                        <!-- Credit Card Option -->
-                                        <div class="payment-option">
-                                            <div class="form-check mb-3">
-                                                <div class="check-wrap">
-                                                    <input class="form-check-input" type="radio"
-                                                        name="paymentMethod" id="creditCard">
-                                                    <label class="form-check-label fw-bold" for="creditCard">
-                                                        Credit Card (Stripe) </label>
-                                                </div>
-                                                <div class="text-muted">Pay with your credit card via Stripe.
-                                                </div>
-                                            </div>
-                                            <div class="credit-card-info">
-                                                <div class="card-input position-relative">
-                                                    <label for="cardNumber" class="form-label">Card Number <span
-                                                            class="required-star">*</span></label>
-                                                    <input type="text" class="form-control" id="cardNumber"
-                                                        placeholder="1234 1234 1234 1234">
-                                                    <button type="button"
-                                                        class="btn btn-sm btn-success autofill-btn">Autofill
-                                                        link</button>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <label for="expiryDate" class="form-label">Expiry Date
-                                                            <span class="required-star">*</span></label>
-                                                        <input type="text" class="form-control" id="expiryDate"
-                                                            placeholder="MM / YY">
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label for="cvc" class="form-label">Card Code (CVC)
-                                                            <span class="required-star">*</span></label>
-                                                        <input type="text" class="form-control" id="cvc"
-                                                            placeholder="CVC">
-                                                    </div>
-                                                </div>
-                                                <div class="form-check mt-3">
-                                                    <input class="form-check-input" type="checkbox"
-                                                        id="saveCard">
-                                                    <label class="form-check-label" for="saveCard"> Save payment
-                                                        information to my account for future purchases. </label>
-                                                </div>
-                                            </div>
+                                    <div class="checkout-oder-sub-total-wrap">
+                                        <div class="checkout-oder-sub-total">
+                                            <p>Grand Total:</p>
+                                            <span class="Big-text">$ <span class="total-price">{{$cartSubtotal - $couponAmount}}</span></span>
                                         </div>
-                                        <!-- PayPal Option -->
+                                    </div>
+                                    <div class="sidebar-payment-method">
+                                        <!-- Payment Option -->
                                         <div class="payment-option">
                                             <div class="form-check mb-2">
                                                 <div class="check-wrap">
                                                     <input class="form-check-input" type="radio"
-                                                        name="paymentMethod" id="paypal" checked>
-                                                    <label class="form-check-label fw-bold" for="paypal"> PayPal
-                                                        <img src="{{asset('web_assets/images/bg/paypal.svg')}}" alt="PayPal"
+                                                        name="paymentMethod" value="sslcommerz" id="ssl-commerz" checked>
+                                                    <label class="form-check-label fw-bold" for="ssl-commerz"> SSL Commerz
+                                                        <img src="{{asset('web_assets/images/bg/ssl-commerz.png')}}" alt="Ssl Commerz"
                                                             style="height: 20px; margin-left: 10px;"> </label>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="paypal-info">
-                                            <p>Pay via PayPal</p>
-                                        </div>
-
                                         <!-- Email Offer -->
+                                        <!-- Email Opt-In -->
                                         <div class="form-check mb-2">
-                                            <input class="form-check-input" type="checkbox" id="emailOptIn">
-                                            <label class="form-check-label" for="emailOptIn"> I would like to
-                                                receive exclusive emails with discounts and product information
+                                            <input class="form-check-input" type="checkbox" name="newsletter_subscription" value="1" id="newsletter_subscription"
+                                                {{ old('newsletter_subscription') ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="newsletter_subscription">
+                                                I would like to receive exclusive emails with discounts and product information
                                             </label>
                                         </div>
 
                                         <!-- Terms and Conditions -->
                                         <div class="form-check mb-4">
-                                            <input class="form-check-input" type="checkbox" id="agreeTerms">
+                                            <input class="form-check-input @error('agree_terms') is-invalid @enderror" type="checkbox" name="agree_terms" value="1" id="agreeTerms"
+                                                {{ old('agree_terms') ? 'checked' : '' }} required>
                                             <label class="form-check-label" for="agreeTerms">
-                                                I have read and agree to the website terms and conditions <span
-                                                    class="required-star">*</span>
+                                                I have read and agree to the website terms and conditions <span class="required-star">*</span>
                                             </label>
+                                            @error('agree_terms') <small class="text-danger d-block">{{ $message }}</small> @enderror
                                         </div>
+
                                         <!-- Place Order Button -->
                                         <button type="submit" class="btn btn-order">PLACE ORDER</button>
-                                    </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    <form>
                 </div>
             </div>
         </div>
@@ -268,40 +102,22 @@
 
 @push('script')
 <script>
-    $(document).ready(function() {
-        function togglePaymentDetails() {
-            if ($('#creditCard').is(':checked')) {
-                $('.credit-card-info').slideDown();
-                $('.paypal-info').slideUp();
-            } else {
-                $('.credit-card-info').slideUp();
-                $('.paypal-info').slideDown();
-            }
+$(document).ready(function () {
+    function togglePaymentDetails() {
+        if ($('#ship-address').is(':checked')) {
+            $('.different-address-info').slideDown();
+            $('.shipping-form-wrap input, .shipping-form-wrap select').attr('required', true);
+        } else {
+            $('.different-address-info').slideUp();
+            $('.shipping-form-wrap input, .shipping-form-wrap select').removeAttr('required');
         }
+    }
 
-        // Initial check on page load
-        togglePaymentDetails();
+    $('#ship-address').on('change', togglePaymentDetails);
 
-        // Listen for changes
-        $('input[name="paymentMethod"]').on('change', function() {
-            togglePaymentDetails();
-        });
-    });
-</script>
-<script>
-    $(document).ready(function () {
-        function togglePaymentDetails() {
-            if ($('#ship-address').is(':checked')) {
-                $('.different-address-info').slideDown();
-            } else {
-                $('.different-address-info').slideUp();
-            }
-        }
+    togglePaymentDetails();
+});
 
-        $('#ship-address').on('change', togglePaymentDetails);
-        
-        togglePaymentDetails();
-    });
 </script>
 @endpush
 

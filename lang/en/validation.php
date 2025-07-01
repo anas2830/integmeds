@@ -195,6 +195,11 @@ return [
     'attributes' => [
         'min_price' => 'minimum price',
         'max_price' => 'maximum price',
+        'billing.address_line1'  => 'billing address',
+        'billing.address_line2'  => 'billing apartment or suite',
+        'shipping.address_line1' => 'shipping address',
+        'shipping.address_line2' => 'shipping apartment or suite',
+        'agree_terms' => 'terms and conditions',
     ],
 
 ];

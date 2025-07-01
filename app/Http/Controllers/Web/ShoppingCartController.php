@@ -3,24 +3,30 @@
 namespace App\Http\Controllers\Web;
 
 use Cart;
+use App\Models\Order;
 use App\Models\Country;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Services\Web\OrderService;
 use App\Services\Web\CouponService;
-use App\Services\Web\ProductService;
 use App\Services\Web\SidebarService;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use App\Services\Web\ProductCartService;
 use Illuminate\Validation\ValidationException;
 
 class ShoppingCartController extends SidebarService
 {
     protected $productService;
     protected $couponService;
+    protected $orderService;
 
-    public function __construct(ProductService $productService, CouponService $couponService)
+
+    public function __construct(ProductCartService $productService, CouponService $couponService, OrderService $orderService)
     {
         $this->productService = $productService;
         $this->couponService = $couponService;
+        $this->orderService = $orderService;
     }
     public function cart(){
 
@@ -124,15 +130,15 @@ class ShoppingCartController extends SidebarService
             ]);
         }
 
-        $subtotal = Cart::getSubTotal();
-        $this->couponService->refreshCouponAndValidate($subtotal);
-
         if (!empty($messages)) {
             return back()->withErrors([
                 'stock_errors' => $messages,
                 'out_of_stock_ids' => $failedRowIds,
             ]);
         }
+
+        $subtotal = Cart::getSubTotal();
+        $this->couponService->refreshCouponAndValidate($subtotal);
 
         return back()->with('success', 'Cart updated successfully');
     }
@@ -162,8 +168,8 @@ class ShoppingCartController extends SidebarService
 
     public  function removeAllItem(){
         Cart::clear();
-        $this->couponService->removeCoupon();
-        return back()->with('success','Item successfully removed from cart');
+        $this->couponService->removeSessionCoupon();
+        return back()->with('success','Cart has been cleared successfully');
     }
 
     public function applyCoupon(Request $request)
@@ -205,15 +211,33 @@ class ShoppingCartController extends SidebarService
     public function checkout()
     {
         $cartContents = Cart::getContent();
-        $cart_count = $cartContents->count();
-        if ($cart_count > 0) {
-            $countries = Country::all();
-            $specialOffers = $this->specialOffers();
-            $productBundles = $this->productBundles();
-            $cartSubtotal = Cart::getSubTotal();
-            $this->couponService->refreshCouponAndValidate($cartSubtotal);
-            return view('Web.Layout.pages.checkout', compact('cartContents', 'cartSubtotal', 'countries', 'productBundles', 'specialOffers'));
+        $cartCount = $cartContents->count();
+
+        if ($cartCount === 0) {
+            return to_route('shopping.cart');
         }
-        return to_route('shopping.cart');
+
+        $shippingAddress = null;
+        $billingAddress = null;
+
+        if (Auth::check()) {
+            $shippingAddress = json_decode(Auth::user()->shipping_address ?? '{}');
+            $billingAddress = json_decode(Auth::user()->billing_address ?? '{}');
+        }
+
+        $countries = Country::all();
+        $cartSubtotal = Cart::getSubTotal();
+        $this->couponService->refreshCouponAndValidate($cartSubtotal);
+
+        return view('Web.Layout.pages.checkout', [
+            'cartCount' => $cartCount,
+            'cartSubtotal' => $cartSubtotal,
+            'countries' => $countries,
+            'specialOffers' => $this->specialOffers(),
+            'productBundles' => $this->productBundles(),
+            'shippingAddress' => $shippingAddress,
+            'billingAddress' => $billingAddress,
+            'couponAmount' => Session::get('coupon_amount'),
+        ]);
     }
 }

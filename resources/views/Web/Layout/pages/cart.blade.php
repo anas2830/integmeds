@@ -79,6 +79,7 @@
                                                 @endforeach
                                                 <tr>
                                                     <td colspan="4" class="text-end">
+                                                        <a href="{{ route('shopping.cart.remove.all') }}" class="cart-empty-btn me-2">Empty Cart</a>
                                                         <button type="submit" class="cart-update-btn">Update Cart</button>
                                                     </td>
                                                 </tr>
@@ -97,31 +98,37 @@
                                     <form id="apply-coupon-form" method="POST">
                                         @csrf
                                         @if(!session()->has('coupon_code'))
-                                            <input class="form-control"
-                                                type="text"
-                                                name="coupon_code"
-                                                placeholder="Coupon code"
-                                                @if(session()->has('coupon_code'))
-                                                    value="{{ session('coupon_code') }}"
-                                                    readonly
-                                                @else
-                                                    required
-                                                @endif
-                                            >
-                                            <button type="submit" class="common_btn" id="apply-btn">Apply</button>
+                                            <div class="coupon-input">  <!-- moved coupon-input class here -->
+                                                <input
+                                                    class="form-control"
+                                                    type="text"
+                                                    name="coupon_code"
+                                                    placeholder="Coupon code"
+                                                    @if(session()->has('coupon_code'))
+                                                        value="{{ session('coupon_code') }}"
+                                                        readonly
+                                                    @else
+                                                        required
+                                                    @endif
+                                                >
+                                                <button type="submit" class="common_btn" id="apply-btn">Apply</button>
+                                            </div>          
                                         @endif
                                     
-                                        <div id="applied-coupon" class="{{ session()->has('coupon_code') ? '' : 'display:none' }}">
+                                        <div id="applied-coupon" style="{{ session()->has('coupon_code') ? '' : 'display:none' }}">
                                             @if(session()->has('coupon_code'))
                                                 <p>
                                                     Coupon Code: <span id="coupon-name">{{ session('coupon_code') ?? '' }}</span>
-                                                    <a href="{{ route('coupon.remove', session('coupon_code')) }}" id="remove-coupon"><i class="fas fa-times" aria-hidden="true"></i></a>
+                                                    <a href="{{ route('coupon.remove', session('coupon_code')) }}" id="remove-coupon">
+                                                        <i class="fas fa-times" aria-hidden="true"></i>
+                                                    </a>
                                                 </p>
                                             @endif
                                         </div>
                                     
                                         <small id="coupon-message" class="text-danger ms-2"></small>
                                     </form>
+                                    
                                     
                                 </div>
                                 <div class="cart-summary-btn">
@@ -144,24 +151,26 @@
 
 @push('script')
 <script>
-    $(function() {
-    const $form = $('#apply-coupon-form');
-    const $msg = $('#coupon-message');
-    const $appliedCoupon = $('#applied-coupon');
-    const $couponName = $('#coupon-name');
-    const $applyBtn = $('#apply-btn');
-    const $input = $form.find('input[name="coupon_code"]');
-    const $discountDiv = $('.coupon-amount');
-    const $toallPriceDiv = $('.total-price');
-    const subtotal = parseInt($('#cart-subtotal').text().trim());
 
-    // Apply coupon
-    $form.on('submit', function(e) {
+$(document).ready(function () {
+    const msg = $('#coupon-message');
+    const couponInput = $('.coupon-input');  // now the wrapper div
+    const appliedCoupon = $('#applied-coupon');
+    const couponName = $('#coupon-name');
+    const discountDiv = $('.coupon-amount');
+    const totalPriceDiv = $('.total-price');
+    const subtotal = parseFloat($('.cart-subtotal').text().trim());
+
+    console.log('subtotal:', subtotal);
+
+    $(document).on('submit', '#apply-coupon-form', function (e) {
         e.preventDefault();
 
-        let couponCode = $input.val().trim();
+        const input = $(this).find('input[name="coupon_code"]');
+        const couponCode = input.val().trim();
+
         if (!couponCode) {
-            $msg.css('color', 'red').text('Please enter a coupon code.');
+            msg.css('color', 'red').text('Please enter a coupon code.');
             return;
         }
 
@@ -172,40 +181,43 @@
                 _token: '{{ csrf_token() }}',
                 coupon_code: couponCode
             },
-            success: function(response) {
+            success: function (response) {
                 if (response.status === 'success') {
                     showSuccessMessage(response.message);
 
-                    const couponCode = response.coupon_code;
-
-                    $appliedCoupon.html(
-                        `<p>
-                            Coupon Code: <span id="coupon-name">${couponCode}</span>
-                            <a href="/remove/coupon/${couponCode}" id="remove-coupon">
+                    appliedCoupon.html(`
+                        <p>
+                            Coupon Code: <span id="coupon-name">${response.coupon_code}</span>
+                            <a href="/remove/coupon/${response.coupon_code}" id="remove-coupon">
                                 <i class="fas fa-times" aria-hidden="true"></i>
                             </a>
-                        </p>`
-                    );
-                    $couponName.text(couponCode);
-                    $discountDiv.text(response.coupon_amount);
-                    $toallPriceDiv.text(subtotal - poarseInt(response.coupon_amount));
-                    $appliedCoupon.show();
-                    $input.remove();
-                    $applyBtn.remove();
-                    $msg.empty();
-                } else {
-                    $msg.css('color', 'red').text(response.message);
-                }
+                        </p>
+                    `);
 
-            },
-            error: function(xhr) {
-                let errors = xhr.responseJSON?.errors;
-                if (errors && errors.coupon_code) {
-                    $msg.css('color', 'red').text(errors.coupon_code[0]);
-                } else if (xhr.responseJSON?.message) {
-                    $msg.css('color', 'red').text(xhr.responseJSON.message);
+                    couponName.text(response.coupon_code);
+                    discountDiv.text(response.coupon_amount);
+
+                    // Safe parseFloat and avoid negative or NaN total
+                    const couponAmount = parseFloat(response.coupon_amount) || 0;
+                    const newTotal = subtotal - couponAmount;
+                    totalPriceDiv.text(newTotal >= 0 ? newTotal.toFixed(2) : '0.00');
+
+                    appliedCoupon.show();
+
+                    couponInput.remove(); // removes the entire input+button wrapper
+                    msg.empty();
                 } else {
-                    $msg.css('color', 'red').text('Something went wrong. Please try again.');
+                    msg.css('color', 'red').text(response.message);
+                }
+            },
+            error: function (xhr) {
+                const errors = xhr.responseJSON?.errors;
+                if (errors?.coupon_code) {
+                    msg.css('color', 'red').text(errors.coupon_code[0]);
+                } else if (xhr.responseJSON?.message) {
+                    msg.css('color', 'red').text(xhr.responseJSON.message);
+                } else {
+                    msg.css('color', 'red').text('Something went wrong. Please try again.');
                 }
             }
         });

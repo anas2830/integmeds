@@ -6,7 +6,7 @@ namespace App\Services\Web;
 use App\Models\Product;
 
 
-class ProductService
+class ProductCartService
 {
     public function productCartStockCheck($cart, $requestedQuantities)
     {
@@ -39,5 +39,28 @@ class ProductService
         }
 
         return $outOfStockItems;
+    }
+
+
+    private function getRequestedQuantitiesAndStockIssues($request, $cart)
+    {
+        // Build a map of [rowId => requestedQty]
+        $requestedQuantities = [];
+        foreach ($request->rowId as $index => $rowId) {
+            $requestedQuantities[$rowId] = $request->qty[$index];
+        }
+
+        // Pass cart and requested quantities for validation
+        $stockIssues = $this->productCartStockCheck($cart, $requestedQuantities);
+
+        // Extract failed row IDs and messages from stock issues
+        $failedRowIds = array_column($stockIssues, 'rowId');
+        $messages = array_column($stockIssues, 'message');
+
+        return [
+            'requestedQuantities' => $requestedQuantities,
+            'failedRowIds' => $failedRowIds,
+            'messages' => $messages,
+        ];
     }
 }

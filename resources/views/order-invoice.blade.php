@@ -1,5 +1,5 @@
 @php 
-    $shipping_address = json_decode($order->shipping_address, true) ?? [];
+    $shipping_address = $order->shipping_address;
 @endphp 
 <!DOCTYPE html>
 <html lang="en">

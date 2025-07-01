@@ -7,11 +7,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\WebController;
 use App\Http\Controllers\Web\UserController;
-use App\Http\Controllers\Web\ShoppingCartController;
+use App\Http\Controllers\Web\OrderController;
 use App\Http\Controllers\Web\HomePageController;
 use App\Http\Controllers\Backend\AdminController;
 use App\Http\Controllers\Backend\EditorController;
 use App\Http\Controllers\Web\NewsletterController;
+use App\Http\Controllers\Web\ShoppingCartController;
 
 require __DIR__ . '/admin.php';
 
@@ -65,6 +66,16 @@ Route::controller(ShoppingCartController::class)->group(function () {
     Route::get('/remove/coupon/{coupon_code}', 'removeCoupon')->name('coupon.remove');
 });
 
+Route::controller(OrderController::class)->group(function () {
+    Route::post('/place/order', 'placeOrder')->name('place.order');
+    Route::get('/order/complete/{id}', 'orderComplete')->name('order.complete');
+    Route::get('/order/status', 'orderStatus')->name('order.status');
+    Route::post('/success', 'success');
+    Route::post('/fail', 'fail');
+    Route::post('/cancel', 'cancel');
+    Route::post('/ipn', 'ipn');
+});
+
 
 // Route::prefix('user')->group(function () {
 Route::prefix('user')->group(function () {
@@ -75,7 +86,7 @@ Route::prefix('user')->group(function () {
 
         // Orders
         Route::get('/orders', [UserController::class, 'orders'])->name('user.orders');
-        Route::get('/order-invoice/{id}', [UserController::class, 'orderInvoice'])->name('order-invoice');
+        Route::get('/order-invoice/{id}', [UserController::class, 'orderInvoice'])->name('user.order-invoice');
 
         // Account Details
         Route::get('/account', [UserController::class, 'accountDetails'])->name('user.account');
