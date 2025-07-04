@@ -124,7 +124,7 @@
                                                             @foreach ($bundles as $bundle)
                                                             <li>
                                                                 <div class="items-list">
-                                                                    <a href={{ route('bundle', $bundle->id)  }}>{{$bundle->name}}</a>
+                                                                    <a href={{ route('bundle-details', $bundle->id)  }}>{{$bundle->name}}</a>
                                                                 </div>
                                                             </li>
                                                             @endforeach

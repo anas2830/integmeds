@@ -55,9 +55,6 @@
                                 <p>{{$bundle->short_description}}</p>
                                 {{-- {{ $bundle->products }} --}}
                                 <x-Web.bundle.product-bundle :bundleProducts="$bundle->products" />
-                                <div class="inner-shop-perched-info">
-                                    <a href="#" class="cart-btn">Add to Cart</a>
-                                </div>
                                 <div class="inner-shop-details-bottom">
                                     <ul>                                        
                                         <li>

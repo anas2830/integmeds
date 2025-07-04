@@ -216,29 +216,31 @@ class OrderService
         ];
     }
 
-    private function validateCartStockQuantities($cart)
+
+    public function validateCartStockQuantities($cart)
     {
-        // Build a map of [rowId => quantity] from the cart
         $requestedQuantities = [];
         foreach ($cart as $item) {
             $requestedQuantities[$item->id] = $item->quantity;
         }
 
-        // Check stock issues using your existing service method
         $stockIssues = $this->productService->productCartStockCheck($cart, $requestedQuantities);
 
-        $failedRowIds = array_column($stockIssues, 'rowId');
-        $messages = array_column($stockIssues, 'message');
+        if (!empty($stockIssues)) {
+            $failedRowIds = array_column($stockIssues, 'rowId');
+            $messages = array_column($stockIssues, 'message');
 
-        if (!empty($messages)) {
-            return back()->withErrors([
-                'stock_errors' => $messages,
-                'out_of_stock_ids' => $failedRowIds,
-            ]);
+            // Immediately redirect back and stop further code
+            abort(
+                redirect()
+                    ->route('shopping.cart') // Replace with your cart route name
+                    ->withErrors([
+                        'stock_errors' => $messages,
+                        'out_of_stock_ids' => $failedRowIds,
+                    ])
+            );
         }
 
-        // If no errors, return requested quantities for further processing
         return $requestedQuantities;
     }
-
 }

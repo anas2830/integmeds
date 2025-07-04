@@ -240,4 +240,85 @@ class ShoppingCartController extends SidebarService
             'couponAmount' => Session::get('coupon_amount'),
         ]);
     }
+
+    public function addToBundleCart(Request $request)
+    {
+        $request->validate([
+            'product_ids' => 'required|array',
+            'quantity' => 'required|array',
+        ]);
+
+        $productIds = $request->product_ids;
+        $quantities = $request->input('quantity');
+
+        // Make sure both arrays exist and match in length
+        if (count($productIds) !== count($quantities)) {
+            return back()->withInput()->with('error', 'Bundle data mismatch. Please try again.');
+        }
+
+        $outOfStockItems = [];
+        $addedItems = [];
+
+        foreach ($productIds as $index => $productId) {
+            $quantity = (int) ($quantities[$index]);
+
+            $product = Product::find($productId);
+
+            if (!$product || $product->status != 1 || $quantity < 1 || $product->quantity < $quantity) {
+                $outOfStockItems[] = $productId;
+                continue;
+            }
+
+            $existingItem = Cart::get($productId);
+            $totalQty = $existingItem ? $existingItem->quantity + $quantity : $quantity;
+
+            if ($totalQty > $product->quantity) {
+                $outOfStockItems[] = $productId;
+                continue;
+            }
+
+            $product_image = optional($product->firstImage)->image_url;
+            $salePrice = $product->sale_price;
+            $regularPrice = $product->regular_price;
+
+            $data = [
+                'id' => $productId,
+                'name' => $product->product_name,
+                'price' => $salePrice,
+                'quantity' => $quantity,
+                'attributes' => [
+                    'slug' => $product->slug,
+                    'regular_price' => $regularPrice,
+                    'sale_price' => $salePrice,
+                    'product_image' => $product_image,
+                    'product_id' => $productId,
+                ],
+            ];
+
+            if ($existingItem) {
+                Cart::update($productId, ['quantity' => $quantity]);
+            } else {
+                Cart::add($data);
+            }
+
+            $addedItems[] = $productId;
+        }
+
+        if (!empty($outOfStockItems)) {
+            $errors = [];
+
+            foreach ($outOfStockItems as $itemId) {
+                $errors["quantities.{$itemId}"] = 'This requested quantity is currently out of stock.';
+            }
+
+            // Flash all errors to session
+            return back()
+                ->withInput()
+                ->withErrors($errors);
+        }
+
+        $this->couponService->refreshCouponAndValidate((float) Cart::getSubTotal());
+
+        return redirect()->route('shopping.cart')->with('success', 'Bundle added to cart successfully.');
+    }
 }

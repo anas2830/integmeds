@@ -57,6 +57,7 @@ Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])
 Route::controller(ShoppingCartController::class)->group(function () {
     Route::get('/cart', 'cart')->name('shopping.cart');
     Route::post('/cart', 'addToCart')->name('shopping.cart.submit');
+    Route::post('/bundle-cart', 'addToBundleCart')->name('bundle.cart.submit');
     Route::post('/update/cart', 'updateCart')->name('shopping.cart.update');
     Route::get('/remove/cart/single/{rowId}', 'removeSingleItem')->name('shopping.cart.remove.single');
     Route::get('/ajax/remove/cart/single/{rowId}', 'removeSingleItemAjax')->name('shopping.cart.remove.single.ajax');

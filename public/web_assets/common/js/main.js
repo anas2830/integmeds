@@ -93,10 +93,12 @@ $(document).ready(function () {
     // }); 
 
     // cart-plus-minus
+    // bundle quantity
+
     $(".quickview-cart-plus-minus").append('<div class="dec qtybutton">-</div><div class="inc qtybutton">+</div>');
     $(document).on("click", ".qtybutton", function () {
         var $button = $(this);
-        var oldValue = parseFloat($button.parent().find("input").val());
+        var oldValue = parseFloat($button.siblings("input[type='text']").val());
 
         if ($button.text() == "+") {
             var newVal = oldValue + 1;
@@ -109,7 +111,7 @@ $(document).ready(function () {
             }
         }
 
-        $button.parent().find("input").val(newVal);
+        $button.parent().find("input[type='text']").val(newVal);
     });
 
     $(document).on("change", ".qtybutton-input", function () {

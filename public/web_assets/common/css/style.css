@@ -677,7 +677,8 @@ ul{padding:0;margin:0;}
 
 /* bundule-details-page */
 .bundle-d-cart-plus-minus-and-list-wrap { margin-bottom: 35px; }
-.bundle-details-cart-plus-minus-and-pro-list { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; margin-bottom: 10px; padding-bottom: 10px; }
+.bundle-details-cart-plus-minus-and-pro-list { display: flex; justify-content: space-between; align-items: center;margin-bottom: 10px; padding-bottom: 10px; }
+.bundle-main-section{border-bottom: 1px solid #eee; margin-bottom: 20px;}
 .bundle-details-cart-plus-minus-and-pro-list .quickview-cart-plus-minus{ margin:0; }
 .bundle-d-product-img-text-wrap a { display: flex; align-items: center; gap: 10px; }
 .bundle-d-product-img-text-wrap .dundle-d-product-img { width:55px; }
