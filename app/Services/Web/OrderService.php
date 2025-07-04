@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Session;
 use App\Services\Web\ProductCartService;
 use App\Library\SslCommerz\SslCommerzNotification;
 use App\Models\Cupon;
+use App\Models\SiteSetting;
 
 class OrderService
 {
@@ -45,6 +46,8 @@ class OrderService
         if ($result instanceof RedirectResponse) {
             return $result; // Redirect back with errors
         }
+
+        $this->checkMinOrderAmount($subtotal);
 
         $this->couponService->refreshCouponAndValidate($subtotal);
 
@@ -149,6 +152,19 @@ class OrderService
             $payment_options = array();
         }
     }
+
+    public function checkMinOrderAmount($subtotal)
+    {
+        $minOrderAmount = SiteSetting::first()?->minimum_order ?? 0;
+        if ($subtotal < $minOrderAmount) {
+            redirect()->back()
+                ->with('min_order_error', "Minimum order amount is $$minOrderAmount. Orders below this cannot be placed.")
+                ->send();
+        }
+    }
+
+
+
 
 
     private function orderGenerate($orderData)

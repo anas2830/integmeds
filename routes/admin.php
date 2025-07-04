@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\PageController;
+use App\Http\Controllers\SiteSettingsController;
 use App\Http\Controllers\Backend\AdminController;
 use App\Http\Controllers\Backend\CuponController;
 use App\Http\Controllers\Backend\EditorController;
@@ -89,6 +90,11 @@ Route::group(['middleware' => 'auth.admin'], function () {
         // Clients
         Route::resource('/clients', ClientsController::class);
         Route::put('/clients/status/{id}', [ClientsController::class, 'status'])->name('clients.status');
+
+        //site settings
+        Route::get('/site-settings', [SiteSettingsController::class, 'siteSettings'])->name('site.settings');
+        Route::put('/site-settings/update', [SiteSettingsController::class, 'updateSiteSettings'])->name('site.settings.update');
+
 
         // Home page settings
         Route::get('/home-page-sidebar-settings', [HomePageSettingsController::class, 'homePageSidebarSettings'])->name('home.page.sidebar.settings');

@@ -48,7 +48,7 @@
                     <x-Web.home.home-banner-1 :banner="$HomePageBanners['home_banner_1']" />
 
                     {{-- New Arrivals --}}
-                    <x-Web.home.product-grid title="New Arrivals" class="new-arrivals-area" :products="$newArrivals" />
+                <x-Web.home.product-grid title="New Arrivals" class="new-arrivals-area" :products="$newArrivals" />
                     
 
                     <x-Web.home.home-banner-2 :banner="$HomePageBanners['home_banner_2']" />

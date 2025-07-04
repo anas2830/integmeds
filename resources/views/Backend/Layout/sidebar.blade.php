@@ -145,6 +145,7 @@
                         <span>Settings</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="true">
+                        <li><a href="{{ route('site.settings') }}">Site Settings</a></li>
                         <li><a href="{{ route('home.page.sidebar.settings') }}">Home Page Sidebar Banner</a></li>
                         <li><a href="{{ route('home.page.body.settings') }}">Home Page Body Banner</a></li>
                     </ul>

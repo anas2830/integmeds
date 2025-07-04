@@ -69,6 +69,11 @@ class ProductRequest extends FormRequest
             'purchase_price' => ['nullable', 'numeric', 'min:0'],
             'regular_price' => ['nullable', 'numeric', 'min:0'],
             'sale_price' => ['nullable', 'numeric', 'min:0'],
+            'weight'        => ['required', 'numeric', 'min:0'],
+            'weight_unit'   => ['required', 'in:kg,g'],
+            'length'        => ['required', 'numeric', 'min:0'],
+            'width'         => ['required', 'numeric', 'min:0'],
+            'height'        => ['required', 'numeric', 'min:0'],
         ];
     }
 }
