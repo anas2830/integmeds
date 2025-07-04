@@ -49,7 +49,6 @@ Route::post('/contact-submit', [WebController::class, 'contactSubmit'])->name('c
 Route::get('/privacy-policy', [WebController::class, 'privacyPolicy'])->name('privacy-policy');
 Route::get('/terms-condition', [WebController::class, 'termsCondition'])->name('terms-condition');
 Route::get('/cart', [WebController::class, 'cart'])->name('cart');
-Route::get('/checkout', [WebController::class, 'checkout'])->name('checkout');
 Route::get('/wishlist', [WebController::class, 'wishlist'])->name('wishlist');
 Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
 
@@ -88,6 +87,7 @@ Route::prefix('user')->group(function () {
         // Orders
         Route::get('/orders', [UserController::class, 'orders'])->name('user.orders');
         Route::get('/order-invoice/{id}', [UserController::class, 'orderInvoice'])->name('user.order-invoice');
+        Route::post('/reorder/{id}', [UserController::class, 'reorder'])->name('user.reorder');
 
         // Account Details
         Route::get('/account', [UserController::class, 'accountDetails'])->name('user.account');

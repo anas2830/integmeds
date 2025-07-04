@@ -317,7 +317,7 @@ class ShoppingCartController extends SidebarService
                 ->withErrors($errors);
         }
 
-        $this->couponService->refreshCouponAndValidate((float) Cart::getSubTotal());
+        $this->couponService->refreshCouponAndValidate(Cart::getSubTotal());
 
         return redirect()->route('shopping.cart')->with('success', 'Bundle added to cart successfully.');
     }

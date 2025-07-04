@@ -714,8 +714,11 @@ ul{padding:0;margin:0;}
 .dash-heading h1 { font-size: 16px; letter-spacing: 2px; text-transform: uppercase; background: #c0f1d9; padding: 12px; margin-bottom: 15px; color: var(--black-color); }
 .order-content table tr > th { font-size: 16px; text-transform: uppercase; text-align: center; }
 .order-content tbody tr > th, td { font-size: 14px; text-align: center; height: 80px; vertical-align: middle; }
-.order-content tbody .view-btn > a { background: #faebd7; color: #000; padding: 4px 10px; border-radius: 10px; width: 78px; display: inline-block; }
+.order-content tbody .view-btn > a { background: #faebd7; color: #000; padding: 4px 10px; border-radius: 10px; width: 98px; display: inline-block; }
 .order-content tbody .view-btn > a i{ color: var(--primary); }
+.order-content tbody .view-btn .reorder-btn { background: #faebd7; color: #000; padding: 4px 10px; border-radius: 10px; width: 98px; display: inline-block; border: none; cursor: pointer; text-align: center;}
+.order-content tbody .view-btn  .reorder-btn i { color: var(--primary); }
+
 
 .status-bg-pn { background:yellow; color: var(--black-color); padding: 5px 15px; border-radius: 20px; }
 .status-bg-succ{ background:green; color: var(--white-color); padding: 5px 15px; border-radius: 20px; }

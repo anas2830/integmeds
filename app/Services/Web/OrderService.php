@@ -163,10 +163,6 @@ class OrderService
         }
     }
 
-
-
-
-
     private function orderGenerate($orderData)
     {
         return Order::create([
@@ -197,7 +193,7 @@ class OrderService
     {
         return [
             'total_amount'      => $totalAmount,
-            'currency'          => 'BDT',
+            'currency'          => 'USD',
             'tran_id'           => $transactionId,
 
             'cus_name'          => $optional['cus_name'] ?? 'Customer Name',
@@ -258,5 +254,72 @@ class OrderService
         }
 
         return $requestedQuantities;
+    }
+
+    public function reorder($id)
+    {
+        $order = Order::with('items.product')->find($id);
+        if (!$order || $order->order_status !== 'completed') {
+            return; // silently exit if order not found or not completed
+        }
+
+        $outOfStockItems = [];
+
+        foreach ($order->items as $detail) {
+            $product = $detail->product;
+            $quantity = (int) $detail->quantity;
+
+            if (
+                !$product ||
+                $product->status != 1 ||
+                $quantity < 1 ||
+                $product->quantity < $quantity
+            ) {
+                $outOfStockItems[] = $product->id ?? $detail->product_id;
+                continue;
+            }
+
+            $existingItem = Cart::get($product->id);
+            $totalQty = $existingItem ? $existingItem->quantity + $quantity : $quantity;
+
+            if ($totalQty > $product->quantity) {
+                $outOfStockItems[] = $product->id;
+                continue;
+            }
+
+            $productImage = optional($product->firstImage)->image_url;
+            $salePrice = $product->sale_price;
+            $regularPrice = $product->regular_price;
+
+            $data = [
+                'id' => $product->id,
+                'name' => $product->product_name,
+                'price' => $salePrice,
+                'quantity' => $quantity,
+                'attributes' => [
+                    'slug' => $product->slug,
+                    'regular_price' => $regularPrice,
+                    'sale_price' => $salePrice,
+                    'product_image' => $productImage,
+                    'product_id' => $product->id,
+                ],
+            ];
+
+            if ($existingItem) {
+                Cart::update($product->id, ['quantity' => $quantity]);
+            } else {
+                Cart::add($data);
+            }
+        }
+
+        if (!empty($outOfStockItems)) {
+            return redirect()->route('shopping.cart')
+                ->withInput()
+                ->withErrors(['out_of_stock_ids' => $outOfStockItems]);
+        }
+
+        $this->couponService->refreshCouponAndValidate((float) Cart::getSubTotal());
+
+        return redirect()->route('checkout')->with('success', 'Reorder successful. Proceed to checkout.');
     }
 }
