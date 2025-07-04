@@ -126,6 +126,17 @@
                     </ul>
                 </li>
 
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class='bx  bx-pickup-truck'></i> 
+                        <span>Shipping</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{ route('shipping-method.index') }}">List</a></li>
+                        <li><a href="{{ route('shipping-method.create') }}">Create</a></li>
+                    </ul>
+                </li>
+
                 <li class="menu-title">Apps</li>
 
                 <li>
