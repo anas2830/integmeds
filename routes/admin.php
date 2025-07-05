@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\PageController;
 use App\Http\Controllers\Backend\AdminController;
 use App\Http\Controllers\Backend\CuponController;
+use App\Http\Controllers\Backend\OrderController;
 use App\Http\Controllers\Backend\EditorController;
 use App\Http\Controllers\Backend\SliderController;
 use App\Http\Controllers\Backend\ClientsController;
@@ -103,7 +104,9 @@ Route::group(['middleware' => 'auth.admin'], function () {
         Route::put('/home-page-body-settings/update', [HomePageSettingsController::class, 'updateHomePageBodySettings'])->name('home.page.body.settings.update');
 
         //order details
+        Route::get('/order-list', [OrderController::class, 'index'])->name('order.list');
         Route::get('/order-details/{id}', [OrderController::class, 'show'])->name('order.details');
+        Route::patch('/order-update-status/{id}', [OrderController::class, 'updateStatus'])->name('order.updateStatus');
 
          //privacy policy
         Route::get('/privacy-policy-settings', [PageController::class, 'privacyPolicy'])->name('privacy-policy-settings');

@@ -78,7 +78,10 @@ class UserService
 
     public function getOrder($id)
     {
-        $order = Order::with('items.product')->find($id);
+        $order = Order::with('items.product')->where('user_id', auth()->id())->find($id);
+        if (!$order) {
+            throw new \Exception('Order not found');
+        }
         return $order;
     }
 
