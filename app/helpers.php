@@ -45,3 +45,11 @@ function convertYoutubeToEmbed($url)
 
     return null;
 }
+
+
+if (!function_exists('pendingOrderCount')) {
+    function pendingOrderCount()
+    {
+        return Order::where('order_status', 'pending')->count();
+    }
+}

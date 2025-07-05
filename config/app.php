@@ -127,4 +127,6 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'currency_symbol' => env('CURRENCY_SYMBOL', '$'),
+
 ];
