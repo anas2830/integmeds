@@ -75,7 +75,7 @@
                                                     @break
                                             @endswitch
                                         </td>
-                                        <td>{{config('settings.currency_symbol')}}{{ $order->total_amount }}</td>
+                                        <td>{{config('app.currency_symbol')}}{{ $order->total_amount }}</td>
                                         <td class="view-btn"><a target="_blank" href="{{ route('order-invoice', $order->id) }}"><i class="far fa-eye"></i> View</a></td>
                                     </tr>
                                 @empty

@@ -85,7 +85,7 @@
                                             @break
                                     @endswitch
                                 </td>
-                                <td>{{config('settings.currency_symbol')}}{{ $order->total_amount }}</td>
+                                <td>{{config('app.currency_symbol')}}{{ $order->total_amount }}</td>
                                 <td>
                                     <form action="{{ route('order.updateStatus', $order->id) }}" method="POST" class="d-flex align-items-center">
                                         @csrf

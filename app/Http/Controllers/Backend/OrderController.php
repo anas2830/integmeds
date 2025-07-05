@@ -11,7 +11,7 @@ class OrderController extends Controller
 {
     public function index(Request $request)
     {
-        $orders = Order::query();
+        $orders = Order::with('user');
         if ($request->filled('search')) {
             $orders->where('order_number', 'like', '%' . $request->search . '%');
         }
@@ -29,7 +29,7 @@ class OrderController extends Controller
                 $orders->orderBy('total_amount', 'desc');
             }
         }
-        $orders = $orders->paginate(10);
+        $orders = $orders->latest('id')->paginate(10);
         return view('Backend.admin.order.index', compact('orders', 'request'));
     }
 
