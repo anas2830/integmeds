@@ -37,124 +37,9 @@ class ShoppingCartController extends SidebarService
     public function cart(){
         $cartContents = Cart::getContent();
         $cartSubtotal = Cart::getSubTotal();
-        // $outOfStockItems = $this->productService->productStockCheck($cartContents);
         $outOfStockItems = [];
-
         $productBundles = $this->productBundles();
         $bestSellingProducts = $this->bestSellingProducts();
-
-        // $client = new \GuzzleHttp\Client();
-
-        // $response = $client->request('POST', 'https://public-api.easyship.com/2024-09/rates', [
-        //     'body' => '{"destination_address":{"country_alpha2":"AD"},"incoterms":"DDU","insurance":{"is_insured":false},"courier_settings":{"show_courier_logo_url":false,"apply_shipping_rules":true},"shipping_settings":{"units":{"weight":"kg","dimensions":"cm"}},"parcels":[{"items":[{"contains_battery_pi966":true,"contains_battery_pi967":true,"contains_liquids":true,"origin_country_alpha2":"AD","quantity":1,"declared_currency":"AED"}]}]}',
-        //     'headers' => [
-        //         'accept' => 'application/json',
-        //         'content-type' => 'application/json',
-        //         'authorization' => 'Bearer prod_Osle4PL0Qd+Czd9vBFBsY1jhr1ByXUVWPTKhqpWQQJE=',
-        //     ],
-        // ]);
-
-        // dd($response->getBody());
-
-        
-
-
-
-        $client = new Client();
-
-        $payload = [
-            'origin_address' => [
-                'country_alpha2' => 'SG',
-                'postal_code' => '123456',
-                'city' => 'Singapore',
-            ],
-            'destination_address' => [
-                'country_alpha2' => 'BD',
-                'postal_code' => '3922',
-                'city' => 'Feni',
-                'state' => 'Chhilonia',
-            ],
-            'parcels' => [
-                [
-                    'items' => [
-                        [
-                            'quantity' => 1,
-                            'category' => 'mobiles',
-                            'declared_currency' => 'USD',
-                            'declared_customs_value' => 100,
-                            'dimensions' => [
-                                'length' => 20,
-                                'width' => 15,
-                                'height' => 10,
-                            ],
-                            'actual_weight' => 1.5,
-                            'hs_code' => '85171200', // Add HS code for customs
-                        ],
-                        [
-                            'quantity' => 2,
-                            'category' => 'fan',
-                            'declared_currency' => 'USD',
-                            'declared_customs_value' => 50,
-                            'dimensions' => [
-                                'length' => 10,
-                                'width' => 5,
-                                'height' => 1,
-                            ],
-                            'actual_weight' => 1,
-                            'hs_code' => '84145100', // Add HS code for customs
-                        ],
-                    ],
-                    'total_actual_weight' => 3.5,
-                ],
-            ],
-        ];
-
-
-
-        $token = 'prod_Osle4PL0Qd+Czd9vBFBsY1jhr1ByXUVWPTKhqpWQQJE=';
-        $url = 'https://public-api.easyship.com/2024-09/rates';
-
-        try {
-            $response = $client->post($url, [
-                'json' => $payload,
-                'headers' => [
-                    
-                    'accept' => 'application/json',
-                    'authorization' => 'Bearer ' . $token,
-                    'content-type' => 'application/json',
-                ],
-            ]);
-
-            $responseData = json_decode($response->getBody(), true);
-
-            // Initialize an array to hold the formatted rate information
-            $formattedRates = [];
-
-            // Iterate through each rate and extract relevant details
-            foreach ($responseData['rates'] as $rate) {
-                $formattedRates[] = [
-                    'Courier' => $rate['courier_service']['name'],
-                    'Delivery Time' => "{$rate['min_delivery_time']} - {$rate['max_delivery_time']} days",
-                    'Currency' => $rate['currency'],
-                    'Total Charge' => number_format($rate['total_charge'], 2),
-                ];
-            }
-
-            // Output the formatted rates
-            echo "<pre>";
-            print_r($formattedRates);
-            echo "</pre>";
-
-            // Handle the response data as needed
-        
-        } catch (\GuzzleHttp\Exception\RequestException $e) {
-            // Handle request exceptions
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
-        
-
-
-        // dd($cartContents, $outOfStockItems);
         return view('Web.Layout.pages.cart', compact('cartContents','cartSubtotal','outOfStockItems','productBundles','bestSellingProducts'));
     } 
 
@@ -453,7 +338,7 @@ class ShoppingCartController extends SidebarService
     }
 
     public function getShippingRates(ShippingRateRequest $request){
-        $data = $this->shippingService->getShippingRates($request->validated());
+        $data = $this->shippingService->getShippingRates($request);
         $formattedRates = [];
         foreach ($data['rates'] ?? [] as $rate) {
             $formattedRates[] = [

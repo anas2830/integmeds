@@ -212,8 +212,8 @@
                                                         <tr>
                                                             <td style="font-size: 13px; font-family: 'Open Sans', sans-serif; color: #414141; font-weight: 500; line-height: 18px;  vertical-align: top; padding:10px 0;" class="article"> {{$item->product?->product_name ?? ''}} </td>
                                                             <td style="font-size: 13px; font-family: 'Open Sans', sans-serif; color: #414141;  line-height: 18px;  vertical-align: top; padding:10px 0;" align="center">{{$item->quantity ?? 0}}</td>
-                                                            <td style="font-size: 13px; font-family: 'Open Sans', sans-serif; color: #414141;  line-height: 18px;  vertical-align: top; padding:10px 0;" align="center"> ${{$item->price ?? 0}} </td>
-                                                            <td style="font-size: 13px; font-family: 'Open Sans', sans-serif; color: #1e2b33;  line-height: 18px;  vertical-align: top; padding:10px 0;" align="right"> ${{$item->price * $item->quantity ?? 0}}</td>
+                                                            <td style="font-size: 13px; font-family: 'Open Sans', sans-serif; color: #414141;  line-height: 18px;  vertical-align: top; padding:10px 0;" align="center"> {{config('app.currency_symbol')}}{{$item->price ?? 0}} </td>
+                                                            <td style="font-size: 13px; font-family: 'Open Sans', sans-serif; color: #1e2b33;  line-height: 18px;  vertical-align: top; padding:10px 0;" align="right"> {{config('app.currency_symbol')}}{{$item->price * $item->quantity ?? 0}}</td>
                                                         </tr>
                                                         <tr>
                                                             <td height="1" colspan="4" style="border-bottom:1px solid #e4e4e4"> </td>
@@ -253,7 +253,7 @@
                                                                 <tbody>
                                                                     <tr>
                                                                         <td style="font-size: 13px; font-family: 'Open Sans', sans-serif; color: #414141; line-height: 22px; vertical-align: top; text-align:right; padding:8px 0;"> Subtotal </td>
-                                                                        <td style="font-size: 13px; font-family: 'Open Sans', sans-serif; color: #414141; line-height: 22px; vertical-align: top; text-align:right; white-space:nowrap;padding:8px 0;" width="180"> ${{$order->subtotal ?? 0}} </td>
+                                                                        <td style="font-size: 13px; font-family: 'Open Sans', sans-serif; color: #414141; line-height: 22px; vertical-align: top; text-align:right; white-space:nowrap;padding:8px 0;" width="180"> {{config('app.currency_symbol')}}{{$order->subtotal ?? 0}} </td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td height="1" colspan="4" style="border-bottom:1px solid #e4e4e4"></td>
@@ -261,7 +261,7 @@
                                                                     @if($order->discount && $order->discount > 0)
                                                                     <tr>
                                                                         <td style="font-size: 13px; font-family: 'Open Sans', sans-serif; color: #414141; line-height: 22px; vertical-align: top; text-align:right; padding:8px 0;"> Discount</td>
-                                                                        <td style="font-size: 13px; font-family: 'Open Sans', sans-serif; color: #414141; line-height: 22px; vertical-align: top; text-align:right; white-space:nowrap;padding:8px 0;" width="180"> - ${{$order->discount ?? 0}} </td>
+                                                                        <td style="font-size: 13px; font-family: 'Open Sans', sans-serif; color: #414141; line-height: 22px; vertical-align: top; text-align:right; white-space:nowrap;padding:8px 0;" width="180"> - {{config('app.currency_symbol')}}{{$order->discount ?? 0}} </td>
                                                                     </tr>
                                                                     @endif
                                                                     @if($order->shipping_cost && $order->shipping_cost > 0)
@@ -274,7 +274,7 @@
                                                                         <td style="font-size: 13px; font-family: 'Open Sans', sans-serif; color: #fff; line-height: 22px; vertical-align: top; text-align:right; padding:8px 0 8px 5px;"> <strong>Grand Total</strong> </td>
                                                                         <td
                                                                             style="font-size: 13px; font-family: 'Open Sans', sans-serif; color: #fff; line-height: 22px; vertical-align: top; text-align:right; padding:8px 5px 8px 0;">
-                                                                            <strong>${{ $order->total_amount ?? 0 }}</strong>
+                                                                            <strong>{{config('app.currency_symbol')}}{{ $order->total_amount ?? 0 }}</strong>
                                                                         </td>
                                                                     </tr>
                                                                 </tbody>

@@ -16,9 +16,9 @@ class ShippingService
     public function getShippingRates($data)
     {
         // Verify postal code and country via external API
-        $useShippingAddress = !empty($data['ship_to_different_address']);
-        $address = $useShippingAddress ? ($data['shipping'] ?? []) : ($data['billing'] ?? []);
+        $useShippingAddress = $data['ship_to_different_address'];
 
+        $address = $useShippingAddress ? ($data['shipping'] ?? []) : ($data['billing'] ?? []);
         $this->verifyAddressWithZippopotam($address['country'], $address['postal_code']);
         // Find active shipping method by ID
         $method = ShippingMethod::where('id', $data['shipping_method_id'] ?? null)
@@ -33,7 +33,6 @@ class ShippingService
 
         // Prepare parcels data from cart
         $parcels = $this->prepareParcels();
-        // dd($parcels);
         // Build request payload for shipping API
         $payload = $this->buildPayloadWithParcels($address, $parcels);
 
@@ -54,49 +53,7 @@ class ShippingService
                 'shipping_method_id' => 'Could not fetch shipping rates from provider.',
             ]);
         }
-        // dd($responseData);
         return $responseData;
-
-
-        // $client = new Client();
-
-        // $response = $client->post($method->api_url, [
-        //     'json' => $payload,
-        //     'headers' => [
-        //         'accept' => 'application/json',
-        //         'authorization' => 'Bearer ' . $method->token,
-        //         'content-type' => 'application/json',
-        //     ],
-        // ]);
-
-
-
-        // $body = json_decode($response->getBody()->getContents(), true);
-
-        // dd($body);
-
-        // if ($response->getStatusCode() !== 200) {
-        //     throw ValidationException::withMessages([
-        //         'shipping_method_id' => 'Could not fetch shipping rates from provider.',
-        //     ]);
-        // }
-
-        // return $body;
-
-        // $response = Http::withToken($method->token)
-        //     ->acceptJson()
-        //     ->withHeaders([
-        //         'Content-Type' => 'application/json',
-        //     ])
-        //     ->post($method->api_url, $payload);
-
-        // if ($response->failed()) {
-        //     throw ValidationException::withMessages([
-        //         'shipping_method_id' => 'Could not fetch shipping rates from provider.',
-        //     ]);
-        // }
-
-        // return $response->json();
     }
 
     private function verifyAddressWithZippopotam($country, $postalCode)

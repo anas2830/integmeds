@@ -39,18 +39,22 @@
                                 <h4 class="title">{{$product->product_name}}</h4>
                                 <div class="inner-shop-details-meta">
                                     <ul>
-                                        <li>Brands : <a href="#">Integmeds</a></li>
+                                        <li>Brands : <a href="#">{{config('app.brand_name')}}</a></li>
                                         <li class="inner-shop-details-review">
                                             <div class="rating">
                                                 <x-Web.common.star-rating :rating="$product->product_reviews_avg_rating ?? 0" />
                                             </div>
-                                            <span>({{ number_format($product->product_reviews_avg_rating ?? 0, 1) }})</span>
+                                            @if(!empty($product->product_reviews_avg_rating) && $product->product_reviews_avg_rating > 0)
+                                                <span>({{ number_format($product->product_reviews_avg_rating ?? 0, 1) }})</span>
+                                            @endif
                                         </li>
-                                        <li>ID : <span>{{$product->ups_code}}</span></li>
+                                        @if(!empty($product->ups_code))
+                                            <li>ID : <span>{{$product->ups_code}}</span></li>
+                                        @endif
                                     </ul>
                                 </div>
                                 <div class="inner-shop-details-price">
-                                    <h2 class="price">${{$product->sale_price}}</h2>
+                                    <h2 class="price">{{config('app.currency_symbol')}}{{$product->sale_price}}</h2>
                                     <span class="stock-info">
                                         @if($product->quantity > 0)
                                             <h5 class="stock-status text-success">- In Stock</h5>

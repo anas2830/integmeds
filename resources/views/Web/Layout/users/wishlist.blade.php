@@ -57,8 +57,8 @@
                                             <div class="cart-item-innerBox-middle">
                                                 <div class="cart-item-middle">
                                                     <div class="cart-price">
-                                                        <span>$ {{ $wishlist->product?->sale_price ?? 'N/A' }}</span>
-                                                        <span class="old-price">$ {{ $wishlist->product?->regular_price ?? 'N/A' }}</span>
+                                                        <span>{{config('app.currency_symbol')}} {{ $wishlist->product?->sale_price ?? 'N/A' }}</span>
+                                                        <span class="old-price">{{config('app.currency_symbol')}} {{ $wishlist->product?->regular_price ?? 'N/A' }}</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -127,7 +127,7 @@
                         error: function(xhr) {
                             Swal.fire({
                                 title: "Error!",
-                                text: "There was a problem deleting the Editor.",
+                                text: "There was a problem deleting the item.",
                             });
                         }
                     });

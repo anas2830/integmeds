@@ -39,6 +39,7 @@ class OrderController extends Controller
                 ])->withInput();
             }
         }
+
         $this->orderService->placeOrder($request);
     }
 

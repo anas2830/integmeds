@@ -40,29 +40,37 @@
                                     <div class="checkout-oder-sub-total-wrap">
                                         <div class="checkout-oder-sub-total">
                                             <p>Total ({{$cartCount}}items)</p>
-                                            <p>$<span class="cart-subtotal" id="checkout-cart-subtotal">{{$cartSubtotal}}</span></p>
+                                            <p>{{config('app.currency_symbol')}}<span class="cart-subtotal" id="checkout-cart-subtotal">{{$cartSubtotal}}</span></p>
                                         </div>
                                         <div class="checkout-oder-sub-total">
                                             <p>Discount</p>
-                                            <p>-$<span class="coupon-amount">{{$couponAmount ?? 0}}</span></p>
+                                            <p>-{{config('app.currency_symbol')}}<span class="coupon-amount">{{$couponAmount ?? 0}}</span></p>
                                         </div>
                                         <div class="checkout-oder-sub-total">
                                             <p>Shipping Cost</p>
-                                            <p>+$<span class="shipping-cost">0</span></p>
+                                            <p>+{{config('app.currency_symbol')}}<span class="shipping-cost">0</span></p>
                                         </div>
                                     </div>
                                     <div class="checkout-oder-sub-total-wrap">
                                         <div class="checkout-oder-sub-total">
                                             <p>Grand Total:</p>
-                                            <span class="Big-text">$ <span class="total-price">{{$cartSubtotal - $couponAmount}}</span></span>
+                                            <span class="Big-text">{{config('app.currency_symbol')}} <span class="total-price">{{$cartSubtotal - $couponAmount}}</span></span>
                                         </div>
                                     </div>
                                     <div class="mb-3">
-                                        @if(session('min_order_error'))
-                                            <small class="text-danger">
-                                                {{ session('min_order_error') }}
-                                            </small>
+                                        {{-- @if(session('min_order_error')) --}}
+                                        @if ($errors->has('min_order_error'))
+                                        <small class="text-danger">
+                                            {{ $errors->first('min_order_error') }}
+                                        </small>
                                         @endif
+
+                                        @if ($errors->has('courier_service_id'))
+                                        <small class="text-danger">
+                                            {{ $errors->first('courier_service_id') }}
+                                        </small>
+                                        @endif
+                                        {{-- @endif --}}
                                     </div>
                                     <div class="sidebar-payment-method">
 
@@ -125,7 +133,7 @@
                                             <input class="form-check-input @error('agree_terms') is-invalid @enderror" type="checkbox" name="agree_terms" value="1" id="agreeTerms"
                                                 {{ old('agree_terms') ? 'checked' : '' }} required>
                                             <label class="form-check-label" for="agreeTerms">
-                                                I have read and agree to the website terms and conditions <span class="required-star">*</span>
+                                                I have read and agree to the website <a href="{{ url('/terms-condition') }}" class="text-success">terms and conditions</a> <span class="required-star">*</span>
                                             </label>
                                             @error('agree_terms') <small class="text-danger d-block">{{ $message }}</small> @enderror
                                         </div>
@@ -147,19 +155,31 @@
 @push('script')
 <script>
 $(document).ready(function () {
-    function togglePaymentDetails() {
+    function toggleShippingBilling() {
         if ($('#ship-address').is(':checked')) {
             $('.different-address-info').slideDown();
             $('.shipping-form-wrap input, .shipping-form-wrap select').attr('required', true);
+            resetShippingMethod();
         } else {
             $('.different-address-info').slideUp();
             $('.shipping-form-wrap input, .shipping-form-wrap select').removeAttr('required');
+            resetShippingMethod();
         }
     }
 
-    $('#ship-address').on('change', togglePaymentDetails);
+    $('#ship-address').on('change', toggleShippingBilling);
 
-    togglePaymentDetails();
+    toggleShippingBilling();
+
+    function resetShippingMethod() {
+        $('#shipping-method-container').html('');
+        $('#shipping_method_select').val(null);
+        const subtotal = parseFloat($('#checkout-cart-subtotal').text()) || 0;
+        const coupon = parseFloat($('.coupon-amount').text()) || 0;
+        const total = parseFloat((subtotal - coupon).toFixed(2));
+        $('.shipping-cost').text(0);
+        $('.total-price').text(total.toFixed(2));
+    }
 
 
     $('#shipping_method_select').on('change', function() {
@@ -181,7 +201,7 @@ $(document).ready(function () {
                 city: $('input[name="shipping[city]"]').val(),
                 state: $('input[name="shipping[state]"]').val(),
             },
-            ship_to_different_address: $('.ship_to_different_address').is(':checked') ? 1 : 0,
+            ship_to_different_address: $('input[name="ship_to_different_address"]').prop('checked') ? 1 : 0,
             _token: '{{ csrf_token() }}',
         };
 
@@ -199,6 +219,21 @@ $(document).ready(function () {
             success: function (response) {
                 if (response.success) {
                     $('#shipping-method-container').html(response.html).show();
+
+                    const $firstRadio = $('.shipping-radio').first();
+
+                    if ($firstRadio.length) {
+                        const shippingCost = parseFloat($firstRadio.data('charge')) || 0;
+                        const subtotal = parseFloat($('#checkout-cart-subtotal').text()) || 0;
+                        const coupon = parseFloat($('.coupon-amount').text()) || 0;
+
+                        const total = parseFloat((subtotal + shippingCost - coupon).toFixed(2));
+
+                        $('.shipping-cost').text(shippingCost.toFixed(2));
+                        $('.total-price').text(total.toFixed(2));
+
+                        $firstRadio.prop('checked', true);
+                    }
                 }
                 $('#shipping-method-loading').hide();
             },
@@ -216,11 +251,12 @@ $(document).ready(function () {
                 } else {
                     $('.shipping-method-error').text('Something went wrong, please try again.').show();
                 }
+                $('#shipping_method_select').val(null);
             }
         });
 
     });
-
+    
     $(document).on('click', '.shipping-radio', function () {
         const shippingCost = parseFloat($(this).data('charge')) || 0;
         const subtotal = parseFloat($('#checkout-cart-subtotal').text()) || 0;
@@ -229,7 +265,6 @@ $(document).ready(function () {
         $('.shipping-cost').text(shippingCost.toFixed(2));
         $('.total-price').text(total.toFixed(2));
     });
-
 });
 
 

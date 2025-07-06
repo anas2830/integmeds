@@ -15,7 +15,7 @@
                                 value="{{ old('quantities.' . $bundleProduct->id, 1) }}"
                                 min="1"
                                 class="qtybutton-input product-qty">
-
+                                {{config('app.brand_name')}}
                             <div class="dec qtybutton">-</div>
                             <div class="inc qtybutton">+</div>
                         </div>
@@ -33,8 +33,8 @@
                     </div>
 
                     <div class="bundle-d-price">
-                        <span class="old-price">${{ $bundleProduct->regular_price }}</span>
-                        <span class="new-price">${{ $bundleProduct->sale_price }}</span>
+                        <span class="old-price">{{config('app.currency_symbol')}}{{ $bundleProduct->regular_price }}</span>
+                        <span class="new-price">{{config('app.currency_symbol')}}{{ $bundleProduct->sale_price }}</span>
                     </div>
                 </div>
 

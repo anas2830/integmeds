@@ -54,7 +54,7 @@
                                                             </span>
                                                         </td>
                                                         <td>
-                                                            <span class="cart-price">${{ $item->price }}</span>
+                                                            <span class="cart-price">{{config('app.currency_symbol')}}{{ $item->price }}</span>
                                                         </td>
                                                         <td>
                                                             <input type="hidden" name="rowId[]" value="{{$item->id}}">
@@ -73,12 +73,12 @@
                                                             @endif
                                                         </td>
                                                         <td>
-                                                            <span class="subtotal-price">${{ $item->price * $item->quantity }}</span>
+                                                            <span class="subtotal-price">{{config('app.currency_symbol')}}{{ $item->price * $item->quantity }}</span>
                                                         </td>
                                                     </tr>
                                                 @endforeach
                                                 <tr>
-                                                    <td colspan="4" class="text-end">
+                                                    <td colspan="4" class="text-end automation-btn-delete">
                                                         <a href="{{ route('shopping.cart.remove.all') }}" class="cart-empty-btn me-2">Empty Cart</a>
                                                         <button type="submit" class="cart-update-btn">Update Cart</button>
                                                     </td>
@@ -90,10 +90,10 @@
                                 {{-- @dd(session()->all()); --}}
                                 <div class="cart-page-summary">
                                     <h3>Billing summary</h3>
-                                    <h6>subtotal <span>$ <span class="cart-subtotal"> {{ $cartSubtotal }} </span></span></h6>
+                                    <h6>subtotal <span>{{config('app.currency_symbol')}} <span class="cart-subtotal"> {{ $cartSubtotal }} </span></span></h6>
                                     {{-- <h6>Tax <span>(+) $100.00</span></h6> --}}
                                     <h6>Discount <span>(-) $ <span class="coupon-amount">{{Session::get('coupon_amount') ?? 0}}</span></span></h6>
-                                    <h4>Total <span>$ <span class="total-price">{{ $cartSubtotal - Session::get('coupon_amount') }}</span></span></h4>
+                                    <h4>Total <span>{{config('app.currency_symbol')}} <span class="total-price">{{ $cartSubtotal - Session::get('coupon_amount') }}</span></span></h4>
                                     {{-- @dd(Session::get('coupon_code')); --}}
                                     <form id="apply-coupon-form" method="POST">
                                         @csrf
@@ -222,6 +222,44 @@ $(document).ready(function () {
             }
         });
     });
+});
+
+// empty cart 
+const makeCartEmpty = "{{ route('shopping.cart.remove.all') }}";
+$('.automation-btn-delete').on('click', function(e){
+    e.preventDefault();
+    const url = makeCartEmpty
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        type: "warning",
+        showCancelButton: !0,
+        confirmButtonColor: "#34c38f",
+        cancelButtonColor: "#f46a6a",
+        confirmButtonText: "Yes, remove it!"
+    }).then(function(t) {
+        console.log('t', t);
+        if(t.value){
+            $.ajax({
+                url: url,
+                type: 'get',
+                success: function(response) {
+                    Swal.fire({
+                        title: "Removed!",
+                        type: "success",
+                    }).then(function(t) {
+                        location.reload();
+                    });
+                },
+                error: function(xhr) {
+                    Swal.fire({
+                        title: "Error!",
+                        text: "There was a problem deleting the items from the cart.",
+                    });
+                }
+            });
+        }
+    })
 });
 
 </script>

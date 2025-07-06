@@ -36,7 +36,6 @@ class SliderController extends Controller
 
     public function edit($id)
     {
-        // dd($id);
         $data = $this->sliderCrudService->editSlider($id);
         return view('Backend.admin.slider.edit', $data);
     }
