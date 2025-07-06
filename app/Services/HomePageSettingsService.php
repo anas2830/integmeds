@@ -70,7 +70,6 @@ class HomePageSettingsService {
     {
         // Delete files requested from frontend first
         if (!empty($filesToDelete)) {
-            // dd($filesToDelete);
             foreach ((array) $filesToDelete as $fileToDelete) {
                 $deletePath = public_path($fileToDelete);
                 if (File::exists($deletePath)) {
@@ -171,7 +170,6 @@ class HomePageSettingsService {
 
     public function updateHomePageBodySettings($request)
     {
-        // dd($request->all());
         $homePage = HomePageBody::firstOrNew();
 
         // Delete files if requested

@@ -50,7 +50,7 @@
                                     </ul>
                                 </div>
                                 <div class="inner-shop-details-price">
-                                    <h2 class="price">${{$bundle->min_price}} - ${{$bundle->max_price}}</h2>
+                                    <h2 class="price">{{config('app.currency_symbol')}}{{$bundle->min_price}} - {{config('app.currency_symbol')}}{{$bundle->max_price}}</h2>
                                 </div>
                                 <p>{{$bundle->short_description}}</p>
                                 {{-- {{ $bundle->products }} --}}

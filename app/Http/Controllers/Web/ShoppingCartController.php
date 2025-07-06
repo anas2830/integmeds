@@ -37,12 +37,9 @@ class ShoppingCartController extends SidebarService
     public function cart(){
         $cartContents = Cart::getContent();
         $cartSubtotal = Cart::getSubTotal();
-        // $outOfStockItems = $this->productService->productStockCheck($cartContents);
         $outOfStockItems = [];
-
         $productBundles = $this->productBundles();
         $bestSellingProducts = $this->bestSellingProducts();
-        // dd($cartContents, $outOfStockItems);
         return view('Web.Layout.pages.cart', compact('cartContents','cartSubtotal','outOfStockItems','productBundles','bestSellingProducts'));
     } 
 

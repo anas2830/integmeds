@@ -37,7 +37,6 @@ class ProductBundleController extends Controller
 
     public function edit($id)
     {
-        // dd($id);
         $data = $this->productBundleCrudService->editProductBundle($id);
         return view('Backend.admin.product-bundle.edit', $data);
     }

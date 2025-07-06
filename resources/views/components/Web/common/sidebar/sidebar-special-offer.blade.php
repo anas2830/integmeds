@@ -24,8 +24,8 @@
                             <div class="sbar-sp-offer-text">
                                 <h3>{{ $specialOffer->product_name }}</h3>
                                 <div class="sdbar-product-price">
-                                    <span class="old-price">${{ $specialOffer->regular_price }}</span>
-                                    <span class="new-price">$ {{ $specialOffer->sale_price }}</span>
+                                    <span class="old-price">{{config('app.currency_symbol')}}{{ $specialOffer->regular_price }}</span>
+                                    <span class="new-price">{{config('app.currency_symbol')}}{{ $specialOffer->sale_price }}</span>
                                 </div>
                             </div>
                         </div>

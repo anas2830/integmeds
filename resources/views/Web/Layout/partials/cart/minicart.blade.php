@@ -59,7 +59,7 @@
                 </div> --}}
                 <div class="mini-cart-total">
                     <span>Total:</span>
-                    <span class="cart-total-price">$ <span class="cart-subtotal">{{$cartSubtotal}}</span></span>
+                    <span class="cart-total-price">{{config('app.currency_symbol')}} <span class="cart-subtotal">{{$cartSubtotal}}</span></span>
                 </div>
                 <div class="mini-cart-action">
                     <a href="{{route('shopping.cart')}}" class="btn view-cart-btn">View Cart</a>

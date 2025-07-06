@@ -83,7 +83,7 @@
                                                     <button type="submit" class="reorder-btn mb-3"> <i class="fa-solid fa-arrows-rotate"></i> Reorder</button>
                                                 </form>
                                             @endif
-                                            <a target="_blank" href="{{ route('order-invoice', $order->id) }}"><i class="far fa-eye"></i> View</a>
+                                            <a target="_blank" href="{{ route('user.order-invoice', $order->id) }}"><i class="far fa-eye"></i> View</a>
                                         </td>
                                     </tr>
                                 @empty

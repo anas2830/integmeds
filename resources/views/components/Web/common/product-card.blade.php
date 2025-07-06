@@ -44,9 +44,9 @@
             <div class="common-price-and-card">
                 <div class="common-product-price">
                     @if(!empty($product->regular_price) && $product->regular_price > 0)
-                        <span class="old-price">${{ $product->regular_price }}</span>
+                        <span class="old-price">{{config('app.currency_symbol')}}{{ $product->regular_price }}</span>
                     @endif
-                    <span class="new-price">${{ $product->sale_price }}</span>
+                    <span class="new-price">{{config('app.currency_symbol')}}{{ $product->sale_price }}</span>
                 </div>
                 <div class="common-cart-wrap">
                     <a class="btn add-to-cart" href="#" data-product-id="{{ $product->id }}"> Add to cart</a>

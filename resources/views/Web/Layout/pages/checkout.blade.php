@@ -40,21 +40,21 @@
                                     <div class="checkout-oder-sub-total-wrap">
                                         <div class="checkout-oder-sub-total">
                                             <p>Total ({{$cartCount}}items)</p>
-                                            <p>$<span class="cart-subtotal" id="checkout-cart-subtotal">{{$cartSubtotal}}</span></p>
+                                            <p>{{config('app.currency_symbol')}}<span class="cart-subtotal" id="checkout-cart-subtotal">{{$cartSubtotal}}</span></p>
                                         </div>
                                         <div class="checkout-oder-sub-total">
                                             <p>Discount</p>
-                                            <p>-$<span class="coupon-amount">{{$couponAmount ?? 0}}</span></p>
+                                            <p>-{{config('app.currency_symbol')}}<span class="coupon-amount">{{$couponAmount ?? 0}}</span></p>
                                         </div>
                                         <div class="checkout-oder-sub-total">
                                             <p>Shipping Cost</p>
-                                            <p>+$<span class="shipping-cost">0</span></p>
+                                            <p>+{{config('app.currency_symbol')}}<span class="shipping-cost">0</span></p>
                                         </div>
                                     </div>
                                     <div class="checkout-oder-sub-total-wrap">
                                         <div class="checkout-oder-sub-total">
                                             <p>Grand Total:</p>
-                                            <span class="Big-text">$ <span class="total-price">{{$cartSubtotal - $couponAmount}}</span></span>
+                                            <span class="Big-text">{{config('app.currency_symbol')}} <span class="total-price">{{$cartSubtotal - $couponAmount}}</span></span>
                                         </div>
                                     </div>
                                     <div class="mb-3">
@@ -133,7 +133,7 @@
                                             <input class="form-check-input @error('agree_terms') is-invalid @enderror" type="checkbox" name="agree_terms" value="1" id="agreeTerms"
                                                 {{ old('agree_terms') ? 'checked' : '' }} required>
                                             <label class="form-check-label" for="agreeTerms">
-                                                I have read and agree to the website terms and conditions <span class="required-star">*</span>
+                                                I have read and agree to the website <a href="{{ url('/terms-condition') }}" class="text-success">terms and conditions</a> <span class="required-star">*</span>
                                             </label>
                                             @error('agree_terms') <small class="text-danger d-block">{{ $message }}</small> @enderror
                                         </div>
