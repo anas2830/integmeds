@@ -2,6 +2,7 @@
 
 use App\Models\Order;
 use App\Models\Country;
+use Illuminate\Support\Facades\Auth;
 
 if (!function_exists('generateOrderNumber')) {
     function generateOrderNumber()
@@ -47,8 +48,6 @@ if (!function_exists('convertYoutubeToEmbed')) {
 
         return null;
     }
-
-    return null;
 }
 
 
@@ -64,8 +63,4 @@ if (!function_exists('adminUser')) {
     {
         return Auth::guard('admin')->user();
     }
-}
-
-function user(){
-    return 'hello';
 }
