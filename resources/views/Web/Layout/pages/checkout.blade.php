@@ -181,9 +181,12 @@ $(document).ready(function () {
                 city: $('input[name="shipping[city]"]').val(),
                 state: $('input[name="shipping[state]"]').val(),
             },
-            ship_to_different_address: $('.ship_to_different_address').is(':checked') ? 1 : 0,
+            ship_to_different_address: $('input[name="ship_to_different_address"]').prop('checked') ? 1 : 0,
             _token: '{{ csrf_token() }}',
         };
+
+        console.log(postData);
+        
 
         $.ajax({
             url: "{{ route('shipping.rates') }}",
@@ -199,6 +202,21 @@ $(document).ready(function () {
             success: function (response) {
                 if (response.success) {
                     $('#shipping-method-container').html(response.html).show();
+
+                    const $firstRadio = $('.shipping-radio').first();
+
+                    if ($firstRadio.length) {
+                        const shippingCost = parseFloat($firstRadio.data('charge')) || 0;
+                        const subtotal = parseFloat($('#checkout-cart-subtotal').text()) || 0;
+                        const coupon = parseFloat($('.coupon-amount').text()) || 0;
+
+                        const total = parseFloat((subtotal + shippingCost - coupon).toFixed(2));
+
+                        $('.shipping-cost').text(shippingCost.toFixed(2));
+                        $('.total-price').text(total.toFixed(2));
+
+                        $firstRadio.prop('checked', true);
+                    }
                 }
                 $('#shipping-method-loading').hide();
             },
@@ -216,11 +234,12 @@ $(document).ready(function () {
                 } else {
                     $('.shipping-method-error').text('Something went wrong, please try again.').show();
                 }
+                $('#shipping_method_select').val(null);
             }
         });
 
     });
-
+    
     $(document).on('click', '.shipping-radio', function () {
         const shippingCost = parseFloat($(this).data('charge')) || 0;
         const subtotal = parseFloat($('#checkout-cart-subtotal').text()) || 0;

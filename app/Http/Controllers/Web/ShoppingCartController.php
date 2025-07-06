@@ -453,7 +453,7 @@ class ShoppingCartController extends SidebarService
     }
 
     public function getShippingRates(ShippingRateRequest $request){
-        $data = $this->shippingService->getShippingRates($request->validated());
+        $data = $this->shippingService->getShippingRates($request);
         $formattedRates = [];
         foreach ($data['rates'] ?? [] as $rate) {
             $formattedRates[] = [

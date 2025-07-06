@@ -16,9 +16,9 @@ class ShippingService
     public function getShippingRates($data)
     {
         // Verify postal code and country via external API
-        $useShippingAddress = !empty($data['ship_to_different_address']);
-        $address = $useShippingAddress ? ($data['shipping'] ?? []) : ($data['billing'] ?? []);
+        $useShippingAddress = $data['ship_to_different_address'];
 
+        $address = $useShippingAddress ? ($data['shipping'] ?? []) : ($data['billing'] ?? []);
         $this->verifyAddressWithZippopotam($address['country'], $address['postal_code']);
         // Find active shipping method by ID
         $method = ShippingMethod::where('id', $data['shipping_method_id'] ?? null)

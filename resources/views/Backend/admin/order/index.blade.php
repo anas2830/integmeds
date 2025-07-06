@@ -67,7 +67,7 @@
                         @forelse($orders as $order)
                             <tr>
                                 <th scope="row">{{ $order->order_number }}</th>
-                                <td>{{ $order->user->name }}</td>
+                                <td>{{ $order->user?->name }}</td>
                                 <td>{{ $order->created_at->format('d M Y') }}</td>
                                 <td>
                                     @switch($order->order_status)
