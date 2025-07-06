@@ -174,7 +174,7 @@ class WebController extends SidebarService
     public function search(Request $request)
     {
         $data['search'] = $request->search;
-        $data['products'] = Product::with('firstImage')->where('status', 1)->where('quantity', '>', 0)->select('id', 'product_name', 'regular_price', 'sale_price', 'discount_percentage', 'slug', 'qunatity')->where('product_name', 'like', '%' . $data['search'] . '%')->paginate(16);
+        $data['products'] = Product::with('firstImage')->where('status', 1)->select('id', 'product_name', 'regular_price', 'sale_price', 'discount_percentage', 'slug', 'quantity')->where('product_name', 'like', '%' . $data['search'] . '%')->paginate(16);
         $data['productBundles'] = $this->productBundles();
         $data['specialOffers'] = $this->specialOffers();
         return view('Web.Layout.pages.search', $data);
