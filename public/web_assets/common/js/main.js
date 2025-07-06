@@ -93,10 +93,12 @@ $(document).ready(function () {
     // }); 
 
     // cart-plus-minus
+    // bundle quantity
+
     $(".quickview-cart-plus-minus").append('<div class="dec qtybutton">-</div><div class="inc qtybutton">+</div>');
     $(document).on("click", ".qtybutton", function () {
         var $button = $(this);
-        var oldValue = parseFloat($button.parent().find("input").val());
+        var oldValue = parseFloat($button.siblings("input[type='text']").val());
 
         if ($button.text() == "+") {
             var newVal = oldValue + 1;
@@ -109,7 +111,7 @@ $(document).ready(function () {
             }
         }
 
-        $button.parent().find("input").val(newVal);
+        $button.parent().find("input[type='text']").val(newVal);
     });
 
     $(document).on("change", ".qtybutton-input", function () {
@@ -189,7 +191,7 @@ $(document).ready(function () {
                         $.each(response, function (i, product) {
                             html += `
                                 <li>
-                                    <a href="/product/${product.slug}">
+                                    <a href="/product-details/${product.slug}">
                                         <div class="search-suggestions-items">
                                             <div class="search-sugge-items-img">
                                                 <img class="img-fluid" src="${product.image_url}" alt="${product.product_name}">

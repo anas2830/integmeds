@@ -57,7 +57,7 @@
                                         </li>
                                     </ul>
                                 </div>
-                                <div class="inner-shop-perched-info">
+                                <div class="inner-shop-perched-info product-buy-section">
                                     <x-Web.common.product-buy :product="$product" :alreadyInWishlist="$alreadyInWishlist" />
                                 </div>
                             </div>

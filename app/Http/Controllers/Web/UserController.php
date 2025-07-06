@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use Illuminate\Http\Request;
 use App\Services\UserService;
+use App\Services\Web\OrderService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ReviewSubmitRequest;
 use App\Http\Requests\BundleReviewSubmitRequest;
@@ -11,9 +12,12 @@ use App\Http\Requests\BundleReviewSubmitRequest;
 class UserController extends Controller
 {
     protected $userService;
-    public function __construct(UserService $userService)
+    protected $orderService;
+
+    public function __construct(UserService $userService, OrderService $orderService)
     {
         $this->userService = $userService;
+        $this->orderService = $orderService;
     }
 
     public function dashboard()
@@ -180,5 +184,8 @@ class UserController extends Controller
         return response()->json($response);
     }
 
+    public function reorder($id){
+        return $this->orderService->reorder($id);
+    }
     
 }

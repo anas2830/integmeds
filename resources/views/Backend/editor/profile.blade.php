@@ -33,7 +33,7 @@
             @endif  
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title mb-4">Form grid layout</h4>
+                    <h4 class="card-title mb-4">Profile Update</h4>
 
                     <form action="{{ route('editor-profile.update') }}" method="POST" enctype="multipart/form-data">
                         @csrf

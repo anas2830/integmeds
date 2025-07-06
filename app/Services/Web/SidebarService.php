@@ -20,7 +20,7 @@ class SidebarService
     public function specialOffers()
     {
         return Cache::rememberForever('Product', function () {
-            return Product::select('id', 'product_name', 'slug', 'regular_price', 'sale_price', 'discount_percentage')->with(['firstImage:id,product_id,image_url'])->where('status', 1)->orderBy('discount_percentage', 'desc')->take(10)->get();
+            return Product::select('id', 'product_name', 'slug', 'regular_price', 'sale_price', 'discount_percentage', 'quantity')->with(['firstImage:id,product_id,image_url'])->where('status', 1)->where('quantity', '>', 0)->orderBy('discount_percentage', 'desc')->take(10)->get();
         });
     }
 
@@ -31,7 +31,7 @@ class SidebarService
 
         // Return products with related data and average rating
         return Cache::remember('bestSellingProducts', 60, function() use ($topProductIds) {
-            return Product::select('id', 'product_name', 'regular_price', 'sale_price', 'discount_percentage', 'slug')
+            return Product::select('id', 'product_name', 'regular_price', 'sale_price', 'discount_percentage', 'slug', 'quantity')
             ->with([
                 'firstImage:id,product_id,image_url',
                 'firstCategory:id,name,slug',

@@ -76,7 +76,15 @@
                                             @endswitch
                                         </td>
                                         <td>{{config('app.currency_symbol')}}{{ $order->total_amount }}</td>
-                                        <td class="view-btn"><a target="_blank" href="{{ route('order-invoice', $order->id) }}"><i class="far fa-eye"></i> View</a></td>
+                                        <td class="view-btn">
+                                            @if($order->order_status === 'completed')
+                                                <form action="{{ route('user.reorder', $order->id) }}" method="post">
+                                                    @csrf
+                                                    <button type="submit" class="reorder-btn mb-3"> <i class="fa-solid fa-arrows-rotate"></i> Reorder</button>
+                                                </form>
+                                            @endif
+                                            <a target="_blank" href="{{ route('order-invoice', $order->id) }}"><i class="far fa-eye"></i> View</a>
+                                        </td>
                                     </tr>
                                 @empty
                                     <tr>

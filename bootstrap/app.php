@@ -14,10 +14,16 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-            'auth.user' => \App\Http\Middleware\UserMiddleware::class,
+            'auth.user' => UserMiddleware::class,
             'auth.admin' => AdminMiddleware::class
+        ]);
+        $middleware->validateCsrfTokens(except: [
+            'success',
+            'fail',
+            'cancel',
+            'ipn'
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        
     })->create();

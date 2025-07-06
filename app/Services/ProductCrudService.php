@@ -159,6 +159,11 @@ class ProductCrudService
             'sale_price' => $sale,
             'discount_price' => $discount['discount_price'],
             'discount_percentage' => $discount['discount_percentage'],
+            'weight'        => $validated['weight'],
+            'weight_unit'   => $validated['weight_unit'],
+            'length'        => $validated['length'],
+            'width'         => $validated['width'],
+            'height'        => $validated['height'],
             // 'quantity' => $validated['stock_quantity'] ?? 0,
         ];
 

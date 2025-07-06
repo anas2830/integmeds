@@ -132,6 +132,17 @@
                         <span>Order List</span>
                     </a>
                 </li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class='bx bx-car'></i> 
+                        <span>Shipping</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{ route('shipping-method.index') }}">List</a></li>
+                        <li><a href="{{ route('shipping-method.create') }}">Create</a></li>
+                    </ul>
+                </li>
+
+                <li class="menu-title">Apps</li>
 
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
@@ -150,6 +161,7 @@
                         <span>Settings</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="true">
+                        <li><a href="{{ route('site.settings') }}">Site Settings</a></li>
                         <li><a href="{{ route('home.page.sidebar.settings') }}">Home Page Sidebar Banner</a></li>
                         <li><a href="{{ route('home.page.body.settings') }}">Home Page Body Banner</a></li>
                     </ul>

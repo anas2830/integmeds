@@ -1,5 +1,5 @@
 @php 
-    $shipping_address = json_decode($order->shipping_address, true) ?? [];
+    $shipping_address = $order->shipping_address;
 @endphp 
 <!DOCTYPE html>
 <html lang="en">
@@ -258,11 +258,19 @@
                                                                     <tr>
                                                                         <td height="1" colspan="4" style="border-bottom:1px solid #e4e4e4"></td>
                                                                     </tr>
+                                                                    @if($order->discount && $order->discount > 0)
                                                                     <tr>
                                                                         <td style="font-size: 13px; font-family: 'Open Sans', sans-serif; color: #414141; line-height: 22px; vertical-align: top; text-align:right; padding:8px 0;"> Discount</td>
-                                                                        <td style="font-size: 13px; font-family: 'Open Sans', sans-serif; color: #414141; line-height: 22px; vertical-align: top; text-align:right; white-space:nowrap;padding:8px 0;" width="180"> ${{$order->discount ?? 0}} </td>
+                                                                        <td style="font-size: 13px; font-family: 'Open Sans', sans-serif; color: #414141; line-height: 22px; vertical-align: top; text-align:right; white-space:nowrap;padding:8px 0;" width="180"> - ${{$order->discount ?? 0}} </td>
                                                                     </tr>
-                                                                        <tr style="background:#01703A;display: flex;justify-content: space-between;">
+                                                                    @endif
+                                                                    @if($order->shipping_cost && $order->shipping_cost > 0)
+                                                                        <tr>
+                                                                            <td style="font-size: 13px; font-family: 'Open Sans', sans-serif; color: #414141; line-height: 22px; vertical-align: top; text-align:right; padding:8px 0;"> Shipping Cost</td>
+                                                                            <td style="font-size: 13px; font-family: 'Open Sans', sans-serif; color: #414141; line-height: 22px; vertical-align: top; text-align:right; white-space:nowrap;padding:8px 0;" width="180"> + ${{$order->shipping_cost ?? 0}} </td>
+                                                                        </tr>
+                                                                    @endif
+                                                                    <tr style="background:#01703A;display: flex;justify-content: space-between;">
                                                                         <td style="font-size: 13px; font-family: 'Open Sans', sans-serif; color: #fff; line-height: 22px; vertical-align: top; text-align:right; padding:8px 0 8px 5px;"> <strong>Grand Total</strong> </td>
                                                                         <td
                                                                             style="font-size: 13px; font-family: 'Open Sans', sans-serif; color: #fff; line-height: 22px; vertical-align: top; text-align:right; padding:8px 5px 8px 0;">

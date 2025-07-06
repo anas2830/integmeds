@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\PageController;
+use App\Http\Controllers\SiteSettingsController;
 use App\Http\Controllers\Backend\AdminController;
 use App\Http\Controllers\Backend\CuponController;
 use App\Http\Controllers\Backend\OrderController;
@@ -19,7 +20,7 @@ use App\Http\Controllers\Backend\ProductBrandController;
 use App\Http\Controllers\Backend\ProductBundleController;
 use App\Http\Controllers\Backend\ProductReviewController;
 use App\Http\Controllers\Backend\ProductCategoryController;
-
+use App\Http\Controllers\ShippingMethodController;
 
 Route::group(['middleware' => 'auth.admin'], function () {
     
@@ -55,6 +56,10 @@ Route::group(['middleware' => 'auth.admin'], function () {
         // Product size
         Route::resource('/product-size', ProductSizeController::class);
         Route::put('/product-size/status/{id}', [ProductSizeController::class, 'status'])->name('product-size.status');
+
+        // shipping method
+        Route::resource('/shipping-method', ShippingMethodController::class)->except(['show']);
+        Route::put('/shipping-method/status/{id}', [ShippingMethodController::class, 'status'])->name('shipping-method.status');
 
         // Coupon
         Route::resource('/cupon', CuponController::class);
@@ -96,6 +101,11 @@ Route::group(['middleware' => 'auth.admin'], function () {
         // Clients
         Route::resource('/clients', ClientsController::class);
         Route::put('/clients/status/{id}', [ClientsController::class, 'status'])->name('clients.status');
+
+        //site settings
+        Route::get('/site-settings', [SiteSettingsController::class, 'siteSettings'])->name('site.settings');
+        Route::put('/site-settings/update', [SiteSettingsController::class, 'updateSiteSettings'])->name('site.settings.update');
+
 
         // Home page settings
         Route::get('/home-page-sidebar-settings', [HomePageSettingsController::class, 'homePageSidebarSettings'])->name('home.page.sidebar.settings');

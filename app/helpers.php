@@ -22,25 +22,30 @@ if (!function_exists('countries')) {
 }
 
 
-function convertYoutubeToEmbed($url)
-{
-    $parsed = parse_url($url);
 
-    if (isset($parsed['host'])) {
-        if (in_array($parsed['host'], ['youtu.be'])) {
-            // Short URL: https://youtu.be/VIDEO_ID
-            $video_id = ltrim($parsed['path'], '/');
-        } elseif (strpos($parsed['host'], 'youtube.com') !== false) {
-            // Long URL: https://www.youtube.com/watch?v=VIDEO_ID
-            parse_str($parsed['query'] ?? '', $query);
-            $video_id = $query['v'] ?? null;
-        } else {
-            $video_id = null;
+if (!function_exists('convertYoutubeToEmbed')) {
+    function convertYoutubeToEmbed($url)
+    {
+        $parsed = parse_url($url);
+
+        if (isset($parsed['host'])) {
+            if (in_array($parsed['host'], ['youtu.be'])) {
+                // Short URL: https://youtu.be/VIDEO_ID
+                $video_id = ltrim($parsed['path'], '/');
+            } elseif (strpos($parsed['host'], 'youtube.com') !== false) {
+                // Long URL: https://www.youtube.com/watch?v=VIDEO_ID
+                parse_str($parsed['query'] ?? '', $query);
+                $video_id = $query['v'] ?? null;
+            } else {
+                $video_id = null;
+            }
+
+            if ($video_id) {
+                return "https://www.youtube.com/embed/" . $video_id;
+            }
         }
 
-        if ($video_id) {
-            return "https://www.youtube.com/embed/" . $video_id;
-        }
+        return null;
     }
 
     return null;

@@ -166,7 +166,10 @@
                 showSuccessMessage(response.message);
                 
                 $('.cart_count').text(response.cart_count);
-                $('#cart-subtotal').text(response.cartSubtotal);
+                $('.cart-subtotal').text(response.cartSubtotal);
+                $('.coupon-amount').text(response.couponAmount);
+                $('.total-price').text(response.totalPrice);
+
                 $('#rowId_' + rowID).remove();
                 if (response.cart_count === 0 ){
                     $('.cart-items-area').remove()
