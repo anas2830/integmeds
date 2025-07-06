@@ -141,6 +141,7 @@
                 <button type="button" class="btn header-item noti-icon waves-effect" id="page-header-notifications-dropdown"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="bx bx-bell bx-tada"></i>
+                    @dd(user(), adminUser())
                     <span class="badge badge-danger badge-pill">{{adminUser()->unreadNotifications()->count()}}</span>
                 </button>
                 <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right p-0"

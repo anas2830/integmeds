@@ -65,3 +65,7 @@ if (!function_exists('adminUser')) {
         return Auth::guard('admin')->user();
     }
 }
+
+function user(){
+    return 'hello';
+}

@@ -134,7 +134,7 @@
                                 @forelse ($latest_orders as $order)
                                     <tr>
                                         <td><a href="javascript: void(0);" class="text-body font-weight-bold">#{{$order->order_number}}</a> </td>
-                                        <td>{{$order->user->name}}</td>
+                                        <td>{{$order->user?->name}}</td>
                                         <td>
                                             {{$order->created_at->format('d-m-Y')}}
                                         </td>

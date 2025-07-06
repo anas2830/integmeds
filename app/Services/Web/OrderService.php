@@ -3,23 +3,25 @@
 namespace App\Services\Web;
 
 use Cart;
+use App\Models\Admin;
+use App\Models\Cupon;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Inventory;
 use App\Models\Newsletter;
+use App\Models\SiteSetting;
 use Illuminate\Support\Str;
 use App\Models\OrderDetails;
 use App\Models\StockLeadger;
 use Illuminate\Support\Facades\DB;
+
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\NewOrderPlaced;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Request;
-
 use Illuminate\Support\Facades\Session;
 use App\Services\Web\ProductCartService;
 use App\Library\SslCommerz\SslCommerzNotification;
-use App\Models\Cupon;
-use App\Models\SiteSetting;
 
 class OrderService
 {
@@ -114,11 +116,11 @@ class OrderService
 
         $order = $this->orderGenerate($orderData);
 
-        // $admin = Admin::first();
+        $admin = Admin::first();
 
-        // if ($admin) {
-        //     $admin->notify(new NewOrderPlaced($order));
-        // }
+        if ($admin) {
+            $admin->notify(new NewOrderPlaced($order));
+        }
 
         if (!empty($couponId) && ($coupon = Cupon::find($couponId))) {
             $coupon->increment('used');
