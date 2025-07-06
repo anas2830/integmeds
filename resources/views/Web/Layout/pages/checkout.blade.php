@@ -58,11 +58,19 @@
                                         </div>
                                     </div>
                                     <div class="mb-3">
-                                        @if(session('min_order_error'))
-                                            <small class="text-danger">
-                                                {{ session('min_order_error') }}
-                                            </small>
+                                        {{-- @if(session('min_order_error')) --}}
+                                        @if ($errors->has('min_order_error'))
+                                        <small class="text-danger">
+                                            {{ $errors->first('min_order_error') }}
+                                        </small>
                                         @endif
+
+                                        @if ($errors->has('courier_service_id'))
+                                        <small class="text-danger">
+                                            {{ $errors->first('courier_service_id') }}
+                                        </small>
+                                        @endif
+                                        {{-- @endif --}}
                                     </div>
                                     <div class="sidebar-payment-method">
 

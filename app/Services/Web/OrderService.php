@@ -21,6 +21,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
 use App\Services\Web\ProductCartService;
+use Illuminate\Validation\ValidationException;
 use App\Library\SslCommerz\SslCommerzNotification;
 
 class OrderService
@@ -169,15 +170,18 @@ class OrderService
         }
     }
 
+
     public function checkMinOrderAmount($subtotal)
     {
         $minOrderAmount = SiteSetting::first()?->minimum_order ?? 0;
-        if ($subtotal < $minOrderAmount) {
-            redirect()->back()
-                ->with('min_order_error', "Minimum order amount is $$minOrderAmount. Orders below this cannot be placed.")
-                ->send();
+
+        if ($subtotal < (float)$minOrderAmount) {
+            throw ValidationException::withMessages([
+                'min_order_error' => "Minimum order amount is $$minOrderAmount. Orders below this cannot be placed."
+            ]);
         }
     }
+
 
     private function orderGenerate($orderData)
     {

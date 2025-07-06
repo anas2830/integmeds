@@ -34,7 +34,7 @@
                 <option value="">Please choose your country/region</option>
                 @foreach($countries as $country)
                     <option value="{{ $country->iso2 }}"
-                        {{ (old('shipping.country', $shippingAddress->country ?? '') === $country->name) ? 'selected' : '' }}>
+                        {{ (old('shipping.country', $shippingAddress->country ?? '') === $country->iso2) ? 'selected' : '' }}>
                         {{ $country->name }}
                     </option>
                 @endforeach
