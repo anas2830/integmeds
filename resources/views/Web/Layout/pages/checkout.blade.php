@@ -147,19 +147,31 @@
 @push('script')
 <script>
 $(document).ready(function () {
-    function togglePaymentDetails() {
+    function toggleShippingBilling() {
         if ($('#ship-address').is(':checked')) {
             $('.different-address-info').slideDown();
             $('.shipping-form-wrap input, .shipping-form-wrap select').attr('required', true);
+            resetShippingMethod();
         } else {
             $('.different-address-info').slideUp();
             $('.shipping-form-wrap input, .shipping-form-wrap select').removeAttr('required');
+            resetShippingMethod();
         }
     }
 
-    $('#ship-address').on('change', togglePaymentDetails);
+    $('#ship-address').on('change', toggleShippingBilling);
 
-    togglePaymentDetails();
+    toggleShippingBilling();
+
+    function resetShippingMethod() {
+        $('#shipping-method-container').html('');
+        $('#shipping_method_select').val(null);
+        const subtotal = parseFloat($('#checkout-cart-subtotal').text()) || 0;
+        const coupon = parseFloat($('.coupon-amount').text()) || 0;
+        const total = parseFloat((subtotal - coupon).toFixed(2));
+        $('.shipping-cost').text(0);
+        $('.total-price').text(total.toFixed(2));
+    }
 
 
     $('#shipping_method_select').on('change', function() {
@@ -184,9 +196,6 @@ $(document).ready(function () {
             ship_to_different_address: $('input[name="ship_to_different_address"]').prop('checked') ? 1 : 0,
             _token: '{{ csrf_token() }}',
         };
-
-        console.log(postData);
-        
 
         $.ajax({
             url: "{{ route('shipping.rates') }}",
@@ -248,7 +257,6 @@ $(document).ready(function () {
         $('.shipping-cost').text(shippingCost.toFixed(2));
         $('.total-price').text(total.toFixed(2));
     });
-
 });
 
 
