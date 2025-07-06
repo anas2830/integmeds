@@ -3,33 +3,38 @@
 namespace App\Http\Controllers\Web;
 
 use Cart;
-use App\Models\Order;
 use App\Models\Country;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Models\ShippingMethod;
 use App\Services\Web\OrderService;
 use App\Services\Web\CouponService;
 use App\Services\Web\SidebarService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
+use App\Services\Web\ShippingService;
 use Illuminate\Support\Facades\Session;
 use App\Services\Web\ProductCartService;
+use App\Http\Requests\ShippingRateRequest;
 use Illuminate\Validation\ValidationException;
+use GuzzleHttp\Client;
 
 class ShoppingCartController extends SidebarService
 {
     protected $productService;
     protected $couponService;
     protected $orderService;
+    protected $shippingService;
 
 
-    public function __construct(ProductCartService $productService, CouponService $couponService, OrderService $orderService)
+    public function __construct(ProductCartService $productService, CouponService $couponService, OrderService $orderService, ShippingService $shippingService)
     {
         $this->productService = $productService;
         $this->couponService = $couponService;
         $this->orderService = $orderService;
+        $this->shippingService = $shippingService;
     }
     public function cart(){
-
         $cartContents = Cart::getContent();
         $cartSubtotal = Cart::getSubTotal();
         // $outOfStockItems = $this->productService->productStockCheck($cartContents);
@@ -37,6 +42,117 @@ class ShoppingCartController extends SidebarService
 
         $productBundles = $this->productBundles();
         $bestSellingProducts = $this->bestSellingProducts();
+
+        // $client = new \GuzzleHttp\Client();
+
+        // $response = $client->request('POST', 'https://public-api.easyship.com/2024-09/rates', [
+        //     'body' => '{"destination_address":{"country_alpha2":"AD"},"incoterms":"DDU","insurance":{"is_insured":false},"courier_settings":{"show_courier_logo_url":false,"apply_shipping_rules":true},"shipping_settings":{"units":{"weight":"kg","dimensions":"cm"}},"parcels":[{"items":[{"contains_battery_pi966":true,"contains_battery_pi967":true,"contains_liquids":true,"origin_country_alpha2":"AD","quantity":1,"declared_currency":"AED"}]}]}',
+        //     'headers' => [
+        //         'accept' => 'application/json',
+        //         'content-type' => 'application/json',
+        //         'authorization' => 'Bearer prod_Osle4PL0Qd+Czd9vBFBsY1jhr1ByXUVWPTKhqpWQQJE=',
+        //     ],
+        // ]);
+
+        // dd($response->getBody());
+
+        
+
+
+
+        $client = new Client();
+
+        $payload = [
+            'origin_address' => [
+                'country_alpha2' => 'SG',
+                'postal_code' => '123456',
+                'city' => 'Singapore',
+            ],
+            'destination_address' => [
+                'country_alpha2' => 'BD',
+                'postal_code' => '3922',
+                'city' => 'Feni',
+                'state' => 'Chhilonia',
+            ],
+            'parcels' => [
+                [
+                    'items' => [
+                        [
+                            'quantity' => 1,
+                            'category' => 'mobiles',
+                            'declared_currency' => 'USD',
+                            'declared_customs_value' => 100,
+                            'dimensions' => [
+                                'length' => 20,
+                                'width' => 15,
+                                'height' => 10,
+                            ],
+                            'actual_weight' => 1.5,
+                            'hs_code' => '85171200', // Add HS code for customs
+                        ],
+                        [
+                            'quantity' => 2,
+                            'category' => 'fan',
+                            'declared_currency' => 'USD',
+                            'declared_customs_value' => 50,
+                            'dimensions' => [
+                                'length' => 10,
+                                'width' => 5,
+                                'height' => 1,
+                            ],
+                            'actual_weight' => 1,
+                            'hs_code' => '84145100', // Add HS code for customs
+                        ],
+                    ],
+                    'total_actual_weight' => 3.5,
+                ],
+            ],
+        ];
+
+
+
+        $token = 'prod_Osle4PL0Qd+Czd9vBFBsY1jhr1ByXUVWPTKhqpWQQJE=';
+        $url = 'https://public-api.easyship.com/2024-09/rates';
+
+        try {
+            $response = $client->post($url, [
+                'json' => $payload,
+                'headers' => [
+                    
+                    'accept' => 'application/json',
+                    'authorization' => 'Bearer ' . $token,
+                    'content-type' => 'application/json',
+                ],
+            ]);
+
+            $responseData = json_decode($response->getBody(), true);
+
+            // Initialize an array to hold the formatted rate information
+            $formattedRates = [];
+
+            // Iterate through each rate and extract relevant details
+            foreach ($responseData['rates'] as $rate) {
+                $formattedRates[] = [
+                    'Courier' => $rate['courier_service']['name'],
+                    'Delivery Time' => "{$rate['min_delivery_time']} - {$rate['max_delivery_time']} days",
+                    'Currency' => $rate['currency'],
+                    'Total Charge' => number_format($rate['total_charge'], 2),
+                ];
+            }
+
+            // Output the formatted rates
+            echo "<pre>";
+            print_r($formattedRates);
+            echo "</pre>";
+
+            // Handle the response data as needed
+        
+        } catch (\GuzzleHttp\Exception\RequestException $e) {
+            // Handle request exceptions
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+        
+
 
         // dd($cartContents, $outOfStockItems);
         return view('Web.Layout.pages.cart', compact('cartContents','cartSubtotal','outOfStockItems','productBundles','bestSellingProducts'));
@@ -50,7 +166,7 @@ class ShoppingCartController extends SidebarService
 
         $salePrice = null;
         $regularPrice = null;
-        $product =  Product::with('images')->find($request->product_id);
+        $product =  Product::with('images', 'firstCategory')->find($request->product_id);
         if(empty($product)){
             return response()->json(['status' => '404', 'message' => 'Product not found']);
         }
@@ -78,6 +194,12 @@ class ShoppingCartController extends SidebarService
                 $data['attributes']['sale_price'] = $salePrice;
                 $data['attributes']['product_image'] = $product_image;
                 $data['attributes']['product_id'] = $product->id;
+                $data['attributes']['category'] = $product->firstCategory()->first()?->name;
+                $data['attributes']['weight'] = $product->weight;
+                $data['attributes']['length'] = $product->length;
+                $data['attributes']['width'] = $product->width;
+                $data['attributes']['height'] = $product->height;
+                $data['attributes']['sku'] = $product->sku;
 
                 if ($existingItem) {
                     // If the product exists, increase its quantity
@@ -212,6 +334,7 @@ class ShoppingCartController extends SidebarService
     {
         $cartContents = Cart::getContent();
         $cartCount = $cartContents->count();
+        $shippingMethods = ShippingMethod::where('status', 1)->get();
 
         if ($cartCount === 0) {
             return to_route('shopping.cart');
@@ -238,6 +361,7 @@ class ShoppingCartController extends SidebarService
             'shippingAddress' => $shippingAddress,
             'billingAddress' => $billingAddress,
             'couponAmount' => Session::get('coupon_amount'),
+            'shippingMethods' => $shippingMethods
         ]);
     }
 
@@ -291,7 +415,13 @@ class ShoppingCartController extends SidebarService
                     'regular_price' => $regularPrice,
                     'sale_price' => $salePrice,
                     'product_image' => $product_image,
+                    'category'=> $product->firstCategory()->first()?->name,
                     'product_id' => $productId,
+                    'weight' => $product->weight,
+                    'length' => $product->length,
+                    'width' => $product->width,
+                    'height' => $product->height,
+                    'sku' => $product->sku
                 ],
             ];
 
@@ -321,4 +451,21 @@ class ShoppingCartController extends SidebarService
 
         return redirect()->route('shopping.cart')->with('success', 'Bundle added to cart successfully.');
     }
+
+    public function getShippingRates(ShippingRateRequest $request){
+        $data = $this->shippingService->getShippingRates($request->validated());
+        $formattedRates = [];
+        foreach ($data['rates'] ?? [] as $rate) {
+            $formattedRates[] = [
+                'courier_service_id' => $rate['courier_service']['id'],
+                'courier_name' => $rate['courier_service']['name'],
+                'delivery_time' => "{$rate['min_delivery_time']} - {$rate['max_delivery_time']} days",
+                'currency' => $rate['currency'],
+                'total_charge' => number_format($rate['total_charge'], 2),
+            ];
+        }
+        $html = view('Web.Layout.partials.checkout.shipping-rates', compact('formattedRates'))->render();
+        return response()->json(['ShippingData' => $data, 'success' => true, 'html' => $html]);
+    } 
+
 }

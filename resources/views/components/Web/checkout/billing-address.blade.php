@@ -33,7 +33,7 @@
             <select class="select2 form-control @error('billing.country') is-invalid @enderror" name="billing[country]" id="country" required style="width: 100%;">
                 <option value="">Please choose your country/region</option>
                 @foreach($countries as $country)
-                    <option value="{{ $country->name }}"
+                    <option value="{{ $country->iso2 }}"
                         {{ (old('billing.country', $billingAddress->country ?? '') === $country->name) ? 'selected' : '' }}>
                         {{ $country->name }}
                     </option>

@@ -26,10 +26,11 @@ class OrderService
 
     protected $productService;
     protected $couponService;
-    public  function __construct(ProductCartService $productService, CouponService $couponService){
+    protected $shippingService;
+    public  function __construct(ProductCartService $productService, CouponService $couponService, ShippingService $shippingService){
         $this->productService = $productService;
         $this->couponService = $couponService;
-
+        $this->shippingService = $shippingService;
     }
 
     public function placeOrder($request)
@@ -64,12 +65,19 @@ class OrderService
         }
 
 
+
         // Order basics
         $orderNumber = generateOrderNumber();
         $transactionId = 'TRX-' . uniqid();
         $couponId = Session::get('coupon_id', null);
         $discount = Session::get('coupon_amount', 0);
         $shippingCost = 0;
+
+        $shippingData = $this->shippingService->getShippingRates($request);
+        $selectedCourierId = $request->input('courier_service_id');
+
+        $shippingCost = $this->shippingService->generateShippingCharge($shippingData['rates'] ?? [], $selectedCourierId);
+
         $totalAmount = max($subtotal + $shippingCost - $discount, 0);
         $newsLetter = $request->newsletter_subscription;
         if ($newsLetter) {
@@ -105,6 +113,12 @@ class OrderService
         ];
 
         $order = $this->orderGenerate($orderData);
+
+        // $admin = Admin::first();
+
+        // if ($admin) {
+        //     $admin->notify(new NewOrderPlaced($order));
+        // }
 
         if (!empty($couponId) && ($coupon = Cupon::find($couponId))) {
             $coupon->increment('used');

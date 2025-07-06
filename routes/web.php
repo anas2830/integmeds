@@ -64,6 +64,7 @@ Route::controller(ShoppingCartController::class)->group(function () {
     Route::get('/checkout', 'checkout')->name('checkout');
     Route::post('/apply/coupon', 'applyCoupon')->name('coupon.apply');
     Route::get('/remove/coupon/{coupon_code}', 'removeCoupon')->name('coupon.remove');
+    Route::post('/shipping/rates', 'getShippingRates')->name('shipping.rates');
 });
 
 Route::controller(OrderController::class)->group(function () {

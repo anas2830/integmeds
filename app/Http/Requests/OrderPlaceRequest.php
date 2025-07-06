@@ -26,6 +26,7 @@ class OrderPlaceRequest extends FormRequest
             'newsletter_subscription' => ['nullable', 'boolean'],
             'agree_terms'  => ['accepted'],
             'paymentMethod' => ['required', 'string'],
+            'courier_service_id' => ['nullable', 'string'],
 
             // Billing rules (always required)
             'billing.first_name'      => ['required', 'string', 'max:100'],

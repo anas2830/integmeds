@@ -21,7 +21,7 @@
                                     <x-Web.checkout.billing-address :billingAddress="$billingAddress" :countries="$countries" />
                                     <div class="different-address-checkbox mb-4">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="ship_to_different_address" value="1" id="ship-address"
+                                            <input class="form-check-input" type="checkbox" name="ship_to_different_address" value="1" id="ship-address" class="ship_to_different_address"
                                                 {{ old('ship_to_different_address') ? 'checked' : '' }}>
                                             <label class="form-check-label" for="ship-address">
                                                 Ship to a different address?
@@ -40,11 +40,15 @@
                                     <div class="checkout-oder-sub-total-wrap">
                                         <div class="checkout-oder-sub-total">
                                             <p>Total ({{$cartCount}}items)</p>
-                                            <p>$<span class="cart-subtotal">{{$cartSubtotal}}</span></p>
+                                            <p>$<span class="cart-subtotal" id="checkout-cart-subtotal">{{$cartSubtotal}}</span></p>
                                         </div>
                                         <div class="checkout-oder-sub-total">
                                             <p>Discount</p>
                                             <p>-$<span class="coupon-amount">{{$couponAmount ?? 0}}</span></p>
+                                        </div>
+                                        <div class="checkout-oder-sub-total">
+                                            <p>Shipping Cost</p>
+                                            <p>+$<span class="shipping-cost">0</span></p>
                                         </div>
                                     </div>
                                     <div class="checkout-oder-sub-total-wrap">
@@ -61,8 +65,38 @@
                                         @endif
                                     </div>
                                     <div class="sidebar-payment-method">
+
+                                        
+                                        @if ($shippingMethods->isNotEmpty())
+                                            <div class="payment-option p-3 shipping-method">
+                                                <p class="text-start mb-3">Shipping Option</p>
+                                                <div class="shipping-option">
+                                                    <div class="form-group">
+                                                        <select name="shipping_method_id" class="form-select shipping-method-select" id="shipping_method_select">
+                                                            <option value="">Select Shipping</option>
+                                                            @foreach ($shippingMethods as $method)
+                                                                <option value="{{ $method->id }}">
+                                                                    {{ $method->name }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                        <div class="invalid-feedback shipping-method-error">
+                                                            @if(session()->has('courier_service_id'))
+                                                                {{ session()->get('courier_service_id') }}
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                    <div id="shipping-method-loading" class="text-center py-3" style="display: none;">
+                                                        <i class="fas fa-spinner fa-spin fa-2x text-success"></i>
+                                                        <p class="mt-2">Loading shipping methods...</p>
+                                                    </div>
+                                                    <div id="shipping-method-container"></div>
+                                                </div>
+                                            </div>
+                                        @endif
                                         <!-- Payment Option -->
-                                        <div class="payment-option">
+                                        <div class="payment-option p-3">
+                                            <p class="text-start mb-3">Payment Option</p>
                                             <div class="form-check mb-2">
                                                 <div class="check-wrap">
                                                     <input class="form-check-input" type="radio"
@@ -73,6 +107,9 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                    
+                                        
                                         <!-- Email Offer -->
                                         <!-- Email Opt-In -->
                                         <div class="form-check mb-2">
@@ -123,7 +160,78 @@ $(document).ready(function () {
     $('#ship-address').on('change', togglePaymentDetails);
 
     togglePaymentDetails();
+
+
+    $('#shipping_method_select').on('change', function() {
+        $('.shipping-method-error').html('').hide();
+
+        var shippingMethodId = $(this).val();
+
+        var postData = {
+            shipping_method_id: shippingMethodId,
+            billing: {
+                country: $('select[name="billing[country]"]').val(),
+                postal_code: $('input[name="billing[postal_code]"]').val(),
+                city: $('input[name="billing[city]"]').val(),
+                state: $('input[name="billing[state]"]').val(),
+            },
+            shipping: {
+                country: $('select[name="shipping[country]"]').val(),
+                postal_code: $('input[name="shipping[postal_code]"]').val(),
+                city: $('input[name="shipping[city]"]').val(),
+                state: $('input[name="shipping[state]"]').val(),
+            },
+            ship_to_different_address: $('.ship_to_different_address').is(':checked') ? 1 : 0,
+            _token: '{{ csrf_token() }}',
+        };
+
+        $.ajax({
+            url: "{{ route('shipping.rates') }}",
+            method: 'POST',
+            data: postData,
+            dataType: 'json',
+            beforeSend: function () {
+                // Show loader, hide container & errors
+                $('#shipping-method-loading').show();
+                $('#shipping-method-container').hide();
+                $('.shipping-method-error').hide().html('');
+            },
+            success: function (response) {
+                if (response.success) {
+                    $('#shipping-method-container').html(response.html).show();
+                }
+                $('#shipping-method-loading').hide();
+            },
+            error: function (xhr) {
+                $('#shipping-method-loading').hide();
+                $('#shipping-method-container').show(); // optionally leave empty or show fallback
+
+                if (xhr.status === 422) {
+                    var errors = xhr.responseJSON.errors;
+                    var messages = [];
+                    $.each(errors, function(field, msgs) {
+                        messages = messages.concat(msgs);
+                    });
+                    $('.shipping-method-error').html(messages.join('<br>')).show();
+                } else {
+                    $('.shipping-method-error').text('Something went wrong, please try again.').show();
+                }
+            }
+        });
+
+    });
+
+    $(document).on('click', '.shipping-radio', function () {
+        const shippingCost = parseFloat($(this).data('charge')) || 0;
+        const subtotal = parseFloat($('#checkout-cart-subtotal').text()) || 0;
+        const coupon = parseFloat($('.coupon-amount').text()) || 0;
+        const total = parseFloat((subtotal + shippingCost - coupon).toFixed(2));
+        $('.shipping-cost').text(shippingCost.toFixed(2));
+        $('.total-price').text(total.toFixed(2));
+    });
+
 });
+
 
 </script>
 @endpush

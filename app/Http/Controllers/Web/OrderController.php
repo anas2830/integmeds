@@ -4,12 +4,13 @@ namespace App\Http\Controllers\Web;
 
 use Cart;
 use App\Models\Order;
-use App\Jobs\SendOrderInvoice;
 use Illuminate\Http\Request;
+use App\Jobs\SendOrderInvoice;
 use App\Services\Web\OrderService;
 use App\Services\Web\CouponService;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Services\Web\ShippingService;
 use Illuminate\Support\Facades\Session;
 use App\Http\Requests\OrderPlaceRequest;
 use App\Library\SslCommerz\SslCommerzNotification;
@@ -18,14 +19,26 @@ class OrderController extends Controller
 {
     protected $orderService;
     protected $couponService;
+    protected $shippingService;
 
-    public function __construct(OrderService $orderService, CouponService $couponService)
+
+    public function __construct(OrderService $orderService, CouponService $couponService, ShippingService $shippingService)
     {
         $this->orderService = $orderService;
         $this->couponService = $couponService;
+        $this->shippingService = $shippingService;
     }
     public  function placeOrder(OrderPlaceRequest $request)
     {
+        $availableMethods = $this->shippingService->getAvailableMethods();
+
+        if ($availableMethods->isNotEmpty()) {
+            if (empty($request->courier_service_id)) {
+                return back()->withErrors([
+                    'courier_service_id' => 'Please select a shipping method before proceeding.',
+                ])->withInput();
+            }
+        }
         $this->orderService->placeOrder($request);
     }
 
