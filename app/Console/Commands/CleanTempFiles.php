@@ -8,23 +8,10 @@ use Carbon\Carbon;
 
 class CleanTempFiles extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'app:clean-temp-files';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Command description';
+    protected $signature = 'temp:clean';
+    protected $description = 'Clean temp files';
 
-    /**
-     * Execute the console command.
-     */
     public function handle()
     {
         $directory = storage_path('app/public/temp'); // Adjust the path as necessary
