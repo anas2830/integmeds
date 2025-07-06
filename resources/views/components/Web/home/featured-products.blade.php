@@ -1,3 +1,4 @@
+@if($featuredProducts->isNotEmpty())
 <section class="special-products-area">
     <div class="row">
         @foreach($featuredProducts as $featuredProduct)
@@ -22,3 +23,4 @@
         @endforeach
     </div>
 </section>
+@endif

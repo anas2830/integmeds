@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('home_page_featured_products', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('product_id')->nullable();
+            $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
             $table->string('btn_text')->nullable();
             $table->string('btn_url')->nullable();
             $table->timestamps();

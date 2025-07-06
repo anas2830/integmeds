@@ -4,6 +4,7 @@
     'products' => [],
 ])
 
+@if($products->isNotEmpty())
 <section class="{{ $class }}">
     <div class="section-heading">
         <h2>{{ $title }}</h2>
@@ -18,3 +19,4 @@
         </div>
     </div>
 </section>
+@endif

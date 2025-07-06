@@ -23,7 +23,7 @@ Route::get('/', [HomePageController::class, 'index'])->name('/');
 Route::get('/category/{slug?}', [WebController::class, 'category'])->name('category');
 Route::get('/bundle', [WebController::class, 'bundle'])->name('bundle');
 Route::get('/bundle-details/{id}', [WebController::class, 'bundleDetails'])->name('bundle-details');
-Route::get('/product-details/{slug}', [WebController::class, 'productDetails'])->name('product-details');
+Route::get('/product-details/{slug?}', [WebController::class, 'productDetails'])->name('product-details');
 Route::get('/about-us', [WebController::class, 'aboutUs'])->name('about-us');
 Route::get('/search', [WebController::class, 'search'])->name('search');
 Route::get('/search-suggestions', [WebController::class, 'searchSuggestions'])->name('search-suggestions');
