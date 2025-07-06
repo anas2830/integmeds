@@ -138,46 +138,55 @@
           </div>
 
           <div class="dropdown d-inline-block">
-              <button type="button" class="btn header-item noti-icon waves-effect" id="page-header-notifications-dropdown"
-                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="bx bx-bell bx-tada"></i>
-                  <span class="badge badge-danger badge-pill">{{pendingOrderCount()}}</span>
-              </button>
-              <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right p-0"
-                  aria-labelledby="page-header-notifications-dropdown">
-                  <div class="p-3">
-                      <div class="row align-items-center">
-                          <div class="col">
-                              <h6 class="m-0"> Order List </h6>
-                          </div>
-                          <div class="col-auto">
-                              <a href="{{ route('order.list') }}" class="small"> View All</a>
-                          </div>
-                      </div>
-                  </div>
-                  <div data-simplebar style="max-height: 230px;">
-                      <a href="#" class="text-reset notification-item">
-                          <div class="media">
-                              <div class="avatar-xs mr-3">
-                                  <span class="avatar-title bg-primary rounded-circle font-size-16">
-                                      <i class="bx bx-cart"></i>
-                                  </span>
-                              </div>
-                              <div class="media-body">
-                                  <h6 class="mt-0 mb-1">New order is placed</h6>
-                                  <div class="font-size-12 text-muted">
-                                    <p class="mb-1">Please check the order list</p>
+                <button type="button" class="btn header-item noti-icon waves-effect" id="page-header-notifications-dropdown"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="bx bx-bell bx-tada"></i>
+                    <span class="badge badge-danger badge-pill">{{adminUser()->unreadNotifications()->count()}}</span>
+                </button>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right p-0"
+                aria-labelledby="page-header-notifications-dropdown">
+                    <div class="p-3">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <h6 class="m-0"> Notifications </h6>
+                            </div>
+                            <div class="col-auto">
+                                <a href="{{ route('order.list') }}" class="small"> View All</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div data-simplebar style="max-height: 230px;">
+                        @forelse(adminUser()->unreadNotifications as $notification)
+                            <a href="{{ route('admin.notifications.read', $notification->id) }}" class="text-reset notification-item">
+                                <div class="media">
+                                    <div class="avatar-xs mr-3">
+                                        <span class="avatar-title bg-primary rounded-circle font-size-16">
+                                            <i class="bx bx-cart"></i>
+                                        </span>
+                                    </div>
+                                    <div class="media-body">
+                                        <h6 class="mt-0 mb-1">{{ $notification->data['title'] ?? 'Notification' }}</h6>
+                                        <div class="font-size-12 text-muted">
+                                            <p class="mb-1">{{ $notification->data['message'] ?? '' }}</p>
+                                            <p class="mb-0">
+                                                <i class="mdi mdi-clock-outline"></i>
+                                                {{ $notification->created_at->diffForHumans() }}
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
-                              </div>
-                          </div>
-                      </a>
-                  </div>
-                  <div class="p-2 border-top">
-                      <a class="btn btn-sm btn-link font-size-14 btn-block text-center" href="{{ route('order.list') }}">
-                          <i class="mdi mdi-arrow-right-circle mr-1"></i> View More..
-                      </a>
-                  </div>
-              </div>
+                            </a>
+                        @empty
+                            <div class="text-center py-3 text-muted">No new notifications</div>
+                        @endforelse
+
+                    </div>
+                    <div class="p-2 border-top">
+                        <a class="btn btn-sm btn-link font-size-14 btn-block text-center" href="{{ route('order.list') }}">
+                            <i class="mdi mdi-arrow-right-circle mr-1"></i> View More..
+                        </a>
+                    </div>
+                </div>
           </div>
 
           <div class="dropdown d-inline-block">

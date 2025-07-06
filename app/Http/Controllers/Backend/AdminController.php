@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Backend;
 
 
+use App\Models\Admin;
+use App\Models\Order;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Services\AdminCrudService;
 use App\Services\DashboardService;
+use App\Http\Controllers\Controller;
+use App\Notifications\NewOrderPlaced;
 
 
 class AdminController extends Controller
@@ -49,5 +52,22 @@ class AdminController extends Controller
     public function profileUpdate(Request $request)
     {
         return $this->adminCrudService->profileUpdate($request);
+    }
+
+    //admin notifications
+    public function adminNotifications()
+    {
+        return view('Backend.admin.notifications');
+    }
+
+    public function readNotification($id)
+    {
+        $notification = auth('admin')->user()->notifications()->findOrFail($id);
+        $notification->markAsRead();
+        $orderId = $notification->data['order_id'] ?? null;
+        if ($orderId) {
+            return redirect()->route('order.details', $orderId);
+        }
+        return redirect()->back();
     }
 }

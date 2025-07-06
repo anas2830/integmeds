@@ -108,6 +108,10 @@ Route::group(['middleware' => 'auth.admin'], function () {
         Route::get('/order-details/{id}', [OrderController::class, 'show'])->name('order.details');
         Route::patch('/order-update-status/{id}', [OrderController::class, 'updateStatus'])->name('order.updateStatus');
 
+        //admin notifications
+        Route::get('/admin-notifications', [AdminController::class, 'adminNotifications'])->name('admin.notifications');
+        Route::get('/admin-notifications/read/{id}', [AdminController::class, 'readNotification'])->name('admin.notifications.read');
+
          //privacy policy
         Route::get('/privacy-policy-settings', [PageController::class, 'privacyPolicy'])->name('privacy-policy-settings');
         Route::put('/privacy-policy-settings/update', [PageController::class, 'updatePrivacyPolicy'])->name('privacy-policy-settings.update');

@@ -53,3 +53,10 @@ if (!function_exists('pendingOrderCount')) {
         return Order::where('order_status', 'pending')->count();
     }
 }
+
+if (!function_exists('adminUser')) {
+    function adminUser()
+    {
+        return Auth::guard('admin')->user();
+    }
+}
