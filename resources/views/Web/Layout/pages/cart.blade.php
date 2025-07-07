@@ -78,8 +78,8 @@
                                                     </tr>
                                                 @endforeach
                                                 <tr>
-                                                    <td colspan="4" class="text-end automation-btn-delete">
-                                                        <a href="{{ route('shopping.cart.remove.all') }}" class="cart-empty-btn me-2">Empty Cart</a>
+                                                    <td colspan="4" class="text-end">
+                                                        <a href="{{ route('shopping.cart.remove.all') }}" class="cart-empty-btn me-2 automation-btn-delete">Empty Cart</a>
                                                         <button type="submit" class="cart-update-btn">Update Cart</button>
                                                     </td>
                                                 </tr>

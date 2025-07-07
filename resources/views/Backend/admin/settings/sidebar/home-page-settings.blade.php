@@ -48,7 +48,7 @@
                             <h4 class="card-title">Sidebar Banner {{ $id }}</h4>
                             <div class="row mb-3">
                                 <div class="col-sm-6">
-                                    <label class="mb-2">Banner Image</label>
+                                    <label class="mb-2">Banner Image <span class="text-danger">(1056 x 2464)</span></label>
                                     <div class="dropzone"
                                          id="dropzone-banner-{{ $id }}"
                                          data-max-size="2"

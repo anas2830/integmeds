@@ -40,7 +40,7 @@
                         <h4 class="card-title">Home Body Banner 1 (After Product Bundle)</h4>
                         <div class="row mb-3">
                             <div class="col-sm-6">
-                                <p class="mb-3 font-weight-bold">Banner Image</p>
+                                <p class="mb-3 font-weight-bold">Banner Image <span class="text-danger">(1920 x 430)</span></p>
         
                                 <div class="dropzone dz-clickable" id="banner-1" data-max-size="2" data-max-files="1" data-accepted-files=".jpeg,.jpg,.png,.gif,.webp">
         
@@ -49,7 +49,7 @@
                                 <input type="hidden" name="files_to_delete[]" id="fileToDelete1">
                             </div>
                             <div class="col-sm-6">
-                                <p class="mb-3 font-weight-bold">Featured Image</p>
+                                <p class="mb-3 font-weight-bold">Featured Image <span class="text-danger">(672 x 500)</span></p>
         
                                 <div class="dropzone dz-clickable" id="featured-1" data-max-size="2" data-max-files="1" data-accepted-files=".jpeg,.jpg,.png,.gif,.webp">
         
@@ -105,7 +105,7 @@
                         <h4 class="card-title">Home Body Banner 2 (After New Arrival)</h4>
                         <div class="row mb-3">
                             <div class="col-sm-6">
-                                <p class="mb-3 font-weight-bold">Banner Image</p>
+                                <p class="mb-3 font-weight-bold">Banner Image <span class="text-danger">(2000 x 600)</span></p>
         
                                 <div class="dropzone dz-clickable" id="banner-2" data-max-size="2" data-max-files="1" data-accepted-files=".jpeg,.jpg,.png,.gif,.webp">
         

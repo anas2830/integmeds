@@ -36,7 +36,7 @@ class ShippingService
         // Build request payload for shipping API
         $payload = $this->buildPayloadWithParcels($address, $parcels);
 
-        
+
         // Send HTTP POST request to external shipping API
         $rateResponse = Http::withToken($method->token)
         ->withHeaders([
@@ -47,7 +47,6 @@ class ShippingService
 
         $responseData = json_decode($rateResponse->getBody(), true);
                     
-
         if ($rateResponse->failed()) {
             throw ValidationException::withMessages([
                 'shipping_method_id' => 'Could not fetch shipping rates from provider.',

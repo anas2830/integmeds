@@ -21,7 +21,7 @@ class HomePageSettingsService {
             $banner = $banners[$id] ?? null;
 
             $existingFilesArray[$id] = $banner && $banner->image_path ? [[
-                'full_path' => $banner->image_path,
+                'full_path' => url($banner->image_path),
                 'name'      => $banner->file_original_name ,
                 'size'      => $banner->file_size ?? 0,
                 'path'      => $banner->image_path,
@@ -134,7 +134,7 @@ class HomePageSettingsService {
 
             'banner_1_featured_image' => $banner->banner_1_featured_image ? [
                 [
-                    'full_path' => $banner->banner_1_featured_image,
+                    'full_path' => url($banner->banner_1_featured_image),
                     'name'      => $banner->banner_1_featured_original_name,
                     'size'      => $banner->banner_1_featured_size ?? 0,
                     'path'      => $banner->banner_1_featured_image,
@@ -143,7 +143,7 @@ class HomePageSettingsService {
 
             'banner_1_cover_image' => $banner->banner_1_cover_image ? [
                 [
-                    'full_path' => $banner->banner_1_cover_image,
+                    'full_path' => url($banner->banner_1_cover_image),
                     'name'      => $banner->banner_1_cover_original_name,
                     'size'      => $banner->banner_1_cover_size ?? 0,
                     'path'      => $banner->banner_1_cover_image,
@@ -152,7 +152,7 @@ class HomePageSettingsService {
 
             'banner_2_image' => $banner->banner_2_image ? [
                 [
-                    'full_path' => $banner->banner_2_image,
+                    'full_path' => url($banner->banner_2_image),
                     'name'      => $banner->banner_2_image_original_name,
                     'size'      => $banner->banner_2_image_size ?? 0,
                     'path'      => $banner->banner_2_image,

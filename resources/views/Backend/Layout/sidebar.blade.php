@@ -62,7 +62,7 @@
                     </ul>
                 </li>
 
-                <li>
+               <!--  <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class='bx  bx-ruler'></i>
                         <span>Size</span>
@@ -71,7 +71,7 @@
                         <li><a href="{{ route('product-size.index') }}">List</a></li>
                         <li><a href="{{ route('product-size.create') }}">Create</a></li>
                     </ul>
-                </li>
+                </li> -->
 
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">

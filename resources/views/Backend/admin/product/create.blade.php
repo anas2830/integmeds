@@ -223,7 +223,7 @@
                 </div>
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title mb-3">Product Images</h4>
+                        <h4 class="card-title mb-3">Product Images <span class="text-danger">(1000 x 1000)</span></h4>
 
                         <div class="dropzone multiple-upload" data-max-size="2" data-max-files="15" data-accepted-files=".jpeg,.jpg,.png,.gif,.webp">
 

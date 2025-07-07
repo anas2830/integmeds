@@ -155,7 +155,7 @@
                         </div>
                         <div class="card">
                             <div class="card-body">
-                                <p class="mb-3 font-weight-bold">Slider Image</p>
+                                <p class="mb-3 font-weight-bold">Slider Image <span class="text-danger">(1349 x 489)</span></p>
         
                                 <div class="dropzone single-upload dz-clickable" data-max-size="2" data-max-files="15" data-accepted-files=".jpeg,.jpg,.png,.gif,.webp">
                                 <div class="dz-default dz-message needsclick"><div class="mb-3"><i class="display-4 text-muted bx bxs-cloud-upload"></i></div><h4>Drop files here or click to upload.</h4></div></div>
