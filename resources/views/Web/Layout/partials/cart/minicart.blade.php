@@ -24,7 +24,7 @@
                             <div class="col-4">
                                 <div class="product-image-container">
                                     <a href="{{ route('product-details', $item->attributes->slug) }}">
-                                        <img class="img-fluid" src="{{asset($item->attributes->product_image)}}" alt="{{ $item->name }}" title="{{ $item->name }}">
+                                        <img class="img-fluid" src="{{asset($item->attributes?->product_image ?? 'web_assets/images/product-img/default.jpg')}}" alt="{{ $item->name }}" title="{{ $item->name }}">
                                     </a>
                                     <a data-row-id="{{$item->id}}" href="#" class="btn-remove cart-item-remove" title="Remove Product"><span>×</span></a>
                                 </div>

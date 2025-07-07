@@ -55,7 +55,7 @@ class ShoppingCartController extends SidebarService
         if(empty($product)){
             return response()->json(['status' => '404', 'message' => 'Product not found']);
         }
-        $product_image = $product->firstImage->image_url;
+        $product_image = $product->firstImage?->image_url ??  'web_assets/images/product-img/default.jpg';
 
 
         // Check if the product is already in the cart

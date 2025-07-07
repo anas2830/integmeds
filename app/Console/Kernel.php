@@ -12,7 +12,6 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('jobs:process-if-any')->everyMinute();
         $schedule->command('temp:clean')->daily();    
         $schedule->command('logs:clear')->weeklyOn(1, '2:00');
     }
