@@ -1,8 +1,9 @@
 <?php
 
+use Artisan;
 use Illuminate\Support\Str;
-use Mews\Captcha\Facades\Captcha;
 
+use Mews\Captcha\Facades\Captcha;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\WebController;
@@ -136,3 +137,9 @@ Route::post('admin/login', [AdminController::class, 'login']);
 //editor routes
 Route::get('editor/login', [EditorController::class, 'showLoginForm'])->name('editor.login');
 Route::post('editor/login', [EditorController::class, 'login']);
+
+
+Route::get('/cache-clear', function () {
+    Artisan::call('optimize:clear');
+    return 'Cache cleared!';
+});
