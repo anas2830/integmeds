@@ -75,12 +75,12 @@ class HomePageService extends SidebarService
     {
         return Cache::rememberForever('HomePageFeaturedProduct', function() {
             return HomePageFeaturedProduct::with([
-                'product:id,product_name,slug,regular_price,sale_price',
-                'product.firstImage:id,product_id,image_url,'
-            ])
-            ->select('id','btn_text', 'btn_url')
+                'product:id,product_name,slug,regular_price,sale_price,short_description',
+                'product.firstImage:id,product_id,image_url',
+            ])->select('id', 'btn_text', 'btn_url', 'product_id')
             ->limit(3)
             ->get();
+
         });
     }
 

@@ -163,7 +163,7 @@ ul{padding:0;margin:0;}
 
 /* hero-area */
 .hero-area {padding-bottom:30px;}
-.hero-slider.slick-slider { margin-bottom: 0; }
+.hero-slider.slick-slider { margin-bottom: 0 !important; }
 .hero-slider img { width: 100%; aspect-ratio:2.9; object-fit: cover; object-position: top; }
 .hero-slider .priv_arrow { position: absolute; left: 0; top: 50%; transform: translateY(-50%); z-index: 1; cursor: pointer; }
 .hero-slider .next_arrow{ position: absolute; right:0; top: 50%; transform: translateY(-50%); z-index: 1; cursor: pointer; }
