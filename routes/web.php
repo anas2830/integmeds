@@ -1,6 +1,6 @@
 <?php
 
-use Artisan;
+
 use Illuminate\Support\Str;
 
 use Mews\Captcha\Facades\Captcha;
@@ -14,6 +14,7 @@ use App\Http\Controllers\Backend\AdminController;
 use App\Http\Controllers\Backend\EditorController;
 use App\Http\Controllers\Web\NewsletterController;
 use App\Http\Controllers\Web\ShoppingCartController;
+use Illuminate\Support\Facades\Artisan;
 
 require __DIR__ . '/admin.php';
 
