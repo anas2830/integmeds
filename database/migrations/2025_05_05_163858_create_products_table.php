@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('video_bn')->nullable(); // Bangla YouTube URL
             $table->string('video_en')->nullable(); // English YouTube URL
             $table->decimal('weight', 8, 2)->nullable();
+            $table->decimal('weight_converted', 8, 2)->nullable();
             $table->enum('weight_unit', ['kg', 'g'])->nullable();
             $table->decimal('length', 8, 2)->nullable();
             $table->decimal('width', 8, 2)->nullable();

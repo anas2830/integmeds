@@ -157,7 +157,7 @@
                         </div>
                         <div class="card">
                             <div class="card-body">
-                                <p class="mb-3 font-weight-bold">Bundle icon</p>
+                                <p class="mb-3 font-weight-bold">Bundle icon (Small) <span class="text-danger">(150 x 150)</span></p>
         
                                 <div class="dropzone single-upload dz-clickable" data-max-size="2" data-max-files="15" data-accepted-files=".jpeg,.jpg,.png,.gif,.webp">
         
@@ -172,7 +172,7 @@
 
                         <div class="card">
                             <div class="card-body">
-                                <p class="mb-3 font-weight-bold">Bundle Images</p>
+                                <p class="mb-3 font-weight-bold">Bundle Images (Big) <span class="text-danger">(822 x 600)</span></p>
         
                                 <div class="dropzone multiple-upload dz-clickable" data-max-size="2" data-max-files="15" data-accepted-files=".jpeg,.jpg,.png,.gif,.webp">
         

@@ -105,7 +105,7 @@
                         <h4 class="card-title">Home Body Banner 2 (After New Arrival)</h4>
                         <div class="row mb-3">
                             <div class="col-sm-6">
-                                <p class="mb-3 font-weight-bold">Banner Image <span class="text-danger">(2000 x 600)</span></p>
+                                <p class="mb-3 font-weight-bold">Banner Image <span class="text-danger">(1620 x 600)</span></p>
         
                                 <div class="dropzone dz-clickable" id="banner-2" data-max-size="2" data-max-files="1" data-accepted-files=".jpeg,.jpg,.png,.gif,.webp">
         

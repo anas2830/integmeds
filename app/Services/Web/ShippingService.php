@@ -111,9 +111,11 @@ class ShippingService
     {
         return [
             'origin_address' => [
-                'country_alpha2' => 'SG',
-                'postal_code' => '123456',
-                'city' => 'Singapore',
+                "address_line_1"=> "12727 Featherwood Dr #104",
+                'country_alpha2' => 'US',
+                'postal_code' => '77034',
+                'city' => 'Houston',
+                'state' => 'TX'
             ],
             'destination_address' => [
                 'country_alpha2' => $address['country'],

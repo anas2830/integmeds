@@ -80,7 +80,7 @@ class ShoppingCartController extends SidebarService
                 $data['attributes']['product_image'] = $product_image;
                 $data['attributes']['product_id'] = $product->id;
                 $data['attributes']['category'] = $product->firstCategory()->first()?->name;
-                $data['attributes']['weight'] = $product->weight;
+                $data['attributes']['weight'] = $product->weight_converted;
                 $data['attributes']['length'] = $product->length;
                 $data['attributes']['width'] = $product->width;
                 $data['attributes']['height'] = $product->height;
@@ -302,7 +302,7 @@ class ShoppingCartController extends SidebarService
                     'product_image' => $product_image,
                     'category'=> $product->firstCategory()->first()?->name,
                     'product_id' => $productId,
-                    'weight' => $product->weight,
+                    'weight' => $product->weight_converted,
                     'length' => $product->length,
                     'width' => $product->width,
                     'height' => $product->height,
