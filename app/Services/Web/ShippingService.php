@@ -36,7 +36,7 @@ class ShippingService
         // Build request payload for shipping API
         $payload = $this->buildPayloadWithParcels($address, $parcels);
 
-
+        
         // Send HTTP POST request to external shipping API
         $rateResponse = Http::withToken($method->token)
         ->withHeaders([
@@ -46,6 +46,7 @@ class ShippingService
         ->post($method->api_url, $payload);
 
         $responseData = json_decode($rateResponse->getBody(), true);
+ 
                     
         if ($rateResponse->failed()) {
             throw ValidationException::withMessages([
@@ -81,17 +82,17 @@ class ShippingService
             $weight = max((float) ($attr->weight ?? 0.1), 0.1); // fallback to 0.1kg
 
             $items[] = [
-                'quantity' => $quantity,
-                'category' => $attr->category ?? 'general',
-                'declared_currency' => 'USD',
-                'declared_customs_value' => 100,
-                'dimensions' => [
+                "quantity" => $quantity,
+                "category" => "mobiles",
+                "declared_currency" => "USD",
+                "declared_customs_value" => 100,
+                "dimensions" => [
                     'length' => (float) ($attr->length ?? 1),
                     'width'  => (float) ($attr->width ?? 1),
                     'height' => (float) ($attr->height ?? 1),
                 ],
-                'actual_weight' => $weight,
-                'hs_code' => $attr->hs_code ?? '85171200', // ✅ REQUIRED field
+                "actual_weight" => $weight,
+                "hs_code" => $attr->hs_code ?? '85171200'
             ];
 
             $totalWeight += $weight * $quantity;
@@ -100,7 +101,7 @@ class ShippingService
         return [
             [
                 'items' => $items,
-                'total_actual_weight' => round($totalWeight, 2),
+                'total_actual_weight' => round($totalWeight, 2)
             ]
         ];
     }
