@@ -34,8 +34,8 @@
     <link rel="image_src" href="logo-fb.jpg">
     <link rel="canonical" href="">
 
-    <link type="image/x-icon" rel="shortcut icon" href="favicon.ico">
-    <link type="image/x-icon" rel="icon" href="favicon.ico">
+    <link type="image/x-icon" rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
+    <link type="image/x-icon" rel="icon" href="{{ asset('assets/images/favicon.ico') }}">
     @include('Web.Layout.partials.styles')
 
     @stack('css')

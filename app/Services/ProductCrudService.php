@@ -151,7 +151,7 @@ class ProductCrudService
             'discount_price' => $discount['discount_price'],
             'discount_percentage' => $discount['discount_percentage'],
             'weight'        => $validated['weight'],
-            'weight_unit'   => $validated['weight_unit'],
+            'weight_converted' => $this->weightToKgram($validated['weight']),
             'length'        => $validated['length'],
             'width'         => $validated['width'],
             'height'        => $validated['height'],
@@ -165,6 +165,13 @@ class ProductCrudService
 
         return Product::create($data);
     }
+
+    private function weightToKgram($weight)
+    {
+        return $weight > 0 ? round($weight / 1000, 2) : 0;
+    }
+
+
 
     private function storeVideo(Product $product, array $videoIntros)
     {

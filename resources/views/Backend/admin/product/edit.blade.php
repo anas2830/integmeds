@@ -14,7 +14,7 @@
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Ecommerce</a></li>
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Product</a></li>
                         <li class="breadcrumb-item active">Edit Product</li>
                     </ol>
                 </div>
@@ -228,7 +228,7 @@
                 </div>
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title mb-3">Product Images</h4>
+                        <h4 class="card-title mb-3">Product Images <span class="text-danger">(600 x 600)</span></h4>
 
                         <div class="dropzone multiple-upload" data-max-size="2" data-max-files="15" data-accepted-files=".jpeg,.jpg,.png,.gif,.webp">
 
@@ -262,22 +262,9 @@
                         <div class="row">
                             <div class="col-sm-3">
                                 <div class="form-group">
-                                    <label for="weight">Weight <span class="text-danger">*</span></label>
+                                    <label for="weight">Weight (gram) <span class="text-danger">*</span></label>
                                     <input id="weight" name="weight" type="number" step="0.01" class="form-control" placeholder="Enter weight" value="{{ old('weight') ?? $product->weight }}" required>
                                     @error('weight')
-                                        <small class="invalid-feedback">{{ $message }}</small>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label for="weight_unit">Weight Unit <span class="text-danger">*</span></label>
-                                    <select id="weight_unit" name="weight_unit" class="form-control" required>
-                                        <option value="">Select unit</option>
-                                        <option value="kg" {{ (old('weight_unit') ?? $product->weight_unit) == 'kg' ? 'selected' : '' }}>kg</option>
-                                        <option value="g" {{ (old('weight_unit') ?? $product->weight_unit) == 'g' ? 'selected' : '' }}>g</option>
-                                    </select>
-                                    @error('weight_unit')
                                         <small class="invalid-feedback">{{ $message }}</small>
                                     @enderror
                                 </div>
@@ -285,7 +272,7 @@
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="length">Length (cm) <span class="text-danger">*</span></label>
-                                    <input id="length" name="length" type="number" step="0.01" class="form-control" placeholder="Length" value="{{ old('length') ?? $product->length }}" required>
+                                    <input id="length" name="length" type="number" max="10" step="0.01" class="form-control" placeholder="Length" value="{{ old('length') ?? $product->length }}" required>
                                     @error('length')
                                         <small class="invalid-feedback">{{ $message }}</small>
                                     @enderror
@@ -294,7 +281,7 @@
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="width">Width (cm) <span class="text-danger">*</span></label>
-                                    <input id="width" name="width" type="number" step="0.01" class="form-control" placeholder="Width" value="{{ old('width') ?? $product->width }}" required>
+                                    <input id="width" name="width" type="number" step="0.01" max="10" class="form-control" placeholder="Width" value="{{ old('width') ?? $product->width }}" required>
                                     @error('width')
                                         <small class="invalid-feedback">{{ $message }}</small>
                                     @enderror
@@ -303,7 +290,7 @@
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="height">Height (cm) <span class="text-danger">*</span></label>
-                                    <input id="height" name="height" type="number" step="0.01" class="form-control" placeholder="Height" value="{{ old('height') ?? $product->height }}" required>
+                                    <input id="height" name="height" type="number" step="0.01" max="5" class="form-control" placeholder="Height" value="{{ old('height') ?? $product->height }}" required>
                                     @error('height')
                                         <small class="invalid-feedback">{{ $message }}</small>
                                     @enderror

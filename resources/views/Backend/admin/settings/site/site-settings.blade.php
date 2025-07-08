@@ -102,15 +102,6 @@
 
                         <!-- Currency, Minimum Order -->
                         <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label>Currency</label>
-                                    <input name="currency" type="text" class="form-control"
-                                        value="{{ old('currency', $siteSettings->currency) }}"
-                                        placeholder="e.g. USD, EUR" maxlength="20">
-                                    @error('currency') <small class="text-danger d-block">{{ $message }}</small> @enderror
-                                </div>
-                            </div>
 
                             <div class="col-sm-6">
                                 <div class="form-group">

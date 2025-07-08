@@ -78,7 +78,12 @@
                   </a>
               </div>
           </div> --}}
-
+        <div class="">
+            <a class="btn btn-success mt-3 mb-3" href="{{ route('/') }}">
+                <i class='bx  bx-globe'></i> 
+                <span>Go to Website</span>
+            </a>
+        </div>
           <div class="dropdown d-none d-lg-inline-block ml-1">
               <button type="button" class="btn header-item noti-icon waves-effect"
                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -88,44 +93,23 @@
                   <div class="px-lg-2">
                       <div class="row no-gutters">
                           <div class="col">
-                              <a class="dropdown-icon-item" href="#">
-                                  <img src="{{ asset('assets/images/brands/github.png') }}" alt="Github">
-                                  <span>GitHub</span>
-                              </a>
-                          </div>
-                          <div class="col">
-                              <a class="dropdown-icon-item" href="#">
-                                  <img src="{{ asset('assets/images/brands/bitbucket.png') }}" alt="bitbucket">
-                                  <span>Bitbucket</span>
-                              </a>
-                          </div>
-                          <div class="col">
-                              <a class="dropdown-icon-item" href="#">
-                                  <img src="{{ asset('assets/images/brands/dribbble.png') }}" alt="dribbble">
-                                  <span>Dribbble</span>
-                              </a>
-                          </div>
-                      </div>
-
-                      <div class="row no-gutters">
-                          <div class="col">
-                              <a class="dropdown-icon-item" href="#">
+                              <a class="dropdown-icon-item" href="{{ route('order.list') }}">
                                   <img src="{{ asset('assets/images/brands/dropbox.png') }}" alt="dropbox">
-                                  <span>Dropbox</span>
+                                  <span>Orders</span>
                               </a>
                           </div>
                           <div class="col">
-                              <a class="dropdown-icon-item" href="#">
-                                  <img src="{{ asset('assets/images/brands/mail_chimp.png') }}" alt="mail_chimp">
-                                  <span>Mail Chimp</span>
-                              </a>
-                          </div>
-                          <div class="col">
-                              <a class="dropdown-icon-item" href="#">
+                              <a class="dropdown-icon-item" href="{{ route('product-bundle.index') }}">
                                   <img src="{{ asset('assets/images/brands/slack.png') }}" alt="slack">
-                                  <span>Slack</span>
+                                  <span>Bundle</span>
                               </a>
                           </div>
+                          <div class="col">
+                            <a class="dropdown-icon-item" href="{{ route('product.index') }}">
+                                <img src="{{ asset('assets/images/brands/dribbble.png') }}" alt="dribbble">
+                                <span>Products</span>
+                            </a>
+                        </div>
                       </div>
                   </div>
               </div>
@@ -196,14 +180,14 @@
                         @if(isset(Auth::guard('admin')->user()->file_name) && file_exists(Auth::guard('admin')->user()->file_name))
                             <img class="rounded-circle header-profile-user" src="{{ asset(Auth::guard('admin')->user()->file_name) }}" alt="Header Avatar">
                         @else 
-                            <img class="rounded-circle header-profile-user" src="{{ asset('assets/images/users/avatar-2.jpg') }}" alt="Header Avatar">
+                            <img class="rounded-circle header-profile-user" src="{{ asset('web_assets/images/bg/profile-photo.png') }}" alt="Header Avatar">
                         @endif
                         <span class="d-none d-xl-inline-block ml-1">{{ Auth::guard('admin')->user()->name }}</span>
                     @elseif(Auth::guard('editor')->check())
                         @if(isset(Auth::guard('editor')->user()->file_name) && file_exists(Auth::guard('editor')->user()->file_name))
                          <img class="rounded-circle header-profile-user" src="{{ asset(Auth::guard('editor')->user()->file_name) }}" alt="Header Avatar">
                         @else 
-                            <img class="rounded-circle header-profile-user" src="{{ asset('assets/images/users/avatar-1.jpg') }}" alt="Header Avatar">
+                            <img class="rounded-circle header-profile-user" src="{{ asset('web_assets/images/bg/profile-photo.png') }}" alt="Header Avatar">
                         @endif
                         <span class="d-none d-xl-inline-block ml-1">{{ Auth::guard('editor')->user()->name }}</span>
                     @endif

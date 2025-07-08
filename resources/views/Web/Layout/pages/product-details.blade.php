@@ -176,24 +176,26 @@
                 </section>
             </div>
         </div>
-        <section class="category-page-products mt-5">
-            <div class="category-title-area">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="section-heading">
-                            <h2>Related products</h2>
+        @if($relatedProducts->isNotEmpty())
+            <section class="category-page-products mt-5">
+                <div class="category-title-area">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="section-heading">
+                                <h2>Related products</h2>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row gx-3">
-                @foreach ($relatedProducts as $relProduct)     
-                    <div class="col-md-3 col-6">
-                        <x-Web.common.product-card :product="$relProduct" />
-                    </div> 
-                @endforeach
-            </div>
-        </section>
+                <div class="row gx-3">
+                    @foreach ($relatedProducts as $relProduct)     
+                        <div class="col-md-3 col-6">
+                            <x-Web.common.product-card :product="$relProduct" />
+                        </div> 
+                    @endforeach
+                </div>
+            </section>
+        @endif
     </div>
 </div>
 @endsection
