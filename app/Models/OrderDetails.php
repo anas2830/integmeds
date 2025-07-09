@@ -4,10 +4,12 @@ namespace App\Models;
 
 use App\Models\Order;
 use App\Models\Product;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model; 
+use App\Traits\RemoveModelCache;
 
 class OrderDetails extends Model
 {
+    use RemoveModelCache;
     protected $guarded = [];
     public function product()
     {

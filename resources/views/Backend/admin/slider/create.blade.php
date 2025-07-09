@@ -41,7 +41,7 @@
                         @csrf
                         <div class="card">
                             <div class="card-body">
-                                <div class="row">
+                                {{-- <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="title">
@@ -116,9 +116,9 @@
                                             @enderror
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="row">
-                                    <div class="col-sm-6">
+                                    {{-- <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="button_url">
                                                 Button URL
@@ -135,7 +135,7 @@
                                                 <small class="invalid-feedback">{{ $message }}</small>
                                             @enderror
                                         </div>
-                                    </div>
+                                    </div> --}}
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <div class="input-group input-group-dynamic mt-4">
