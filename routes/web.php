@@ -77,6 +77,7 @@ Route::controller(OrderController::class)->group(function () {
     Route::post('/fail', 'fail');
     Route::post('/cancel', 'cancel');
     Route::post('/ipn', 'ipn');
+    Route::post('/update/shipping/cost', 'updateShippingCost')->name('update.shipping.cost');
 });
 
 
