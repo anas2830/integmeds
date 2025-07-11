@@ -1,6 +1,10 @@
 @extends('Web.Layout.app')
 
-@section('site-title', 'Category')
+@section('site-title', 'Contact Us')
+
+@push('dynamic_meta')
+    @include('Web.Layout.partials.common-meta')
+@endpush
 
 @section('content')
 <section>

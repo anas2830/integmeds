@@ -1,6 +1,10 @@
 @extends('Web.Layout.app')
 
-@section('site-title', 'Category')
+@section('site-title', "Search :: $search")
+
+@push('dynamic_meta')
+    @include('Web.Layout.partials.common-meta')
+@endpush
 
 @push('css')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.8.1/nouislider.min.css" />

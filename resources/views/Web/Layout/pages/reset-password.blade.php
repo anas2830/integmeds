@@ -1,6 +1,6 @@
 @extends('Web.Layout.app')
 
-@section('site-title', 'Privacy Policy')
+@section('site-title', 'Reset Password')
 
 @section('content')
 

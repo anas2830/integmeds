@@ -1,14 +1,37 @@
 @extends('Web.Layout.app')
 
-@section('site-title', 'Product Details')
+@section('site-title', $product->product_name)
+
+@push('dynamic_meta')
+<meta name="description" content="{{ $product->meta_description ?? Str::limit(strip_tags($product->description), 300, '') }}">
+<meta name="keywords" content="{{ $product->meta_keywords }}">
+<meta property="og:site_name" content="{{ config('app.name') }}">
+<meta property="og:title" content="{{ $product->product_name }}">
+<meta property="og:description" content="{{ $product->meta_description ?? Str::limit(strip_tags($product->description), 300, '') }}">
+<meta property="og:url" content="{{ route('product-details', $product->slug) }}">
+<meta property="og:type" content="article">
+
+<meta property="og:image" content="{{ !empty($product->images) ? asset($product->images->first()->image_url) : asset('web_assets/images/logo/footer-logo.png') }}">
+<meta property="og:locale" content="en_US">
+
+<meta name="twitter:domain" content="{{ url('/') }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="integmeds.com">
+<meta name="twitter:title" content="{{ $product->product_name }}">
+<meta name="twitter:description" content="{{ $product->meta_description ?? Str::limit(strip_tags($product->description), 300, '') }}">
+<meta name="twitter:url" content="{{ route('product-details', $product->slug) }}">
+<meta name="twitter:image" content="{{ !empty($product->product_gallery) ? asset('media/uploads/products/' . $product->product_gallery->first()->img_path) : asset('web_assets/images/logo/footer-logo.png') }}">
+<meta name="twitter:site" content="@integmeds">
+<meta name="twitter:creator" content="@integmeds">
+<link rel="image_src" href="{{ !empty($product->images) ? asset($product->images->first()->image_url) : asset('web_assets/images/logo/footer-logo.png') }}">
+<link rel="canonical" href="{{ route('product-details', $product->slug) }}">
+@endpush
 
 @push('css')
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" />
 <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=684f0ca79b95a90019d70ad0&product=inline-share-buttons&source=platform" async="async"></script>
 @endpush
-
-
 
 @section('content')
 <div class="category-and-sidebar">

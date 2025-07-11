@@ -30,6 +30,7 @@ class WebController extends SidebarService
 
     public function category($slug = null)
     {
+        $category = null;
         $minPrice = request('min_price', 0);
         $maxPrice = request('max_price', 10000);
         $sort = request('sort');
@@ -72,7 +73,7 @@ class WebController extends SidebarService
             return ProductTag::where('status', 1)->get(['id', 'name', 'slug']);
         });
 
-        return view('Web.Layout.pages.category', compact('categoryProducts', 'productBundles', 'specialOffers', 'categories', 'tags'));
+        return view('Web.Layout.pages.category', compact('categoryProducts', 'productBundles', 'specialOffers', 'categories', 'tags', 'category'));
     }
 
 

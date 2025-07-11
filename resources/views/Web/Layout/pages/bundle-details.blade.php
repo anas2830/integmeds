@@ -1,6 +1,31 @@
 @extends('Web.Layout.app')
 
-@section('site-title', 'Bundle Details')
+@section('site-title', $bundle->name)
+
+@push('dynamic_meta')
+<meta name="description" content="{{ Str::limit(strip_tags($bundle->description), 300, '') }}">
+<meta name="keywords" content="Integrative Medicine , American Number #1, Supplement Brand">
+<meta property="og:site_name" content="{{ config('app.name') }}">
+<meta property="og:title" content="{{ $bundle->name }}">
+<meta property="og:description" content="{{ Str::limit(strip_tags($bundle->description), 300, '') }}">
+<meta property="og:url" content="{{ route('product-details', $bundle->id) }}">
+<meta property="og:type" content="article">
+
+<meta property="og:image" content="{{ !empty($bundle->bundleImages) ? asset($bundle->bundleImages->first()->image_url) : asset('web_assets/images/logo/footer-logo.png') }}">
+<meta property="og:locale" content="en_US">
+
+<meta name="twitter:domain" content="{{ url('/') }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="integmeds.com">
+<meta name="twitter:title" content="{{ $bundle->name }}">
+<meta name="twitter:description" content="{{ Str::limit(strip_tags($bundle->description), 300, '') }}">
+<meta name="twitter:url" content="{{ route('bundle-details', $bundle->id) }}">
+<meta name="twitter:image" content="{{ !empty($bundle->bundleImages) ? asset($bundle->bundleImages->first()->image_url) : asset('web_assets/images/logo/footer-logo.png') }}">
+<meta name="twitter:site" content="@integmeds">
+<meta name="twitter:creator" content="@integmeds">
+<link rel="image_src" href="{{ !empty($bundle->bundleImages) ? asset($bundle->bundleImages->first()->image_url) : asset('web_assets/images/logo/footer-logo.png') }}">
+<link rel="canonical" href="{{ route('product-details', $bundle->id) }}">
+@endpush
 
 @push('css')
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
