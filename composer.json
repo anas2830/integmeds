@@ -11,7 +11,8 @@
         "laravel/tinker": "^2.10.1",
         "laravel/ui": "^4.6",
         "mews/captcha": "^3.4",
-        "noobtrader/laravelshoppingcart": "*"
+        "noobtrader/laravelshoppingcart": "*",
+        "stripe/stripe-php": "^17.4"
     },
     "repositories": [
         {

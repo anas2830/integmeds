@@ -140,11 +140,5 @@ class ShippingService
 
         return 0;
     }
-
-
-    public function getAvailableMethods()
-    {
-        return ShippingMethod::where('status', 1)->get();
-    }
 }
     

@@ -114,6 +114,23 @@
                                                             style="height: 20px; margin-left: 10px;"> </label>
                                                 </div>
                                             </div>
+
+                                            <div class="form-check mb-2">
+                                                <div class="check-wrap">
+                                                    <input class="form-check-input" type="radio" name="paymentMethod" value="stripe" id="stripe-option">
+                                                    <label class="form-check-label fw-bold" for="stripe-option">
+                                                        Stripe
+                                                        <img src="{{ asset('web_assets/images/bg/stripe.png') }}" alt="Stripe" style="height: 20px; margin-left: 10px;">
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <div id="stripe-card-section" class="mt-3 px-2" style="display: none;">
+                                                <label for="card-element" class="form-label">Card Details</label>
+                                                <div id="card-element" class="form-control" style="padding: 10px;"></div>
+                                                <div id="card-errors" class="text-danger mt-2"></div>
+                                            </div>
+
                                         </div>
 
                                     
@@ -233,6 +250,12 @@ $(document).ready(function () {
                         $('.total-price').text(total.toFixed(2));
 
                         $firstRadio.prop('checked', true);
+
+                        // Set shipping cost in Laravel session
+                        $.post("{{ route('update.shipping.cost') }}", {
+                            shipping_cost: shippingCost.toFixed(2),
+                            _token: '{{ csrf_token() }}'
+                        });
                     }
                 }
                 $('#shipping-method-loading').hide();
@@ -264,10 +287,80 @@ $(document).ready(function () {
         const total = parseFloat((subtotal + shippingCost - coupon).toFixed(2));
         $('.shipping-cost').text(shippingCost.toFixed(2));
         $('.total-price').text(total.toFixed(2));
+
+        // Set shipping cost in Laravel session
+        $.post("{{ route('update.shipping.cost') }}", {
+            shipping_cost: shippingCost.toFixed(2),
+            _token: '{{ csrf_token() }}'
+        });
     });
 });
 
 
 </script>
+
+
+
+ <!--  stripe -->
+ <script src="https://js.stripe.com/v3/"></script>
+ <script>
+ document.addEventListener('DOMContentLoaded', function () {
+     const stripe = Stripe("{{ config('services.stripe.key') }}");
+     const elements = stripe.elements();
+ 
+     const style = {
+         base: {
+             fontSize: '16px',
+             color: '#32325d',
+             '::placeholder': {
+                 color: '#aab7c4',
+             },
+         },
+         invalid: {
+             color: '#fa755a',
+         }
+     };
+ 
+     const card = elements.create('card', { style: style });
+     card.mount('#card-element');
+ 
+     // Show/hide Stripe section based on payment method
+     const radios = document.querySelectorAll('input[name="paymentMethod"]');
+     const stripeSection = document.getElementById('stripe-card-section');
+ 
+     radios.forEach(radio => {
+         radio.addEventListener('change', function () {
+             stripeSection.style.display = (this.value === 'stripe') ? 'block' : 'none';
+         });
+     });
+ 
+     // Intercept the main form submit
+     const form = document.querySelector('form[action="{{ route('place.order') }}"]');
+ 
+     form.addEventListener('submit', function (e) {
+         const selectedMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+ 
+         if (selectedMethod === 'stripe') {
+            console.log('stripe aaa');
+            e.preventDefault();
+             stripe.createToken(card).then(function (result) {
+                 if (result.error) {
+                     document.getElementById('card-errors').textContent = result.error.message;
+                 } else {
+                     const hiddenInput = document.createElement('input');
+                     hiddenInput.setAttribute('type', 'hidden');
+                     hiddenInput.setAttribute('name', 'stripeToken');
+                     hiddenInput.setAttribute('value', result.token.id);
+                     form.appendChild(hiddenInput);
+ 
+                     form.submit();
+                 }
+             });
+         }
+     });
+ });
+ </script>
+ 
+
 @endpush
 

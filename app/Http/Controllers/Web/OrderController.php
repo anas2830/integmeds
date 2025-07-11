@@ -3,14 +3,22 @@
 namespace App\Http\Controllers\Web;
 
 use Cart;
+use App\Models\Cupon;
 use App\Models\Order;
+use App\Models\Product;
+use App\Models\Inventory;
+use App\Models\OrderDetails;
+use App\Models\StockLeadger;
 use Illuminate\Http\Request;
 use App\Jobs\SendOrderInvoice;
+use App\Models\ShippingMethod;
 use App\Services\Web\OrderService;
+use Illuminate\Support\Facades\DB;
 use App\Services\Web\CouponService;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Web\ShippingService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Session;
 use App\Http\Requests\OrderPlaceRequest;
 use App\Library\SslCommerz\SslCommerzNotification;
@@ -30,17 +38,120 @@ class OrderController extends Controller
     }
     public  function placeOrder(OrderPlaceRequest $request)
     {
-        $availableMethods = $this->shippingService->getAvailableMethods();
-
-        if ($availableMethods->isNotEmpty()) {
+        $availableMethods = ShippingMethod::where('status', 1)->get();
+        $isShippingRequired = false;
+        if (count($availableMethods)){
             if (empty($request->courier_service_id)) {
                 return back()->withErrors([
                     'courier_service_id' => 'Please select a shipping method before proceeding.',
                 ])->withInput();
             }
+            $isShippingRequired = true;
         }
-
-        $this->orderService->placeOrder($request);
+        $user = Auth::user();
+        $cart = Cart::getContent();
+        $subtotal = Cart::getSubTotal();
+        $result = $this->orderService->validateCartStockQuantities($cart);
+        if ($result instanceof RedirectResponse) {
+            return $result;
+        }
+        $this->orderService->checkMinOrderAmount($subtotal);
+        $this->couponService->refreshCouponAndValidate($subtotal);
+        $billingAddress = $request->input('billing');
+        $shippingAddress = $billingAddress;
+        if ($request->ship_to_different_address) {
+            $shippingAddress = $request->input('shipping');
+        }
+        // Order basics
+        $orderNumber = generateOrderNumber();
+        $transactionId = 'TRX-' . uniqid();
+        $couponId = Session::get('coupon_id', null);
+        $discount = Session::get('coupon_amount', 0);
+        $shippingCost = 0;
+        if($isShippingRequired){
+            $shippingCost = Session::get('shipping_cost');
+        }
+        $totalAmount = max($subtotal + $shippingCost - $discount, 0);
+        $newsLetter = $request->newsletter_subscription;
+        if ($newsLetter) {
+            $email = $request->customer_email ?? $billingAddress['email'] ?? $shippingAddress['email'] ?? null;
+            $this->orderService->newsletterSubscription($email);
+        }
+         // Create Order
+         $orderData = [
+            'order_number'      => $orderNumber,
+            'user_id'           => $user?->id,
+            'coupon_id'         => $couponId ?? null,
+            'customer_name'     => $user?->name ?? '',
+            'customer_email'    => $user?->email ?? null,
+            'customer_phone'    => $user?->phone ?? null,
+            'subtotal'          => $subtotal,
+            'discount'          => $discount,
+            'shipping_cost'     => $shippingCost,
+            'billing_address'   => $billingAddress,
+            'shipping_address'  => $shippingAddress,
+            'total_amount'      => $totalAmount,
+            'payment_method'    => $request->paymentMethod ?? 'cash',
+            'transaction_id'    => $transactionId,
+        ];
+        $order = $this->orderService->orderGenerate($orderData);
+        if (!empty($couponId) && ($coupon = Cupon::find($couponId))) {
+            $coupon->increment('used');
+        }
+        $details = array();
+        foreach ($cart as $row) {
+            $details['order_id'] = $order->id;
+            $details['product_id'] = $row->id;
+            $details['quantity'] = $row->quantity;
+            $details['product_name'] = $row->name;
+            $details['price'] = $row->price;
+            $details['subtotal'] = $row->quantity * $row->price;
+            OrderDetails::create($details);
+            Product::where('id', $row->id)->update([
+                'quantity' => DB::raw("quantity - {$row->quantity}")
+            ]);
+            Inventory::where('product_id', $row->id)->update([
+                'quantity' => DB::raw("quantity - {$row->quantity}")
+            ]);
+            StockLeadger::create([
+                'product_id' => $row->id,
+                'quantity' => $row->quantity,
+                'type' => 'out',
+                'note' => "Quantity decreased by customer purchase: - $row->quantity order id $order->id",
+            ]);
+        }
+        if($request->paymentMethod === 'stripe'){
+            \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
+            $charge = \Stripe\Charge::create([
+                'amount' =>  $totalAmount * 100, // amount in cents
+                'currency' => 'usd',
+                'source' => $request->stripeToken,
+                'description' => 'Integmeds Order Payment - Stripe',
+            ]);
+            if ($charge->status === 'succeeded') {
+                $order->update(['payment_status' => 'paid']);
+                Cart::clear();
+                $this->couponService->removeSessionCoupon();
+                SendOrderInvoice::dispatch($order);
+                $this->orderService->sendOrderNotification($order); 
+                if(Auth::check()){
+                    return redirect()->route('user.order-invoice', ['id' => $order->id])->with('order_complete', 'Thanks! Your order has been placed successfully.');
+                }
+                return redirect()->route('order.complete', ['id' => $order->id])->with('order_complete', 'Thanks! Your order has been placed successfully.');
+            } else {
+                $order->update(['payment_status' => 'failed']);
+                return redirect()->back()->with('error', 'Payment failed. Please try again.');
+            }
+        }
+        if($request->paymentMethod === 'sslcommerz'){
+            $sslPostData = $this->orderService->sslCommerzPayload($totalAmount, $transactionId);
+            $sslc = new SslCommerzNotification();
+            try {
+                $sslc->makePayment($sslPostData, 'hosted');
+            } catch (\Exception $e) {
+                return redirect()->back()->with('error', 'Payment failed: ' . $e->getMessage());
+            }
+        }
     }
 
 
@@ -62,17 +173,18 @@ class OrderController extends Controller
             $validation = $sslc->orderValidate($request->all(), $tran_id, $amount, $currency);
 
             if ($validation === true) {
-                $order->update(['order_status' => 'pending']);
+                $order->update(['payment_status' => 'paid']);
                 Cart::clear();
                 // Use your CouponService method to clear session
                 $this->couponService->removeSessionCoupon();
                 SendOrderInvoice::dispatch($order);
+                $this->orderService->sendOrderNotification($order); 
                 if(Auth::check()){
                     return redirect()->route('user.order-invoice', ['id' => $order->id])->with('order_complete', 'Thanks! Your order has been placed successfully.');
                 }
                 return redirect()->route('order.complete', ['id' => $order->id])->with('order_complete', 'Thanks! Your order has been placed successfully.');
             } else {
-                $order->update(['order_status' => 'failed']);
+                $order->update(['payment_status' => 'failed']);
                 return response('Validation Failed', 400);
             }
         }
@@ -160,5 +272,11 @@ class OrderController extends Controller
                 'order' => $order,
             ]
         );
+    }
+
+    public function updateShippingCost(Request $request)
+    {
+        Session::put('shipping_cost', $request->shipping_cost);
+        return response()->json(['success' => true]);
     }
 }

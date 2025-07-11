@@ -4,25 +4,12 @@ namespace App\Services\Web;
 
 use Cart;
 use App\Models\Admin;
-use App\Models\Cupon;
 use App\Models\Order;
-use App\Models\Product;
-use App\Models\Inventory;
 use App\Models\Newsletter;
 use App\Models\SiteSetting;
-use Illuminate\Support\Str;
-use App\Models\OrderDetails;
-use App\Models\StockLeadger;
-use Illuminate\Support\Facades\DB;
-
-use Illuminate\Support\Facades\Auth;
 use App\Notifications\NewOrderPlaced;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\Session;
 use App\Services\Web\ProductCartService;
 use Illuminate\Validation\ValidationException;
-use App\Library\SslCommerz\SslCommerzNotification;
 
 class OrderService
 {
@@ -36,141 +23,6 @@ class OrderService
         $this->shippingService = $shippingService;
     }
 
-    public function placeOrder($request)
-    {
-
-        $user = Auth::user();
-
-        $cart = Cart::getContent();
-
-        $subtotal = Cart::getSubTotal();
-
-        $result = $this->validateCartStockQuantities($cart);
-
-        if ($result instanceof RedirectResponse) {
-            return $result; // Redirect back with errors
-        }
-
-        $this->checkMinOrderAmount($subtotal);
-
-        $this->couponService->refreshCouponAndValidate($subtotal);
-
-
-        // Extract billing address from request
-        $billingAddress = $request->input('billing');
-
-        // By default, shipping address is same as billing
-        $shippingAddress = $billingAddress;
-
-        // If user wants to ship to a different address, override shipping address
-        if ($request->ship_to_different_address) {
-            $shippingAddress = $request->input('shipping');
-        }
-
-
-
-        // Order basics
-        $orderNumber = generateOrderNumber();
-        $transactionId = 'TRX-' . uniqid();
-        $couponId = Session::get('coupon_id', null);
-        $discount = Session::get('coupon_amount', 0);
-        $shippingCost = 0;
-
-        $shippingData = $this->shippingService->getShippingRates($request);
-        $selectedCourierId = $request->input('courier_service_id');
-
-        $shippingCost = $this->shippingService->generateShippingCharge($shippingData['rates'] ?? [], $selectedCourierId);
-
-        $totalAmount = max($subtotal + $shippingCost - $discount, 0);
-        $newsLetter = $request->newsletter_subscription;
-        if ($newsLetter) {
-            $email = $request->customer_email ?? $billingAddress['email'] ?? $shippingAddress['email'] ?? null;
-
-            // Check if email already exists
-            $exists = Newsletter::where('email', $email)->exists();
-
-            if (!$exists) {
-                $newsletter = new Newsletter();
-                $newsletter->email = $email;
-                $newsletter->save();
-            }
-        }
-
-
-        // Create Order
-        $orderData = [
-            'order_number'      => $orderNumber,
-            'user_id'           => $user?->id,
-            'coupon_id'         => $couponId ?? 0,
-            'customer_name'     => $user?->name ?? '',
-            'customer_email'    => $user?->email ?? null,
-            'customer_phone'    => $user?->phone ?? null,
-            'subtotal'          => $subtotal,
-            'discount'          => $discount,
-            'shipping_cost'     => $shippingCost,
-            'billing_address'   => $billingAddress,
-            'shipping_address'  => $shippingAddress,
-            'total_amount'      => $totalAmount,
-            'payment_method'    => 'sslcommerz',
-            'transaction_id'    => $transactionId,
-        ];
-
-        $order = $this->orderGenerate($orderData);
-
-        $admin = Admin::first();
-
-        if ($admin) {
-            $admin->notify(new NewOrderPlaced($order));
-        }
-
-        if (!empty($couponId) && ($coupon = Cupon::find($couponId))) {
-            $coupon->increment('used');
-        }
-
-        $details = array();
-        foreach ($cart as $row) {
-            $details['order_id'] = $order->id;
-            $details['product_id'] = $row->id;
-            $details['quantity'] = $row->quantity;
-            $details['product_name'] = $row->name;
-            $details['price'] = $row->price;
-            $details['subtotal'] = $row->quantity * $row->price;
-
-
-            OrderDetails::create($details);
-
-            Product::where('id', $row->id)->update([
-                'quantity' => DB::raw("quantity - {$row->quantity}")
-            ]);
-
-            Inventory::where('product_id', $row->id)->update([
-                'quantity' => DB::raw("quantity - {$row->quantity}")
-            ]);
-
-
-            StockLeadger::create([
-                'product_id' => $row->id,
-                'quantity' => $row->quantity,
-                'type' => 'out',
-                'note' => "Quantity decreased by customer purchase: - $row->quantity order id $order->id",
-            ]);
-        }
-        
-
-    
-        $sslPostData = $this->sslCommerzPayload($totalAmount, $transactionId);
-
-        $sslc = new SslCommerzNotification();
-        # initiate(Transaction Data , false: Redirect to SSLCOMMERZ gateway/ true: Show all the Payement gateway here )
-        $payment_options = $sslc->makePayment($sslPostData, 'hosted');
-
-        if (!is_array($payment_options)) {
-            print_r($payment_options);
-            $payment_options = array();
-        }
-    }
-
-
     public function checkMinOrderAmount($subtotal)
     {
         $minOrderAmount = SiteSetting::first()?->minimum_order ?? 0;
@@ -183,7 +35,7 @@ class OrderService
     }
 
 
-    private function orderGenerate($orderData)
+    public function orderGenerate($orderData)
     {
         return Order::create([
             'customer_name'   => $orderData['customer_name'],
@@ -209,7 +61,7 @@ class OrderService
         ]);
     }
 
-    private function sslCommerzPayload($totalAmount, $transactionId,  array $optional = []): array
+    public function sslCommerzPayload($totalAmount, $transactionId,  array $optional = []): array
     {
         return [
             'total_amount'      => $totalAmount,
@@ -341,5 +193,23 @@ class OrderService
         $this->couponService->refreshCouponAndValidate((float) Cart::getSubTotal());
 
         return redirect()->route('checkout')->with('success', 'Reorder successful. Proceed to checkout.');
+    }
+
+    public function sendOrderNotification($order)
+    {
+        $admin = Admin::first();
+        if ($admin) {
+            $admin->notify(new NewOrderPlaced($order));
+        }
+    }
+
+    public function newsletterSubscription($email)
+    {
+        $exists = Newsletter::where('email', $email)->exists();
+        if (!$exists) {
+            $newsletter = new Newsletter();
+            $newsletter->email = $email;
+            $newsletter->save();
+        }
     }
 }
