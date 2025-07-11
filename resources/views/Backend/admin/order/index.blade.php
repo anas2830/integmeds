@@ -57,7 +57,9 @@
                             <th scope="col">Order ID</th>
                             <th scope="col">User Name</th>
                             <th scope="col">Date</th>
-                            <th scope="col">Status</th>
+                            <th scope="col">Order Status</th>
+                            <th scope="col">Payment Status</th>
+                            <th scope="col">Payment Method</th>
                             <th scope="col">Total</th>
                             <th scope="col">Change Status</th>
                             <th scope="col">Action</th>
@@ -85,6 +87,20 @@
                                             @break
                                     @endswitch
                                 </td>
+                                <td>
+                                    @switch($order->payment_status)
+                                        @case('paid')
+                                            <span class="status-bg-succ">Paid</span>
+                                            @break
+                                        @case('failed')
+                                            <span class="status-bg-canc">Failed</span>
+                                            @break
+                                        @default
+                                            <span class="status-bg-pn">Pending</span>
+                                            @break
+                                    @endswitch
+                                </td>
+                                <td>{{$order->payment_method}}</td>
                                 <td>{{config('app.currency_symbol')}}{{ $order->total_amount }}</td>
                                 <td>
                                     <form action="{{ route('order.updateStatus', $order->id) }}" method="POST" class="d-flex align-items-center">
