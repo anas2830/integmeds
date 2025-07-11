@@ -2,6 +2,10 @@
 
 @section('site-title', 'Checkout')
 
+@push('dynamic_meta')
+    @include('Web.Layout.partials.common-meta')
+@endpush
+
 @section('content')
 <section class="checkout-page-area">
     <div class="container">

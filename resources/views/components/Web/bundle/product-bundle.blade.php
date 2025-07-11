@@ -15,7 +15,6 @@
                                 value="{{ old('quantities.' . $bundleProduct->id, 1) }}"
                                 min="1"
                                 class="qtybutton-input product-qty">
-                                {{config('app.brand_name')}}
                             <div class="dec qtybutton">-</div>
                             <div class="inc qtybutton">+</div>
                         </div>

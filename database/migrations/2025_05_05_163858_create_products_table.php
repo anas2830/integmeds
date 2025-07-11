@@ -37,7 +37,7 @@ return new class extends Migration
             $table->string('meta_title')->nullable(); // Meta title for SEO
             $table->string('meta_description')->nullable(); // Meta description for SEO
             $table->string('meta_keywords')->nullable(); // Meta keywords for SEO
-            $table->unsignedInteger('quantity');
+            $table->unsignedInteger('quantity')->default(0);
             $table->boolean('status')->default(1)->index();
             $table->softDeletes(); // Add soft deletes functionality
             $table->timestamps();

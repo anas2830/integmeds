@@ -1,6 +1,33 @@
 @extends('Web.Layout.app')
 
-@section('site-title', 'Category')
+@section('site-title', $category->name ?? 'Category')
+
+@push('dynamic_meta')
+<meta name="description" content="{{ Str::limit(strip_tags($category->description ?? 'Integrative Medicine – American Number #1 Supplement Brand'), 300, '') }}">
+<meta name="keywords" content="Integrative Medicine, American Number #1, Supplement Brand">
+
+<meta property="og:site_name" content="{{ config('app.name') }}">
+<meta property="og:title" content="{{ $category->name ?? 'Integrative Medicine – American Number #1 Supplement Brand' }}">
+<meta property="og:description" content="{{ Str::limit(strip_tags($category->description ?? 'Integrative Medicine – American Number #1 Supplement Brand'), 300, '') }}">
+
+<meta property="og:url" content="{{ url('/') }}">
+<meta property="og:type" content="article">
+
+<meta property="og:image" content="{{ asset('web_assets/images/logo/footer-logo.png') }}">
+<meta property="og:locale" content="en_US">
+
+<meta name="twitter:domain" content="{{ url('/') }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="integmeds.com">
+<meta name="twitter:title" content="{{ $category->name ?? 'Integrative Medicine – American Number #1 Supplement Brand' }}">
+<meta name="twitter:description" content="{{ Str::limit(strip_tags($category->description ?? 'Integrative Medicine – American Number #1 Supplement Brand'), 300, '') }}">
+<meta name="twitter:url" content="{{ url('/') }}">
+<meta name="twitter:image" content="{{ asset('web_assets/images/logo/footer-logo.png') }}">
+<meta name="twitter:site" content="@integmeds">
+<meta name="twitter:creator" content="@integmeds">
+<link rel="image_src" href="{{ asset('web_assets/images/logo/footer-logo.png') }}">
+<link rel="canonical" href="{{ url('/') }}">
+@endpush
 
 @push('css')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.8.1/nouislider.min.css" />

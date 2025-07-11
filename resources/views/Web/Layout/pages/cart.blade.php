@@ -2,6 +2,10 @@
 
 @section('site-title', 'Cart')
 
+@push('dynamic_meta')
+    @include('Web.Layout.partials.common-meta')
+@endpush
+
 @section('content')
 <div class="category-and-sidebar">
     <div class="container">

@@ -2,7 +2,9 @@
 
 @section('site-title', 'Privacy Policy')
 
-
+@push('dynamic_meta')
+    @include('Web.Layout.partials.common-meta')
+@endpush
 
 @section('content')
 <div class="product-and-sidebar mt-5">

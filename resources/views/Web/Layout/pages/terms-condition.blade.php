@@ -2,6 +2,10 @@
 
 @section('site-title', 'Terms and Conditions')
 
+@push('dynamic_meta')
+    @include('Web.Layout.partials.common-meta')
+@endpush
+
 @section('content')
 <div class="product-and-sidebar mt-5">
     <div class="container">

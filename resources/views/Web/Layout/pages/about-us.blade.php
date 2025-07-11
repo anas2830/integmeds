@@ -2,6 +2,10 @@
 
 @section('site-title', 'About Us')
 
+@push('dynamic_meta')
+    @include('Web.Layout.partials.common-meta')
+@endpush
+
 @push('css')
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.css">
