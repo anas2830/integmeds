@@ -49,7 +49,9 @@
                                 <tr>
                                     <th scope="col">Order ID</th>
                                     <th scope="col">Date</th>
-                                    <th scope="col">Status</th>
+                                    <th scope="col">Order Status</th>
+                                    <th scope="col">Payment Status</th>
+                                    <th scope="col">Payment Method</th>
                                     <th scope="col">Total</th>
                                     <th scope="col">Action</th>
                                 </tr>
@@ -75,6 +77,21 @@
                                                     @break
                                             @endswitch
                                         </td>
+                                        <td>
+                                            @switch($order->payment_status)
+
+                                                @case('paid')
+                                                    <span class="status-bg-succ">Paid</span>
+                                                    @break
+                                                @case('failed')
+                                                    <span class="status-bg-canc">Failed</span>
+                                                    @break
+                                                @default
+                                                    <span class="status-bg-pn">Pending</span>
+                                                    @break
+                                            @endswitch
+                                        </td>
+                                        <td>{{$order->payment_method}}</td>
                                         <td>{{config('app.currency_symbol')}}{{ $order->total_amount }}</td>
                                         <td class="view-btn">
                                             @if($order->order_status === 'completed')
@@ -88,7 +105,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="5" class="text-center">No orders found</td>
+                                        <td colspan="7" class="text-center">No orders found</td>
                                     </tr>
                                 @endforelse
                             </tbody>
