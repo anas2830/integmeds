@@ -174,7 +174,7 @@
 @endsection
 
 @push('script')
-<script>
+{{-- <script>
 $(document).ready(function () {
     function toggleShippingBilling() {
         if ($('#ship-address').is(':checked')) {
@@ -301,9 +301,145 @@ $(document).ready(function () {
 });
 
 
+</script> --}}
+
+<script>
+$(document).ready(function () {
+    function toggleShippingBilling() {
+        if ($('#ship-address').is(':checked')) {
+            $('.different-address-info').slideDown();
+            $('.shipping-form-wrap input, .shipping-form-wrap select').attr('required', true);
+            resetShippingMethod();
+        } else {
+            $('.different-address-info').slideUp();
+            $('.shipping-form-wrap input, .shipping-form-wrap select').removeAttr('required');
+            resetShippingMethod();
+        }
+    }
+
+    $('#ship-address').on('change', toggleShippingBilling);
+    toggleShippingBilling();
+
+    function resetShippingMethod() {
+        $('#shipping-method-container').html('');
+        $('#shipping_method_select').val(null);
+        const subtotal = parseFloat($('#checkout-cart-subtotal').text()) || 0;
+        const coupon = parseFloat($('.coupon-amount').text()) || 0;
+        const total = parseFloat((subtotal - coupon).toFixed(2));
+        $('.shipping-cost').text(0);
+        $('.total-price').text(total.toFixed(2));
+    }
+
+    function getAdjustedShippingCost(baseCost) {
+        const isShipToDifferent = $('input[name="ship_to_different_address"]').prop('checked');
+        const country = isShipToDifferent
+            ? $('select[name="shipping[country]"]').val()
+            : $('select[name="billing[country]"]').val();
+
+        if (country !== 'US') {
+            return baseCost + 80;
+        }
+        return baseCost;
+    }
+
+    $('#shipping_method_select').on('change', function() {
+        $('.shipping-method-error').html('').hide();
+
+        var shippingMethodId = $(this).val();
+
+        var postData = {
+            shipping_method_id: shippingMethodId,
+            billing: {
+                country: $('select[name="billing[country]"]').val(),
+                postal_code: $('input[name="billing[postal_code]"]').val(),
+                city: $('input[name="billing[city]"]').val(),
+                state: $('input[name="billing[state]"]').val(),
+            },
+            shipping: {
+                country: $('select[name="shipping[country]"]').val(),
+                postal_code: $('input[name="shipping[postal_code]"]').val(),
+                city: $('input[name="shipping[city]"]').val(),
+                state: $('input[name="shipping[state]"]').val(),
+            },
+            ship_to_different_address: $('input[name="ship_to_different_address"]').prop('checked') ? 1 : 0,
+            _token: '{{ csrf_token() }}',
+        };
+
+        $.ajax({
+            url: "{{ route('shipping.rates') }}",
+            method: 'POST',
+            data: postData,
+            dataType: 'json',
+            beforeSend: function () {
+                $('#shipping-method-loading').show();
+                $('#shipping-method-container').hide();
+                $('.shipping-method-error').hide().html('');
+            },
+            success: function (response) {
+                if (response.success) {
+                    $('#shipping-method-container').html(response.html).show();
+
+                    const $firstRadio = $('.shipping-radio').first();
+
+                    if ($firstRadio.length) {
+                        const baseShippingCost = parseFloat($firstRadio.data('charge')) || 0;
+                        const shippingCost = getAdjustedShippingCost(baseShippingCost);
+
+                        const subtotal = parseFloat($('#checkout-cart-subtotal').text()) || 0;
+                        const coupon = parseFloat($('.coupon-amount').text()) || 0;
+                        const total = parseFloat((subtotal + shippingCost - coupon).toFixed(2));
+
+                        $('.shipping-cost').text(shippingCost.toFixed(2));
+                        $('.total-price').text(total.toFixed(2));
+
+                        $firstRadio.prop('checked', true);
+
+                        $.post("{{ route('update.shipping.cost') }}", {
+                            shipping_cost: shippingCost.toFixed(2),
+                            _token: '{{ csrf_token() }}'
+                        });
+                    }
+                }
+                $('#shipping-method-loading').hide();
+            },
+            error: function (xhr) {
+                $('#shipping-method-loading').hide();
+                $('#shipping-method-container').show();
+
+                if (xhr.status === 422) {
+                    var errors = xhr.responseJSON.errors;
+                    var messages = [];
+                    $.each(errors, function(field, msgs) {
+                        messages = messages.concat(msgs);
+                    });
+                    $('.shipping-method-error').html(messages.join('<br>')).show();
+                } else {
+                    $('.shipping-method-error').text('Something went wrong, please try again.').show();
+                }
+                $('#shipping_method_select').val(null);
+            }
+        });
+    });
+
+    $(document).on('click', '.shipping-radio', function () {
+        const baseShippingCost = parseFloat($(this).data('charge')) || 0;
+        const shippingCost = getAdjustedShippingCost(baseShippingCost);
+
+        const subtotal = parseFloat($('#checkout-cart-subtotal').text()) || 0;
+        const coupon = parseFloat($('.coupon-amount').text()) || 0;
+        const total = parseFloat((subtotal + shippingCost - coupon).toFixed(2));
+
+        $('.shipping-cost').text(shippingCost.toFixed(2));
+        $('.total-price').text(total.toFixed(2));
+
+        $.post("{{ route('update.shipping.cost') }}", {
+            shipping_cost: shippingCost.toFixed(2),
+            _token: '{{ csrf_token() }}'
+        });
+    });
+});
+
 </script>
-
-
 
  <!--  stripe -->
  <script src="https://js.stripe.com/v3/"></script>
