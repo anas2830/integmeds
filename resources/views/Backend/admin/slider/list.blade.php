@@ -39,6 +39,7 @@
                             <tr>
                                 <th>SL</th>
                                 <th>Image</th>
+                                <th>Link</th>
                                 {{-- <th>
                                     <a href="{{ route('slider.index', array_merge(request()->query(),
                                         [
@@ -76,6 +77,7 @@
                                     <td>{{ $slider->subtitle }}</td>
                                     <td>{{ $slider->button_color }}</td>
                                     <td>{{ $slider->button_text }}</td> --}}
+                                    <td class="w-50">{{ $slider->button_url }}</td>
                                     <td>
                                         @if($slider->status == 1)
                                             <a href="#" class="badge badge-success badge-sm status-update" data-id="{{ $slider->id }}">Active</a>

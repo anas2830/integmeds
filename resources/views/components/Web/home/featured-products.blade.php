@@ -17,7 +17,7 @@
                     @if(!empty($featuredProduct->btn_text))
                         <div class="common-btn-wrap mt-3 d-flex justify-content-center">
                             <div class="common-btn-borders">
-                                <a class="common-btn" href="{{$featuredProduct->btn_url}}">{{$featuredProduct->btn_text}}</a>
+                                <a class="common-btn" href="{{$featuredProduct->btn_url ?? '#' }}">{{$featuredProduct->btn_text}}</a>
                             </div>
                         </div>
                     @endif
