@@ -1,6 +1,6 @@
 @extends('Backend.Layout.app')
 
-@section('site-title', 'Product Bundle')
+@section('site-title', 'Sliders')
 
 @section('main-content')
 

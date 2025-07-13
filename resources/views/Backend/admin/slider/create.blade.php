@@ -118,10 +118,10 @@
                                     </div>
                                 </div> --}}
                                 <div class="row">
-                                    {{-- <div class="col-sm-6">
+                                    <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="button_url">
-                                                Button URL
+                                                URL
                                             </label>
                                             <input id="button_url" 
                                                 name="button_url" 
@@ -135,7 +135,7 @@
                                                 <small class="invalid-feedback">{{ $message }}</small>
                                             @enderror
                                         </div>
-                                    </div> --}}
+                                    </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <div class="input-group input-group-dynamic mt-4">
