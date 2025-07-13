@@ -31,7 +31,7 @@ class HomePageService extends SidebarService
     public function getSliders()
     {
         return Cache::rememberForever('Slider', function() {
-            return Slider::select('title','slider_image')->where('status', 1)->take(5)->get();
+            return Slider::select('title','slider_image','button_url')->where('status', 1)->take(5)->get();
         });
     }
     public function newArrivals()

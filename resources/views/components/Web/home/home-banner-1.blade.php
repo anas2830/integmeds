@@ -28,7 +28,7 @@
                             @if(!empty($banner['btn_text']) && !empty($banner['btn_url']))
                                 <div class="common-btn-wrap mt-4">
                                     <div class="common-btn-borders">
-                                        <a class="common-btn" href="{{ $banner['btn_url'] }}">
+                                        <a class="common-btn" href="{{ $banner['btn_url'] ?? '#' }}">
                                             {{ $banner['btn_text'] }}
                                         </a>
                                     </div>

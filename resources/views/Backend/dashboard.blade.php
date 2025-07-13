@@ -127,6 +127,8 @@
                                     <th>Date</th>
                                     <th>Total</th>
                                     <th>Order Status</th>
+                                    <th>Payment Status</th>
+                                    <th>Payment Method</th>
                                     <th>View Details</th>
                                 </tr>
                             </thead>
@@ -157,6 +159,20 @@
                                                     @break
                                             @endswitch
                                         </td>
+                                        <td>
+                                            @switch($order->payment_status)
+                                                @case('paid')
+                                                    <span class="status-bg-succ">Paid</span>
+                                                    @break
+                                                @case('failed')
+                                                    <span class="status-bg-canc">Failed</span>
+                                                    @break
+                                                @default
+                                                    <span class="status-bg-pn">Pending</span>
+                                                    @break
+                                            @endswitch
+                                        </td>
+                                        <td>{{$order->payment_method}}</td>
                                         <td>
                                             <a target="_blank" href="{{ route('order.details', $order->id) }}" class="btn btn-primary btn-sm btn-rounded waves-effect waves-light">
                                                 View Details

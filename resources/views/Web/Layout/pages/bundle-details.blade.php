@@ -11,7 +11,7 @@
 <meta property="og:url" content="{{ route('product-details', $bundle->id) }}">
 <meta property="og:type" content="article">
 
-<meta property="og:image" content="{{ !empty($bundle->bundleImages) ? asset($bundle->bundleImages->first()->image_url) : asset('web_assets/images/logo/footer-logo.png') }}">
+<meta property="og:image" content="{{ $bundle->bundleImages && $bundle->bundleImages->first()?->image_url ? asset($bundle->bundleImages->first()->image_url) : asset('web_assets/images/logo/footer-logo.png') }}">
 <meta property="og:locale" content="en_US">
 
 <meta name="twitter:domain" content="{{ url('/') }}">
@@ -20,12 +20,13 @@
 <meta name="twitter:title" content="{{ $bundle->name }}">
 <meta name="twitter:description" content="{{ Str::limit(strip_tags($bundle->description), 300, '') }}">
 <meta name="twitter:url" content="{{ route('bundle-details', $bundle->id) }}">
-<meta name="twitter:image" content="{{ !empty($bundle->bundleImages) ? asset($bundle->bundleImages->first()->image_url) : asset('web_assets/images/logo/footer-logo.png') }}">
+<meta name="twitter:image" content="{{ $bundle->bundleImages && $bundle->bundleImages->first()?->image_url ? asset($bundle->bundleImages->first()->image_url) : asset('web_assets/images/logo/footer-logo.png') }}">
 <meta name="twitter:site" content="@integmeds">
 <meta name="twitter:creator" content="@integmeds">
-<link rel="image_src" href="{{ !empty($bundle->bundleImages) ? asset($bundle->bundleImages->first()->image_url) : asset('web_assets/images/logo/footer-logo.png') }}">
+<link rel="image_src" href="{{ $bundle->bundleImages && $bundle->bundleImages->first()?->image_url ? asset($bundle->bundleImages->first()->image_url) : asset('web_assets/images/logo/footer-logo.png') }}">
 <link rel="canonical" href="{{ route('product-details', $bundle->id) }}">
 @endpush
+
 
 @push('css')
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
