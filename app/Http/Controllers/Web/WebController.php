@@ -79,7 +79,7 @@ class WebController extends SidebarService
 
     public function bundle()
     {
-        $productBundles = Bundle::select('id', 'name', 'icon_path')->with(['firstImage:id,bundle_id,image_url'])->where('status', 1)->orderBy('id', 'desc')->paginate(10);
+        $productBundles = Bundle::select('id', 'name', 'icon_path')->with(['firstImage:id,bundle_id,image_url'])->where('status', 1)->orderBy('id', 'desc')->paginate(16);
         return view('Web.Layout.pages.bundle', compact('productBundles'));
     }
     public function bundleDetails($id)
