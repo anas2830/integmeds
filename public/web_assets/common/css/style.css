@@ -253,7 +253,9 @@ ul{padding:0;margin:0;}
 .s-product-banner-text p { font-size: 16px; font-weight: 400; line-height: 30px; }
 
 /* special-products */
-.special-products-area{ padding-bottom:50px; }
+.special-products-area {
+    padding: 50px 0;
+}
 .sp-product-img { padding:0 20px; background-image: url(../../images/bg/features_product_dots.webp); background-position: center; background-repeat: no-repeat; background-size: cover; text-align: center; }
 .special-product-text{ text-align: center; }
 .special-product-text h3 { font-size: 22px; margin-bottom: 10px; }
@@ -269,7 +271,9 @@ ul{padding:0;margin:0;}
 .brand-text p { margin: 10px 0 20px; }
 
 /* top-rated-area */
-.top-rated-area{ padding:50px 0; }
+.top-rated-area {
+    padding-top: 50px;
+}
 
 /* sidebar-special-offer-area */
 .sidebar-special-offer { margin-top:40px; border: 1px solid #eee; }

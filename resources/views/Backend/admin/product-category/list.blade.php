@@ -68,7 +68,7 @@
                         <tbody>
                             @forelse ($productCategories as $product_category)
                                 <tr>
-                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ ($productCategories->currentPage() - 1) * $productCategories->perPage() + $loop->iteration }}</td>
                                     <td>{{ $product_category->name }}</td>
                                     <td>{{ $product_category->parent?->name }}</td>
                                     <td>{{ $product_category->description }}</td>
