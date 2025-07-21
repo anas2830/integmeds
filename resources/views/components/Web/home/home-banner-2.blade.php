@@ -1,4 +1,4 @@
-<section class="brand-area">
+<section class="brand-area brand-areaTwo">
     <div class="row">
         <div class="col-lg-12">
             <div class="brand-banner">

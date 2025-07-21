@@ -375,8 +375,12 @@ ul{padding:0;margin:0;}
 .offer-segment-img-wrap { position: relative; }
 .offer-segment-img-text{ position: absolute; left:50px; top:50%; width: 250px; transform: translateY(-50%); }
 .offer-segment-img img { height: 300px; object-fit: cover; }
-.offer-segment-text h2 { font-size: 40px; margin-bottom: 30px; color: var(--primary); }
+.offer-segment-text h2 { font-size: 40px; margin-bottom: 30px; color: var(--primary); line-height: 1.3;}
 .offer-segment-text p { font-size: 18px; }
+
+.brand-areaTwo .common-btn-wrap {
+	margin-top: 180px !important;
+}
 
 /* mini-cart-area */
 .mini-cart-area .offcanvas-end { width: 350px; }
