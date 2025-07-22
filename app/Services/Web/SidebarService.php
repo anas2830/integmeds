@@ -13,7 +13,7 @@ class SidebarService
     public  function productBundles()
     {
         return Cache::rememberForever('Bundle', function () {
-            return Bundle::select('id', 'name', 'icon_path')->with(['firstImage:id,bundle_id,image_url'])->where('status', 1)->orderBy('id', 'desc')->paginate(8);
+            return Bundle::select('id', 'name', 'icon_path')->with(['firstImage:id,bundle_id,image_url'])->where('status', 1)->paginate(8);
         });
     }
 
@@ -26,28 +26,23 @@ class SidebarService
 
     public function bestSellingProducts()
     {
-        // Fetch top product IDs first
         $topProductIds = $this->getTopSoldProductIds();
-
-        // Return products with related data and average rating
-        return Cache::remember('bestSellingProducts', 60, function() use ($topProductIds) {
-            return Product::select('id', 'product_name', 'regular_price', 'sale_price', 'discount_percentage', 'slug', 'quantity')
+        return Product::select('id', 'product_name', 'regular_price', 'sale_price', 'discount_percentage', 'slug', 'quantity')
             ->with([
                 'firstImage:id,product_id,image_url',
                 'firstCategory:id,name,slug',
             ])
             ->withAvg('productReviews', 'rating')
             ->whereIn('id', $topProductIds)
-            // ->orderByRaw('FIELD(id, ' . $topProductIds->implode(',') . ')') // optional: maintain order
-            ->where('quantity', '>', 0) // Ensure products are in stock
+            ->where('quantity', '>', 0)
             ->where('status', 1)
             ->get();
-        });
+
     }
 
     protected function getTopSoldProductIds()
     {
-        return Cache::remember('top_sold_product_ids', 60, function() {
+        return Cache::rememberForever('OrderDetails', function() {
             return OrderDetails::select('product_id', DB::raw('SUM(quantity) as total_sold'))
                 ->groupBy('product_id')
                 ->orderByDesc('total_sold')
