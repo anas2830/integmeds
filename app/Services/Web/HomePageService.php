@@ -52,7 +52,7 @@ class HomePageService extends SidebarService
 
     public function topRatedProducts()
     {
-        return Cache::remember('topRatedProducts', 60, function() {
+        return Cache::remember('topRatedProducts', 10, function() {
             return Product::select('id', 'product_name', 'regular_price', 'sale_price', 'discount_percentage', 'slug', 'quantity')
             ->with(['firstImage:id,product_id,image_url', 'firstCategory:id,name,slug'])
             ->withAvg('productReviews', 'rating')
