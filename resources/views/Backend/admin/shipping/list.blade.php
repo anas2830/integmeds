@@ -66,7 +66,7 @@
                         <tbody>
                             @forelse ($shippingMethods as $shipping)
                                 <tr>
-                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ ($shippingMethods->currentPage() - 1) * $shippingMethods->perPage() + $loop->iteration }}</td>
                                     <td>{{ $shipping->name }}</td>
                                     <td>
                                         @if($shipping->status == 1)

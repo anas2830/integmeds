@@ -54,9 +54,9 @@
                     <tbody>
                         @forelse ($reviews as $review)
                             <tr class="">
-                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ ($reviews->currentPage() - 1) * $reviews->perPage() + $loop->iteration }}</td>
                                 <td>{{ $review->user->name  }}</td>
-                                <td>{{ $review->bundle->name  }}</td>
+                                <td>{{ $review->bundle?->name  }}</td>
                                 <td>{{ $review->rating }}/5</td>
                                 <td>{{ Str::limit($review->review, 100) }}</td>
                                 <td>

@@ -66,7 +66,7 @@
                         <tbody>
                             @forelse ($productBrands as $product_brand)
                                 <tr>
-                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ ($productBrands->currentPage() - 1) * $productBrands->perPage() + $loop->iteration }}</td>
                                     <td>{{ $product_brand->name }}</td>
                                     <td>
                                         @if($product_brand->status == 1)

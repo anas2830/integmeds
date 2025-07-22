@@ -253,8 +253,10 @@ ul{padding:0;margin:0;}
 .s-product-banner-text p { font-size: 16px; font-weight: 400; line-height: 30px; }
 
 /* special-products */
-.special-products-area{ padding-bottom:50px; }
-.sp-product-img { padding:0 20px; background-image: url(../../images/bg/features_product_dots.webp); background-position: center; background-repeat: no-repeat; background-size: cover; text-align: center; }
+.special-products-area {
+    padding: 50px 0;
+}
+.sp-product-img { padding: 0px 20px 20px 20px; background-image: url(../../images/bg/features_product_dots.webp); background-position: center; background-repeat: no-repeat; background-size: cover; text-align: center; }
 .special-product-text{ text-align: center; }
 .special-product-text h3 { font-size: 22px; margin-bottom: 10px; }
 .special-product-text p { overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;}
@@ -269,7 +271,9 @@ ul{padding:0;margin:0;}
 .brand-text p { margin: 10px 0 20px; }
 
 /* top-rated-area */
-.top-rated-area{ padding:50px 0; }
+.top-rated-area {
+    padding-top:50px;
+}
 
 /* sidebar-special-offer-area */
 .sidebar-special-offer { margin-top:40px; border: 1px solid #eee; }
@@ -371,8 +375,12 @@ ul{padding:0;margin:0;}
 .offer-segment-img-wrap { position: relative; }
 .offer-segment-img-text{ position: absolute; left:50px; top:50%; width: 250px; transform: translateY(-50%); }
 .offer-segment-img img { height: 300px; object-fit: cover; }
-.offer-segment-text h2 { font-size: 40px; margin-bottom: 30px; color: var(--primary); }
+.offer-segment-text h2 { font-size: 40px; margin-bottom: 30px; color: var(--primary); line-height: 1.3;}
 .offer-segment-text p { font-size: 18px; }
+
+.brand-areaTwo .common-btn-wrap {
+	margin-top: 180px !important;
+}
 
 /* mini-cart-area */
 .mini-cart-area .offcanvas-end { width: 350px; }
@@ -603,6 +611,7 @@ ul{padding:0;margin:0;}
 .product-desc-content .table-sm th { padding: 13px 25px; border: 1px solid #ebebeb; }
 .product-desc-content .table-sm th { color: #222; font-size: 15px; font-weight: 700; text-transform: capitalize; }
 .product-desc-content .table-sm td { color: #777777; font-weight: 500; font-style: italic; }
+.product-desc-content h1, .product-desc-content h2, .product-desc-content h3, .product-desc-content h4, .product-desc-content h5, .product-desc-content h6 { line-height: unset; }
 .reviews-comment .review-info { display: flex; align-items: flex-start; margin-bottom: 35px; }
 .review-img { margin-right: 20px; /* width: 100px; flex: 0 0 100px;  */ }
 .review-img img { border-radius: 50%; width: 100px;height: 100px;}
