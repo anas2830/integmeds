@@ -88,4 +88,15 @@ class Product extends Model
     {
         return $this->hasMany(Wishlist::class);
     }
+    
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($product) {
+            $product->slug = 'deleted-' . uniqid();
+            $product->saveQuietly();
+        });
+    }
+    
 }

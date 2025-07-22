@@ -30,7 +30,7 @@ class CuponController extends Controller
     public function store(Request $request)
     {
         $this->cuponCrudService->createCupon($request);
-        return redirect()->route('cupon.index')->with('success', 'Cupon created successfully');
+        return redirect()->route('cupon.index')->with('success', 'Coupon created successfully');
     }
 
     public function edit($id)
@@ -42,18 +42,18 @@ class CuponController extends Controller
     public function update(Request $request, $id)
     {
         $this->cuponCrudService->updateCupon($request, $id);
-        return redirect()->route('cupon.index')->with('success', 'Cupon updated successfully');
+        return redirect()->route('cupon.index')->with('success', 'Coupon updated successfully');
     }
 
     public function destroy($id)
     {
         $this->cuponCrudService->deleteCupon($id);
-        session()->flash('success', 'Cupon deleted successfully');
+        session()->flash('success', 'Coupon deleted successfully');
     }
 
     public function status($id)
     {
         $this->cuponCrudService->statusUpdate($id);
-        session()->flash('success', 'Cupon status updated successfully');
+        session()->flash('success', 'Coupon status updated successfully');
     }
 }

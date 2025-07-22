@@ -48,7 +48,7 @@
                         <tbody>
                             @forelse ($clients as $client)
                                 <tr>
-                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ ($clients->currentPage() - 1) * $clients->perPage() + $loop->iteration }}</td>
                                     <td><img src="{{ asset($client->client_image) }}" alt="" width="50" style="object-fit: contain; height: 100px; width: 100px;"></td>
                                     <td>
                                         @if($client->status == 1)

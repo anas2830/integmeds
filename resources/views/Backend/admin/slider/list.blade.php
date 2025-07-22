@@ -71,7 +71,7 @@
                         <tbody>
                             @forelse ($sliders as $slider)
                                 <tr>
-                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ ($sliders->currentPage() - 1) * $sliders->perPage() + $loop->iteration }}</td>
                                     <td><img src="{{ asset($slider->slider_image) }}" alt="" width="50"></td>
                                     {{-- <td>{{ $slider->title }}</td>
                                     <td>{{ $slider->subtitle }}</td>

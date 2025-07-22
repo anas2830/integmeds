@@ -13,7 +13,7 @@ class SidebarService
     public  function productBundles()
     {
         return Cache::rememberForever('Bundle', function () {
-            return Bundle::select('id', 'name', 'icon_path')->with(['firstImage:id,bundle_id,image_url'])->where('status', 1)->orderBy('id', 'desc')->paginate(10);
+            return Bundle::select('id', 'name', 'icon_path')->with(['firstImage:id,bundle_id,image_url'])->where('status', 1)->orderBy('id', 'desc')->paginate(8);
         });
     }
 

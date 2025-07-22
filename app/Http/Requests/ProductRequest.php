@@ -32,19 +32,21 @@ class ProductRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('products', 'product_name')->ignore($productId),
+                Rule::unique('products', 'product_name')
+                    ->ignore($productId)
+                    ->whereNull('deleted_at'),
             ],
             'sku' => [
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('products', 'sku')->ignore($productId),
+                Rule::unique('products', 'sku')->ignore($productId)->whereNull('deleted_at'),
             ],
             'ups_code' => [
                 'nullable',
                 'string',
                 'max:255',
-                Rule::unique('products', 'ups_code')->ignore($productId),
+                Rule::unique('products', 'ups_code')->ignore($productId)->whereNull('deleted_at'),
             ],
             'categories' => ['required', 'array'],
             'categories.*' => ['exists:product_categories,id'],
