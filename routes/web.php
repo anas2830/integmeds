@@ -143,5 +143,5 @@ Route::post('editor/login', [EditorController::class, 'login']);
 
 Route::get('/cache-clear', function () {
     Artisan::call('optimize:clear');
-    return 'Cache cleared!';
+    return redirect()->back()->with('success', 'Cache cleared successfully!');
 });
