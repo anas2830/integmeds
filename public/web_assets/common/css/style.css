@@ -1070,9 +1070,9 @@ ul{padding:0;margin:0;}
 	.page-counter p { margin-bottom: 20px; }
 	.sidemenu-sticky .sidemenu-sticky-d-none { display: block; }
 	.new-arrivals-area { padding: 20px 0; }
-	.top-rated-area { padding-top: 20px; }
+	.top-rated-area { padding-top: 0px; }
 	.special-products-area { padding: 20px 0; }
-	.bundle-area { padding: 20px 0; }
+	.bundle-area { padding: 20px 0; }
 }
 
 /* SM Small Device :550px. */
