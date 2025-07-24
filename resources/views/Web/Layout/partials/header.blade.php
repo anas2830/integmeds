@@ -88,7 +88,7 @@
                         <div class="container-fluid">
                             <a class="navbar-brand" href="{{route('/')}}">
                                 <div class="logo">
-                                    <img class="img-fluid" src="{{asset('web_assets/images/logo/footer-logo.png')}}" alt="" title="">
+                                    <img class="img-fluid" src="{{asset('web_assets/images/logo/sticky-logo.png')}}" alt="" title="">
                                 </div>
                             </a>
                             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
