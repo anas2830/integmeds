@@ -79,9 +79,9 @@ class WebController extends SidebarService
 
     public function bundle()
     {
-        $productBundles = Cache::rememberForever('Bundle', function () {
-            return Bundle::select('id', 'name', 'icon_path')->with(['firstImage:id,bundle_id,image_url'])->where('status', 1)->paginate(12);
-        });
+        // $productBundles = Cache::rememberForever('Bundle', function () {
+        $productBundles = Bundle::select('id', 'name', 'icon_path')->with(['firstImage:id,bundle_id,image_url'])->where('status', 1)->paginate(12);
+        // });
         return view('Web.Layout.pages.bundle', compact('productBundles'));
     }
     public function bundleDetails($id)
