@@ -79,6 +79,12 @@
               </div>
           </div> --}}
         <div class="">
+            <a class="btn btn-success mt-3 mb-3 mr-3" href="/cache-clear">
+                <i class='bx  bx-refresh-cw'></i> 
+                <span>Clear Cache</span>
+            </a>
+        </div>
+        <div class="">
             <a class="btn btn-success mt-3 mb-3" href="{{ route('/') }}">
                 <i class='bx  bx-globe'></i> 
                 <span>Go to Website</span>

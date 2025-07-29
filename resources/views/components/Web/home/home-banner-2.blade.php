@@ -10,7 +10,7 @@
                     <p>{{ $banner['description'] }}</p>
                     <div class="common-btn-wrap mt-3">
                         <div class="common-btn-borders">
-                            <a class="common-btn" href="{{ $banner['btn_url'] }} ?? '#' ">{{ $banner['btn_text'] }}</a>
+                            <a class="common-btn" href="{{ $banner['btn_url']  ?? '#' }}  ">{{ $banner['btn_text'] }}</a>
                         </div>
                     </div>
                 </div>

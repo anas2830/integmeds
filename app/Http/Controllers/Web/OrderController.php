@@ -98,6 +98,105 @@ class OrderController extends Controller
         if (!empty($couponId) && ($coupon = Cupon::find($couponId))) {
             $coupon->increment('used');
         }
+        
+        if($request->paymentMethod === 'stripe'){
+            \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
+            $charge = \Stripe\Charge::create([
+                'amount' =>  $totalAmount * 100, // amount in cents
+                'currency' => 'usd',
+                'source' => $request->stripeToken,
+                'description' => 'Integmeds Order Payment - Stripe',
+            ]);
+            if ($charge->status === 'succeeded') {
+                $order->update(['payment_status' => 'paid']);
+                $this->processOrderDetailsAndStock($order, $cart);
+                Cart::clear();
+                $this->couponService->removeSessionCoupon();
+                SendOrderInvoice::dispatch($order);
+                $this->orderService->sendOrderNotification($order); 
+                if(Auth::check()){
+                    return redirect()->route('user.order-invoice', ['id' => $order->id])->with('order_complete', 'Thanks! Your order has been placed successfully.');
+                }
+                return redirect()->route('order.complete', ['id' => $order->id])->with('order_complete', 'Thanks! Your order has been placed successfully.');
+            } else {
+                $order->delete();
+                return redirect()->back()->with('error', 'Payment failed. Please try again.');
+            }
+        }
+        if($request->paymentMethod === 'sslcommerz'){
+            $sslPostData = $this->orderService->sslCommerzPayload($totalAmount, $transactionId);
+            $sslc = new SslCommerzNotification();
+            try {
+                $sslc->makePayment($sslPostData, 'hosted');
+            } catch (\Exception $e) {
+                return redirect()->back()->with('error', 'Payment failed: ' . $e->getMessage());
+            }
+        }
+    }
+
+
+    public function success(Request $request)
+    {
+        $tran_id = $request->input('tran_id');
+        $amount = $request->input('amount');
+        $currency = $request->input('currency');
+        $cart = Cart::getContent();
+
+        $sslc = new SslCommerzNotification();
+
+        $order = Order::where('transaction_id', $tran_id)->first();
+
+        if (!$order) {
+            return response('Invalid Transaction: Order not found', 404);
+        }
+
+        if ($order->order_status == 'pending') {
+            $validation = $sslc->orderValidate($request->all(), $tran_id, $amount, $currency);
+
+            if ($validation === true) {
+                $order->update(['payment_status' => 'paid']);
+                $this->processOrderDetailsAndStock($order, $cart);
+                Cart::clear();
+                // Use your CouponService method to clear session
+                $this->couponService->removeSessionCoupon();
+                SendOrderInvoice::dispatch($order);
+                $this->orderService->sendOrderNotification($order); 
+                if(Auth::check()){
+                    return redirect()->route('user.order-invoice', ['id' => $order->id])->with('order_complete', 'Thanks! Your order has been placed successfully.');
+                }
+                return redirect()->route('order.complete', ['id' => $order->id])->with('order_complete', 'Thanks! Your order has been placed successfully.');
+            } else {
+                $order->update(['payment_status' => 'failed']);
+                return response('Validation Failed', 400);
+            }
+        }
+
+        return response('Invalid Transaction', 400);
+    }
+    public function fail(Request $request)
+    {
+        $tran_id = $request->input('tran_id');
+        // delete the order and  order details 
+
+        Order::where('transaction_id', $tran_id) ->delete();
+
+        return to_route('order.status')->with('order_failed', 'The Order has been failed');
+    }
+
+    public function cancel(Request $request)
+    {
+        $tran_id = $request->input('tran_id');
+
+        Order::where('transaction_id', $tran_id) ->delete();
+
+        return to_route('order.status')->with('order_cancelled', 'The Order has been cancelled');
+    }
+
+    public  function orderStatus(){
+        return view('Web.Layout.pages.order.order-status');
+    }
+
+    public  function processOrderDetailsAndStock($order, $cart){
         $details = array();
         foreach ($cart as $row) {
             $details['order_id'] = $order->id;
@@ -120,99 +219,6 @@ class OrderController extends Controller
                 'note' => "Quantity decreased by customer purchase: - $row->quantity order id $order->id",
             ]);
         }
-        if($request->paymentMethod === 'stripe'){
-            \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
-            $charge = \Stripe\Charge::create([
-                'amount' =>  $totalAmount * 100, // amount in cents
-                'currency' => 'usd',
-                'source' => $request->stripeToken,
-                'description' => 'Integmeds Order Payment - Stripe',
-            ]);
-            if ($charge->status === 'succeeded') {
-                $order->update(['payment_status' => 'paid']);
-                Cart::clear();
-                $this->couponService->removeSessionCoupon();
-                SendOrderInvoice::dispatch($order);
-                $this->orderService->sendOrderNotification($order); 
-                if(Auth::check()){
-                    return redirect()->route('user.order-invoice', ['id' => $order->id])->with('order_complete', 'Thanks! Your order has been placed successfully.');
-                }
-                return redirect()->route('order.complete', ['id' => $order->id])->with('order_complete', 'Thanks! Your order has been placed successfully.');
-            } else {
-                $order->update(['payment_status' => 'failed']);
-                return redirect()->back()->with('error', 'Payment failed. Please try again.');
-            }
-        }
-        if($request->paymentMethod === 'sslcommerz'){
-            $sslPostData = $this->orderService->sslCommerzPayload($totalAmount, $transactionId);
-            $sslc = new SslCommerzNotification();
-            try {
-                $sslc->makePayment($sslPostData, 'hosted');
-            } catch (\Exception $e) {
-                return redirect()->back()->with('error', 'Payment failed: ' . $e->getMessage());
-            }
-        }
-    }
-
-
-    public function success(Request $request)
-    {
-        $tran_id = $request->input('tran_id');
-        $amount = $request->input('amount');
-        $currency = $request->input('currency');
-
-        $sslc = new SslCommerzNotification();
-
-        $order = Order::where('transaction_id', $tran_id)->first();
-
-        if (!$order) {
-            return response('Invalid Transaction: Order not found', 404);
-        }
-
-        if ($order->order_status == 'pending') {
-            $validation = $sslc->orderValidate($request->all(), $tran_id, $amount, $currency);
-
-            if ($validation === true) {
-                $order->update(['payment_status' => 'paid']);
-                Cart::clear();
-                // Use your CouponService method to clear session
-                $this->couponService->removeSessionCoupon();
-                SendOrderInvoice::dispatch($order);
-                $this->orderService->sendOrderNotification($order); 
-                if(Auth::check()){
-                    return redirect()->route('user.order-invoice', ['id' => $order->id])->with('order_complete', 'Thanks! Your order has been placed successfully.');
-                }
-                return redirect()->route('order.complete', ['id' => $order->id])->with('order_complete', 'Thanks! Your order has been placed successfully.');
-            } else {
-                $order->update(['payment_status' => 'failed']);
-                return response('Validation Failed', 400);
-            }
-        }
-
-        return response('Invalid Transaction', 400);
-    }
-    public function fail(Request $request)
-    {
-        $tran_id = $request->input('tran_id');
-
-        Order::where('transaction_id', $tran_id)
-            ->update(['order_status' => 'failed']);
-
-        return to_route('order.status')->with('order_failed', 'The Order has been failed');
-    }
-
-    public function cancel(Request $request)
-    {
-        $tran_id = $request->input('tran_id');
-
-        Order::where('transaction_id', $tran_id)
-            ->update(['order_status' => 'cancelled']);
-
-        return to_route('order.status')->with('order_cancelled', 'The Order has been failed');
-    }
-
-    public  function orderStatus(){
-        return view('Web.Layout.pages.order.order-status');
     }
 
     // public function ipn(Request $request)
