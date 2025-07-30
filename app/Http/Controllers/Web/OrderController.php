@@ -95,9 +95,6 @@ class OrderController extends Controller
             'transaction_id'    => $transactionId,
         ];
         $order = $this->orderService->orderGenerate($orderData);
-        if (!empty($couponId) && ($coupon = Cupon::find($couponId))) {
-            $coupon->increment('used');
-        }
         
         if($request->paymentMethod === 'stripe'){
             \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
@@ -110,6 +107,9 @@ class OrderController extends Controller
             if ($charge->status === 'succeeded') {
                 $order->update(['payment_status' => 'paid']);
                 $this->processOrderDetailsAndStock($order, $cart);
+                if (!empty($couponId) && ($coupon = Cupon::find($couponId))) {
+                    $coupon->increment('used');
+                }
                 Cart::clear();
                 $this->couponService->removeSessionCoupon();
                 SendOrderInvoice::dispatch($order);
@@ -140,6 +140,7 @@ class OrderController extends Controller
         $tran_id = $request->input('tran_id');
         $amount = $request->input('amount');
         $currency = $request->input('currency');
+        $couponId = Session::get('coupon_id', null);
         $cart = Cart::getContent();
 
         $sslc = new SslCommerzNotification();
@@ -156,6 +157,9 @@ class OrderController extends Controller
             if ($validation === true) {
                 $order->update(['payment_status' => 'paid']);
                 $this->processOrderDetailsAndStock($order, $cart);
+                if (!empty($couponId) && ($coupon = Cupon::find($couponId))) {
+                    $coupon->increment('used');
+                }
                 Cart::clear();
                 // Use your CouponService method to clear session
                 $this->couponService->removeSessionCoupon();

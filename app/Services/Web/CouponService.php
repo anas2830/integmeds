@@ -98,10 +98,25 @@ class CouponService
             : $value;
     }
 
+
     protected function isWithinValidDate(Cupon $coupon)
     {
         $now = now();
-        return $now->between($coupon->start_date, $coupon->end_date);
+
+        // If no date is set, consider it valid
+        if (is_null($coupon->start_date) && is_null($coupon->end_date)) {
+            return true;
+        }
+
+        if (!is_null($coupon->start_date) && $now->lt($coupon->start_date)) {
+            return false;
+        }
+
+        if (!is_null($coupon->end_date) && $now->gt($coupon->end_date)) {
+            return false;
+        }
+
+        return true;
     }
 
     protected function isEligibleByMinimumPurchase(Cupon $coupon, float $subtotal)
