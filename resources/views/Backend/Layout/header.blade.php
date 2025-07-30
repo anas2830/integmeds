@@ -141,7 +141,7 @@
                                 <h6 class="m-0"> Notifications </h6>
                             </div>
                             <div class="col-auto">
-                                <a href="{{ route('order.list') }}" class="small"> View All</a>
+                                <a href="{{ route('order.list') }}" class="small"> Order List</a>
                             </div>
                         </div>
                     </div>
