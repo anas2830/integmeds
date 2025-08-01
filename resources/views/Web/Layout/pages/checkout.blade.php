@@ -109,19 +109,10 @@
                                         <!-- Payment Option -->
                                         <div class="payment-option p-3">
                                             <p class="text-start mb-3">Payment Option</p>
+                                           
                                             <div class="form-check mb-2">
                                                 <div class="check-wrap">
-                                                    <input class="form-check-input" type="radio"
-                                                        name="paymentMethod" value="sslcommerz" id="ssl-commerz" checked>
-                                                    <label class="form-check-label fw-bold" for="ssl-commerz"> SSL Commerz
-                                                        <img src="{{asset('web_assets/images/bg/ssl-commerz.png')}}" alt="Ssl Commerz"
-                                                            style="height: 20px; margin-left: 10px;"> </label>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-check mb-2">
-                                                <div class="check-wrap">
-                                                    <input class="form-check-input" type="radio" name="paymentMethod" value="stripe" id="stripe-option">
+                                                    <input class="form-check-input" type="radio" name="paymentMethod" value="stripe" id="stripe-option" checked>
                                                     <label class="form-check-label fw-bold" for="stripe-option">
                                                         Stripe
                                                         <img src="{{ asset('web_assets/images/bg/stripe.png') }}" alt="Stripe" style="height: 20px; margin-left: 10px;">
@@ -135,6 +126,16 @@
                                                 <div id="card-errors" class="text-danger mt-2"></div>
                                             </div>
 
+                                            <div class="form-check mb-2">
+                                                <div class="check-wrap">
+                                                    <input class="form-check-input" type="radio"
+                                                        name="paymentMethod" value="sslcommerz" id="ssl-commerz">
+                                                    <label class="form-check-label fw-bold" for="ssl-commerz"> SSL Commerz
+                                                        <img src="{{asset('web_assets/images/bg/ssl-commerz.png')}}" alt="Ssl Commerz"
+                                                            style="height: 20px; margin-left: 10px;"> </label>
+                                                </div>
+                                            </div>
+                                            <span class="fs-small">SSL Commerz is allowed only for Bangladesh</span>
                                         </div>
 
                                     
@@ -393,6 +394,7 @@ $(document).ready(function () {
                         $('.total-price').text(total.toFixed(2));
 
                         $firstRadio.prop('checked', true);
+                        updateHiddenCourierFields($firstRadio);
 
                         $.post("{{ route('update.shipping.cost') }}", {
                             shipping_cost: shippingCost.toFixed(2),
@@ -421,6 +423,13 @@ $(document).ready(function () {
         });
     });
 
+    function updateHiddenCourierFields($radio) {
+        const $parent = $radio.closest('.form-check');
+        $('#selected_courier_name').val($parent.find('.shipping-courier-name').val());
+        $('#selected_delivery_time').val($parent.find('.shipping-delivery-time').val());
+        $('#selected_courier_total_charge').val($parent.find('.shipping-courier-total-charge').val());
+    }
+
     $(document).on('click', '.shipping-radio', function () {
         const baseShippingCost = parseFloat($(this).data('charge')) || 0;
         const shippingCost = getAdjustedShippingCost(baseShippingCost);
@@ -436,6 +445,9 @@ $(document).ready(function () {
             shipping_cost: shippingCost.toFixed(2),
             _token: '{{ csrf_token() }}'
         });
+        if (this.checked) {
+            updateHiddenCourierFields($(this));
+        }
     });
 });
 
@@ -459,7 +471,7 @@ $(document).ready(function () {
          invalid: {
              color: '#fa755a',
          }
-     };
+     };shipping_method_select
  
      const card = elements.create('card', { style: style });
      card.mount('#card-element');

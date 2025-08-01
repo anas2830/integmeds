@@ -26,8 +26,10 @@ class OrderPlaceRequest extends FormRequest
             'newsletter_subscription' => ['nullable', 'boolean'],
             'agree_terms'  => ['accepted'],
             'paymentMethod' => ['required', 'string'],
-            'courier_service_id' => ['nullable', 'string'],            
-
+            'courier_service_id' => ['nullable', 'string', 'max:100'],
+            'selected_courier_name'=>['nullable', 'string', 'max:100'],
+            'selected_delivery_time'=>['nullable', 'string', 'max:100'],
+            'shipping_courier_total_charge' => ['nullable', 'numeric', 'between:0,999999.99'],
             // Billing rules (always required)
             'billing.first_name'      => ['required', 'string', 'max:100'],
             'billing.last_name'       => ['required', 'string', 'max:100'],

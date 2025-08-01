@@ -38,6 +38,7 @@ class OrderController extends Controller
     }
     public  function placeOrder(OrderPlaceRequest $request)
     {
+        // dd($request->all());
         $availableMethods = ShippingMethod::where('status', 1)->get();
         $isShippingRequired = false;
         if (count($availableMethods)){
@@ -77,6 +78,17 @@ class OrderController extends Controller
             $email = $request->customer_email ?? $billingAddress['email'] ?? $shippingAddress['email'] ?? null;
             $this->orderService->newsletterSubscription($email);
         }
+        // easy shipping
+        $courier_service_id = null;
+        $courier_name = null;
+        $delivery_time = null;
+        $total_courier_charge = 0;
+        if($request->shipping_method_id == 1){
+            $courier_service_id = $request->input('courier_service_id');
+            $courier_name = $request->input('selected_courier_name');
+            $delivery_time = $request->input('selected_delivery_time');
+            $total_courier_charge = $request->input('selected_courier_total_charge');
+        }
          // Create Order
          $orderData = [
             'order_number'      => $orderNumber,
@@ -88,6 +100,10 @@ class OrderController extends Controller
             'subtotal'          => $subtotal,
             'discount'          => $discount,
             'shipping_cost'     => $shippingCost,
+            'es_ship_courier_service_id' => $courier_service_id ?? null,
+            'es_ship_courier_name' => $courier_name ?? null,
+            'es_ship_delivery_time' => $delivery_time ?? null,
+            'es_ship_courier_total_charge' => $total_courier_charge,
             'billing_address'   => $billingAddress,
             'shipping_address'  => $shippingAddress,
             'total_amount'      => $totalAmount,

@@ -80,7 +80,7 @@
           </div> --}}
         <div class="">
             <a class="btn btn-success mt-3 mb-3 mr-3" href="/cache-clear">
-                <i class='bx  bx-refresh-cw'></i> 
+                <i class='bx  bx-reset'></i> 
                 <span>Clear Cache</span>
             </a>
         </div>

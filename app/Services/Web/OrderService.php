@@ -52,6 +52,11 @@ class OrderService
             'discount'          => $orderData['discount'],
             'shipping_cost'     => $orderData['shipping_cost'],
 
+            'es_ship_courier_service_id' => $orderData['es_ship_courier_service_id'],
+            'es_ship_courier_name' =>  $orderData['es_ship_courier_name'],
+            'es_ship_delivery_time' => $orderData['es_ship_delivery_time'],
+            'es_ship_courier_total_charge' => $orderData['es_ship_courier_total_charge'],
+
             'billing_address'   => $orderData['billing_address'],
             'shipping_address'  => $orderData['shipping_address'],
 

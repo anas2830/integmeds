@@ -799,6 +799,10 @@ ul{padding:0;margin:0;}
 .most-popular-product-area {
     padding-bottom:50px;
 }
+.fs-small{
+	font-size: 12px;
+	color: red;
+}
 
 /* Login CSS */
 .login-page-area{margin: 50px 0 100px 0;}
