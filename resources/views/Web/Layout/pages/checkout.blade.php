@@ -449,6 +449,21 @@ $(document).ready(function () {
             updateHiddenCourierFields($(this));
         }
     });
+    $(document).on('change input', 'select[name="shipping[country]"], select[name="billing[country]"], input[name="shipping[postal_code]"], input[name="billing[postal_code]"]', function () {
+        const isShipToDifferent = $('input[name="ship_to_different_address"]').prop('checked');
+        const fieldName = $(this).attr('name');
+
+        const isShippingField = fieldName.startsWith('shipping[');
+        const isBillingField = fieldName.startsWith('billing[');
+
+        // Only trigger for the active section
+        if ((isShipToDifferent && isShippingField) || (!isShipToDifferent && isBillingField)) {
+            console.log('Clearing shipping method (country/zip changed)');
+            $('#shipping-method-container').html('');
+            $('#shipping_method_select').val(null);
+        }
+    });
+
 });
 
 </script>

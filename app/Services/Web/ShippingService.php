@@ -15,11 +15,30 @@ class ShippingService
 
     public function getShippingRates($data)
     {
+        $countryCodes = [
+            'CA', // Canada
+            'GB', // United Kingdom
+            'IE', // Ireland
+            'NL', // Netherlands
+            'MT', // Malta
+            'JE', // Jersey
+            'GG', // Guernsey
+            'IM', // Isle of Man
+            'GI', // Gibraltar
+            'BM', // Bermuda
+            'FO', // Faroe Islands
+            'GL', // Greenland
+            'LI', // Liechtenstein
+        ];
         // Verify postal code and country via external API
         $useShippingAddress = $data['ship_to_different_address'];
 
         $address = $useShippingAddress ? ($data['shipping'] ?? []) : ($data['billing'] ?? []);
-        $this->verifyAddressWithZippopotam($address['country'], $address['postal_code']);
+        if(in_array($address['country'], $countryCodes)){
+            $this->verifyAddressWithZipCodeBase($address['country'], $address['postal_code']);
+        }else{
+            $this->verifyAddressWithZippopotam($address['country'], $address['postal_code']);
+        }
         // Find active shipping method by ID
         $method = ShippingMethod::where('id', $data['shipping_method_id'] ?? null)
             ->where('status', 1)
@@ -67,6 +86,36 @@ class ShippingService
             ]);
         }
     }
+
+    public function verifyAddressWithZipCodeBase(string $country, string $postalCode)
+    {
+        $sanitizedPostalCode = str_replace(' ', '', $postalCode);
+
+        $response = Http::get("https://app.zipcodebase.com/api/v1/search", [
+            'apikey' => config('app.zipcodebase.api_key'),
+            'codes' => $sanitizedPostalCode,
+            'country' => $country,
+        ]);
+
+        if (!$response->ok()) {
+            throw ValidationException::withMessages([
+                'shipping_method_id' => 'Shipping address is invalid.',
+            ]);
+        }
+
+        $data = $response->json();
+
+        if (
+            !isset($data['results'][$sanitizedPostalCode]) ||
+            empty($data['results'][$sanitizedPostalCode])
+        ) {
+            throw ValidationException::withMessages([
+                'shipping_method_id' => 'Shipping address is invalid.',
+            ]);
+        }
+
+    }
+
 
 
     private function prepareParcels(): array
