@@ -471,61 +471,67 @@ $(document).ready(function () {
  <!--  stripe -->
  <script src="https://js.stripe.com/v3/"></script>
  <script>
- document.addEventListener('DOMContentLoaded', function () {
-     const stripe = Stripe("{{ config('services.stripe.key') }}");
-     const elements = stripe.elements();
- 
-     const style = {
-         base: {
-             fontSize: '16px',
-             color: '#32325d',
-             '::placeholder': {
-                 color: '#aab7c4',
-             },
-         },
-         invalid: {
-             color: '#fa755a',
-         }
-     };shipping_method_select
- 
-     const card = elements.create('card', { style: style });
-     card.mount('#card-element');
- 
-     // Show/hide Stripe section based on payment method
-     const radios = document.querySelectorAll('input[name="paymentMethod"]');
-     const stripeSection = document.getElementById('stripe-card-section');
- 
-     radios.forEach(radio => {
-         radio.addEventListener('change', function () {
-             stripeSection.style.display = (this.value === 'stripe') ? 'block' : 'none';
-         });
-     });
- 
-     // Intercept the main form submit
-     const form = document.querySelector('form[action="{{ route('place.order') }}"]');
- 
-     form.addEventListener('submit', function (e) {
-         const selectedMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
- 
-         if (selectedMethod === 'stripe') {
-            console.log('stripe aaa');
+document.addEventListener('DOMContentLoaded', function () {
+    const stripe = Stripe("{{ config('services.stripe.key') }}");
+    const elements = stripe.elements();
+
+    const style = {
+        base: {
+            fontSize: '16px',
+            color: '#32325d',
+            '::placeholder': {
+                color: '#aab7c4',
+            },
+        },
+        invalid: {
+            color: '#fa755a',
+        }
+    };
+
+    const card = elements.create('card', { style: style });
+    card.mount('#card-element');
+
+    const radios = document.querySelectorAll('input[name="paymentMethod"]');
+    const stripeSection = document.getElementById('stripe-card-section');
+
+    function toggleStripeSection() {
+        const selected = document.querySelector('input[name="paymentMethod"]:checked');
+        stripeSection.style.display = (selected && selected.value === 'stripe') ? 'block' : 'none';
+    }
+
+    // Initial check on load
+    toggleStripeSection();
+
+    // Listen to radio changes
+    radios.forEach(radio => {
+        radio.addEventListener('change', toggleStripeSection);
+    });
+
+    const form = document.querySelector('form[action="{{ route('place.order') }}"]');
+
+    form.addEventListener('submit', function (e) {
+        const selectedMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+
+        if (selectedMethod === 'stripe') {
+            console.log('stripe selected');
             e.preventDefault();
-             stripe.createToken(card).then(function (result) {
-                 if (result.error) {
-                     document.getElementById('card-errors').textContent = result.error.message;
-                 } else {
-                     const hiddenInput = document.createElement('input');
-                     hiddenInput.setAttribute('type', 'hidden');
-                     hiddenInput.setAttribute('name', 'stripeToken');
-                     hiddenInput.setAttribute('value', result.token.id);
-                     form.appendChild(hiddenInput);
- 
-                     form.submit();
-                 }
-             });
-         }
-     });
- });
+            stripe.createToken(card).then(function (result) {
+                if (result.error) {
+                    document.getElementById('card-errors').textContent = result.error.message;
+                } else {
+                    const hiddenInput = document.createElement('input');
+                    hiddenInput.setAttribute('type', 'hidden');
+                    hiddenInput.setAttribute('name', 'stripeToken');
+                    hiddenInput.setAttribute('value', result.token.id);
+                    form.appendChild(hiddenInput);
+
+                    form.submit();
+                }
+            });
+        }
+    });
+});
+
  </script>
  
 
