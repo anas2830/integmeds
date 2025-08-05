@@ -70,7 +70,7 @@
                                         @endif
 
                                         @if ($errors->has('courier_service_id'))
-                                        <small class="text-danger">
+                                        <small class="text-danger" id="courier-service-error">
                                             {{ $errors->first('courier_service_id') }}
                                         </small>
                                         @endif
@@ -223,8 +223,10 @@ $(document).ready(function () {
 
         if (country === 'US') {
             $shippingMethod.addClass('d-none');
+            $('#courier-service-error').hide();
             updateShippingCostSummary();
         } else {
+            $('#courier-service-error').show();
             $shippingMethod.removeClass('d-none');
         }
     }
@@ -441,8 +443,10 @@ $(document).ready(function () {
         $('.shipping-method').toggleClass('d-none', isUS);
 
         if (isUS) {
+            $('#courier-service-error').hide();
             updateShippingCostSummary();
         }else{
+            $('#courier-service-error').show();
             resetShippingMethod();
         }
     }
