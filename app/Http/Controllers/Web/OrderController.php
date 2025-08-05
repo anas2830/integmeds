@@ -41,10 +41,12 @@ class OrderController extends Controller
         // dd($request->all());
         $availableMethods = ShippingMethod::where('status', 1)->get();
         $isShippingRequired = false;
-        if (count($availableMethods)){
+        $ship_to_different_address = $request->ship_to_different_address;
+        $address = $ship_to_different_address ? $request->shipping : $request->billing;
+        if (count($availableMethods) && $address['country'] != 'US') {
             if (empty($request->courier_service_id)) {
                 return back()->withErrors([
-                    'courier_service_id' => 'Please select a shipping method before proceeding.',
+                    'courier_service_id' => 'Please select a shipping method.',
                 ])->withInput();
             }
             $isShippingRequired = true;
@@ -62,6 +64,9 @@ class OrderController extends Controller
         $shippingAddress = $billingAddress;
         if ($request->ship_to_different_address) {
             $shippingAddress = $request->input('shipping');
+        }
+        if($shippingAddress['country'] == 'US'){
+            $isShippingRequired = true; 
         }
         // Order basics
         $orderNumber = generateOrderNumber();
@@ -83,6 +88,7 @@ class OrderController extends Controller
         $courier_name = null;
         $delivery_time = null;
         $total_courier_charge = 0;
+        // easy shipping
         if($request->shipping_method_id == 1){
             $courier_service_id = $request->input('courier_service_id');
             $courier_name = $request->input('selected_courier_name');

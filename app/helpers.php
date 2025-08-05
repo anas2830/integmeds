@@ -50,6 +50,11 @@ if (!function_exists('convertYoutubeToEmbed')) {
     }
 }
 
+if (!function_exists('getCountryByIsoCode')) {
+    function getCountryByIsoCode($code){
+        return Country::where('iso2', $code)->value('name');
+    }
+}    
 
 if (!function_exists('pendingOrderCount')) {
     function pendingOrderCount()

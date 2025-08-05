@@ -885,6 +885,9 @@ ul{padding:0;margin:0;}
 .partner-slider-wrap  .slick-list { margin-left:-15px; margin-right:-15px;}
 .partner-img {border: 1px solid var(--primary);}
 
+#card-errors {
+    font-size: small;
+}
 
 /* Contact Page*/
 .contact-page-area { margin: 50px 0 100px 0; position: relative; }
@@ -1050,6 +1053,11 @@ ul{padding:0;margin:0;}
 
 /* Extra small Device. */
 @media (max-width: 767px) {
+	.hero-slider img {
+		aspect-ratio: 1.6;
+		object-position: top left;
+	}
+	
 	.hero-area { padding-bottom: 10px; }
 	.hero-slider .priv_arrow i, .hero-slider .next_arrow i { font-size: 15px; }
 	.hero-slider .priv_arrow i { border-radius: 0 30px 30px 0; }
