@@ -131,11 +131,11 @@
                                                                 <td
                                                                     style="font-size: 13px; color: #414141; font-family: 'Open Sans', sans-serif; line-height: 18px; vertical-align: top; text-align: left;">
                                                                     <strong style="font-size:14px;"> From:</strong>
-                                                                        <br> Integmeds
-                                                                        <br> House No #21313, 
-                                                                        <br> Dhaka, DHAKA, 
-                                                                        <br>01736769144
-                                                                        <br>01736769144
+                                                                    <br>Integmeds  
+                                                                    <br>12727 Featherwood Drive Suite 104 
+                                                                    <br>Houston, TX 77034  
+                                                                    <br>United States  
+                                                                    <br>+1 (346) 346-0732
                                                                 </td>
                                                             </tr>
                                                         </tbody>
