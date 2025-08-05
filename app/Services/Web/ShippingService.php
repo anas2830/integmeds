@@ -116,7 +116,45 @@ class ShippingService
 
     }
 
+    public function createShippingParcels(): array
+    {
+        $cartItems = Cart::getContent();
 
+        $items = [];
+        $totalWeight = 0;
+
+        foreach ($cartItems as $item) {
+            $attr = $item->attributes;
+            $quantity = (int) $item->quantity;
+            $weight = max((float) ($attr->weight ?? 0.1), 0.1);
+
+            $items[] = [
+                "quantity" => $quantity,
+                "description" => $item->name,
+                "category" => $attr->category,
+                "sku" => $attr->sku,
+                "actual_weight" => $weight,
+                "dimensions" => [
+                    "length" => (float) $attr->length,
+                    "width"  => (float) $attr->width,
+                    "height" => (float) $attr->height,
+                ],
+                "declared_currency" => "USD",
+                "declared_customs_value" => $item->price,
+                "origin_country_alpha2" => $attr->origin_country_alpha2 ?? 'US',
+                "hs_code" => $attr->hs_code ?? '490199',
+            ];
+
+            $totalWeight += $weight * $quantity;
+        }
+
+        return [
+            [
+                "total_actual_weight" => round($totalWeight, 2),
+                "items" => $items
+            ]
+        ];
+    }
 
     private function prepareParcels(): array
     {
