@@ -35,7 +35,8 @@ class ShippingService
 
         $address = $useShippingAddress ? ($data['shipping'] ?? []) : ($data['billing'] ?? []);
         if(in_array($address['country'], $countryCodes)){
-            $this->verifyAddressWithZipCodeBase($address['country'], $address['postal_code']);
+            // $this->verifyAddressWithZipCodeBase($address['country'], $address['postal_code']);
+            $this->verifyAddressWithGeoCode($address['country'], $address['postal_code']);
         }else{
             $this->verifyAddressWithZippopotam($address['country'], $address['postal_code']);
         }
@@ -75,6 +76,20 @@ class ShippingService
         return $responseData;
     }
 
+    private function verifyAddressWithGeoCode($country, $postalCode)
+    {
+        $postalCode = str_replace(' ', '', $postalCode);
+        $url = "https://geocode.xyz/{$postalCode}?region={$country}&geoit=json";
+
+        $response = Http::timeout(15)->get($url);
+        $data = $response->json();
+
+        if (isset($data['error'])) {
+            throw ValidationException::withMessages([
+                'shipping_method_id' => 'Shipping address is invalid.',
+            ]);
+        }
+    }
     private function verifyAddressWithZippopotam($country, $postalCode)
     {
         $url = "http://api.zippopotam.us/{$country}/{$postalCode}";
