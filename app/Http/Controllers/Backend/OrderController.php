@@ -11,7 +11,7 @@ class OrderController extends Controller
 {
     public function index(Request $request)
     {
-        $orders = Order::with('user');
+        $orders = Order::with('user')->where('payment_status', 'paid');
         if ($request->filled('search')) {
             $orders->where('order_number', 'like', '%' . $request->search . '%');
         }

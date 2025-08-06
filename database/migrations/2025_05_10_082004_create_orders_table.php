@@ -24,6 +24,10 @@ return new class extends Migration
             $table->decimal('subtotal', 10, 2)->default(0);
             $table->decimal('discount', 10, 2)->default(0);
             $table->decimal('shipping_cost', 10, 2)->default(0);
+            $table->string('es_ship_courier_name')->nullable();
+            $table->string('es_ship_courier_service_id')->nullable();
+            $table->string('es_ship_delivery_time')->nullable();
+            $table->decimal('es_ship_courier_total_charge', 10, 2)->default(0);
             $table->decimal('total_amount', 10, 2)->default(0);
             $table->string('payment_method')->nullable();
             $table->string('transaction_id')->nullable();

@@ -27,7 +27,7 @@
                                             <li>City: {{ $billing_address['city'] }} </li>
                                             <li>State: {{ $billing_address['state'] }}</li>
                                             <li>Postal Code: {{ $billing_address['postal_code'] }}</li>
-                                            <li>Country: {{ $billing_address['country'] }}</li>
+                                            <li>Country: {{ getCountryByIsoCode($billing_address['country']) }}</li>
                                             <li>Phone: {{ $billing_address['phone'] }}</li>
                                             <li>Email: {{ $billing_address['email'] }}</li>
                                         </ul>
@@ -52,7 +52,7 @@
                                             <li>City: {{ $shipping_address['city'] }} </li>
                                             <li>State: {{ $shipping_address['state'] }}</li>
                                             <li>Postal Code: {{ $shipping_address['postal_code'] }}</li>
-                                            <li>Country: {{ $shipping_address['country'] }}</li>
+                                            <li>Country: {{ getCountryByIsoCode($shipping_address['country']) }}</li>
                                             <li>Phone: {{ $shipping_address['phone'] }}</li>
                                             <li>Email: {{ $shipping_address['email'] }}</li>
                                         </ul>

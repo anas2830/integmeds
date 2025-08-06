@@ -81,10 +81,11 @@
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Country/Region <span class="required">*</span></label>
+                                    {{-- @dd($countries->take(5), $shipping_address['country']) --}}
                                     <select class="select2 form-control" name="country" id="country" required style="width: 100%;">
                                         <option value="">Please choose your country/region</option>
                                         @foreach($countries as $country)
-                                            <option value="{{ $country['name'] }}" {{ $shipping_address['country'] ?? '' == $country['name'] ? 'selected' : '' }}>{{ $country['name'] }}</option>
+                                            <option value="{{ $country['iso2'] }}" {{ $shipping_address['country']  == $country['iso2'] ? 'selected' : '' }}>{{ $country['name'] }}</option>
                                         @endforeach
                                     </select>
                                 </div>

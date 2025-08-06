@@ -16,6 +16,7 @@ use App\Services\Web\OrderService;
 use Illuminate\Support\Facades\DB;
 use App\Services\Web\CouponService;
 use App\Http\Controllers\Controller;
+use App\Jobs\CreateEasyshipShipment;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Web\ShippingService;
 use Illuminate\Http\RedirectResponse;
@@ -38,12 +39,15 @@ class OrderController extends Controller
     }
     public  function placeOrder(OrderPlaceRequest $request)
     {
+        // dd($request->all());
         $availableMethods = ShippingMethod::where('status', 1)->get();
         $isShippingRequired = false;
-        if (count($availableMethods)){
+        $ship_to_different_address = $request->ship_to_different_address;
+        $address = $ship_to_different_address ? $request->shipping : $request->billing;
+        if (count($availableMethods) && $address['country'] != 'US') {
             if (empty($request->courier_service_id)) {
                 return back()->withErrors([
-                    'courier_service_id' => 'Please select a shipping method before proceeding.',
+                    'courier_service_id' => 'Please select a shipping method.',
                 ])->withInput();
             }
             $isShippingRequired = true;
@@ -62,6 +66,9 @@ class OrderController extends Controller
         if ($request->ship_to_different_address) {
             $shippingAddress = $request->input('shipping');
         }
+        if($shippingAddress['country'] == 'US'){
+            $isShippingRequired = true; 
+        }
         // Order basics
         $orderNumber = generateOrderNumber();
         $transactionId = 'TRX-' . uniqid();
@@ -77,6 +84,18 @@ class OrderController extends Controller
             $email = $request->customer_email ?? $billingAddress['email'] ?? $shippingAddress['email'] ?? null;
             $this->orderService->newsletterSubscription($email);
         }
+        // easy shipping
+        $courier_service_id = null;
+        $courier_name = null;
+        $delivery_time = null;
+        $total_courier_charge = 0;
+        // easy shipping
+        if($request->shipping_method_id == 1){
+            $courier_service_id = $request->input('courier_service_id');
+            $courier_name = $request->input('selected_courier_name');
+            $delivery_time = $request->input('selected_delivery_time');
+            $total_courier_charge = $request->input('selected_courier_total_charge');
+        }
          // Create Order
          $orderData = [
             'order_number'      => $orderNumber,
@@ -88,6 +107,10 @@ class OrderController extends Controller
             'subtotal'          => $subtotal,
             'discount'          => $discount,
             'shipping_cost'     => $shippingCost,
+            'es_ship_courier_service_id' => $courier_service_id ?? null,
+            'es_ship_courier_name' => $courier_name ?? null,
+            'es_ship_delivery_time' => $delivery_time ?? null,
+            'es_ship_courier_total_charge' => $total_courier_charge,
             'billing_address'   => $billingAddress,
             'shipping_address'  => $shippingAddress,
             'total_amount'      => $totalAmount,
@@ -105,15 +128,25 @@ class OrderController extends Controller
                 'description' => 'Integmeds Order Payment - Stripe',
             ]);
             if ($charge->status === 'succeeded') {
-                $order->update(['payment_status' => 'paid']);
+                $order_update = $order->update(['payment_status' => 'paid']);
                 $this->processOrderDetailsAndStock($order, $cart);
                 if (!empty($couponId) && ($coupon = Cupon::find($couponId))) {
                     $coupon->increment('used');
                 }
-                Cart::clear();
-                $this->couponService->removeSessionCoupon();
                 SendOrderInvoice::dispatch($order);
-                $this->orderService->sendOrderNotification($order); 
+
+                $easyship = $availableMethods->find(1);
+                $token = $easyship->token ?? null;  // fix typo 'toekn' => 'token'
+                
+                if (!empty($token)) {
+                    CreateEasyshipShipment::dispatch($order, $token, $this->shippingService->createShippingParcels());
+                }
+
+                $this->orderService->sendOrderNotification($order);
+
+                Cart::clear();
+
+                $this->couponService->removeSessionCoupon();
                 if(Auth::check()){
                     return redirect()->route('user.order-invoice', ['id' => $order->id])->with('order_complete', 'Thanks! Your order has been placed successfully.');
                 }
@@ -160,11 +193,19 @@ class OrderController extends Controller
                 if (!empty($couponId) && ($coupon = Cupon::find($couponId))) {
                     $coupon->increment('used');
                 }
+               
+                SendOrderInvoice::dispatch($order);
+                $easyship = ShippingMethod::find(1);
+                $token = $easyship->token;
+
+                if (!empty($token)) {
+                    CreateEasyshipShipment::dispatch($order, $token, $this->shippingService->createShippingParcels());
+                }
+
+                $this->orderService->sendOrderNotification($order);
                 Cart::clear();
                 // Use your CouponService method to clear session
                 $this->couponService->removeSessionCoupon();
-                SendOrderInvoice::dispatch($order);
-                $this->orderService->sendOrderNotification($order); 
                 if(Auth::check()){
                     return redirect()->route('user.order-invoice', ['id' => $order->id])->with('order_complete', 'Thanks! Your order has been placed successfully.');
                 }

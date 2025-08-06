@@ -15,11 +15,31 @@ class ShippingService
 
     public function getShippingRates($data)
     {
+        $countryCodes = [
+            'CA', // Canada
+            'GB', // United Kingdom
+            'IE', // Ireland
+            'NL', // Netherlands
+            'MT', // Malta
+            'JE', // Jersey
+            'GG', // Guernsey
+            'IM', // Isle of Man
+            'GI', // Gibraltar
+            'BM', // Bermuda
+            'FO', // Faroe Islands
+            'GL', // Greenland
+            'LI', // Liechtenstein
+        ];
         // Verify postal code and country via external API
         $useShippingAddress = $data['ship_to_different_address'];
 
         $address = $useShippingAddress ? ($data['shipping'] ?? []) : ($data['billing'] ?? []);
-        $this->verifyAddressWithZippopotam($address['country'], $address['postal_code']);
+        if(in_array($address['country'], $countryCodes)){
+            // $this->verifyAddressWithZipCodeBase($address['country'], $address['postal_code']);
+            $this->verifyAddressWithGeoCode($address['country'], $address['postal_code']);
+        }else{
+            $this->verifyAddressWithZippopotam($address['country'], $address['postal_code']);
+        }
         // Find active shipping method by ID
         $method = ShippingMethod::where('id', $data['shipping_method_id'] ?? null)
             ->where('status', 1)
@@ -56,6 +76,20 @@ class ShippingService
         return $responseData;
     }
 
+    private function verifyAddressWithGeoCode($country, $postalCode)
+    {
+        $postalCode = str_replace(' ', '', $postalCode);
+        $url = "https://geocode.xyz/{$postalCode}?region={$country}&geoit=json";
+
+        $response = Http::timeout(15)->get($url);
+        $data = $response->json();
+
+        if (isset($data['error'])) {
+            throw ValidationException::withMessages([
+                'shipping_method_id' => 'Shipping address is invalid.',
+            ]);
+        }
+    }
     private function verifyAddressWithZippopotam($country, $postalCode)
     {
         $url = "http://api.zippopotam.us/{$country}/{$postalCode}";
@@ -68,6 +102,74 @@ class ShippingService
         }
     }
 
+    public function verifyAddressWithZipCodeBase(string $country, string $postalCode)
+    {
+        $sanitizedPostalCode = str_replace(' ', '', $postalCode);
+
+        $response = Http::get("https://app.zipcodebase.com/api/v1/search", [
+            'apikey' => config('app.zipcodebase.api_key'),
+            'codes' => $sanitizedPostalCode,
+            'country' => $country,
+        ]);
+
+        if (!$response->ok()) {
+            throw ValidationException::withMessages([
+                'shipping_method_id' => 'Shipping address is invalid.',
+            ]);
+        }
+
+        $data = $response->json();
+
+        if (
+            !isset($data['results'][$sanitizedPostalCode]) ||
+            empty($data['results'][$sanitizedPostalCode])
+        ) {
+            throw ValidationException::withMessages([
+                'shipping_method_id' => 'Shipping address is invalid.',
+            ]);
+        }
+
+    }
+
+    public function createShippingParcels(): array
+    {
+        $cartItems = Cart::getContent();
+
+        $items = [];
+        $totalWeight = 0;
+
+        foreach ($cartItems as $item) {
+            $attr = $item->attributes;
+            $quantity = (int) $item->quantity;
+            $weight = max((float) ($attr->weight ?? 0.1), 0.1);
+
+            $items[] = [
+                "quantity" => $quantity,
+                "description" => $item->name,
+                "category" => $attr->category,
+                "sku" => $attr->sku,
+                "actual_weight" => $weight,
+                "dimensions" => [
+                    "length" => (float) $attr->length,
+                    "width"  => (float) $attr->width,
+                    "height" => (float) $attr->height,
+                ],
+                "declared_currency" => "USD",
+                "declared_customs_value" => $item->price,
+                "origin_country_alpha2" => $attr->origin_country_alpha2 ?? 'US',
+                "hs_code" => $attr->hs_code ?? '490199',
+            ];
+
+            $totalWeight += $weight * $quantity;
+        }
+
+        return [
+            [
+                "total_actual_weight" => round($totalWeight, 2),
+                "items" => $items
+            ]
+        ];
+    }
 
     private function prepareParcels(): array
     {
