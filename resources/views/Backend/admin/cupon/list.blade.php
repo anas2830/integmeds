@@ -73,7 +73,7 @@
                         <tbody>
                             @forelse ($cupons as $cupon)
                                 <tr>
-                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ ($cupons->currentPage() - 1) * $cupons->perPage() + $loop->iteration }}</td>
                                     <td>{{ $cupon->code }}</td>
                                     <td>{{ $cupon->type }}</td>
                                     <td>{{ $cupon->value }}</td>

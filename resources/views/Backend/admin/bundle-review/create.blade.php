@@ -1,0 +1,109 @@
+
+@extends('Backend.Layout.app')
+@section('site-title', 'Create Bundle Review')
+@section('main-content')
+
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box d-flex align-items-center justify-content-between">
+                <h4 class="mb-0 font-size-18">Create Bundle Review</h4>
+
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="{{ route('bundle-review.index') }}">Bundle Review</a></li>
+                        <li class="breadcrumb-item active">Create Bundle Review</li>
+                    </ol>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+
+    <div class="row">
+        <div class="col-lg-12">
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>{{ session('success') }}</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif  
+            <div class="card">
+                <div class="card-body">
+                    <form action="{{ route('bundle-review.store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="formrow-firstname-input required">User <span class="required-icon">*</span></label>
+                                    <select class="form-control w-100 select2" name="user_id" required>
+                                        <option value="">Select User</option>
+                                        @foreach($users as $user)
+                                            <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('user_id')<span class="text-danger">{{ $message }}</span>@enderror
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="formrow-email-input required">Bundle <span class="required-icon">*</span></label>
+                                    <select class="form-control w-100 select2" name="bundle_id[]" multiple required>
+                                        <option value="">Select Bundle</option>
+                                        @foreach($bundles as $bundle)
+                                            <option value="{{ $bundle->id }}">{{ $bundle->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('bundle_id')<span class="text-danger">{{ $message }}</span>@enderror
+                                </div>
+                            </div>
+                        </div>
+        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="formrow-password-input required">Rating <span class="required-icon">*</span></label>
+                                    <input type="number" class="form-control w-100" value="5" name="rating" min="1" max="5" required inputmode="numeric" pattern="[1-5]" oninput="if(this.value < 1) this.value = 1; if(this.value > 5) this.value = 5;">
+                                    @error('rating')<span class="text-danger">{{ $message }}</span>@enderror
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="formrow-password-input required">Review <span class="required-icon">*</span></label>
+                                    <textarea class="form-control w-100" name="review" required></textarea>
+                                    @error('review')<span class="text-danger">{{ $message }}</span>@enderror
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <button type="submit" class="btn btn-primary w-md">Create</button>
+                            <a href="{{ route('bundle-review.index') }}" class="btn btn-secondary w-md">Back to list</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+         </div>
+    </div>
+
+@endsection
+
+
+@push('custom-scripts')
+    <script>
+        $(document).ready(function () {
+            // Initialize Select2
+            $('.select2').select2({
+                placeholder: "Select an option",
+                width: '100%',
+                allowClear: true
+            });
+        });
+    </script>
+
+@endpush
+
+

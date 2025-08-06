@@ -1,6 +1,32 @@
 @extends('Web.Layout.app')
 
-@section('site-title', 'Bundle Details')
+@section('site-title', $bundle->name)
+
+@push('dynamic_meta')
+<meta name="description" content="{{ Str::limit(strip_tags($bundle->description), 300, '') }}">
+<meta name="keywords" content="Integrative Medicine , American Number #1, Supplement Brand">
+<meta property="og:site_name" content="{{ config('app.name') }}">
+<meta property="og:title" content="{{ $bundle->name }}">
+<meta property="og:description" content="{{ Str::limit(strip_tags($bundle->description), 300, '') }}">
+<meta property="og:url" content="{{ route('product-details', $bundle->id) }}">
+<meta property="og:type" content="article">
+
+<meta property="og:image" content="{{ $bundle->bundleImages && $bundle->bundleImages->first()?->image_url ? asset($bundle->bundleImages->first()->image_url) : asset('web_assets/images/logo/footer-logo.png') }}">
+<meta property="og:locale" content="en_US">
+
+<meta name="twitter:domain" content="{{ url('/') }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="integmeds.com">
+<meta name="twitter:title" content="{{ $bundle->name }}">
+<meta name="twitter:description" content="{{ Str::limit(strip_tags($bundle->description), 300, '') }}">
+<meta name="twitter:url" content="{{ route('bundle-details', $bundle->id) }}">
+<meta name="twitter:image" content="{{ $bundle->bundleImages && $bundle->bundleImages->first()?->image_url ? asset($bundle->bundleImages->first()->image_url) : asset('web_assets/images/logo/footer-logo.png') }}">
+<meta name="twitter:site" content="@integmeds">
+<meta name="twitter:creator" content="@integmeds">
+<link rel="image_src" href="{{ $bundle->bundleImages && $bundle->bundleImages->first()?->image_url ? asset($bundle->bundleImages->first()->image_url) : asset('web_assets/images/logo/footer-logo.png') }}">
+<link rel="canonical" href="{{ route('product-details', $bundle->id) }}">
+@endpush
+
 
 @push('css')
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
@@ -50,14 +76,11 @@
                                     </ul>
                                 </div>
                                 <div class="inner-shop-details-price">
-                                    <h2 class="price">${{$bundle->min_price}} - ${{$bundle->max_price}}</h2>
+                                    <h2 class="price">{{config('app.currency_symbol')}}{{$bundle->min_price}} - {{config('app.currency_symbol')}}{{$bundle->max_price}}</h2>
                                 </div>
                                 <p>{{$bundle->short_description}}</p>
                                 {{-- {{ $bundle->products }} --}}
                                 <x-Web.bundle.product-bundle :bundleProducts="$bundle->products" />
-                                <div class="inner-shop-perched-info">
-                                    <a href="#" class="cart-btn">Add to Cart</a>
-                                </div>
                                 <div class="inner-shop-details-bottom">
                                     <ul>                                        
                                         <li>
@@ -207,9 +230,8 @@
         });
     });
 
-    let hasClickedRating = false;
+    // Rating
     $('.rating-stars i').on('click', function() {
-        hasClickedRating = true;
         var rating = $(this).data('rating');
         $('#rating').val(rating);
 
@@ -223,6 +245,7 @@
         });
     });
 
+    // Review Submit    
     $('#reviewForm').on('submit', function(e) {
         e.preventDefault();
 
@@ -235,18 +258,15 @@
             },
             success: function(response) {
                 showSuccessMessage(response.message);
-                if (hasClickedRating) {
-                    $('#rating').val(0);
-                    $('.rating-stars i').removeClass('star-selected');
-                    hasClickedRating = false;
-                }
+                $('#rating').val(0);
+                $('.rating-stars i').removeClass('star-selected selected');
+                $('#form-review').val('');    
             },
             error: function(xhr) {
                 let message = 'Submission failed!';
                 if (xhr.responseJSON && xhr.responseJSON.message) {
                     message = xhr.responseJSON.message;
                 }
-                console.log(message);
             }
         });
     });

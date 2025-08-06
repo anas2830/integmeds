@@ -70,7 +70,7 @@
                         <tbody>
                             @forelse ($products as $product)
                                 <tr>
-                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ ($products->currentPage() - 1) * $products->perPage() + $loop->iteration }}</td>
                                     <td>
                                         @if($product->firstImage )
                                             <img class="w-10 ms-3" src="{{ asset($product->firstImage?->image_url) }}" alt="product" style="width:50px; height:50px;">

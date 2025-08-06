@@ -18,6 +18,18 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-12">
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show text-white" role="alert">
+                    <span class="text-sm">{{ session('success') }}</span>
+                    <button type="button" class="close text-white" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
+        </div>
+    </div>
     <!-- end page title -->
 
 
@@ -28,13 +40,13 @@
                 <div class="card-body">
                     <div class="media">
                         <div class="media-body">
-                            <p class="text-muted font-weight-medium">Average Price</p>
-                            <h4 class="mb-0">$16.2</h4>
+                            <p class="text-muted font-weight-medium">Total Orders</p>
+                            <h4 class="mb-0">{{$total_orders}}</h4>
                         </div>
 
                         <div class="avatar-sm rounded-circle bg-primary align-self-center mini-stat-icon">
                             <span class="avatar-title rounded-circle bg-primary">
-                                <i class="bx bx-purchase-tag-alt font-size-24"></i>
+                                <i class="bx bx-cart font-size-24"></i>
                             </span>
                         </div>
                     </div>
@@ -46,13 +58,13 @@
                 <div class="card-body">
                     <div class="media">
                         <div class="media-body">
-                            <p class="text-muted font-weight-medium">Orders</p>
-                            <h4 class="mb-0">1,235</h4>
+                            <p class="text-muted font-weight-medium">Pending Orders</p>
+                            <h4 class="mb-0">{{$pending_orders}}</h4>
                         </div>
 
                         <div class="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
                             <span class="avatar-title">
-                                <i class="bx bx-copy-alt font-size-24"></i>
+                                <i class="bx bx-cart font-size-24"></i>
                             </span>
                         </div>
                     </div>
@@ -64,13 +76,13 @@
                 <div class="card-body">
                     <div class="media">
                         <div class="media-body">
-                            <p class="text-muted font-weight-medium">Revenue</p>
-                            <h4 class="mb-0">$35, 723</h4>
+                            <p class="text-muted font-weight-medium">Total Revenue</p>
+                            <h4 class="mb-0">{{config('app.currency_symbol')}}{{$total_revenue}}</h4>
                         </div>
 
                         <div class="avatar-sm rounded-circle bg-primary align-self-center mini-stat-icon">
                             <span class="avatar-title rounded-circle bg-primary">
-                                <i class="bx bx-archive-in font-size-24"></i>
+                                <i class="bx bx-money font-size-24"></i>
                             </span>
                         </div>
                     </div>
@@ -82,13 +94,13 @@
                 <div class="card-body">
                     <div class="media">
                         <div class="media-body">
-                            <p class="text-muted font-weight-medium">Average Price</p>
-                            <h4 class="mb-0">$16.2</h4>
+                            <p class="text-muted font-weight-medium">Total Products</p>
+                            <h4 class="mb-0">{{$total_products}}</h4>
                         </div>
 
                         <div class="avatar-sm rounded-circle bg-primary align-self-center mini-stat-icon">
                             <span class="avatar-title rounded-circle bg-primary">
-                                <i class="bx bx-purchase-tag-alt font-size-24"></i>
+                                <i class="bx bx-cart font-size-24"></i>
                             </span>
                         </div>
                     </div>
@@ -100,27 +112,10 @@
 
     <!-- start row -->
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title mb-4">Earning</h4>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <p class="text-muted">This month</p>
-                            <h3>$34,252</h3>
-                        </div>
-                        <div class="col-sm-6">
-                            <p class="text-muted">Today</p>
-                            <h3>$28,652</h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title mb-4 float-sm-left">Sales Report</h4>
+                    <h4 class="card-title mb-4 float-sm-left">Monthly Sales Report</h4>
                     <div class="clearfix"></div>
                     <div id="stacked-column-chart" class="apex-charts" dir="ltr"></div>
                 </div>
@@ -143,147 +138,64 @@
                                     <th>Billing Name</th>
                                     <th>Date</th>
                                     <th>Total</th>
+                                    <th>Order Status</th>
                                     <th>Payment Status</th>
                                     <th>Payment Method</th>
                                     <th>View Details</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td><a href="javascript: void(0);" class="text-body font-weight-bold">#SK2540</a> </td>
-                                    <td>Neal Matthews</td>
-                                    <td>
-                                        07 Oct, 2019
-                                    </td>
-                                    <td>
-                                        $400
-                                    </td>
-                                    <td>
-                                        <span class="badge badge-pill badge-soft-success font-size-12">Paid</span>
-                                    </td>
-                                    <td>
-                                        <i class="fab fa-cc-mastercard mr-1"></i> Mastercard
-                                    </td>
-                                    <td>
-                                        <!-- Button trigger modal -->
-                                        <button type="button" class="btn btn-primary btn-sm btn-rounded waves-effect waves-light" data-toggle="modal" data-target=".exampleModal">
-                                            View Details
-                                        </button>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td><a href="javascript: void(0);" class="text-body font-weight-bold">#SK2541</a> </td>
-                                    <td>Jamal Burnett</td>
-                                    <td>
-                                        07 Oct, 2019
-                                    </td>
-                                    <td>
-                                        $380
-                                    </td>
-                                    <td>
-                                        <span class="badge badge-pill badge-soft-danger font-size-12">Chargeback</span>
-                                    </td>
-                                    <td>
-                                        <i class="fab fa-cc-visa mr-1"></i> Visa
-                                    </td>
-                                    <td>
-                                        <!-- Button trigger modal -->
-                                        <button type="button" class="btn btn-primary btn-sm btn-rounded waves-effect waves-light" data-toggle="modal" data-target=".exampleModal">
-                                            View Details
-                                        </button>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td><a href="javascript: void(0);" class="text-body font-weight-bold">#SK2542</a> </td>
-                                    <td>Juan Mitchell</td>
-                                    <td>
-                                        06 Oct, 2019
-                                    </td>
-                                    <td>
-                                        $384
-                                    </td>
-                                    <td>
-                                        <span class="badge badge-pill badge-soft-success font-size-12">Paid</span>
-                                    </td>
-                                    <td>
-                                        <i class="fab fa-cc-paypal mr-1"></i> Paypal
-                                    </td>
-                                    <td>
-                                        <!-- Button trigger modal -->
-                                        <button type="button" class="btn btn-primary btn-sm btn-rounded waves-effect waves-light" data-toggle="modal" data-target=".exampleModal">
-                                            View Details
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><a href="javascript: void(0);" class="text-body font-weight-bold">#SK2543</a> </td>
-                                    <td>Barry Dick</td>
-                                    <td>
-                                        05 Oct, 2019
-                                    </td>
-                                    <td>
-                                        $412
-                                    </td>
-                                    <td>
-                                        <span class="badge badge-pill badge-soft-success font-size-12">Paid</span>
-                                    </td>
-                                    <td>
-                                        <i class="fab fa-cc-mastercard mr-1"></i> Mastercard
-                                    </td>
-                                    <td>
-                                        <!-- Button trigger modal -->
-                                        <button type="button" class="btn btn-primary btn-sm btn-rounded waves-effect waves-light" data-toggle="modal" data-target=".exampleModal">
-                                            View Details
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><a href="javascript: void(0);" class="text-body font-weight-bold">#SK2544</a> </td>
-                                    <td>Ronald Taylor</td>
-                                    <td>
-                                        04 Oct, 2019
-                                    </td>
-                                    <td>
-                                        $404
-                                    </td>
-                                    <td>
-                                        <span class="badge badge-pill badge-soft-warning font-size-12">Refund</span>
-                                    </td>
-                                    <td>
-                                        <i class="fab fa-cc-visa mr-1"></i> Visa
-                                    </td>
-                                    <td>
-                                        <!-- Button trigger modal -->
-                                        <button type="button" class="btn btn-primary btn-sm btn-rounded waves-effect waves-light" data-toggle="modal" data-target=".exampleModal">
-                                            View Details
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><a href="javascript: void(0);" class="text-body font-weight-bold">#SK2545</a> </td>
-                                    <td>Jacob Hunter</td>
-                                    <td>
-                                        04 Oct, 2019
-                                    </td>
-                                    <td>
-                                        $392
-                                    </td>
-                                    <td>
-                                        <span class="badge badge-pill badge-soft-success font-size-12">Paid</span>
-                                    </td>
-                                    <td>
-                                        <i class="fab fa-cc-paypal mr-1"></i> Paypal
-                                    </td>
-                                    <td>
-                                        <!-- Button trigger modal -->
-                                        {{-- <button type="button" class="btn btn-primary btn-sm btn-rounded waves-effect waves-light view-order-btn" data-toggle="modal" data-target=".exampleModal" data-id="{{ $order->id }}"> --}}
-                                        <button type="button" class="btn btn-primary btn-sm btn-rounded waves-effect waves-light view-order-btn" data-toggle="modal" data-target=".exampleModal">
-                                            View Details
-                                        </button>
-                                    </td>
-                                </tr>
+                                @forelse ($latest_orders as $order)
+                                    <tr>
+                                        <td><a href="javascript: void(0);" class="text-body font-weight-bold">#{{$order->order_number}}</a> </td>
+                                        <td>{{$order->user?->name}}</td>
+                                        <td>
+                                            {{$order->created_at->format('d-m-Y')}}
+                                        </td>
+                                        <td>
+                                            ${{$order->total_amount}}
+                                        </td>
+                                        <td>
+                                            @switch($order->order_status)
+                                                @case('processing')
+                                                    <span class="badge badge-pill badge-soft-info font-size-12">Processing</span>
+                                                    @break
+                                                @case('completed')
+                                                    <span class="badge badge-pill badge-soft-success font-size-12">Completed</span>
+                                                    @break
+                                                @case('cancelled')
+                                                    <span class="badge badge-pill badge-soft-danger font-size-12">Cancelled</span>
+                                                    @break
+                                                @default
+                                                    <span class="badge badge-pill badge-soft-warning font-size-12">Pending</span>
+                                                    @break
+                                            @endswitch
+                                        </td>
+                                        <td>
+                                            @switch($order->payment_status)
+                                                @case('paid')
+                                                    <span class="status-bg-succ">Paid</span>
+                                                    @break
+                                                @case('failed')
+                                                    <span class="status-bg-canc">Failed</span>
+                                                    @break
+                                                @default
+                                                    <span class="status-bg-pn">Pending</span>
+                                                    @break
+                                            @endswitch
+                                        </td>
+                                        <td>{{$order->payment_method}}</td>
+                                        <td>
+                                            <a target="_blank" href="{{ route('order.details', $order->id) }}" class="btn btn-primary btn-sm btn-rounded waves-effect waves-light">
+                                                View Details
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="6" class="text-center">No data found</td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -295,200 +207,54 @@
     <!-- end row -->
 
 
-    <!-- Modal -->
-    <div class="modal fade exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Order Details</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p class="mb-2">Product id: <span class="text-primary">#SK2540</span></p>
-                    <p class="mb-4">Billing Name: <span class="text-primary">Neal Matthews</span></p>
-
-                    <div class="table-responsive">
-                        <table class="table table-centered table-nowrap">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Product</th>
-                                    <th scope="col">Product Name</th>
-                                    <th scope="col">Price</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th scope="row">
-                                        <div>
-                                            <img src="{{ asset('assets/images/product/img-7.png') }}" alt="" class="avatar-sm">
-                                        </div>
-                                    </th>
-                                    <td>
-                                        <div>
-                                            <h5 class="text-truncate font-size-14">Wireless Headphone (Black)</h5>
-                                            <p class="text-muted mb-0">$ 225 x 1</p>
-                                        </div>
-                                    </td>
-                                    <td>$ 255</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">
-                                        <div>
-                                            <img src="{{ asset('assets/images/product/img-4.png') }}" alt="" class="avatar-sm">
-                                        </div>
-                                    </th>
-                                    <td>
-                                        <div>
-                                            <h5 class="text-truncate font-size-14">Phone patterned cases</h5>
-                                            <p class="text-muted mb-0">$ 145 x 1</p>
-                                        </div>
-                                    </td>
-                                    <td>$ 145</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">
-                                        <h6 class="m-0 text-right">Sub Total:</h6>
-                                    </td>
-                                    <td>
-                                        $ 400
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">
-                                        <h6 class="m-0 text-right">Shipping:</h6>
-                                    </td>
-                                    <td>
-                                        Free
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">
-                                        <h6 class="m-0 text-right">Total:</h6>
-                                    </td>
-                                    <td>
-                                        $ 400
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- end modal -->
-
 @endsection
 
 @push('custom-scripts')
     <script src="{{ asset('assets/libs/apexcharts/apexcharts.min.js') }}"></script>
     <script>
+        let monthlySales = @json($monthly_sales);
+    
         var options = {
             chart: {
                 height: 359,
                 type: "bar",
-                stacked: !0,
+                stacked: true,
                 toolbar: {
-                    show: !1
+                    show: false
                 },
                 zoom: {
-                    enabled: !0
+                    enabled: true
                 }
             },
             plotOptions: {
                 bar: {
-                    horizontal: !1,
+                    horizontal: false,
                     columnWidth: "15%",
                     endingShape: "rounded"
                 }
             },
             dataLabels: {
-                enabled: !1
+                enabled: false
             },
             series: [{
-                name: "Series A",
-                data: [44, 55, 41, 67, 22, 43, 36, 52, 24, 18, 36, 48]
-            }, {
-                name: "Series B",
-                data: [13, 23, 20, 8, 13, 27, 18, 22, 10, 16, 24, 22]
-            }, {
-                name: "Series C",
-                data: [11, 17, 15, 15, 21, 14, 11, 18, 17, 12, 20, 18]
+                name: "Monthly Sales",
+                data: monthlySales
             }],
             xaxis: {
                 categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
             },
-            colors: ["#556ee6", "#f1b44c", "#34c38f"],
+            colors: ["#34c38f"],
             legend: {
                 position: "bottom"
             },
             fill: {
                 opacity: 1
             }
-        },
-        chart = new ApexCharts(document.querySelector("#stacked-column-chart"), options);
+        };
+    
+        var chart = new ApexCharts(document.querySelector("#stacked-column-chart"), options);
         chart.render();
-
-
     </script>
-
-    <script>
-        // $(document).ready(function () {
-        //     $('.view-order-btn').click(function () {
-        //         var orderId = $(this).data('id');
-
-        //         $.ajax({
-        //             url: '/order-details/' + orderId,
-        //             type: 'GET',
-        //             success: function (response) {
-        //                 $('#exampleModalLabel').text('Order #' + response.order.id);
-        //                 $('.modal-body').html(`
-        //                     <p class="mb-2">Product id: <span class="text-primary">#${response.order.id}</span></p>
-        //                     <p class="mb-4">Billing Name: <span class="text-primary">${response.order.customer_name}</span></p>
-        //                     <div class="table-responsive">
-        //                         <table class="table table-centered table-nowrap">
-        //                             <thead>
-        //                                 <tr>
-        //                                     <th scope="col">Product</th>
-        //                                     <th scope="col">Product Name</th>
-        //                                     <th scope="col">Price</th>
-        //                                 </tr>
-        //                             </thead>
-        //                             <tbody>
-        //                                 ${response.items.map(item => `
-        //                                     <tr>
-        //                                         <th scope="row">
-        //                                             <img src="/storage/${item.product.image}" class="avatar-sm" />
-        //                                         </th>
-        //                                         <td>
-        //                                             <h5 class="text-truncate font-size-14">${item.product.name}</h5>
-        //                                             <p class="text-muted mb-0">$ ${item.price} x ${item.quantity}</p>
-        //                                         </td>
-        //                                         <td>$ ${(item.price * item.quantity)}</td>
-        //                                     </tr>
-        //                                 `).join('')}
-        //                                 <tr>
-        //                                     <td colspan="2" class="text-right">Total:</td>
-        //                                     <td>$ ${response.order.total}</td>
-        //                                 </tr>
-        //                             </tbody>
-        //                         </table>
-        //                     </div>
-        //                 `);
-        //                 $('.exampleModal').modal('show');
-        //             },
-        //             error: function () {
-        //                 alert('Unable to fetch order details.');
-        //             }
-        //         });
-        //     });
-        // });
-    </script>
-
+    
 @endpush
 

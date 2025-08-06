@@ -78,7 +78,18 @@
                   </a>
               </div>
           </div> --}}
-
+        <div class="">
+            <a class="btn btn-success mt-3 mb-3 mr-3" href="/cache-clear">
+                <i class='bx  bx-reset'></i> 
+                <span>Clear Cache</span>
+            </a>
+        </div>
+        <div class="">
+            <a class="btn btn-success mt-3 mb-3" href="{{ route('/') }}">
+                <i class='bx  bx-globe'></i> 
+                <span>Go to Website</span>
+            </a>
+        </div>
           <div class="dropdown d-none d-lg-inline-block ml-1">
               <button type="button" class="btn header-item noti-icon waves-effect"
                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -88,44 +99,23 @@
                   <div class="px-lg-2">
                       <div class="row no-gutters">
                           <div class="col">
-                              <a class="dropdown-icon-item" href="#">
-                                  <img src="{{ asset('assets/images/brands/github.png') }}" alt="Github">
-                                  <span>GitHub</span>
-                              </a>
-                          </div>
-                          <div class="col">
-                              <a class="dropdown-icon-item" href="#">
-                                  <img src="{{ asset('assets/images/brands/bitbucket.png') }}" alt="bitbucket">
-                                  <span>Bitbucket</span>
-                              </a>
-                          </div>
-                          <div class="col">
-                              <a class="dropdown-icon-item" href="#">
-                                  <img src="{{ asset('assets/images/brands/dribbble.png') }}" alt="dribbble">
-                                  <span>Dribbble</span>
-                              </a>
-                          </div>
-                      </div>
-
-                      <div class="row no-gutters">
-                          <div class="col">
-                              <a class="dropdown-icon-item" href="#">
+                              <a class="dropdown-icon-item" href="{{ route('order.list') }}">
                                   <img src="{{ asset('assets/images/brands/dropbox.png') }}" alt="dropbox">
-                                  <span>Dropbox</span>
+                                  <span>Orders</span>
                               </a>
                           </div>
                           <div class="col">
-                              <a class="dropdown-icon-item" href="#">
-                                  <img src="{{ asset('assets/images/brands/mail_chimp.png') }}" alt="mail_chimp">
-                                  <span>Mail Chimp</span>
-                              </a>
-                          </div>
-                          <div class="col">
-                              <a class="dropdown-icon-item" href="#">
+                              <a class="dropdown-icon-item" href="{{ route('product-bundle.index') }}">
                                   <img src="{{ asset('assets/images/brands/slack.png') }}" alt="slack">
-                                  <span>Slack</span>
+                                  <span>Bundle</span>
                               </a>
                           </div>
+                          <div class="col">
+                            <a class="dropdown-icon-item" href="{{ route('product.index') }}">
+                                <img src="{{ asset('assets/images/brands/dribbble.png') }}" alt="dribbble">
+                                <span>Products</span>
+                            </a>
+                        </div>
                       </div>
                   </div>
               </div>
@@ -138,90 +128,55 @@
           </div>
 
           <div class="dropdown d-inline-block">
-              <button type="button" class="btn header-item noti-icon waves-effect" id="page-header-notifications-dropdown"
-                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="bx bx-bell bx-tada"></i>
-                  <span class="badge badge-danger badge-pill">3</span>
-              </button>
-              <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right p-0"
-                  aria-labelledby="page-header-notifications-dropdown">
-                  <div class="p-3">
-                      <div class="row align-items-center">
-                          <div class="col">
-                              <h6 class="m-0"> Notifications </h6>
-                          </div>
-                          <div class="col-auto">
-                              <a href="#!" class="small"> View All</a>
-                          </div>
-                      </div>
-                  </div>
-                  <div data-simplebar style="max-height: 230px;">
-                      <a href="#" class="text-reset notification-item">
-                          <div class="media">
-                              <div class="avatar-xs mr-3">
-                                  <span class="avatar-title bg-primary rounded-circle font-size-16">
-                                      <i class="bx bx-cart"></i>
-                                  </span>
-                              </div>
-                              <div class="media-body">
-                                  <h6 class="mt-0 mb-1">Your order is placed</h6>
-                                  <div class="font-size-12 text-muted">
-                                      <p class="mb-1">If several languages coalesce the grammar</p>
-                                      <p class="mb-0"><i class="mdi mdi-clock-outline"></i> 3 min ago</p>
-                                  </div>
-                              </div>
-                          </div>
-                      </a>
-                      <a href="#" class="text-reset notification-item">
-                          <div class="media">
-                              <img src="{{ asset('assets/images/users/avatar-3.jpg') }}"
-                                  class="mr-3 rounded-circle avatar-xs" alt="user-pic">
-                              <div class="media-body">
-                                  <h6 class="mt-0 mb-1">James Lemire</h6>
-                                  <div class="font-size-12 text-muted">
-                                      <p class="mb-1">It will seem like simplified English.</p>
-                                      <p class="mb-0"><i class="mdi mdi-clock-outline"></i> 1 hours ago</p>
-                                  </div>
-                              </div>
-                          </div>
-                      </a>
-                      <a href="#" class="text-reset notification-item">
-                          <div class="media">
-                              <div class="avatar-xs mr-3">
-                                  <span class="avatar-title bg-success rounded-circle font-size-16">
-                                      <i class="bx bx-badge-check"></i>
-                                  </span>
-                              </div>
-                              <div class="media-body">
-                                  <h6 class="mt-0 mb-1">Your item is shipped</h6>
-                                  <div class="font-size-12 text-muted">
-                                      <p class="mb-1">If several languages coalesce the grammar</p>
-                                      <p class="mb-0"><i class="mdi mdi-clock-outline"></i> 3 min ago</p>
-                                  </div>
-                              </div>
-                          </div>
-                      </a>
+                <button type="button" class="btn header-item noti-icon waves-effect" id="page-header-notifications-dropdown"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="bx bx-bell bx-tada"></i>
+                    <span class="badge badge-danger badge-pill">{{adminUser()->unreadNotifications()->count()}}</span>
+                </button>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right p-0"
+                aria-labelledby="page-header-notifications-dropdown">
+                    <div class="p-3">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <h6 class="m-0"> Notifications </h6>
+                            </div>
+                            <div class="col-auto">
+                                <a href="{{ route('order.list') }}" class="small"> Order List</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div data-simplebar style="max-height: 230px;">
+                        @forelse(adminUser()->unreadNotifications as $notification)
+                            <a href="{{ route('admin.notifications.read', $notification->id) }}" class="text-reset notification-item">
+                                <div class="media">
+                                    <div class="avatar-xs mr-3">
+                                        <span class="avatar-title bg-primary rounded-circle font-size-16">
+                                            <i class="bx bx-cart"></i>
+                                        </span>
+                                    </div>
+                                    <div class="media-body">
+                                        <h6 class="mt-0 mb-1">{{ $notification->data['title'] ?? 'Notification' }}</h6>
+                                        <div class="font-size-12 text-muted">
+                                            <p class="mb-1">{{ $notification->data['message'] ?? '' }}</p>
+                                            <p class="mb-0">
+                                                <i class="mdi mdi-clock-outline"></i>
+                                                {{ $notification->created_at->diffForHumans() }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        @empty
+                            <div class="text-center py-3 text-muted">No new notifications</div>
+                        @endforelse
 
-                      <a href="#" class="text-reset notification-item">
-                          <div class="media">
-                              <img src="{{ asset('assets/images/users/avatar-4.jpg') }}"
-                                  class="mr-3 rounded-circle avatar-xs" alt="user-pic">
-                              <div class="media-body">
-                                  <h6 class="mt-0 mb-1">Salena Layfield</h6>
-                                  <div class="font-size-12 text-muted">
-                                      <p class="mb-1">As a skeptical Cambridge friend of mine occidental.</p>
-                                      <p class="mb-0"><i class="mdi mdi-clock-outline"></i> 1 hours ago</p>
-                                  </div>
-                              </div>
-                          </div>
-                      </a>
-                  </div>
-                  <div class="p-2 border-top">
-                      <a class="btn btn-sm btn-link font-size-14 btn-block text-center" href="javascript:void(0)">
-                          <i class="mdi mdi-arrow-right-circle mr-1"></i> View More..
-                      </a>
-                  </div>
-              </div>
+                    </div>
+                    <div class="p-2 border-top">
+                        <a class="btn btn-sm btn-link font-size-14 btn-block text-center" href="{{ route('order.list') }}">
+                            <i class="mdi mdi-arrow-right-circle mr-1"></i> View More..
+                        </a>
+                    </div>
+                </div>
           </div>
 
           <div class="dropdown d-inline-block">
@@ -231,14 +186,14 @@
                         @if(isset(Auth::guard('admin')->user()->file_name) && file_exists(Auth::guard('admin')->user()->file_name))
                             <img class="rounded-circle header-profile-user" src="{{ asset(Auth::guard('admin')->user()->file_name) }}" alt="Header Avatar">
                         @else 
-                            <img class="rounded-circle header-profile-user" src="{{ asset('assets/images/users/avatar-2.jpg') }}" alt="Header Avatar">
+                            <img class="rounded-circle header-profile-user" src="{{ asset('web_assets/images/bg/profile-photo.png') }}" alt="Header Avatar">
                         @endif
                         <span class="d-none d-xl-inline-block ml-1">{{ Auth::guard('admin')->user()->name }}</span>
                     @elseif(Auth::guard('editor')->check())
                         @if(isset(Auth::guard('editor')->user()->file_name) && file_exists(Auth::guard('editor')->user()->file_name))
                          <img class="rounded-circle header-profile-user" src="{{ asset(Auth::guard('editor')->user()->file_name) }}" alt="Header Avatar">
                         @else 
-                            <img class="rounded-circle header-profile-user" src="{{ asset('assets/images/users/avatar-1.jpg') }}" alt="Header Avatar">
+                            <img class="rounded-circle header-profile-user" src="{{ asset('web_assets/images/bg/profile-photo.png') }}" alt="Header Avatar">
                         @endif
                         <span class="d-none d-xl-inline-block ml-1">{{ Auth::guard('editor')->user()->name }}</span>
                     @endif

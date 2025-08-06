@@ -1,14 +1,38 @@
 @extends('Web.Layout.app')
 
-@section('site-title', 'Product Details')
+@section('site-title', $product->product_name)
+
+@push('dynamic_meta')
+<meta name="description" content="{{ $product->meta_description ?? Str::limit(strip_tags($product->description), 300, '') }}">
+<meta name="keywords" content="{{ $product->meta_keywords }}">
+<meta property="og:site_name" content="{{ config('app.name') }}">
+<meta property="og:title" content="{{ $product->product_name }}">
+<meta property="og:description" content="{{ $product->meta_description ?? Str::limit(strip_tags($product->description), 300, '') }}">
+<meta property="og:url" content="{{ route('product-details', $product->slug) }}">
+<meta property="og:type" content="article">
+
+<meta property="og:image" content="{{ $product->images && $product->images->first()?->image_url ? asset($product->images->first()->image_url) : asset('web_assets/images/logo/footer-logo.png') }}">
+<meta property="og:locale" content="en_US">
+
+<meta name="twitter:domain" content="{{ url('/') }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="integmeds.com">
+<meta name="twitter:title" content="{{ $product->product_name }}">
+<meta name="twitter:description" content="{{ $product->meta_description ?? Str::limit(strip_tags($product->description), 300, '') }}">
+<meta name="twitter:url" content="{{ route('product-details', $product->slug) }}">
+<meta name="twitter:image" content="{{ $product->product_gallery && $product->product_gallery->first()?->img_path ? asset('media/uploads/products/' . $product->product_gallery->first()->img_path) : asset('web_assets/images/logo/footer-logo.png') }}">
+<meta name="twitter:site" content="@integmeds">
+<meta name="twitter:creator" content="@integmeds">
+<link rel="image_src" href="{{ $product->images && $product->images->first()?->image_url ? asset($product->images->first()->image_url) : asset('web_assets/images/logo/footer-logo.png') }}">
+<link rel="canonical" href="{{ route('product-details', $product->slug) }}">
+@endpush
+
 
 @push('css')
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" />
 <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=684f0ca79b95a90019d70ad0&product=inline-share-buttons&source=platform" async="async"></script>
 @endpush
-
-
 
 @section('content')
 <div class="category-and-sidebar">
@@ -39,23 +63,29 @@
                                 <h4 class="title">{{$product->product_name}}</h4>
                                 <div class="inner-shop-details-meta">
                                     <ul>
-                                        <li>Brands : <a href="#">Integmeds</a></li>
+                                        <li>Brands : <a href="#">{{config('app.brand_name')}}</a></li>
                                         <li class="inner-shop-details-review">
                                             <div class="rating">
                                                 <x-Web.common.star-rating :rating="$product->product_reviews_avg_rating ?? 0" />
                                             </div>
-                                            <span>({{ number_format($product->product_reviews_avg_rating ?? 0, 1) }})</span>
+                                            @if(!empty($product->product_reviews_avg_rating) && $product->product_reviews_avg_rating > 0)
+                                                <span>({{ number_format($product->product_reviews_avg_rating ?? 0, 1) }})</span>
+                                            @endif
                                         </li>
-                                        <li>ID : <span>{{$product->ups_code}}</span></li>
+                                        @if(!empty($product->ups_code))
+                                            <li>ID : <span>{{$product->ups_code}}</span></li>
+                                        @endif
                                     </ul>
                                 </div>
                                 <div class="inner-shop-details-price">
-                                    <h2 class="price">${{$product->sale_price}}</h2>
-                                    @if($product->quantity > 0)
-                                        <h5 class="stock-status text-success">- In Stock</h5>
-                                    @else
-                                        <h5 class="stock-status text-danger">- Out of Stock</h5>
-                                    @endif
+                                    <h2 class="price">{{config('app.currency_symbol')}}{{$product->sale_price}}</h2>
+                                    <span class="stock-info">
+                                        @if($product->quantity > 0)
+                                            <h5 class="stock-status text-success">- In Stock</h5>
+                                        @else
+                                            <h5 class="stock-status text-danger">- Out of Stock</h5>
+                                        @endif
+                                    </span>
                                 </div>
                                 <p>{{$product->short_description}}</p>
                                 <div class="inner-shop-details-list">
@@ -68,35 +98,19 @@
                                         </li>
                                     </ul>
                                 </div>
-                                <div class="inner-shop-perched-info">
-                                    <div class="sd-cart-wrap">
-                                        <form action="#">
-                                            <div class="quickview-cart-plus-minus">
-                                                <input type="text" value="1">
-                                                <div class="dec qtybutton">-</div>
-                                                <div class="inc qtybutton">+</div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    @if($product->quantity > 0)
-                                        <a href="#" class="cart-btn">Add to Cart</a>
-                                    @else
-                                        <a class="cart-btn sold-out-cart">Out of Stock</a>
-                                    @endif
-                                    @auth
-                                        <a href="#" data-prod-id="{{ $product->id }}" class="wishlist-btn {{ $alreadyInWishlist ? 'bg-success' : '' }}" title="Wishlist"><i class="fas fa-heart"></i></a>
-                                    @else
-                                        <a href="{{ route('user.login') }}" class="wishlist-btn" title="Wishlist"><i class="fas fa-heart"></i></a>
-                                    @endauth
+                                <div class="inner-shop-perched-info product-buy-section">
+                                    <x-Web.common.product-buy :product="$product" :alreadyInWishlist="$alreadyInWishlist" />
                                 </div>
                                 <div class="inner-shop-details-bottom">
                                     <ul>
-                                        <li>
-                                            <span>Tag:</span>
-                                            @foreach($product->tags as $tag)
-                                                <a href="#">{{$tag->name}}</a> @if(!$loop->last) , @endif
-                                            @endforeach
-                                        </li>
+                                        @if($product->tags->isNotEmpty())
+                                            <li>
+                                                <span>Tag:</span>
+                                                @foreach($product->tags as $tag)
+                                                    <a href="#">{{$tag->name}}</a> @if(!$loop->last) , @endif
+                                                @endforeach
+                                            </li>
+                                        @endif
                                         
                                         <li>
                                             <span>Share :</span>
@@ -186,24 +200,26 @@
                 </section>
             </div>
         </div>
-        <section class="category-page-products mt-5">
-            <div class="category-title-area">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="section-heading">
-                            <h2>Related products</h2>
+        @if($relatedProducts->isNotEmpty())
+            <section class="category-page-products mt-5">
+                <div class="category-title-area">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="section-heading">
+                                <h2>Related products</h2>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row gx-3">
-                @foreach ($relatedProducts as $relProduct)     
-                    <div class="col-md-3 col-6">
-                        <x-Web.common.product-card :product="$relProduct" />
-                    </div> 
-                @endforeach
-            </div>
-        </section>
+                <div class="row gx-3">
+                    @foreach ($relatedProducts as $relProduct)     
+                        <div class="col-md-3 col-6">
+                            <x-Web.common.product-card :product="$relProduct" />
+                        </div> 
+                    @endforeach
+                </div>
+            </section>
+        @endif
     </div>
 </div>
 @endsection
@@ -216,6 +232,7 @@
 <script>
     /*Product Details*/
     var productDetails = function () {
+        // Product Image Slider
         $('.product-image-slider').slick({
             slidesToShow: 1,
             slidesToScroll: 1,
@@ -224,6 +241,7 @@
             asNavFor: '.slider-nav-thumbnails',
         });
 
+        // Product Image Slider Thumbnails
         $('.slider-nav-thumbnails').slick({
             slidesToShow: 4,
             slidesToScroll: 1,
@@ -233,7 +251,7 @@
             prevArrow: '<button type="button" class="slick-prev"><i class="fa-solid fa-angle-left"></i></button>',
             nextArrow: '<button type="button" class="slick-next"><i class="fa-solid fa-angle-right"></i></button>'
         });
-
+        
         // Remove active class from all thumbnail slides
         $('.slider-nav-thumbnails .slick-slide').removeClass('slick-active');
 
@@ -277,6 +295,7 @@
         productDetails();
     });
 
+    // Fancybox 
     $('.zoom-icon').on('click', function (e) {
         e.preventDefault();
 
@@ -296,9 +315,8 @@
         });
     });
 
-    let hasClickedRating = false;
+    // Rating
     $('.rating-stars i').on('click', function() {
-        hasClickedRating = true;
         var rating = $(this).data('rating');
         $('#rating').val(rating);
 
@@ -312,6 +330,7 @@
         });
     });
 
+    // Review Submit    
     $('#reviewForm').on('submit', function(e) {
         e.preventDefault();
 
@@ -324,18 +343,15 @@
             },
             success: function(response) {
                 showSuccessMessage(response.message);
-                if (hasClickedRating) {
-                    $('#rating').val(0);
-                    $('.rating-stars i').removeClass('star-selected');
-                    hasClickedRating = false;
-                }
+                $('#rating').val(0);
+                $('.rating-stars i').removeClass('star-selected selected');
+                $('#form-review').val('');    
             },
             error: function(xhr) {
                 let message = 'Submission failed!';
                 if (xhr.responseJSON && xhr.responseJSON.message) {
                     message = xhr.responseJSON.message;
                 }
-                console.log(message);
             }
         });
     });

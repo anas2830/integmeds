@@ -4,7 +4,7 @@
     $product = (object) $product; // In case array is passed
 @endphp
 <div class="items">
-    <div class="common-product-box">
+    <div class="common-product-box" id="product-box-{{ $product->id}}">
         @if($product->quantity == 0)
             <div class="sold-out"><span>Out Of Stock</span></div>
         @endif
@@ -44,12 +44,12 @@
             <div class="common-price-and-card">
                 <div class="common-product-price">
                     @if(!empty($product->regular_price) && $product->regular_price > 0)
-                        <span class="old-price">${{ $product->regular_price }}</span>
+                        <span class="old-price">{{config('app.currency_symbol')}}{{ $product->regular_price }}</span>
                     @endif
-                    <span class="new-price">${{ $product->sale_price }}</span>
+                    <span class="new-price">{{config('app.currency_symbol')}}{{ $product->sale_price }}</span>
                 </div>
                 <div class="common-cart-wrap">
-                    <a class="btn" href="#">Add to cart</a>
+                    <a class="btn add-to-cart" href="#" data-product-id="{{ $product->id }}"> Add to cart</a>
                 </div>
             </div>
         </div>

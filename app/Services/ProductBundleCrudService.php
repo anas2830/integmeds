@@ -48,7 +48,6 @@ class ProductBundleCrudService
         $bundle = Bundle::with(['bundleImages','products'])->findOrFail($id);
 
         // Build up $data without clobbering it
-        // dd($bundle->bundleImages);
         $data = [
             'products'          => $this->getProductList(),
             'productBundle'     => $bundle,
@@ -75,7 +74,6 @@ class ProductBundleCrudService
     public function updateProductBundle($request, $id)
     {
         $productBundle = Bundle::findOrFail($id);
-        // dd($request->bundle_products);
         $productBundle->name = $request->name;
         $productBundle->description = $request->description;
         $productBundle->min_price = $request->min_price;
@@ -165,7 +163,6 @@ class ProductBundleCrudService
     {   
         if ($request->file_to_delete) {
             $filePath = public_path($request->file_to_delete);
-            // dd($request->file_to_delete, $filePath);
             if (File::exists($filePath)) {
                 File::delete($filePath);
             }

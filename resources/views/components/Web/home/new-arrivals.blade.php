@@ -10,7 +10,7 @@
         <div class="col-lg-12">
             <div class="common-product-slider">
                 @foreach ($products as $product)
-                    <x-web.common.product-card :product="$product" />
+                    <x-Web.common.product-card :product="$product" />
                 @endforeach
             </div>
         </div>

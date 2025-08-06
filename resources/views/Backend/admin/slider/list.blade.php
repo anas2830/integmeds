@@ -1,6 +1,6 @@
 @extends('Backend.Layout.app')
 
-@section('site-title', 'Product Bundle')
+@section('site-title', 'Sliders')
 
 @section('main-content')
 
@@ -19,17 +19,17 @@
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
                             <div class="search-form">
-                                <form action="{{ route('slider.index') }}" method="GET" class="app-search d-none d-lg-block">
+                                {{-- <form action="{{ route('slider.index') }}" method="GET" class="app-search d-none d-lg-block">
                                     <div class="input-group">
                                         <input type="text" name="search" class="form-control" placeholder="Search..." value="{{ request('search') }}">
                                         <div class="input-group-append">
                                             <button class="btn btn-primary" type="submit">Go</button>
                                         </div>
                                     </div>
-                                </form>
+                                </form> --}}
                             </div>
                         </div>
-                        <div class="page-title-right">
+                        <div class="page-title-right mb-3">
                             <a href="{{ route('slider.create') }}" class="btn btn-primary">+ Add New</a>
                         </div>
                     </div>
@@ -39,7 +39,8 @@
                             <tr>
                                 <th>SL</th>
                                 <th>Image</th>
-                                <th>
+                                <th>Link</th>
+                                {{-- <th>
                                     <a href="{{ route('slider.index', array_merge(request()->query(),
                                         [
                                             'sort_by' => 'title',
@@ -60,7 +61,7 @@
                                 </th>
                                 <th>Subtitle</th>
                                 <th>Button Color</th>
-                                <th>Button Text</th>
+                                <th>Button Text</th> --}}
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -70,12 +71,13 @@
                         <tbody>
                             @forelse ($sliders as $slider)
                                 <tr>
-                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ ($sliders->currentPage() - 1) * $sliders->perPage() + $loop->iteration }}</td>
                                     <td><img src="{{ asset($slider->slider_image) }}" alt="" width="50"></td>
-                                    <td>{{ $slider->title }}</td>
+                                    {{-- <td>{{ $slider->title }}</td>
                                     <td>{{ $slider->subtitle }}</td>
                                     <td>{{ $slider->button_color }}</td>
-                                    <td>{{ $slider->button_text }}</td>
+                                    <td>{{ $slider->button_text }}</td> --}}
+                                    <td class="w-50">{{ $slider->button_url }}</td>
                                     <td>
                                         @if($slider->status == 1)
                                             <a href="#" class="badge badge-success badge-sm status-update" data-id="{{ $slider->id }}">Active</a>

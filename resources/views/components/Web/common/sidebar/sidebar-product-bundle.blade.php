@@ -1,3 +1,4 @@
+@if($productBundles->isNotEmpty())
 <div class="sidebar-bundle">
     <div class="sidebar-title">
         <h2>Product Bundle</h2>
@@ -25,3 +26,4 @@
         @endforeach
     </div>
 </div>
+@endif

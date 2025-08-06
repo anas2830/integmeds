@@ -87,6 +87,10 @@ return [
     'currency_symbol' => env('CURRENCY_SYMBOL', '$'),
     'admin_email' => env('ADMIN_EMAIL', 'admin@gmail.com'),
     'mail_from_address' => env('MAIL_FROM_ADDRESS', 'support@gmail.com'),
+    'brand_name' => env('BRAND_NAME', 'integmeds'),
+    'zipcodebase' => [
+        'api_key' => env('ZIPCODEBASE_API_KEY'),
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -126,5 +130,7 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
+
+    'currency_symbol' => env('CURRENCY_SYMBOL', '$'),
 
 ];

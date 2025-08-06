@@ -2,6 +2,10 @@
 
 @section('site-title', 'Bundle')
 
+@push('dynamic_meta')
+    @include('Web.Layout.partials.common-meta')
+@endpush
+
 @section('content')
 <div class="bundle-page">
     <div class="container">

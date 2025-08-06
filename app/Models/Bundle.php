@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\RemoveModelCache;
 
 class Bundle extends Model
 {
+    use RemoveModelCache;
+
     protected $guarded = [];
 
 
@@ -28,5 +31,10 @@ class Bundle extends Model
     public function firstImage()
     {
         return $this->hasOne(BundleImage::class);
+    }
+
+    public function scopeValid($query)
+    {
+        return $query->where('status', 1);
     }
 }

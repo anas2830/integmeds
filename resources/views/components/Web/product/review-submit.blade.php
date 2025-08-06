@@ -1,12 +1,12 @@
 
-<h4 class="title">{{ $userReview ? 'Update your review' : 'Add a review' }}</h4>
+<h4 class="title">Add a review</h4>
 <form id="reviewForm">
     <div class="form-rating">
         <label>Your Rating</label>
         <ul class="rating-stars">
             <li>
                 @for($i = 1; $i <= 5; $i++)
-                <i class="fas fa-star {{ $userReview && $userReview->rating >= $i ? 'star-selected' : '' }}" data-rating="{{ $i }}"></i>
+                <i class="fas fa-star" data-rating="{{ $i }}"></i>
             @endfor
             </li>
         </ul>
@@ -14,7 +14,7 @@
     </div>
     <div class="from-grp">
         <label for="comment">Write Your Comment <span>*</span></label>
-        <textarea name="review" id="review" cols="30" rows="5" required>{{ $userReview->review ?? '' }}</textarea>
+        <textarea name="review" id="form-review" cols="30" rows="5" required></textarea>
     </div>
     @if ($type === 'bundle')
         <input type="hidden" name="bundle_id" value="{{ $instance->id }}">

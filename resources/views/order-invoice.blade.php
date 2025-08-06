@@ -1,5 +1,5 @@
 @php 
-    $shipping_address = json_decode($order->shipping_address, true) ?? [];
+    $shipping_address = $order->shipping_address;
 @endphp 
 <!DOCTYPE html>
 <html lang="en">
@@ -7,7 +7,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title> Dealseller :: Order Invoice </title>
+        <title> Integmeds :: Order Invoice </title>
         <meta name="robots" content="noindex,nofollow" />
         <meta name="viewport" content="width=device-width; initial-scale=1.0;" />
         <style type="text/css">
@@ -131,11 +131,11 @@
                                                                 <td
                                                                     style="font-size: 13px; color: #414141; font-family: 'Open Sans', sans-serif; line-height: 18px; vertical-align: top; text-align: left;">
                                                                     <strong style="font-size:14px;"> From:</strong>
-                                                                        <br> Integmeds
-                                                                        <br> House No #21313, 
-                                                                        <br> Dhaka, DHAKA, 
-                                                                        <br>01736769144
-                                                                        <br>01736769144
+                                                                    <br>Integmeds  
+                                                                    <br>12727 Featherwood Drive Suite 104 
+                                                                    <br>Houston, TX 77034  
+                                                                    <br>United States  
+                                                                    <br>+1 (346) 346-0732
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -212,8 +212,8 @@
                                                         <tr>
                                                             <td style="font-size: 13px; font-family: 'Open Sans', sans-serif; color: #414141; font-weight: 500; line-height: 18px;  vertical-align: top; padding:10px 0;" class="article"> {{$item->product?->product_name ?? ''}} </td>
                                                             <td style="font-size: 13px; font-family: 'Open Sans', sans-serif; color: #414141;  line-height: 18px;  vertical-align: top; padding:10px 0;" align="center">{{$item->quantity ?? 0}}</td>
-                                                            <td style="font-size: 13px; font-family: 'Open Sans', sans-serif; color: #414141;  line-height: 18px;  vertical-align: top; padding:10px 0;" align="center"> ${{$item->price ?? 0}} </td>
-                                                            <td style="font-size: 13px; font-family: 'Open Sans', sans-serif; color: #1e2b33;  line-height: 18px;  vertical-align: top; padding:10px 0;" align="right"> ${{$item->price * $item->quantity ?? 0}}</td>
+                                                            <td style="font-size: 13px; font-family: 'Open Sans', sans-serif; color: #414141;  line-height: 18px;  vertical-align: top; padding:10px 0;" align="center"> {{config('app.currency_symbol')}}{{$item->price ?? 0}} </td>
+                                                            <td style="font-size: 13px; font-family: 'Open Sans', sans-serif; color: #1e2b33;  line-height: 18px;  vertical-align: top; padding:10px 0;" align="right"> {{config('app.currency_symbol')}}{{$item->price * $item->quantity ?? 0}}</td>
                                                         </tr>
                                                         <tr>
                                                             <td height="1" colspan="4" style="border-bottom:1px solid #e4e4e4"> </td>
@@ -253,20 +253,28 @@
                                                                 <tbody>
                                                                     <tr>
                                                                         <td style="font-size: 13px; font-family: 'Open Sans', sans-serif; color: #414141; line-height: 22px; vertical-align: top; text-align:right; padding:8px 0;"> Subtotal </td>
-                                                                        <td style="font-size: 13px; font-family: 'Open Sans', sans-serif; color: #414141; line-height: 22px; vertical-align: top; text-align:right; white-space:nowrap;padding:8px 0;" width="180"> ${{$order->subtotal ?? 0}} </td>
+                                                                        <td style="font-size: 13px; font-family: 'Open Sans', sans-serif; color: #414141; line-height: 22px; vertical-align: top; text-align:right; white-space:nowrap;padding:8px 0;" width="180"> {{config('app.currency_symbol')}}{{$order->subtotal ?? 0}} </td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td height="1" colspan="4" style="border-bottom:1px solid #e4e4e4"></td>
                                                                     </tr>
+                                                                    @if($order->discount && $order->discount > 0)
                                                                     <tr>
                                                                         <td style="font-size: 13px; font-family: 'Open Sans', sans-serif; color: #414141; line-height: 22px; vertical-align: top; text-align:right; padding:8px 0;"> Discount</td>
-                                                                        <td style="font-size: 13px; font-family: 'Open Sans', sans-serif; color: #414141; line-height: 22px; vertical-align: top; text-align:right; white-space:nowrap;padding:8px 0;" width="180"> ${{$order->discount ?? 0}} </td>
+                                                                        <td style="font-size: 13px; font-family: 'Open Sans', sans-serif; color: #414141; line-height: 22px; vertical-align: top; text-align:right; white-space:nowrap;padding:8px 0;" width="180"> - {{config('app.currency_symbol')}}{{$order->discount ?? 0}} </td>
                                                                     </tr>
-                                                                        <tr style="background:#01703A;display: flex;justify-content: space-between;">
+                                                                    @endif
+                                                                    @if($order->shipping_cost && $order->shipping_cost > 0)
+                                                                        <tr>
+                                                                            <td style="font-size: 13px; font-family: 'Open Sans', sans-serif; color: #414141; line-height: 22px; vertical-align: top; text-align:right; padding:8px 0;"> Shipping Cost</td>
+                                                                            <td style="font-size: 13px; font-family: 'Open Sans', sans-serif; color: #414141; line-height: 22px; vertical-align: top; text-align:right; white-space:nowrap;padding:8px 0;" width="180"> + ${{$order->shipping_cost ?? 0}} </td>
+                                                                        </tr>
+                                                                    @endif
+                                                                    <tr style="background:#01703A;display: flex;justify-content: space-between;">
                                                                         <td style="font-size: 13px; font-family: 'Open Sans', sans-serif; color: #fff; line-height: 22px; vertical-align: top; text-align:right; padding:8px 0 8px 5px;"> <strong>Grand Total</strong> </td>
                                                                         <td
                                                                             style="font-size: 13px; font-family: 'Open Sans', sans-serif; color: #fff; line-height: 22px; vertical-align: top; text-align:right; padding:8px 5px 8px 0;">
-                                                                            <strong>${{ $order->total_amount ?? 0 }}</strong>
+                                                                            <strong>{{config('app.currency_symbol')}}{{ $order->total_amount ?? 0 }}</strong>
                                                                         </td>
                                                                     </tr>
                                                                 </tbody>

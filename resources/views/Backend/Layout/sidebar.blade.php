@@ -10,21 +10,21 @@
 
                 <li>
                     <a href="{{ route('dashboard') }}" class="waves-effect">
-                        <i class="bx bx-home-circle"></i><span class="badge badge-pill badge-info float-right">03</span>
+                        <i class="bx bx-home-circle"></i>
                         <span>Dashboards</span>
                     </a>
                 </li>
                 @if(Auth::guard('admin')->check())
-                <li>
-                    <a href="javascript: void(0);" class="has-arrow waves-effect">
-                        <i class="bx bx-user"></i>
-                        <span>Editor Management</span>
-                    </a>
-                    <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="{{ route('manage-editor.index') }}">Editor List</a></li>
-                        <li><a href="{{ route('manage-editor.create') }}">Create</a></li>
-                    </ul>
-                </li>
+                    {{-- <li>
+                        <a href="javascript: void(0);" class="has-arrow waves-effect">
+                            <i class="bx bx-user"></i>
+                            <span>Editor Management</span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="false">
+                            <li><a href="{{ route('manage-editor.index') }}">Editor List</a></li>
+                            <li><a href="{{ route('manage-editor.create') }}">Create</a></li>
+                        </ul>
+                    </li> --}}
                 @endif
 
                 <li class="menu-title">Product Management</li>
@@ -62,7 +62,7 @@
                     </ul>
                 </li>
 
-                <li>
+               <!--  <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class='bx  bx-ruler'></i>
                         <span>Size</span>
@@ -71,7 +71,7 @@
                         <li><a href="{{ route('product-size.index') }}">List</a></li>
                         <li><a href="{{ route('product-size.create') }}">Create</a></li>
                     </ul>
-                </li>
+                </li> -->
 
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
@@ -121,7 +121,25 @@
                         <span>Review</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="{{ route('product-review.index') }}">List</a></li>
+                        <li><a href="{{ route('product-review.index') }}">Product Review</a></li>
+                        <li><a href="{{ route('bundle-review.index') }}">Bundle Review</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="{{ route('order.list') }}" class="waves-effect">
+                        <i class="bx bx-cart"></i><span class="badge badge-pill badge-info float-right">{{pendingOrderCount()}}</span>
+                        <span>Order List</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class='bx bx-car'></i> 
+                        <span>Shipping</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{ route('shipping-method.index') }}">List</a></li>
+                        <li><a href="{{ route('shipping-method.create') }}">Create</a></li>
                     </ul>
                 </li>
 
@@ -130,7 +148,7 @@
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="bx bx-store"></i>
-                        <span>Ecommerce</span>
+                        <span>Product</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="{{ route('product.index') }}">List</a></li>
@@ -144,6 +162,7 @@
                         <span>Settings</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="true">
+                        <li><a href="{{ route('site.settings') }}">Site Settings</a></li>
                         <li><a href="{{ route('home.page.sidebar.settings') }}">Home Page Sidebar Banner</a></li>
                         <li><a href="{{ route('home.page.body.settings') }}">Home Page Body Banner</a></li>
                     </ul>

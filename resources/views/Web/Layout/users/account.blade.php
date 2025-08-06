@@ -36,11 +36,7 @@
                                     <div class="photo-upload">
                                         <div class="photo-preview">
                                             <div id="imagePreview" 
-                                                @if($user->profile_image) 
-                                                    style="background-image: url({{ asset($user->profile_image) }});" 
-                                                @else 
-                                                    style="background-image: url(/web_assets/images/bg/dummy-image.jpg);" 
-                                                @endif>
+                                                style="background-image: url('{{ asset($user->profile_image ?? 'web_assets/images/bg/dummy-image.jpg') }}');">
                                             </div>
                                         </div>
                                         <div class="photo-edit">

@@ -1,16 +1,20 @@
 <?php
 
-use Illuminate\Support\Str;
-use Mews\Captcha\Facades\Captcha;
 
+use Illuminate\Support\Str;
+
+use Mews\Captcha\Facades\Captcha;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\WebController;
 use App\Http\Controllers\Web\UserController;
-use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\Web\OrderController;
 use App\Http\Controllers\Web\HomePageController;
 use App\Http\Controllers\Backend\AdminController;
 use App\Http\Controllers\Backend\EditorController;
+use App\Http\Controllers\Web\NewsletterController;
+use App\Http\Controllers\Web\ShoppingCartController;
+use Illuminate\Support\Facades\Artisan;
 
 require __DIR__ . '/admin.php';
 
@@ -21,7 +25,7 @@ Route::get('/', [HomePageController::class, 'index'])->name('/');
 Route::get('/category/{slug?}', [WebController::class, 'category'])->name('category');
 Route::get('/bundle', [WebController::class, 'bundle'])->name('bundle');
 Route::get('/bundle-details/{id}', [WebController::class, 'bundleDetails'])->name('bundle-details');
-Route::get('/product-details/{slug}', [WebController::class, 'productDetails'])->name('product-details');
+Route::get('/product-details/{slug?}', [WebController::class, 'productDetails'])->name('product-details');
 Route::get('/about-us', [WebController::class, 'aboutUs'])->name('about-us');
 Route::get('/search', [WebController::class, 'search'])->name('search');
 Route::get('/search-suggestions', [WebController::class, 'searchSuggestions'])->name('search-suggestions');
@@ -47,11 +51,34 @@ Route::post('/contact-submit', [WebController::class, 'contactSubmit'])->name('c
 Route::get('/privacy-policy', [WebController::class, 'privacyPolicy'])->name('privacy-policy');
 Route::get('/terms-condition', [WebController::class, 'termsCondition'])->name('terms-condition');
 Route::get('/cart', [WebController::class, 'cart'])->name('cart');
-Route::get('/checkout', [WebController::class, 'checkout'])->name('checkout');
 Route::get('/wishlist', [WebController::class, 'wishlist'])->name('wishlist');
 Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
 
 
+Route::controller(ShoppingCartController::class)->group(function () {
+    Route::get('/cart', 'cart')->name('shopping.cart');
+    Route::post('/cart', 'addToCart')->name('shopping.cart.submit');
+    Route::post('/bundle-cart', 'addToBundleCart')->name('bundle.cart.submit');
+    Route::post('/update/cart', 'updateCart')->name('shopping.cart.update');
+    Route::get('/remove/cart/single/{rowId}', 'removeSingleItem')->name('shopping.cart.remove.single');
+    Route::get('/ajax/remove/cart/single/{rowId}', 'removeSingleItemAjax')->name('shopping.cart.remove.single.ajax');
+    Route::get('/remove/cart/all', 'removeAllItem')->name('shopping.cart.remove.all');
+    Route::get('/checkout', 'checkout')->name('checkout');
+    Route::post('/apply/coupon', 'applyCoupon')->name('coupon.apply');
+    Route::get('/remove/coupon/{coupon_code}', 'removeCoupon')->name('coupon.remove');
+    Route::post('/shipping/rates', 'getShippingRates')->name('shipping.rates');
+});
+
+Route::controller(OrderController::class)->group(function () {
+    Route::post('/place/order', 'placeOrder')->name('place.order');
+    Route::get('/order/complete/{id}', 'orderComplete')->name('order.complete');
+    Route::get('/order/status', 'orderStatus')->name('order.status');
+    Route::post('/success', 'success');
+    Route::post('/fail', 'fail');
+    Route::post('/cancel', 'cancel');
+    Route::post('/ipn', 'ipn');
+    Route::post('/update/shipping/cost', 'updateShippingCost')->name('update.shipping.cost');
+});
 
 
 // Route::prefix('user')->group(function () {
@@ -63,7 +90,8 @@ Route::prefix('user')->group(function () {
 
         // Orders
         Route::get('/orders', [UserController::class, 'orders'])->name('user.orders');
-        Route::get('/order-invoice/{id}', [UserController::class, 'orderInvoice'])->name('order-invoice');
+        Route::get('/order-invoice/{id}', [UserController::class, 'orderInvoice'])->name('user.order-invoice');
+        Route::post('/reorder/{id}', [UserController::class, 'reorder'])->name('user.reorder');
 
         // Account Details
         Route::get('/account', [UserController::class, 'accountDetails'])->name('user.account');
@@ -111,3 +139,9 @@ Route::post('admin/login', [AdminController::class, 'login']);
 //editor routes
 Route::get('editor/login', [EditorController::class, 'showLoginForm'])->name('editor.login');
 Route::post('editor/login', [EditorController::class, 'login']);
+
+
+Route::get('/cache-clear', function () {
+    Artisan::call('optimize:clear');
+    return redirect()->back()->with('success', 'Cache cleared successfully!');
+});

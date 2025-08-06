@@ -14,7 +14,7 @@
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Ecommerce</a></li>
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Product</a></li>
                         <li class="breadcrumb-item active">Edit Product</li>
                     </ol>
                 </div>
@@ -228,7 +228,7 @@
                 </div>
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title mb-3">Product Images</h4>
+                        <h4 class="card-title mb-3">Product Images <span class="text-danger">(600 x 600)</span></h4>
 
                         <div class="dropzone multiple-upload" data-max-size="2" data-max-files="15" data-accepted-files=".jpeg,.jpg,.png,.gif,.webp">
 
@@ -237,6 +237,69 @@
                         <input type="hidden" name="files_to_delete[]" id="filesToDelete">
                     </div>
                 </div> <!-- end card-->
+
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title mb-4">Inventory</h4>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="stock_quantity" class="required">Stock Quantity <span class="text-danger">*</span></label>
+                                    <input id="stock_quantity" name="stock_quantity" maxlength="10" type="number" min="0" class="form-control" placeholder="Enter stock quantity" required value="{{ old('stock_quantity', $product->quantity ?? 0) }}">
+                                    @error('stock_quantity')
+                                        <small class="invalid-feedback">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title mb-4">Dimensions & Weight</h4>
+
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="weight">Weight (gram) <span class="text-danger">*</span></label>
+                                    <input id="weight" name="weight" type="number" step="0.01" class="form-control" placeholder="Enter weight" value="{{ old('weight') ?? $product->weight }}" required>
+                                    @error('weight')
+                                        <small class="invalid-feedback">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label for="length">Length (cm) <span class="text-danger">*</span></label>
+                                    <input id="length" name="length" type="number" max="10" step="0.01" class="form-control" placeholder="Length" value="{{ old('length') ?? $product->length }}" required>
+                                    @error('length')
+                                        <small class="invalid-feedback">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label for="width">Width (cm) <span class="text-danger">*</span></label>
+                                    <input id="width" name="width" type="number" step="0.01" max="10" class="form-control" placeholder="Width" value="{{ old('width') ?? $product->width }}" required>
+                                    @error('width')
+                                        <small class="invalid-feedback">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label for="height">Height (cm) <span class="text-danger">*</span></label>
+                                    <input id="height" name="height" type="number" step="0.01" max="5" class="form-control" placeholder="Height" value="{{ old('height') ?? $product->height }}" required>
+                                    @error('height')
+                                        <small class="invalid-feedback">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
 
                 <div class="card">
                     <div class="card-body">
@@ -275,24 +338,6 @@
                                     <label for="video_bn">YouTube Video Link (Bangla)</label>
                                     <input id="video_bn" name="video_bn" maxlength="255" type="url" class="form-control" placeholder="Enter YouTube video link (BN)" value="{{ old('video_bn') ?? $product->video_bn }}">
                                     @error('video_bn')
-                                        <small class="invalid-feedback">{{ $message }}</small>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title mb-4">Inventory</h4>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label for="stock_quantity" class="required">Stock Quantity <span class="text-danger">*</span></label>
-                                    <input id="stock_quantity" name="stock_quantity" maxlength="10" type="number" min="0" class="form-control" placeholder="Enter stock quantity" required value="{{ old('stock_quantity', $product->quantity ?? 0) }}">
-                                    @error('stock_quantity')
                                         <small class="invalid-feedback">{{ $message }}</small>
                                     @enderror
                                 </div>

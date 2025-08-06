@@ -5,7 +5,9 @@
             <div class="hero-slider">
                 @foreach ($sliders as $slider)    
                     <div class="items">
-                        <img class="img-fluid" src="{{asset($slider->slider_image)}}" alt="{{ $slider->title }}" title="{{ $slider->title }}">
+                        <a href="{{ $slider->button_url ?? '#' }}">
+                            <img class="img-fluid" src="{{asset($slider->slider_image)}}" alt="{{ $slider->title }}" title="{{ $slider->title }}">
+                        </a>
                     </div>
                 @endforeach
             </div>

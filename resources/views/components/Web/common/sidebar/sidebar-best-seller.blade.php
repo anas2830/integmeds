@@ -27,8 +27,8 @@
                                 <x-Web.common.star-rating :rating="$bestSeller->product_reviews_avg_rating" />
                             </div>
                             <div class="sdbar-product-price">
-                                <span class="old-price">${{ $bestSeller->regular_price }}</span>
-                                <span class="new-price">${{ $bestSeller->sale_price }}</span>
+                                <span class="old-price">{{config('app.currency_symbol')}}{{ $bestSeller->regular_price }}</span>
+                                <span class="new-price">{{config('app.currency_symbol')}}{{ $bestSeller->sale_price }}</span>
                             </div>
                         </div>
                     </div>

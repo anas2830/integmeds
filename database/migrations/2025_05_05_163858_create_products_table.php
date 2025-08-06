@@ -28,10 +28,16 @@ return new class extends Migration
             $table->decimal('discount_percentage', 10, 2)->nullable();
             $table->string('video_bn')->nullable(); // Bangla YouTube URL
             $table->string('video_en')->nullable(); // English YouTube URL
+            $table->decimal('weight', 8, 2)->nullable();
+            $table->decimal('weight_converted', 8, 2)->nullable();
+            $table->enum('weight_unit', ['kg', 'g'])->nullable();
+            $table->decimal('length', 8, 2)->nullable();
+            $table->decimal('width', 8, 2)->nullable();
+            $table->decimal('height', 8, 2)->nullable();
             $table->string('meta_title')->nullable(); // Meta title for SEO
             $table->string('meta_description')->nullable(); // Meta description for SEO
             $table->string('meta_keywords')->nullable(); // Meta keywords for SEO
-            $table->unsignedInteger('quantity');
+            $table->unsignedInteger('quantity')->default(0);
             $table->boolean('status')->default(1)->index();
             $table->softDeletes(); // Add soft deletes functionality
             $table->timestamps();

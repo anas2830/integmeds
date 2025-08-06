@@ -5,30 +5,32 @@ namespace App\Http\Controllers\Web;
 use Carbon\Carbon;
 use App\Models\Page;
 use App\Models\User;
-use App\Models\Client;
 use App\Models\Bundle;
+use App\Models\Client;
 use App\Models\Product;
+use App\Models\ProductTag;
 use Illuminate\Support\Str;
 use App\Models\BundleReview;
 use Illuminate\Http\Request;
-use App\Services\PageService;
 use App\Models\ProductReview;
+use App\Services\PageService;
+use App\Models\ProductCategory;
 use App\Jobs\SendContactEmailJob;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Web\SidebarService;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Cache;
 use App\Jobs\SendResetPasswordEmailJob;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Porduct; // Assuming Porduct is a model for products
-use App\Models\ProductCategory;
-use App\Models\ProductTag;
 
 class WebController extends SidebarService
 {
 
     public function category($slug = null)
     {
+        $category = null;
         $minPrice = request('min_price', 0);
         $maxPrice = request('max_price', 10000);
         $sort = request('sort');
@@ -41,7 +43,7 @@ class WebController extends SidebarService
             $query = Product::where('status', 1)->with(['firstImage:id,product_id,image_url']);
         }
 
-        $query->select('id', 'product_name', 'slug', 'regular_price', 'sale_price', 'discount_percentage');
+        $query->select('id', 'product_name', 'slug', 'regular_price', 'sale_price', 'discount_percentage', 'quantity');
 
         if ($minPrice !== null && $maxPrice !== null) {
             $query->whereBetween('sale_price', [$minPrice, $maxPrice]);
@@ -53,38 +55,33 @@ class WebController extends SidebarService
                 $q->whereIn('product_tags.id', $tagIds);
             });
         }
-
-        switch ($sort) {
-            case 'price_asc':
-                $query->orderBy('sale_price', 'asc');
-                break;
-            case 'price_desc':
-                $query->orderBy('sale_price', 'desc');
-                break;
-            case 'best_selling':
-                $query->withSum('orderDetails', 'quantity')->orderBy('order_details_sum_quantity', 'desc');
-                break;
-            case 'rating':
-                $query->withAvg('productReviews', 'rating')->orderBy('product_reviews_avg_rating', 'desc');
-                break;
-            default:
-                $query->orderBy('created_at', 'desc');
-                break;
-        }
+        match($sort){
+            'price_asc' => $query->orderBy('sale_price', 'asc'),
+            'price_desc' => $query->orderBy('sale_price', 'desc'),
+            'best_selling' => $query->withSum('orderDetails', 'quantity')->orderBy('order_details_sum_quantity', 'desc'),
+            'rating' => $query->withAvg('productReviews', 'rating')->orderBy('product_reviews_avg_rating', 'desc'),
+            default => $query->orderBy('created_at', 'desc'),
+        };
         $categoryProducts = $query->paginate(12)->appends(request()->query());
 
         $productBundles = $this->productBundles();
         $specialOffers = $this->specialOffers();
-        $categories = ProductCategory::where('status', 1)->get(['id', 'name', 'slug']);
-        $tags =ProductTag::where('status', 1)->get(['id', 'name', 'slug']);
+        $categories = Cache::rememberForever('ProductCategory', function () {
+            return ProductCategory::where('status', 1)->get(['id', 'name', 'slug']);
+        });
+        $tags = Cache::rememberForever('ProductTag', function () {
+            return ProductTag::where('status', 1)->get(['id', 'name', 'slug']);
+        });
 
-        return view('Web.Layout.pages.category', compact('categoryProducts', 'productBundles', 'specialOffers', 'categories', 'tags'));
+        return view('Web.Layout.pages.category', compact('categoryProducts', 'productBundles', 'specialOffers', 'categories', 'tags', 'category'));
     }
 
 
     public function bundle()
     {
-        $productBundles = $this->productBundles();
+        // $productBundles = Cache::rememberForever('Bundle', function () {
+        $productBundles = Bundle::select('id', 'name', 'icon_path')->with(['firstImage:id,bundle_id,image_url'])->where('status', 1)->paginate(12);
+        // });
         return view('Web.Layout.pages.bundle', compact('productBundles'));
     }
     public function bundleDetails($id)
@@ -151,7 +148,7 @@ class WebController extends SidebarService
         // Ensure categories are loaded
         $categoryIds = $product->categories()->pluck('id');
 
-        return Product::select('id', 'product_name', 'regular_price', 'sale_price', 'discount_percentage', 'slug')
+        return Product::select('id', 'product_name', 'regular_price', 'sale_price', 'discount_percentage', 'slug', 'quantity')
             ->with(['firstImage:id,product_id,image_url'])
             ->where('status', 1)
             ->where('id', '!=', $product->id)
@@ -180,7 +177,7 @@ class WebController extends SidebarService
     public function search(Request $request)
     {
         $data['search'] = $request->search;
-        $data['products'] = Product::with('firstImage')->where('product_name', 'like', '%' . $data['search'] . '%')->paginate(16);
+        $data['products'] = Product::with('firstImage')->where('status', 1)->select('id', 'product_name', 'regular_price', 'sale_price', 'discount_percentage', 'slug', 'quantity')->where('product_name', 'like', '%' . $data['search'] . '%')->paginate(16);
         $data['productBundles'] = $this->productBundles();
         $data['specialOffers'] = $this->specialOffers();
         return view('Web.Layout.pages.search', $data);
@@ -192,7 +189,7 @@ class WebController extends SidebarService
         $query = $request->query('query');
         $products = Product::with('firstImage')
         ->where('product_name', 'like', '%' . $query . '%')
-        ->select('id', 'product_name', 'regular_price', 'sale_price', 'discount_percentage', 'slug')
+        ->select('id', 'product_name', 'regular_price', 'sale_price', 'discount_percentage', 'slug', 'quantity')
         ->take(5)
         ->get()
         ->map(function($product){
@@ -339,13 +336,5 @@ class WebController extends SidebarService
     {
         $data['termsCondition'] = Page::where('slug', 'terms-condition')->first();
         return view('Web.Layout.pages.terms-condition', $data);
-    }
-    public function cart()
-    {
-        return view('Web.Layout.pages.cart');
-    }
-    public function checkout()
-    {
-        return view('Web.Layout.pages.checkout');
     }
 }

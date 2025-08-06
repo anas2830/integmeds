@@ -28,18 +28,22 @@
                                 <h4 class="title">{{$product->product_name}}</h4>
                                 <div class="inner-shop-details-meta">
                                     <ul>
-                                        <li>Brands : <a href="#">Integmeds</a></li>
+                                        <li>Brnads : <a href="#">{{config('app.brand_name')}}</a></li>
                                         <li class="inner-shop-details-review">
                                             <div class="rating">
                                                 <x-Web.common.star-rating :rating="$product->product_reviews_avg_rating ?? 0" />
                                             </div>
-                                            <span>({{ number_format($product->product_reviews_avg_rating ?? 0, 1) }})</span>
+                                            @if(!empty($product->product_reviews_avg_rating) && $product->product_reviews_avg_rating > 0)
+                                                <span>({{ number_format($product->product_reviews_avg_rating, 1) }})</span>
+                                            @endif
                                         </li>
-                                        <li>ID : <span>{{$product->ups_code}}</span></li>
+                                        @if(!empty($product->ups_code))
+                                            <li>ID : <span>{{$product->ups_code}}</span></li>
+                                        @endif
                                     </ul>
                                 </div>
                                 <div class="inner-shop-details-price">
-                                    <h2 class="price">${{$product->sale_price}}</h2>
+                                    <h2 class="price">{{config('app.currency_symbol')}}{{$product->sale_price}}</h2>
                                     @if($product->quantity > 0)
                                         <h5 class="stock-status text-success">- In Stock</h5>
                                     @else
@@ -57,26 +61,8 @@
                                         </li>
                                     </ul>
                                 </div>
-                                <div class="inner-shop-perched-info">
-                                    <div class="sd-cart-wrap">
-                                        <form action="#">
-                                            <div class="quickview-cart-plus-minus">
-                                                <input type="text" value="1">
-                                                <div class="dec qtybutton">-</div>
-                                                <div class="inc qtybutton">+</div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    @if($product->quantity > 0)
-                                        <a href="#" class="cart-btn">Add to Cart</a>
-                                    @else
-                                        <a class="cart-btn sold-out-cart">Out of Stock</a>
-                                    @endif
-                                    @auth
-                                        <a href="#" data-prod-id="{{ $product->id }}" class="wishlist-btn {{ $alreadyInWishlist ? 'bg-success' : '' }}" title="Wishlist"><i class="fas fa-heart"></i></a>
-                                    @else
-                                        <a href="{{ route('user.login') }}" class="wishlist-btn" title="Wishlist"><i class="fas fa-heart"></i></a>
-                                    @endauth
+                                <div class="inner-shop-perched-info product-buy-section">
+                                    <x-Web.common.product-buy :product="$product" :alreadyInWishlist="$alreadyInWishlist" />
                                 </div>
                             </div>
                         </div>

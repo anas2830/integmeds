@@ -2,8 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\PageController;
+use App\Http\Controllers\SiteSettingsController;
 use App\Http\Controllers\Backend\AdminController;
 use App\Http\Controllers\Backend\CuponController;
+use App\Http\Controllers\Backend\OrderController;
 use App\Http\Controllers\Backend\EditorController;
 use App\Http\Controllers\Backend\SliderController;
 use App\Http\Controllers\Backend\ClientsController;
@@ -12,12 +14,13 @@ use App\Http\Controllers\HomePageSettingsController;
 use App\Http\Controllers\Backend\FileUploadController;
 use App\Http\Controllers\Backend\ProductTagController;
 use App\Http\Controllers\Backend\ProductSizeController;
+use App\Http\Controllers\Backend\BundleReviewController;
 use App\Http\Controllers\Backend\ManageEditorController;
 use App\Http\Controllers\Backend\ProductBrandController;
 use App\Http\Controllers\Backend\ProductBundleController;
 use App\Http\Controllers\Backend\ProductReviewController;
 use App\Http\Controllers\Backend\ProductCategoryController;
-
+use App\Http\Controllers\ShippingMethodController;
 
 Route::group(['middleware' => 'auth.admin'], function () {
     
@@ -54,6 +57,10 @@ Route::group(['middleware' => 'auth.admin'], function () {
         Route::resource('/product-size', ProductSizeController::class);
         Route::put('/product-size/status/{id}', [ProductSizeController::class, 'status'])->name('product-size.status');
 
+        // shipping method
+        Route::resource('/shipping-method', ShippingMethodController::class)->except(['show']);
+        Route::put('/shipping-method/status/{id}', [ShippingMethodController::class, 'status'])->name('shipping-method.status');
+
         // Coupon
         Route::resource('/cupon', CuponController::class);
         Route::put('/cupon/status/{id}', [CuponController::class, 'status'])->name('cupon.status');
@@ -75,12 +82,30 @@ Route::group(['middleware' => 'auth.admin'], function () {
 
         // Product review
         Route::get('/product-review', [ProductReviewController::class, 'index'])->name('product-review.index');
+        Route::get('/product-review/create', [ProductReviewController::class, 'create'])->name('product-review.create');
+        Route::post('/product-review/store', [ProductReviewController::class, 'store'])->name('product-review.store');
+        Route::get('/product-review/edit/{id}', [ProductReviewController::class, 'edit'])->name('product-review.edit');
+        Route::put('/product-review/update/{id}', [ProductReviewController::class, 'update'])->name('product-review.update');
         Route::put('/product-review/approve/{id}', [ProductReviewController::class, 'approve'])->name('product-review.approve');
         Route::delete('/product-review/{id}', [ProductReviewController::class, 'destroy'])->name('product-review.destroy');
+
+        //bundle review
+        Route::get('/bundle-review', [BundleReviewController::class, 'index'])->name('bundle-review.index');
+        Route::get('/bundle-review/create', [BundleReviewController::class, 'create'])->name('bundle-review.create');
+        Route::post('/bundle-review/store', [BundleReviewController::class, 'store'])->name('bundle-review.store');
+        Route::get('/bundle-review/edit/{id}', [BundleReviewController::class, 'edit'])->name('bundle-review.edit');
+        Route::put('/bundle-review/update/{id}', [BundleReviewController::class, 'update'])->name('bundle-review.update');
+        Route::put('/bundle-review/approve/{id}', [BundleReviewController::class, 'approve'])->name('bundle-review.approve');
+        Route::delete('/bundle-review/{id}', [BundleReviewController::class, 'destroy'])->name('bundle-review.destroy');
 
         // Clients
         Route::resource('/clients', ClientsController::class);
         Route::put('/clients/status/{id}', [ClientsController::class, 'status'])->name('clients.status');
+
+        //site settings
+        Route::get('/site-settings', [SiteSettingsController::class, 'siteSettings'])->name('site.settings');
+        Route::put('/site-settings/update', [SiteSettingsController::class, 'updateSiteSettings'])->name('site.settings.update');
+
 
         // Home page settings
         Route::get('/home-page-sidebar-settings', [HomePageSettingsController::class, 'homePageSidebarSettings'])->name('home.page.sidebar.settings');
@@ -89,7 +114,13 @@ Route::group(['middleware' => 'auth.admin'], function () {
         Route::put('/home-page-body-settings/update', [HomePageSettingsController::class, 'updateHomePageBodySettings'])->name('home.page.body.settings.update');
 
         //order details
+        Route::get('/order-list', [OrderController::class, 'index'])->name('order.list');
         Route::get('/order-details/{id}', [OrderController::class, 'show'])->name('order.details');
+        Route::patch('/order-update-status/{id}', [OrderController::class, 'updateStatus'])->name('order.updateStatus');
+
+        //admin notifications
+        Route::get('/admin-notifications', [AdminController::class, 'adminNotifications'])->name('admin.notifications');
+        Route::get('/admin-notifications/read/{id}', [AdminController::class, 'readNotification'])->name('admin.notifications.read');
 
          //privacy policy
         Route::get('/privacy-policy-settings', [PageController::class, 'privacyPolicy'])->name('privacy-policy-settings');

@@ -8,11 +8,13 @@
                 <div class="col-lg-3 col-6">
                     <div class="bundle-box">
                         <a href="{{ route('bundle-details', $productBundle->id) }}">
-                            <div class="bundle-img">
-                                <img class="img-fluid"
-                                    src="{{ asset(optional($productBundle->firstImage)->image_url) }}"
-                                    alt="{{ $productBundle->name }}" title="{{ $productBundle->name }}">
-                            </div>
+                            @if($productBundle->firstImage?->image_url)
+                                <div class="bundle-img">
+                                    <img class="img-fluid"
+                                        src="{{ asset($productBundle->firstImage?->image_url) }}"
+                                        alt="{{ $productBundle->name }}" title="{{ $productBundle->name }}">
+                                </div>
+                            @endif
                             <div class="bundle-title">
                                 <h3>{{ $productBundle->name }}</h3>
                             </div>

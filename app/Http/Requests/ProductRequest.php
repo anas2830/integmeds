@@ -32,19 +32,21 @@ class ProductRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('products', 'product_name')->ignore($productId),
+                Rule::unique('products', 'product_name')
+                    ->ignore($productId)
+                    ->whereNull('deleted_at'),
             ],
             'sku' => [
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('products', 'sku')->ignore($productId),
+                Rule::unique('products', 'sku')->ignore($productId)->whereNull('deleted_at'),
             ],
             'ups_code' => [
                 'nullable',
                 'string',
                 'max:255',
-                Rule::unique('products', 'ups_code')->ignore($productId),
+                Rule::unique('products', 'ups_code')->ignore($productId)->whereNull('deleted_at'),
             ],
             'categories' => ['required', 'array'],
             'categories.*' => ['exists:product_categories,id'],
@@ -69,6 +71,10 @@ class ProductRequest extends FormRequest
             'purchase_price' => ['nullable', 'numeric', 'min:0'],
             'regular_price' => ['nullable', 'numeric', 'min:0'],
             'sale_price' => ['nullable', 'numeric', 'min:0'],
+            'weight'        => ['required', 'numeric', 'min:0'],
+            'length'        => ['required', 'numeric', 'min:0', 'max:10'],
+            'width'         => ['required', 'numeric', 'min:0', 'max:10'],
+            'height'        => ['required', 'numeric', 'min:0', 'max:5'],
         ];
     }
 }

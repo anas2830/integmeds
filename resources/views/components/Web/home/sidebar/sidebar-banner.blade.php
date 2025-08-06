@@ -2,8 +2,10 @@
     <div class="sidebar-product-banner">
         @if($banner->image_path)
             <div class="sidebar-product-banner-img">
-                <img class="img-fluid" src="{{ asset($banner->image_path) }}"
-                    alt="{{ $banner->title ?? '' }}" title="{{ $banner->title ?? '' }}">
+                <a href="{{ $banner->button_url ?? '#' }}">
+                    <img class="img-fluid" src="{{ asset($banner->image_path) }}"
+                        alt="{{ $banner->title ?? '' }}" title="{{ $banner->title ?? '' }}">
+                </a>
             </div>
         @endif
 

@@ -42,7 +42,7 @@
                         @method('PUT')
                         <div class="card">
                             <div class="card-body">
-                                <div class="row">
+                                {{-- <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="title">
@@ -117,12 +117,12 @@
                                             @enderror
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="button_url">
-                                                Button URL
+                                                URL
                                             </label>
                                             <input id="button_url" 
                                                 name="button_url" 
@@ -160,7 +160,7 @@
                         </div>
                         <div class="card">
                             <div class="card-body">
-                                <p class="mb-3 font-weight-bold">Slider Image</p>
+                                <p class="mb-3 font-weight-bold">Slider Image <span class="text-danger">(1620 x 500)</span></p>
         
                                 <div class="dropzone single-upload dz-clickable" data-max-size="2" data-max-files="15" data-accepted-files=".jpeg,.jpg,.png,.gif,.webp">
                                 <div class="dz-default dz-message needsclick"><div class="mb-3"><i class="display-4 text-muted bx bxs-cloud-upload"></i></div><h4>Drop files here or click to upload.</h4></div></div>

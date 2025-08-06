@@ -46,13 +46,9 @@ class ProductCrudService
 
     public function editProduct($id)
     {
-        // dd($id);
         $data = $this->getCreateProductData();
-
         // Find the product first
         $product = Product::find($id);
-
-        // dd($product);
 
         if (!$product) {
             // handle product not found, maybe throw exception or return null/empty data
@@ -61,7 +57,6 @@ class ProductCrudService
 
         // Get existing product images via relationship or separate query
         $productImages = $product->images;
-        // dd($productImages);
 
         // Get selected category IDs
         $selectedCategories = $product->categories->pluck('id')->toArray();
@@ -91,9 +86,6 @@ class ProductCrudService
         // $data['selectedSizes'] = $selectedSizes;
         $data['videoUrls'] = $product->videos()->pluck('video_url')->toArray();
 
-
-        // dd($data);
-
         return $data;
     }
 
@@ -117,7 +109,6 @@ class ProductCrudService
             $this->deleteProductImages(request()->files_to_delete);
         }
         $this->storeRelations($product, $validated);
-        // dd($validated['stock_quantity']);
 
         $this->updateStock($product, $validated['stock_quantity'] ?? 0);
 
@@ -159,7 +150,11 @@ class ProductCrudService
             'sale_price' => $sale,
             'discount_price' => $discount['discount_price'],
             'discount_percentage' => $discount['discount_percentage'],
-            // 'quantity' => $validated['stock_quantity'] ?? 0,
+            'weight'        => $validated['weight'],
+            'weight_converted' => $this->weightToKgram($validated['weight']),
+            'length'        => $validated['length'],
+            'width'         => $validated['width'],
+            'height'        => $validated['height'],
         ];
 
         if ($product) {
@@ -170,6 +165,13 @@ class ProductCrudService
 
         return Product::create($data);
     }
+
+    private function weightToKgram($weight)
+    {
+        return $weight > 0 ? round($weight / 1000, 2) : 0;
+    }
+
+
 
     private function storeVideo(Product $product, array $videoIntros)
     {
@@ -232,8 +234,6 @@ class ProductCrudService
                     ];
                 }
             } catch (\Throwable $e) {
-                // You can log the error if needed
-                // Log::error("Image upload failed for $filename: " . $e->getMessage());
                 continue;
             }
         }
@@ -262,7 +262,6 @@ class ProductCrudService
                 unlink($filePath);
             }
             ProductImage::where('image_url', $relativePath) ->delete();
-            // dd($filePath, $r);
         }
     }
 
@@ -335,11 +334,9 @@ class ProductCrudService
 
     private function storeRelations(Product $product, array $validated)
     {
-        // dd($validated);
         $product->categories()->sync($validated['categories'] ?? []);
         $product->brands()->sync($validated['brand_id'] ?? []);
         $product->tags()->sync($validated['tags'] ?? []);
-        // $product->sizes()->sync($validated['sizes'] ?? []);
     }
 
 
