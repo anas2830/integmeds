@@ -5,7 +5,7 @@
 				<div class="footer-info">
 					<div class="Footer-logo">
 						<a href="#">
-                            <img class="img-fluid" src="{{asset('web_assets/images/logo/footer-logo.png')}}" alt="" title="">
+                            <img class="img-fluid" src="https://integmeds.com/web_assets/images/logo/footer-logo.png" alt="" title="">
                         </a>
 					</div>
 					<address>
@@ -52,6 +52,20 @@
 						</form>						
                     </div>
                     
+				</div>
+			</div>
+		</div>
+		<div class="payment-method-wrap">
+			<div class="row">
+				<div class="col-lg-8 m-auto">
+					<div class="row">
+						<div class="col-md-4 mb-2 mb-md-0 d-flex align-items-center">
+							<img class="img-fluid" src='{{asset("web_assets/images/bg/stripe2.png")}}' alt="" title="">
+						</div>
+						<div class="col-md-8 d-flex align-items-center">
+							<img class="img-fluid" src='{{asset("web_assets/images/bg/SSLCommerz1.png")}}' alt="" title="">
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
