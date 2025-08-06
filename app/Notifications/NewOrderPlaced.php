@@ -27,7 +27,7 @@ class NewOrderPlaced extends Notification
         return [
             'order_id' => $this->order?->id,
             'title' => 'New Order Placed',
-            'message'  => 'Order #' . $this->order->id . ' has been placed successfully.',
+            'message'  => 'Order #' . $this->order?->order_number . ' has been placed successfully.',
         ];
     }
 }
