@@ -11,10 +11,10 @@ class DashboardService
 {
     public function getDashboardData()
     {
-        $data['latest_orders'] = Order::latest()->with('user')->take(5)->get();
-        $data['total_orders'] = Order::count();
-        $data['pending_orders'] = Order::where('order_status', 'pending')->count();
-        $data['total_revenue'] = Order::sum('total_amount');
+        $data['latest_orders'] = Order::latest()->with('user')->where('payment_status', 'paid')->take(5)->get();
+        $data['total_orders'] = Order::where('payment_status', 'paid')->count();
+        $data['pending_orders'] = Order::where('order_status', 'pending')->where('payment_status', 'paid')->count();
+        $data['total_revenue'] = Order::where('payment_status', 'paid')->sum('total_amount');
         $data['total_products'] = Product::count();
 
         // Monthly sales data
@@ -23,6 +23,7 @@ class DashboardService
             DB::raw("SUM(total_amount) as total")
         )
         ->whereYear('created_at', Carbon::now()->year)
+        ->where('payment_status', 'paid')
         ->groupBy(DB::raw("MONTH(created_at)"))
         ->orderBy(DB::raw("MONTH(created_at)"))
         ->pluck('total', 'month')
