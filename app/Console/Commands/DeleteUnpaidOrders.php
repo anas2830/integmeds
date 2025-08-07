@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Order;
 use Illuminate\Console\Command;
+use Carbon\Carbon;
 
 class DeleteUnpaidOrders extends Command
 {
@@ -26,8 +27,7 @@ class DeleteUnpaidOrders extends Command
      */
     public function handle()
     {
-        $deletedCount = Order::where('payment_status', '!=', 'paid')->where('created_at', '<=', now()->subHours(1))->delete();
-
-        $this->info("Deleted {$deletedCount} unpaid orders.");
+        Order::where('payment_status', '!=', 'paid')->where('created_at', '<=', Carbon::now()->subHour())->delete();
+        $this->info("Deleted unpaid orders.");
     }
 }
