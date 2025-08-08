@@ -139,20 +139,14 @@ class OrderController extends Controller
                 }
                 SendOrderInvoice::dispatch($order);
 
-                $easyship = $availableMethods->find(1);
-                $token = $easyship->token ?? null;  // fix typo 'toekn' => 'token'
+                // $easyship = $availableMethods->find(1);
+                // $token = $easyship->token ?? null;  // fix typo 'toekn' => 'token'
                 
-                if (!empty($token)) {
-                    CreateEasyshipShipment::dispatch($order, $token, $this->shippingService->createShippingParcels());
-                }
+                // if (!empty($token)) {
+                //     CreateEasyshipShipment::dispatch($order, $token, $this->shippingService->createShippingParcels());
+                // }
 
-                $shipping_easy['api_key'] = config('shipping.shipping_easy_api_key');
-                $shipping_easy['api_secret'] = config('shipping.shipping_easy_api_secret');
-                $shipping_easy['store_api_key'] = config('shipping.shipping_easy_store_api_key');
-
-                if (!empty($shipping_easy['api_key']) && !empty($shipping_easy['api_secret']) && !empty($shipping_easy['store_api_key'])) {
-                    CreateShippingEasyOrder::dispatch($order, $shipping_easy, $this->shippingService->getCartLineItems());
-                }
+                $this->shippingEasyOrder($order, $this->shippingService->getCartLineItems());
 
                 $this->orderService->sendOrderNotification($order);
 
@@ -179,6 +173,16 @@ class OrderController extends Controller
         }
     }
 
+    public function shippingEasyOrder($order, $lineItems)
+    {
+        $shipping_easy['api_key'] = config('shipping.shipping_easy_api_key');
+        $shipping_easy['api_secret'] = config('shipping.shipping_easy_api_secret');
+        $shipping_easy['store_api_key'] = config('shipping.shipping_easy_store_api_key');
+
+        if (!empty($shipping_easy['api_key']) && !empty($shipping_easy['api_secret']) && !empty($shipping_easy['store_api_key'])) {
+            CreateShippingEasyOrder::dispatch($order, $shipping_easy, $lineItems);
+        }
+    }
 
     public function success(Request $request)
     {
@@ -210,12 +214,16 @@ class OrderController extends Controller
                 }
                
                 SendOrderInvoice::dispatch($order);
-                $easyship = ShippingMethod::find(1);
-                $token = $easyship->token;
+                // easy shipping
+                // $easyship = ShippingMethod::find(1);
+                // $token = $easyship->token;
 
-                if (!empty($token)) {
-                    CreateEasyshipShipment::dispatch($order, $token, $this->shippingService->createShippingParcels());
-                }
+                // if (!empty($token)) {
+                //     CreateEasyshipShipment::dispatch($order, $token, $this->shippingService->createShippingParcels());
+                // }
+
+
+                $this->shippingEasyOrder($order, $this->shippingService->getCartLineItems());
 
                 $this->orderService->sendOrderNotification($order);
                 Cart::clear();
