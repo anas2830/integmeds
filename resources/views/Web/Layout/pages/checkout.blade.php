@@ -177,6 +177,7 @@
 @push('script')
 <script>
 $(document).ready(function () {
+    const additionalShippingRates = @json(config('shipping.additional_rates'));
     // function toggleShippingBilling() {
     //     if ($('#ship-address').is(':checked')) {
     //         $('.different-address-info').slideDown();
@@ -268,18 +269,31 @@ $(document).ready(function () {
         $('.total-price').text(total.toFixed(2));
     }
 
+    // function getAdjustedShippingCost(baseCost) {
+    //     const isShipToDifferent = $('input[name="ship_to_different_address"]').prop('checked');
+    //     const country = isShipToDifferent
+    //         ? $('select[name="shipping[country]"]').val()
+    //         : $('select[name="billing[country]"]').val();
+
+    //     if (country === 'US'){
+    //         return baseCost + 10;
+    //     }else if (country === 'CA') {
+    //         return baseCost + 20;
+    //     }else{
+    //         return baseCost + 80;
+    //     }
+
+    //     return baseCost;
+    // }
     function getAdjustedShippingCost(baseCost) {
         const isShipToDifferent = $('input[name="ship_to_different_address"]').prop('checked');
         const country = isShipToDifferent
             ? $('select[name="shipping[country]"]').val()
             : $('select[name="billing[country]"]').val();
 
-        if (country !== 'US') {
-            return baseCost + 80;
-        }else{
-            return baseCost + 10;
-        }
-        return baseCost;
+        const rate = additionalShippingRates[country] ?? additionalShippingRates.OTHER;
+
+        return baseCost + Number(rate);
     }
 
     $('#shipping_method_select').on('change', function() {

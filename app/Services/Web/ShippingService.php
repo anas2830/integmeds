@@ -208,6 +208,37 @@ class ShippingService
         ];
     }
 
+    public function getCartLineItems(): array
+    {
+        $cartItems = Cart::getContent();
+        $lineItems = [];
+    
+        foreach ($cartItems as $item) {
+            $attr = $item->attributes;
+            $quantity = (int) $item->quantity;
+            $unitPrice = (float) $item->price;
+            $weightKg = max((float) ($attr->weight ?? 0.1), 0.1); // fallback to 0.1 kg
+            $weightOunces = $weightKg * 35.274;
+    
+            $lineItems[] = [
+                "item_name"           => $item->name,
+                "sku"                 => $attr->sku ?? '',
+                "unit_price"          => $unitPrice,
+                "total_excluding_tax" => $unitPrice * $quantity,
+                "price_excluding_tax" => $unitPrice,
+                "weight_in_ounces"    => $weightOunces,
+                "quantity"            => $quantity,
+                "product_options"     => [
+                    "pa_size" => $attr->pa_size ?? '',
+                    "Colour"  => $attr->Colour ?? '',
+                ],
+            ];
+        }
+    
+        return $lineItems;
+    }
+    
+
 
     private function buildPayloadWithParcels(array $address, array $parcels): array
     {

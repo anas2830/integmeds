@@ -61,7 +61,7 @@
                             <th scope="col">Payment Status</th>
                             <th scope="col">Payment Method</th>
                             <th scope="col">Total</th>
-                            <th scope="col">Change Status</th>
+                            {{-- <th scope="col">Change Status</th> --}}
                             <th scope="col">Action</th>
                         </tr>
                     </thead>
@@ -102,7 +102,7 @@
                                 </td>
                                 <td>{{$order->payment_method}}</td>
                                 <td>{{config('app.currency_symbol')}}{{ $order->total_amount }}</td>
-                                <td>
+                                {{-- <td>
                                     <form action="{{ route('order.updateStatus', $order->id) }}" method="POST" class="d-flex align-items-center">
                                         @csrf
                                         @method('PATCH')
@@ -113,7 +113,7 @@
                                             <option value="cancelled" {{ $order->order_status == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
                                         </select>
                                     </form>
-                                </td>
+                                </td> --}}
                                 <td class="view-btn"><a target="_blank" href="{{ route('order.details', $order->id) }}"><i class="far fa-eye"></i> View</a></td>
                             </tr>
                         @empty
