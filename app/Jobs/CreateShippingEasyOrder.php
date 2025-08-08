@@ -5,6 +5,7 @@ namespace App\Jobs;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Str;
 
 class CreateShippingEasyOrder implements ShouldQueue
 {
@@ -45,8 +46,18 @@ class CreateShippingEasyOrder implements ShouldQueue
             "custom_1"                    => "Test Order | {$this->order->es_ship_courier_name} | {$this->order->es_ship_delivery_time}",
             "custom_2"                    => $this->order->es_ship_courier_name,
             "custom_3"                    => $this->order->es_ship_delivery_time,
-            "base_shipping_cost"         => $this->order->shipping_cost,
-
+            "base_shipping_cost"          => $this->order->shipping_cost,
+            "shipping_cost_including_tax" => $this->order->shipping_cost,
+            "shipping_cost_excluding_tax" => $this->order->shipping_cost,
+            "shipping_cost_tax"           => "0.00",
+            "subtotal_including_tax"      => $this->order->subtotal,
+            "subtotal_excluding_tax"      => $this->order->subtotal,
+            "subtotal_tax"                => "0.00",
+            "total_including_tax"         => $this->order->subtotal + $this->order->shipping_cost,
+            "total_excluding_tax"         => $this->order->subtotal + $this->order->shipping_cost,
+            "total_tax"                   => "0.00",
+            "discount_amount"             => "0.00",
+            "coupon_discount"             => "0.00",
             "recipients" => [
                 [
                     "first_name"       => $this->order->shipping_address['first_name'] ?? '',
@@ -65,7 +76,6 @@ class CreateShippingEasyOrder implements ShouldQueue
                 ]
             ]
         ];
-        dd($orderPayload);
 
         // Create the order
         $order = new \ShippingEasy_Order($this->shipping_easy['store_api_key'], $orderPayload);
