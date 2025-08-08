@@ -18,6 +18,7 @@ use App\Services\Web\CouponService;
 use App\Http\Controllers\Controller;
 use App\Jobs\CreateEasyshipShipment;
 use Illuminate\Support\Facades\Auth;
+use App\Jobs\CreateShippingEasyOrder;
 use App\Services\Web\ShippingService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Session;
@@ -145,6 +146,14 @@ class OrderController extends Controller
                     CreateEasyshipShipment::dispatch($order, $token, $this->shippingService->createShippingParcels());
                 }
 
+                $shipping_easy['api_key'] = config('shipping.shipping_easy_api_key');
+                $shipping_easy['api_secret'] = config('shipping.shipping_easy_api_secret');
+                $shipping_easy['store_api_key'] = config('shipping.shipping_easy_store_api_key');
+
+                if (!empty($shipping_easy['api_key']) && !empty($shipping_easy['api_secret']) && !empty($shipping_easy['store_api_key'])) {
+                    CreateShippingEasyOrder::dispatch($order, $shipping_easy, $this->shippingService->getCartLineItems());
+                }
+
                 $this->orderService->sendOrderNotification($order);
 
                 Cart::clear();
@@ -194,7 +203,7 @@ class OrderController extends Controller
                 $order_update = $order->update([
                     'payment_status' => 'paid',
                     'order_status' => 'completed'
-                ]);
+                ]);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
                 $this->processOrderDetailsAndStock($order, $cart);
                 if (!empty($couponId) && ($coupon = Cupon::find($couponId))) {
                     $coupon->increment('used');
