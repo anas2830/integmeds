@@ -128,7 +128,10 @@ class OrderController extends Controller
                 'description' => 'Integmeds Order Payment - Stripe',
             ]);
             if ($charge->status === 'succeeded') {
-                $order_update = $order->update(['payment_status' => 'paid']);
+                $order_update = $order->update([
+                    'payment_status' => 'paid',
+                    'order_status' => 'completed'
+                ]);
                 $this->processOrderDetailsAndStock($order, $cart);
                 if (!empty($couponId) && ($coupon = Cupon::find($couponId))) {
                     $coupon->increment('used');
@@ -188,7 +191,10 @@ class OrderController extends Controller
             $validation = $sslc->orderValidate($request->all(), $tran_id, $amount, $currency);
 
             if ($validation === true) {
-                $order->update(['payment_status' => 'paid']);
+                $order_update = $order->update([
+                    'payment_status' => 'paid',
+                    'order_status' => 'completed'
+                ]);
                 $this->processOrderDetailsAndStock($order, $cart);
                 if (!empty($couponId) && ($coupon = Cupon::find($couponId))) {
                     $coupon->increment('used');
