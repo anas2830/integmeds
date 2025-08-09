@@ -213,7 +213,7 @@ class ShippingService
         $cartItems = Cart::getContent();
         $lineItems = [];
     
-        foreach ($cartItems as $item) {
+        foreach ($cartItems ?? [] as $item) {
             $attr = $item->attributes;
             $quantity = (int) $item->quantity;
             $unitPrice = (float) $item->price;
