@@ -43,7 +43,7 @@ class CreateShippingEasyOrder implements ShouldQueue
         $orderPayload = [
             "external_order_identifier"   => $this->order->order_number,
             "ordered_at"                  => $this->order->created_at->toIso8601String(),
-            "custom_1"                    => "Test Order | {$this->order->es_ship_courier_name} | {$this->order->es_ship_delivery_time}",
+            "custom_1"                    => "{$this->order->es_ship_courier_name} | {$this->order->es_ship_delivery_time}",
             "custom_2"                    => $this->order->es_ship_courier_name,
             "custom_3"                    => $this->order->es_ship_delivery_time,
             "base_shipping_cost"          => $this->order->shipping_cost,
