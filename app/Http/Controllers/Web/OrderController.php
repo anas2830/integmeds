@@ -60,7 +60,11 @@ class OrderController extends Controller
         if ($result instanceof RedirectResponse) {
             return $result;
         }
-        $this->orderService->checkMinOrderAmount($subtotal);
+
+        if ($address['country'] !== 'US' && $address['country'] !== 'CA') {
+            $this->orderService->checkMinOrderAmount($subtotal);
+        }
+
         $this->couponService->refreshCouponAndValidate($subtotal);
         $billingAddress = $request->input('billing');
         $shippingAddress = $billingAddress;
@@ -146,7 +150,9 @@ class OrderController extends Controller
                     CreateEasyshipShipment::dispatch($order, $token, $this->shippingService->createShippingParcels());
                 }
 
-                $this->shippingEasyOrder($order, $this->shippingService->getCartLineItems());
+                if(app()->environment('production')){
+                    $this->shippingEasyOrder($order, $this->shippingService->getCartLineItems());
+                }
 
                 $this->orderService->sendOrderNotification($order);
 
@@ -222,8 +228,9 @@ class OrderController extends Controller
                     CreateEasyshipShipment::dispatch($order, $token, $this->shippingService->createShippingParcels());
                 }
 
-
-                $this->shippingEasyOrder($order, $this->shippingService->getCartLineItems());
+                if (app()->environment('production')) {
+                    $this->shippingEasyOrder($order, $this->shippingService->getCartLineItems());
+                }
 
                 $this->orderService->sendOrderNotification($order);
                 Cart::clear();
