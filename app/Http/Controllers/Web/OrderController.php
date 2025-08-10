@@ -139,12 +139,12 @@ class OrderController extends Controller
                 }
                 SendOrderInvoice::dispatch($order);
 
-                // $easyship = $availableMethods->find(1);
-                // $token = $easyship->token ?? null;  // fix typo 'toekn' => 'token'
-                
-                // if (!empty($token)) {
-                //     CreateEasyshipShipment::dispatch($order, $token, $this->shippingService->createShippingParcels());
-                // }
+                $easyship = $availableMethods->find(1);
+                $token = $easyship->token ?? null;  // fix typo 'toekn' => 'token'
+
+                if (!empty($token) && app()->environment('production')) {
+                    CreateEasyshipShipment::dispatch($order, $token, $this->shippingService->createShippingParcels());
+                }
 
                 $this->shippingEasyOrder($order, $this->shippingService->getCartLineItems());
 
@@ -215,12 +215,12 @@ class OrderController extends Controller
                
                 SendOrderInvoice::dispatch($order);
                 // easy shipping
-                // $easyship = ShippingMethod::find(1);
-                // $token = $easyship->token;
+                $easyship = ShippingMethod::find(1);
+                $token = $easyship->token;
 
-                // if (!empty($token)) {
-                //     CreateEasyshipShipment::dispatch($order, $token, $this->shippingService->createShippingParcels());
-                // }
+                if (!empty($token) && app()->environment('production')) {
+                    CreateEasyshipShipment::dispatch($order, $token, $this->shippingService->createShippingParcels());
+                }
 
 
                 $this->shippingEasyOrder($order, $this->shippingService->getCartLineItems());
