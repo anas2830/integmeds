@@ -7,10 +7,19 @@ use Illuminate\Support\Facades\Auth;
 if (!function_exists('generateOrderNumber')) {
     function generateOrderNumber()
     {
-        $date = date('Ymd');
-        $time = date('His');
-        $random = mt_rand(10, 99);
-        return "ORD-{$date}{$time}{$random}";
+        // $date = date('Ymd');
+        // $time = date('His');
+        // $random = mt_rand(10, 99);
+        // return "ORD-{$date}{$time}{$random}";
+        $prefix = "ORD-".date('ymd');
+        $maxOrderNumber = Order::whereDate('created_at', now())->max('order_number');
+        if ($maxOrderNumber) {
+            $lastNumber = (int) substr($maxOrderNumber, -4);
+            $nextNumber = str_pad($lastNumber + 1, 4, '0', STR_PAD_LEFT);
+        } else {
+            $nextNumber = '0001';
+        }
+        return $prefix . $nextNumber;
     }
 }
 
