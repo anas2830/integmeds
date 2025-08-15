@@ -30,7 +30,7 @@ class OrderInvoiceMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Order Invoice #'. $this->order->id,
+            subject: 'Order Invoice #'. $this->order->order_number,
         );
     }
 

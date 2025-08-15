@@ -130,7 +130,7 @@ class OrderController extends Controller
                 'amount' =>  $totalAmount * 100, // amount in cents
                 'currency' => 'usd',
                 'source' => $request->stripeToken,
-                'description' => 'Integmeds Order Payment - Stripe',
+                'description' => 'Integmeds Order Payment - ' . $order->order_number,
             ]);
             if ($charge->status === 'succeeded') {
                 $order_update = $order->update([
