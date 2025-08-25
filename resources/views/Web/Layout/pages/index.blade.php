@@ -42,7 +42,7 @@
                             <div class="col-lg-12">
                                 <div class="common-btn-wrap d-flex justify-content-center mt-4">
                                     <div class="common-btn-borders">
-                                        <a class="common-btn" href="{{ route('bundle') }}">See More</a>
+                                        <a class="common-btn" href="{{ route('bundle') }}">See More Bundles</a>
                                     </div>
                                 </div>
                             </div>

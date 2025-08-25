@@ -7,7 +7,7 @@
                 <div class="col-lg-3 d-flex align-items-center">
                     <a class="" href="{{route('/')}}">
                         <div class="logo d-none d-lg-block">
-                            <img class="img-fluid" src="{{asset('assets/images/logo-light.png')}}" alt="" title="">
+                            <img class="img-fluid" src="{{asset('assets/images/logo-light.png')}}" alt="logo" title="logo">
                         </div>
                     </a>
                 </div>
@@ -16,7 +16,7 @@
                     <form action="{{route('search')}}" method="GET">
                         <div class="search">
                             <input type="text" class="searchTerm" placeholder="Search Products...." data-url="{{ route('search-suggestions') }}" name="search">
-                            <button type="submit" class="searchButton">
+                            <button type="submit" class="searchButton" aria-label="Search">
                                 <i class="fa fa-search"></i>
                             </button>
                             <ul class="suggestions" >
@@ -30,9 +30,9 @@
                     <div class="cart-login-wrap d-none d-lg-block">
                         <ul>
                             @auth
-                                <li><a href="{{ route('user.wishlist') }}"><i class="fa-regular fa-heart"></i></a></li>
+                                <li><a href="{{ route('user.wishlist') }}" aria-label="View wishlist"><i class="fa-regular fa-heart"></i></a></li>
                             @else
-                                <li><a href="{{ route('user.login') }}"><i class="fa-regular fa-heart"></i></a></li>
+                                <li><a href="{{ route('user.login') }}"><i class="fa-regular fa-heart" aria-label="View wishlist"></i></a></li>
                             @endauth
                             <li class="shopping-cart" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><a><i class="fa-solid fa-cart-shopping"></i></a><span class="cart_count">{{ $cartDataCount }}</span></li>
                             <li>
@@ -71,7 +71,7 @@
                                         </div>
                                     </div>
                                 @else
-                                    <a class="user-btn" href="{{route('user.login')}}"><i class="fa-solid fa-user"></i></a>
+                                    <a class="user-btn" href="{{route('user.login')}}" aria-label="User login"><i class="fa-solid fa-user"></i></a>
                                 @endauth
                             </li>
                         </ul>
@@ -88,7 +88,7 @@
                         <div class="container-fluid">
                             <a class="navbar-brand" href="{{route('/')}}">
                                 <div class="logo">
-                                    <img class="img-fluid" src="{{asset('web_assets/images/logo/sticky-logo.png')}}" alt="" title="">
+                                    <img class="img-fluid" src="{{asset('web_assets/images/logo/sticky-logo.png')}}" alt="logo" title="logo">
                                 </div>
                             </a>
                             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -252,7 +252,7 @@
                                                                 </div>
                                                             </div>
                                                         @else
-                                                            <a class="user-btn" href="{{ route('user.login') }}"><i class="fa-solid fa-user"></i></a>
+                                                            <a class="user-btn" href="{{ route('user.login') }}" aria-label="User Login"><i class="fa-solid fa-user"></i></a>
                                                         @endauth
                                                     </li>
                                                 </ul>
