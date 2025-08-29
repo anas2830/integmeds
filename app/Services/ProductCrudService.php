@@ -299,10 +299,11 @@ class ProductCrudService
         }
 
         $type = $difference > 0 ? 'in' : 'out';
+        $changedQuantity = abs($difference);
 
         $note = $type === 'in'
-            ? "Quantity increased by admin: +{$difference}"
-            : "Quantity decreased by admin: " . abs($difference);
+            ? "Quantity increased by admin: +{$changedQuantity}"
+            : "Quantity decreased by admin: -{$changedQuantity}";
 
         // Update the product quantity
         $product->update(['quantity' => $newQuantity]);
@@ -314,11 +315,12 @@ class ProductCrudService
 
         // Create stock ledger entry for the change
         $product->stockLedgers()->create([
-            'type' => $type,
-            'quantity' => $newQuantity,
-            'note' => $note,
+            'type'     => $type,
+            'quantity' => $changedQuantity, // ✅ only the difference
+            'note'     => $note,
         ]);
     }
+
 
 
 

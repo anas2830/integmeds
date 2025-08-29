@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\StockFixController;
+use App\Http\Controllers\SalesReportController;
 use App\Http\Controllers\Backend\PageController;
 use App\Http\Controllers\SiteSettingsController;
 use App\Http\Controllers\Backend\AdminController;
@@ -8,8 +10,10 @@ use App\Http\Controllers\Backend\CuponController;
 use App\Http\Controllers\Backend\OrderController;
 use App\Http\Controllers\Backend\EditorController;
 use App\Http\Controllers\Backend\SliderController;
+use App\Http\Controllers\ShippingMethodController;
 use App\Http\Controllers\Backend\ClientsController;
 use App\Http\Controllers\Backend\ProductController;
+use App\Http\Controllers\InventoryReportController;
 use App\Http\Controllers\HomePageSettingsController;
 use App\Http\Controllers\Backend\FileUploadController;
 use App\Http\Controllers\Backend\ProductTagController;
@@ -20,7 +24,6 @@ use App\Http\Controllers\Backend\ProductBrandController;
 use App\Http\Controllers\Backend\ProductBundleController;
 use App\Http\Controllers\Backend\ProductReviewController;
 use App\Http\Controllers\Backend\ProductCategoryController;
-use App\Http\Controllers\ShippingMethodController;
 
 Route::group(['middleware' => 'auth.admin'], function () {
     
@@ -105,7 +108,7 @@ Route::group(['middleware' => 'auth.admin'], function () {
         //site settings
         Route::get('/site-settings', [SiteSettingsController::class, 'siteSettings'])->name('site.settings');
         Route::put('/site-settings/update', [SiteSettingsController::class, 'updateSiteSettings'])->name('site.settings.update');
-
+        
 
         // Home page settings
         Route::get('/home-page-sidebar-settings', [HomePageSettingsController::class, 'homePageSidebarSettings'])->name('home.page.sidebar.settings');
@@ -137,6 +140,16 @@ Route::group(['middleware' => 'auth.admin'], function () {
         //about us
         Route::get('/about-us-settings', [PageController::class, 'aboutUs'])->name('about-us-settings');
         Route::put('/about-us-settings/update', [PageController::class, 'updateAboutUs'])->name('about-us-settings.update');
+
+        // Inventory Report
+        Route::get('inventory-report', [InventoryReportController::class, 'index'])->name('inventory.report.index');
+        Route::put('inventory-report/preview', [InventoryReportController::class, 'preview'])->name('inventory.report.preview');
+        Route::get('/fix-stock-ledgers', [StockFixController::class, 'fix']);
+
+        // sales report
+        Route::get('sales-report', [SalesReportController::class, 'index'])->name('sales.report.index');
+        Route::put('sales-report/preview', [SalesReportController::class, 'preview'])->name('sales.report.preview');
+
     }); // end backend group
 
     // Editor logout route (outside backend prefix)
