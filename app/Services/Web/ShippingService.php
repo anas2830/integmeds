@@ -34,12 +34,12 @@ class ShippingService
         $useShippingAddress = $data['ship_to_different_address'];
 
         $address = $useShippingAddress ? ($data['shipping'] ?? []) : ($data['billing'] ?? []);
-        if(in_array($address['country'], $countryCodes)){
-            // $this->verifyAddressWithZipCodeBase($address['country'], $address['postal_code']);
-            $this->verifyAddressWithGeoCode($address['country'], $address['postal_code']);
-        }else{
-            $this->verifyAddressWithZippopotam($address['country'], $address['postal_code']);
-        }
+        // if(in_array($address['country'], $countryCodes)){
+        //     // $this->verifyAddressWithZipCodeBase($address['country'], $address['postal_code']);
+        //     $this->verifyAddressWithGeoCode($address['country'], $address['postal_code']);
+        // }else{
+        //     $this->verifyAddressWithZippopotam($address['country'], $address['postal_code']);
+        // }
         // Find active shipping method by ID
         $method = ShippingMethod::where('id', $data['shipping_method_id'] ?? null)
             ->where('status', 1)
