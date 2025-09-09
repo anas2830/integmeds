@@ -7,10 +7,6 @@ use Illuminate\Support\Facades\Auth;
 if (!function_exists('generateOrderNumber')) {
     function generateOrderNumber()
     {
-        // $date = date('Ymd');
-        // $time = date('His');
-        // $random = mt_rand(10, 99);
-        // return "ORD-{$date}{$time}{$random}";
         $prefix = "ORD-".date('ymd');
         $maxOrderNumber = Order::whereDate('created_at', now())->max('order_number');
         if ($maxOrderNumber) {
@@ -65,10 +61,10 @@ if (!function_exists('getCountryByIsoCode')) {
     }
 }    
 
-if (!function_exists('pendingOrderCount')) {
-    function pendingOrderCount()
+if (!function_exists('pendingPaidOrderCount')) {
+    function pendingPaidOrderCount()
     {
-        return Order::where('order_status', 'pending')->count();
+        return Order::where('order_status', 'pending')->where('payment_status', 'paid')->count();
     }
 }
 

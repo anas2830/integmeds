@@ -236,11 +236,23 @@
                     <div class="card-body">
                         <h4 class="card-title mb-4">Inventory</h4>
                         <div class="row">
-                            <div class="col-sm-12">
+                            <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="stock_quantity" class="required">Stock Quantity <span class="text-danger">*</span></label>
                                     <input id="stock_quantity" name="stock_quantity" maxlength="10" type="number" min="0" class="form-control" placeholder="Enter stock quantity" required value="{{ old('stock_quantity', 0) }}">
                                     @error('stock_quantity')
+                                        <small class="invalid-feedback">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="status" class="required">Status <span class="text-danger">*</span></label>
+                                    <select name="status" class="form-control" required>
+                                        <option value="1" {{ old('status') == '1' ? 'selected' : '' }}>Active</option>
+                                        <option value="0" {{ old('status') == '0' ? 'selected' : '' }}>Inactive</option>
+                                    </select>
+                                    @error('status')
                                         <small class="invalid-feedback">{{ $message }}</small>
                                     @enderror
                                 </div>
