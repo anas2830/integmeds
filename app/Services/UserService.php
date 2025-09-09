@@ -54,7 +54,7 @@ class UserService
     //orders
     public function getOrders($request)
     {
-        $orders = Order::where('user_id', auth()->id());
+        $orders = Order::where('user_id', auth()->id())->where('payment_status', 'paid');
         if ($request->filled('search')) {
             $orders->where('order_number', 'like', '%' . $request->search . '%');
         }
