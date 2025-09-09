@@ -181,7 +181,7 @@
                     </ul>
                 </li>
 
-                <li>
+                {{-- <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="bx bx-file"></i>
                         <span>Report</span>
@@ -190,7 +190,7 @@
                         <li><a href="{{ route('inventory.report.index') }}">Inventory Report</a></li>
                         <li><a href="{{ route('sales.report.index') }}">Sales Report</a></li>
                     </ul>
-                </li>
+                </li> --}}
 
             </ul>
         </div>
