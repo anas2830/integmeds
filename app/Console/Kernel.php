@@ -14,6 +14,6 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('temp:clean')->daily();    
         $schedule->command('logs:clear')->weeklyOn(1, '2:00');
-        $schedule->command('app:delete-unpaid-orders')->dailyAt('00:00');
+        // $schedule->command('app:delete-unpaid-orders')->dailyAt('00:00');
     }
 }

@@ -128,7 +128,7 @@
 
                 <li>
                     <a href="{{ route('order.list') }}" class="waves-effect">
-                        <i class="bx bx-cart"></i><span class="badge badge-pill badge-info float-right">{{pendingOrderCount()}}</span>
+                        <i class="bx bx-cart"></i><span class="badge badge-pill badge-info float-right">{{pendingPaidOrderCount()}}</span>
                         <span>Order List</span>
                     </a>
                 </li>

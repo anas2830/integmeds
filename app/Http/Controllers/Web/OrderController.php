@@ -24,6 +24,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Session;
 use App\Http\Requests\OrderPlaceRequest;
 use App\Library\SslCommerz\SslCommerzNotification;
+use Illuminate\Validation\ValidationException;
 
 class OrderController extends Controller
 {
@@ -122,50 +123,59 @@ class OrderController extends Controller
             'payment_method'    => $request->paymentMethod ?? 'cash',
             'transaction_id'    => $transactionId,
         ];
-        $order = $this->orderService->orderGenerate($orderData);
+        $order = $this->orderService->orderGenerate($orderData, $cart);
+
         
         if($request->paymentMethod === 'stripe'){
-            \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
-            $charge = \Stripe\Charge::create([
-                'amount' =>  $totalAmount * 100, // amount in cents
-                'currency' => 'usd',
-                'source' => $request->stripeToken,
-                'description' => 'Integmeds Order Payment - ' . $order->order_number,
-            ]);
-            if ($charge->status === 'succeeded') {
-                $order_update = $order->update([
-                    'payment_status' => 'paid',
-                    'order_status' => 'completed'
+            try {
+                \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
+                $charge = \Stripe\Charge::create([
+                    'amount' =>  $totalAmount * 100, // amount in cents
+                    'currency' => 'usd',
+                    'source' => $request->stripeToken,
+                    'description' => 'Integmeds Order Payment - ' . $order->order_number,
                 ]);
-                $this->processOrderDetailsAndStock($order, $cart);
-                if (!empty($couponId) && ($coupon = Cupon::find($couponId))) {
-                    $coupon->increment('used');
+                if ($charge->status === 'succeeded') {
+                    $order->update([
+                        'payment_status' => 'paid',
+                        'order_status' => 'completed'
+                    ]);
+                    $this->processOrderDetailsAndStock($order, $order->items);
+                    if (!empty($couponId) && ($coupon = Cupon::find($couponId))) {
+                        $coupon->increment('used');
+                    }
+                    SendOrderInvoice::dispatch($order);
+
+                    $easyship = $availableMethods->find(1);
+                    $token = $easyship->token ?? null;  // fix typo 'toekn' => 'token'
+
+                    if (!empty($token) && app()->environment('production')) {
+                        CreateEasyshipShipment::dispatch($order, $token, $this->shippingService->createShippingParcels());
+                    }
+
+                    if(app()->environment('production')){
+                        $this->shippingEasyOrder($order, $this->shippingService->getCartLineItems());
+                    }
+
+                    $this->orderService->sendOrderNotification($order);
+
+                    Cart::clear();
+
+                    $this->couponService->removeSessionCoupon();
+                    if(Auth::check()){
+                        return redirect()->route('user.order-invoice', ['id' => $order->id])->with('order_complete', 'Thanks! Your order has been placed successfully.');
+                    }
+                    return redirect()->route('order.complete', ['id' => $order->id])->with('order_complete', 'Thanks! Your order has been placed successfully.');
+                } else {
+                    $order->delete();
+                    throw ValidationException::withMessages([
+                        'error' => "Payment failed. Please try again."
+                    ]);
                 }
-                SendOrderInvoice::dispatch($order);
-
-                $easyship = $availableMethods->find(1);
-                $token = $easyship->token ?? null;  // fix typo 'toekn' => 'token'
-
-                if (!empty($token) && app()->environment('production')) {
-                    CreateEasyshipShipment::dispatch($order, $token, $this->shippingService->createShippingParcels());
-                }
-
-                if(app()->environment('production')){
-                    $this->shippingEasyOrder($order, $this->shippingService->getCartLineItems());
-                }
-
-                $this->orderService->sendOrderNotification($order);
-
-                Cart::clear();
-
-                $this->couponService->removeSessionCoupon();
-                if(Auth::check()){
-                    return redirect()->route('user.order-invoice', ['id' => $order->id])->with('order_complete', 'Thanks! Your order has been placed successfully.');
-                }
-                return redirect()->route('order.complete', ['id' => $order->id])->with('order_complete', 'Thanks! Your order has been placed successfully.');
-            } else {
-                $order->delete();
-                return redirect()->back()->with('error', 'Payment failed. Please try again.');
+            } catch (\Exception $e) {
+                throw ValidationException::withMessages([
+                    'error' => "Payment failed: " . $e->getError()->message
+                ]);
             }
         }
         if($request->paymentMethod === 'sslcommerz'){
@@ -174,7 +184,9 @@ class OrderController extends Controller
             try {
                 $sslc->makePayment($sslPostData, 'hosted');
             } catch (\Exception $e) {
-                return redirect()->back()->with('error', 'Payment failed: ' . $e->getMessage());
+                throw ValidationException::withMessages([
+                    'error' => "Payment failed: " . $e->getMessage()
+                ]);
             }
         }
     }
@@ -196,7 +208,6 @@ class OrderController extends Controller
         $amount = $request->input('amount');
         $currency = $request->input('currency');
         $couponId = Session::get('coupon_id', null);
-        $cart = Cart::getContent();
 
         $sslc = new SslCommerzNotification();
 
@@ -210,11 +221,11 @@ class OrderController extends Controller
             $validation = $sslc->orderValidate($request->all(), $tran_id, $amount, $currency);
 
             if ($validation === true) {
-                $order_update = $order->update([
+                $order->update([
                     'payment_status' => 'paid',
                     'order_status' => 'completed'
                 ]);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
-                $this->processOrderDetailsAndStock($order, $cart);
+                $this->processOrderDetailsAndStock($order, $order->items);
                 if (!empty($couponId) && ($coupon = Cupon::find($couponId))) {
                     $coupon->increment('used');
                 }
@@ -271,24 +282,17 @@ class OrderController extends Controller
         return view('Web.Layout.pages.order.order-status');
     }
 
-    public  function processOrderDetailsAndStock($order, $cart){
-        $details = array();
-        foreach ($cart as $row) {
-            $details['order_id'] = $order->id;
-            $details['product_id'] = $row->id;
-            $details['quantity'] = $row->quantity;
-            $details['product_name'] = $row->name;
-            $details['price'] = $row->price;
-            $details['subtotal'] = $row->quantity * $row->price;
-            OrderDetails::create($details);
-            Product::where('id', $row->id)->update([
+    public  function processOrderDetailsAndStock($order, $items){
+        foreach ($items as $row) {
+
+            Product::where('id', $row->product_id)->update([
                 'quantity' => DB::raw("quantity - {$row->quantity}")
             ]);
-            Inventory::where('product_id', $row->id)->update([
+            Inventory::where('product_id', $row->product_id)->update([
                 'quantity' => DB::raw("quantity - {$row->quantity}")
             ]);
             StockLeadger::create([
-                'product_id' => $row->id,
+                'product_id' => $row->product_id,
                 'quantity' => $row->quantity,
                 'type' => 'out',
                 'note' => "Quantity decreased by customer purchase: - $row->quantity order id $order->id",

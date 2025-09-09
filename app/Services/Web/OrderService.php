@@ -10,6 +10,7 @@ use App\Models\SiteSetting;
 use App\Notifications\NewOrderPlaced;
 use App\Services\Web\ProductCartService;
 use Illuminate\Validation\ValidationException;
+use App\Models\OrderDetails;
 
 class OrderService
 {
@@ -35,9 +36,9 @@ class OrderService
     }
 
 
-    public function orderGenerate($orderData)
+    public function orderGenerate($orderData, $cart)
     {
-        return Order::create([
+        $order = Order::create([
             'customer_name'   => $orderData['customer_name'],
             'customer_email'  => $orderData['customer_email'],
             'customer_phone'  => $orderData['customer_phone'],
@@ -64,6 +65,18 @@ class OrderService
             'payment_method'    => $orderData['payment_method'],
             'transaction_id'    => $orderData['transaction_id'],
         ]);
+
+        foreach ($cart as $item) {
+            $details['order_id'] = $order->id;
+            $details['product_id'] = $item->id;
+            $details['quantity'] = $item->quantity;
+            $details['product_name'] = $item->name;
+            $details['price'] = $item->price;
+            $details['subtotal'] = $item->quantity * $item->price;
+            OrderDetails::create($details);
+        }
+
+        return $order;
     }
 
     public function sslCommerzPayload($totalAmount, $transactionId,  array $optional = []): array
