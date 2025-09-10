@@ -211,7 +211,7 @@ class OrderController extends Controller
 
         $sslc = new SslCommerzNotification();
 
-        $order = Order::where('transaction_id', $tran_id)->first();
+        $order = Order::with('items')->where('transaction_id', $tran_id)->first();
 
         if (!$order) {
             return response('Invalid Transaction: Order not found', 404);
