@@ -41,7 +41,6 @@ class OrderController extends Controller
     }
     public  function placeOrder(OrderPlaceRequest $request)
     {
-        // dd($request->all());
         $availableMethods = ShippingMethod::where('status', 1)->get();
         $isShippingRequired = false;
         $ship_to_different_address = $request->ship_to_different_address;
@@ -124,8 +123,8 @@ class OrderController extends Controller
             'transaction_id'    => $transactionId,
         ];
         $order = $this->orderService->orderGenerate($orderData, $cart);
+        $order = Order::with(['items', 'items.product', 'items.product.firstCategory'])->find($order->id);
 
-        
         if($request->paymentMethod === 'stripe'){
             try {
                 \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
@@ -149,12 +148,12 @@ class OrderController extends Controller
                     $easyship = $availableMethods->find(1);
                     $token = $easyship->token ?? null;  // fix typo 'toekn' => 'token'
 
-                    if (!empty($token) && app()->environment('production')) {
-                        CreateEasyshipShipment::dispatch($order, $token, $this->shippingService->createShippingParcels());
-                    }
+                    // if (!empty($token) && app()->environment('production')) {
+                        CreateEasyshipShipment::dispatch($order, $token, $this->shippingService->createShippingParcels($order->items));
+                    // }
 
                     if(app()->environment('production')){
-                        $this->shippingEasyOrder($order, $this->shippingService->getCartLineItems());
+                        $this->shippingEasyOrder($order, $this->shippingService->getCartLineItems($order->items));
                     }
 
                     $this->orderService->sendOrderNotification($order);
@@ -211,7 +210,7 @@ class OrderController extends Controller
 
         $sslc = new SslCommerzNotification();
 
-        $order = Order::with('items')->where('transaction_id', $tran_id)->first();
+        $order = Order::with(['items', 'items.product', 'items.product.firstCategory'])->where('transaction_id', $tran_id)->first();
 
         if (!$order) {
             return response('Invalid Transaction: Order not found', 404);
@@ -235,12 +234,12 @@ class OrderController extends Controller
                 $easyship = ShippingMethod::find(1);
                 $token = $easyship->token;
 
-                if (!empty($token) && app()->environment('production')) {
-                    CreateEasyshipShipment::dispatch($order, $token, $this->shippingService->createShippingParcels());
-                }
+                // if (!empty($token) && app()->environment('production')) {
+                    CreateEasyshipShipment::dispatch($order, $token, $this->shippingService->createShippingParcels($order->items));
+                // }
 
                 if (app()->environment('production')) {
-                    $this->shippingEasyOrder($order, $this->shippingService->getCartLineItems());
+                    $this->shippingEasyOrder($order, $this->shippingService->getCartLineItems($order->items));
                 }
 
                 $this->orderService->sendOrderNotification($order);
