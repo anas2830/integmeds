@@ -62,19 +62,24 @@
                                         </div>
                                     </div>
                                     <div class="mb-3">
-                                        {{-- @if(session('min_order_error')) --}}
                                         @if ($errors->has('min_order_error'))
-                                        <small class="text-danger">
-                                            {{ $errors->first('min_order_error') }}
-                                        </small>
+                                            <small class="text-danger">
+                                                {{ $errors->first('min_order_error') }}
+                                            </small>
                                         @endif
 
                                         @if ($errors->has('courier_service_id'))
-                                        <small class="text-danger" id="courier-service-error">
-                                            {{ $errors->first('courier_service_id') }}
-                                        </small>
+                                            <small class="text-danger" id="courier-service-error">
+                                                {{ $errors->first('courier_service_id') }}
+                                            </small>
                                         @endif
-                                        {{-- @endif --}}
+
+                                        @if($errors->has('error'))
+                                            <small class="text-danger" id="error-message">
+                                                {{ $errors->first('error') }}
+                                            </small>
+                                        @endif
+        
                                     </div>
                                     <div class="sidebar-payment-method">
 
@@ -286,14 +291,15 @@ $(document).ready(function () {
     //     return baseCost;
     // }
     function getAdjustedShippingCost(baseCost) {
-        const isShipToDifferent = $('input[name="ship_to_different_address"]').prop('checked');
-        const country = isShipToDifferent
-            ? $('select[name="shipping[country]"]').val()
-            : $('select[name="billing[country]"]').val();
+        // const isShipToDifferent = $('input[name="ship_to_different_address"]').prop('checked');
+        // const country = isShipToDifferent
+        //     ? $('select[name="shipping[country]"]').val()
+        //     : $('select[name="billing[country]"]').val();
 
-        const rate = additionalShippingRates[country] ?? additionalShippingRates.OTHER;
+        // const rate = additionalShippingRates[country] ?? additionalShippingRates.OTHER;
 
-        return baseCost + Number(rate);
+        // return baseCost + Number(rate);
+        return baseCost;
     }
 
     $('#shipping_method_select').on('change', function() {

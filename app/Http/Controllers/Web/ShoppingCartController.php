@@ -338,6 +338,8 @@ class ShoppingCartController extends SidebarService
     }
 
     public function getShippingRates(ShippingRateRequest $request){
+        $country = $request->ship_to_different_address ? $request->shipping['country'] : $request->billing['country'];
+        $extraShippingCost = config('shipping.additional_rates')[$country] ?? config('shipping.additional_rates')['OTHER'];
         $data = $this->shippingService->getShippingRates($request);
         $formattedRates = [];
         foreach ($data['rates'] ?? [] as $rate) {
@@ -346,7 +348,7 @@ class ShoppingCartController extends SidebarService
                 'courier_name' => $rate['courier_service']['name'],
                 'delivery_time' => "{$rate['min_delivery_time']} - {$rate['max_delivery_time']} days",
                 'currency' => $rate['currency'],
-                'total_charge' => number_format($rate['total_charge'], 2),
+                'total_charge' => number_format($rate['total_charge'] + $extraShippingCost, 2),
             ];
         }
         $html = view('Web.Layout.partials.checkout.shipping-rates', compact('formattedRates'))->render();

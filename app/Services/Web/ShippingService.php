@@ -34,12 +34,12 @@ class ShippingService
         $useShippingAddress = $data['ship_to_different_address'];
 
         $address = $useShippingAddress ? ($data['shipping'] ?? []) : ($data['billing'] ?? []);
-        if(in_array($address['country'], $countryCodes)){
-            // $this->verifyAddressWithZipCodeBase($address['country'], $address['postal_code']);
-            $this->verifyAddressWithGeoCode($address['country'], $address['postal_code']);
-        }else{
-            $this->verifyAddressWithZippopotam($address['country'], $address['postal_code']);
-        }
+        // if(in_array($address['country'], $countryCodes)){
+        //     // $this->verifyAddressWithZipCodeBase($address['country'], $address['postal_code']);
+        //     $this->verifyAddressWithGeoCode($address['country'], $address['postal_code']);
+        // }else{
+        //     $this->verifyAddressWithZippopotam($address['country'], $address['postal_code']);
+        // }
         // Find active shipping method by ID
         $method = ShippingMethod::where('id', $data['shipping_method_id'] ?? null)
             ->where('status', 1)
@@ -131,33 +131,31 @@ class ShippingService
 
     }
 
-    public function createShippingParcels(): array
+    public function createShippingParcels($orderItems)
     {
-        $cartItems = Cart::getContent();
-
         $items = [];
         $totalWeight = 0;
 
-        foreach ($cartItems as $item) {
-            $attr = $item->attributes;
+        foreach ($orderItems ?? [] as $item) {
+            $product = $item->product;
             $quantity = (int) $item->quantity;
-            $weight = max((float) ($attr->weight ?? 0.1), 0.1);
+            $weight = max((float) ($product->weight_converted ?? 0.1), 0.1);
 
             $items[] = [
                 "quantity" => $quantity,
-                "description" => $item->name,
-                "category" => $attr->category,
-                "sku" => $attr->sku,
+                "description" => $product?->product_name,
+                "category" => $product->firstCategory?->first()?->name ?? 'Other',
+                "sku" => $product->sku,
                 "actual_weight" => $weight,
                 "dimensions" => [
-                    "length" => (float) $attr->length,
-                    "width"  => (float) $attr->width,
-                    "height" => (float) $attr->height,
+                    "length" => (float) $product->length,
+                    "width"  => (float) $product->width,
+                    "height" => (float) $product->height,
                 ],
                 "declared_currency" => "USD",
                 "declared_customs_value" => $item->price,
-                "origin_country_alpha2" => $attr->origin_country_alpha2 ?? 'US',
-                "hs_code" => $attr->hs_code ?? '490199',
+                "origin_country_alpha2" => $product->origin_country_alpha2 ?? 'US',
+                "hs_code" => $product->hs_code ?? '490199',
             ];
 
             $totalWeight += $weight * $quantity;
@@ -208,33 +206,30 @@ class ShippingService
         ];
     }
 
-    public function getCartLineItems(): array
+    public function getCartLineItems($orderItems)
     {
-        $cartItems = Cart::getContent();
         $lineItems = [];
-    
-        foreach ($cartItems as $item) {
-            $attr = $item->attributes;
+        foreach ($orderItems ?? [] as $item) {
+            $product = $item->product;
             $quantity = (int) $item->quantity;
             $unitPrice = (float) $item->price;
-            $weightKg = max((float) ($attr->weight ?? 0.1), 0.1); // fallback to 0.1 kg
+            $weightKg = max((float) ($product->weight_converted ?? 0.1), 0.1); // fallback to 0.1 kg
             $weightOunces = $weightKg * 35.274;
     
             $lineItems[] = [
-                "item_name"           => $item->name,
-                "sku"                 => $attr->sku ?? '',
+                "item_name"           => $product?->product_name,
+                "sku"                 => $product->sku ?? '',
                 "unit_price"          => $unitPrice,
                 "total_excluding_tax" => $unitPrice * $quantity,
                 "price_excluding_tax" => $unitPrice,
                 "weight_in_ounces"    => $weightOunces,
                 "quantity"            => $quantity,
                 "product_options"     => [
-                    "pa_size" => $attr->pa_size ?? '',
-                    "Colour"  => $attr->Colour ?? '',
+                    "pa_size" => $product->pa_size ?? '',
+                    "Colour"  => $product->color ?? '',
                 ],
             ];
         }
-    
         return $lineItems;
     }
     
