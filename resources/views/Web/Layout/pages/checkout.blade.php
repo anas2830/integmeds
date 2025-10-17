@@ -291,14 +291,15 @@ $(document).ready(function () {
     //     return baseCost;
     // }
     function getAdjustedShippingCost(baseCost) {
-        const isShipToDifferent = $('input[name="ship_to_different_address"]').prop('checked');
-        const country = isShipToDifferent
-            ? $('select[name="shipping[country]"]').val()
-            : $('select[name="billing[country]"]').val();
+        // const isShipToDifferent = $('input[name="ship_to_different_address"]').prop('checked');
+        // const country = isShipToDifferent
+        //     ? $('select[name="shipping[country]"]').val()
+        //     : $('select[name="billing[country]"]').val();
 
-        const rate = additionalShippingRates[country] ?? additionalShippingRates.OTHER;
+        // const rate = additionalShippingRates[country] ?? additionalShippingRates.OTHER;
 
-        return baseCost + Number(rate);
+        // return baseCost + Number(rate);
+        return baseCost;
     }
 
     $('#shipping_method_select').on('change', function() {
