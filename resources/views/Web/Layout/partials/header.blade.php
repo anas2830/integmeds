@@ -141,6 +141,9 @@
                                         <a class="nav-link" href="{{route('contact')}}">Contact</a>
                                     </li>
                                     <li class="nav-item">
+                                        <a class="nav-link" href="https://integmedsusa.com">Clinic</a>
+                                    </li>
+                                    <li class="nav-item">
                                         <a class="nav-link" href="{{ route('user.dashboard') }}">My account</a>
                                     </li>
                                 </ul>
@@ -318,6 +321,9 @@
                                                     </li>
                                                     <li class="sub-mobile-menu">
                                                         <a href="{{route('contact')}}">Contact</a>
+                                                    </li>
+                                                    <li class="sub-mobile-menu">
+                                                        <a href="https://integmedsusa.com">Clinic</a>
                                                     </li>
                                                     <li class="sub-mobile-menu">
                                                         <a href="{{route('user.account')}}">My account</a>

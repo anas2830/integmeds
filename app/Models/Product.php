@@ -95,6 +95,7 @@ class Product extends Model
 
         static::deleting(function ($product) {
             $product->slug = 'deleted-' . uniqid();
+            $product->sku = 'deleted-' . uniqid();
             $product->saveQuietly();
         });
     }
