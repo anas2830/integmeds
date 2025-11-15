@@ -261,19 +261,20 @@ class OrderController extends Controller
     public function fail(Request $request)
     {
         $tran_id = $request->input('tran_id');
-        // delete the order and  order details 
-
-        Order::where('transaction_id', $tran_id) ->delete();
-
+        $order = Order::where('transaction_id', $tran_id)->first();
+        if($order){
+            $order->delete();
+        }
         return to_route('order.status')->with('order_failed', 'The Order has been failed');
     }
 
     public function cancel(Request $request)
     {
         $tran_id = $request->input('tran_id');
-
-        Order::where('transaction_id', $tran_id) ->delete();
-
+        $order = Order::where('transaction_id', $tran_id)->first();
+        if($order){
+            $order->delete();
+        }
         return to_route('order.status')->with('order_cancelled', 'The Order has been cancelled');
     }
 
