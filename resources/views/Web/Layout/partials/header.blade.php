@@ -266,7 +266,7 @@
                                     <div class="mobile-menu-main">
                                         <div class="logo">
                                             <a href="#">
-                                                <img class="img-fluid" src="{{asset('web_assets/images/logo/Integmeds-Logo.png')}}.webp" alt="Integmeds" title="Integmeds">
+                                                <img class="img-fluid" src="{{asset('assets/images/logo-light.png')}}" alt="Integmeds" title="Integmeds">
                                             </a>
                                         </div>
                                         <div class="close-mobile-menu"><i class="fas fa-times"></i></div>
