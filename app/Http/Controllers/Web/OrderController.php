@@ -167,7 +167,6 @@ class OrderController extends Controller
                     }
                     return redirect()->route('order.complete', ['id' => $order->id])->with('order_complete', 'Thanks! Your order has been placed successfully.');
                 } else {
-                    $order->delete();
                     throw ValidationException::withMessages([
                         'error' => "Payment failed. Please try again."
                     ]);
