@@ -112,8 +112,11 @@ class ShoppingCartController extends SidebarService
 
     public function updateCart(Request $request)
     {
+        $request->validate([
+            'rowId' => 'required|array',
+            'qty' => 'required|array',
+        ]);
         $cart = Cart::getContent();
-
         // Build a map of [rowId => requestedQty]
         $requestedQuantities = [];
         foreach ($request->rowId as $index => $rowId) {

@@ -14,6 +14,17 @@ class SiteSettingsService
 
     public function updateSiteSettings($request)
     {
+        $request->validate([
+            'site_name' => 'nullable|string|max:255',
+            'site_email' => 'nullable|email|max:255',
+            'site_phone' => 'nullable|string|max:255',
+            'site_description' => 'nullable|string|max:10000',
+            'copyright_text' => 'nullable|string|max:255',
+            'address' => 'nullable|string|max:1000',
+            'currency' => 'nullable|string|max:255',
+            'minimum_order' => 'nullable|numeric|max:9999',
+            'timezone' => 'nullable|string|max:255',
+        ]);
         $data = SiteSetting::first();
 
         if ($data) {

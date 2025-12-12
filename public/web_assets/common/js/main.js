@@ -199,8 +199,8 @@ $(document).ready(function () {
                                             <div class="search-sugge-items-title-price">
                                                 <h5>${product.product_name}</h5>
                                                 <div class="price-info">
-                                                    <span class="sale-price">৳${product.sale_price}</span>
-                                                    ${product.regular_price && product.regular_price != product.sale_price ? `<del class="regular-price">৳${product.regular_price}</del>` : ''}
+                                                    <span class="sale-price">$${product.sale_price}</span>
+                                                    ${product.regular_price && product.regular_price != product.sale_price ? `<del class="regular-price">$${product.regular_price}</del>` : ''}
                                                 </div>
                                             </div>
                                         </div>

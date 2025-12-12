@@ -44,6 +44,10 @@ class ProductCartService
 
     private function getRequestedQuantitiesAndStockIssues($request, $cart)
     {
+        $request->validate([
+            'rowId' => 'required|array',
+            'qty' => 'required|array',
+        ]);
         // Build a map of [rowId => requestedQty]
         $requestedQuantities = [];
         foreach ($request->rowId as $index => $rowId) {

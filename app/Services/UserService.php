@@ -93,27 +93,27 @@ class UserService
 
     public function updateAccount($request)
     {
-        if ($request->hasFile('profile_image')) {
-            $fileSize = $request->file('profile_image')->getSize();
-            $maxSize = 2 * 1024 * 1024;
-            if ($fileSize > $maxSize) {
-                return redirect()->route('user.account')->with('error', 'Profile image must be less than 2MB');
-            }
-        }
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'phone' => 'nullable|string|max:20',
+            'address' => 'nullable|string|max:255',
+            'profile_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048', // 2MB max, image only
+        ]);
 
-        $user = User::where('id', auth()->id())->first();
-        $user->name = $request->name;
-        $user->phone = $request->phone;
-        $user->address = $request->address;
+        $user = User::findOrFail(auth()->id());
+        $user->name = $validated['name'];
+        $user->phone = $validated['phone'] ?? $user->phone;
+        $user->address = $validated['address'] ?? $user->address;
+
         if ($request->hasFile('profile_image')) {
             if ($user->profile_image && file_exists(public_path($user->profile_image))) {
                 unlink(public_path($user->profile_image));
             }
+            // Upload new image
             $image = $request->file('profile_image');
-            $imageName = time() . '_' . $image->getClientOriginalName();
+            $imageName = time() . '_' . preg_replace('/\s+/', '_', $image->getClientOriginalName());
             $image->move(public_path('uploads/users'), $imageName);
-            $fullpath = 'uploads/users/' . $imageName;
-            $user->profile_image = $fullpath;
+            $user->profile_image = 'uploads/users/' . $imageName;
         }
         $user->save();
         return redirect()->route('user.account')->with('success', 'Account updated successfully!');

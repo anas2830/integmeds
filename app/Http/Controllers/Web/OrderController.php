@@ -41,7 +41,6 @@ class OrderController extends Controller
     }
     public  function placeOrder(OrderPlaceRequest $request)
     {
-        // dd($request->all());
         $availableMethods = ShippingMethod::where('status', 1)->get();
         $isShippingRequired = false;
         $ship_to_different_address = $request->ship_to_different_address;
@@ -167,7 +166,6 @@ class OrderController extends Controller
                     }
                     return redirect()->route('order.complete', ['id' => $order->id])->with('order_complete', 'Thanks! Your order has been placed successfully.');
                 } else {
-                    $order->delete();
                     throw ValidationException::withMessages([
                         'error' => "Payment failed. Please try again."
                     ]);
@@ -262,19 +260,20 @@ class OrderController extends Controller
     public function fail(Request $request)
     {
         $tran_id = $request->input('tran_id');
-        // delete the order and  order details 
-
-        Order::where('transaction_id', $tran_id) ->delete();
-
+        $order = Order::where('transaction_id', $tran_id)->first();
+        if($order){
+            $order->delete();
+        }
         return to_route('order.status')->with('order_failed', 'The Order has been failed');
     }
 
     public function cancel(Request $request)
     {
         $tran_id = $request->input('tran_id');
-
-        Order::where('transaction_id', $tran_id) ->delete();
-
+        $order = Order::where('transaction_id', $tran_id)->first();
+        if($order){
+            $order->delete();
+        }
         return to_route('order.status')->with('order_cancelled', 'The Order has been cancelled');
     }
 
@@ -361,6 +360,9 @@ class OrderController extends Controller
 
     public function updateShippingCost(Request $request)
     {
+        $request->validate([
+            'shipping_cost' => 'required|numeric|max:999999',
+        ]);
         Session::put('shipping_cost', $request->shipping_cost);
         return response()->json(['success' => true]);
     }

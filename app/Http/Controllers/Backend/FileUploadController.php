@@ -9,10 +9,12 @@ class FileUploadController extends Controller
 {
     public function temporaryUpload(Request $request)
     {
+        $request->validate([
+            'file' => 'required|file|mimes:jpeg,png,jpg,gif,svg,webp|max:2048'
+        ]);
         if ($request->hasFile('file')) {
             $file = $request->file('file');
-            $filename = time() . '__' . $file->getClientOriginalName();
-
+            $filename = time() . '__' . uniqid() . '.' . $file->getClientOriginalExtension();
             if ($request->input('type') == 'ckeditor') {
                 $file->move(public_path('uploads/ckeditor'), $filename);
             } else {

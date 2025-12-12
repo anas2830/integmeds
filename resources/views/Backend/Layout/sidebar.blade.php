@@ -181,6 +181,17 @@
                     </ul>
                 </li>
 
+                {{-- <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="bx bx-file"></i>
+                        <span>Report</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="true">
+                        <li><a href="{{ route('inventory.report.index') }}">Inventory Report</a></li>
+                        <li><a href="{{ route('sales.report.index') }}">Sales Report</a></li>
+                    </ul>
+                </li> --}}
+
             </ul>
         </div>
         <!-- Sidebar -->
