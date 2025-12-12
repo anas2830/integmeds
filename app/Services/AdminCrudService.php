@@ -54,8 +54,9 @@ class AdminCrudService
             'name' => 'required|string|max:255',
             'admin_password' => 'nullable|min:8',
             'admin_confirm_password' => 'nullable|same:admin_password',
+            'profile_image' => 'nullable|string|max:255'
         ]);
-        $admin = Admin::findOrFail($request->id);
+        $admin = auth()->guard('admin')->user();
         $admin->name =  $request->name ?? NULL;
 
         if ($request->filled('admin_password')) {

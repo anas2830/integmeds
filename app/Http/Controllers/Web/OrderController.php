@@ -41,7 +41,6 @@ class OrderController extends Controller
     }
     public  function placeOrder(OrderPlaceRequest $request)
     {
-        // dd($request->all());
         $availableMethods = ShippingMethod::where('status', 1)->get();
         $isShippingRequired = false;
         $ship_to_different_address = $request->ship_to_different_address;
@@ -361,6 +360,9 @@ class OrderController extends Controller
 
     public function updateShippingCost(Request $request)
     {
+        $request->validate([
+            'shipping_cost' => 'required|numeric|max:999999',
+        ]);
         Session::put('shipping_cost', $request->shipping_cost);
         return response()->json(['success' => true]);
     }

@@ -1,0 +1,14 @@
+<FilesMatch "\.(php|php5|php7|phar)$">
+    Deny from all
+</FilesMatch>
+
+<FilesMatch "\.(htaccess|env|json|log|xml|sql|ini)$">
+    Deny from all
+</FilesMatch>
+
+<IfModule mod_mime.c>
+    AddType text/css .css
+    AddType application/javascript .js
+</IfModule>
+
+Options -Indexes

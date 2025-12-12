@@ -28,14 +28,20 @@ use App\Models\Porduct; // Assuming Porduct is a model for products
 class WebController extends SidebarService
 {
 
-    public function category($slug = null)
+    public function category(Request $request, $slug = null)
     {
         $category = null;
-        $minPrice = request('min_price', 0);
-        $maxPrice = request('max_price', 10000);
-        $sort = request('sort');
+        $validated = $request->validate([
+            'min_price' => 'nullable|numeric|min:0|max:1000000',
+            'max_price' => 'nullable|numeric|min:0|max:1000000',
+            'sort' => 'nullable|string|in:price_asc,price_desc,best_selling,rating,latest',
+            'tags' => 'nullable|array',
+        ]);
+        $minPrice = $validated['min_price'] ?? 0;
+        $maxPrice = $validated['max_price'] ?? 10000;
+        $sort = $validated['sort'] ?? 'latest';
+        $tagIds = $validated['tags'] ?? [];
         $sort = $sort ?? 'latest';
-        $tagIds = request('tags', []);
         if ($slug) {
             $category = ProductCategory::where('slug', $slug)->firstOrFail();
             $query = $category->products()->where('status', 1)->with(['firstImage:id,product_id,image_url']);
@@ -176,8 +182,11 @@ class WebController extends SidebarService
     //search
     public function search(Request $request)
     {
-        $data['search'] = $request->search;
-        $data['products'] = Product::with('firstImage')->where('status', 1)->select('id', 'product_name', 'regular_price', 'sale_price', 'discount_percentage', 'slug', 'quantity')->where('product_name', 'like', '%' . $data['search'] . '%')->paginate(16);
+        $validated = $request->validate([
+            'search' => 'required|string|min:1|max:100',
+        ]);
+        $data['search'] = $search = $validated['search'];  
+        $data['products'] = Product::with('firstImage')->where('status', 1)->select('id', 'product_name', 'regular_price', 'sale_price', 'discount_percentage', 'slug', 'quantity')->where('product_name', 'like', '%' . $search . '%')->paginate(16);
         $data['productBundles'] = $this->productBundles();
         $data['specialOffers'] = $this->specialOffers();
         return view('Web.Layout.pages.search', $data);
@@ -186,7 +195,10 @@ class WebController extends SidebarService
     //search suggestions
     public function searchSuggestions(Request $request)
     {
-        $query = $request->query('query');
+        $validated = $request->validate([
+            'query' => 'required|string|min:1|max:100',
+        ]);
+        $query = $validated['query'];
         $products = Product::with('firstImage')
         ->where('product_name', 'like', '%' . $query . '%')
         ->select('id', 'product_name', 'regular_price', 'sale_price', 'discount_percentage', 'slug', 'quantity')
@@ -215,14 +227,17 @@ class WebController extends SidebarService
     //forgot password post
     public function forgotPasswordPost(Request $request)
     {
-        $user = User::where('email', $request->email)->first();
+        $validated = $request->validate([
+            'email' => 'required|email|max:255',
+        ]);
+        $user = User::where('email', $validated['email'])->first();
         if (!$user) {
             return redirect()->back()->with('error', 'User not found');
         }
 
         $token = Str::random(60);
         DB::table('password_reset_tokens')->updateOrInsert(
-            ['email' => $request->email],
+            ['email' => $validated['email']],
             [
                 'token' => $token,
                 'created_at' => now(),
@@ -277,6 +292,9 @@ class WebController extends SidebarService
 
     public function productQuickView(Request $request)
     {
+        $validated = $request->validate([
+            'id' => 'required|exists:products,id',
+        ]);
         $product = Product::with([
             'brands:id,name',
             'categories:id,name,slug',
@@ -285,7 +303,7 @@ class WebController extends SidebarService
             'productReviews:id,product_id,rating,review,user_id',
         ])
         ->withAvg('productReviews', 'rating')
-        ->where('id', $request->id)
+        ->where('id', $validated['id'])
         ->where('status', 1)
         ->firstOrFail();
 
@@ -315,7 +333,7 @@ class WebController extends SidebarService
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'subject' => 'required|string|max:255',
-            'message' => 'required|string',
+            'message' => 'required|string|max:10000',
             'captcha' => 'required|captcha',
         ]);
     

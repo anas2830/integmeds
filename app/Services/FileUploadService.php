@@ -4,12 +4,18 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 
 class FileUploadService
 {
 
     public function handleFileUpload($file, $tempPath, $newDirectory)
     {
+        if (!Storage::disk('public')->exists($tempPath)) {
+            throw ValidationException::withMessages([
+                'error' => "Temporary file not found."
+            ]);
+        }
 
         $fullPath = null;
         $fileOriginalName = null;
