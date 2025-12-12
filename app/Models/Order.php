@@ -26,7 +26,7 @@ class Order extends Model
         'billing_address'  => 'array',
         'shipping_address' => 'array',
     ];
-
+    
     public function delete()
     {
         $uuid = Str::uuid();

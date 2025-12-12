@@ -886,9 +886,6 @@ ul{padding:0;margin:0;}
 .partner-slider-wrap  .slick-list { margin-left:-15px; margin-right:-15px;}
 .partner-img {border: 1px solid var(--primary);}
 
-#card-errors {
-    font-size: small;
-}
 
 /* Contact Page*/
 .contact-page-area { margin: 50px 0 100px 0; position: relative; }
@@ -1029,6 +1026,7 @@ ul{padding:0;margin:0;}
 .footer-bottom .copy-right p>a{ color: var(--white-color); }
 
 .paymend-method-wrap { position: relative; margin-top: -70px; }
+
 
 /* XL Device :1200px. */
 @media (min-width: 1200px) and (max-width: 1500px) {
