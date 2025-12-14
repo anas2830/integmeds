@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Cupon;
+use Illuminate\Validation\ValidationException;
 
 class CuponCrudService
 {
@@ -23,6 +24,11 @@ class CuponCrudService
 
     public function createCupon($request)
     {
+        if(Cupon::where('code', $request->code)->exists()){
+            throw ValidationException::withMessages([
+                'error' => "Coupon code already exists."
+            ]);
+        }
         $cupon = new Cupon();
         $cupon->code = $request->code;
         $cupon->type = $request->type;
@@ -43,6 +49,11 @@ class CuponCrudService
 
     public function updateCupon($request, $id)
     {
+        if(Cupon::where('code', $request->code)->where('id', '!=', $id)->exists()){
+            throw ValidationException::withMessages([
+                'error' => "Coupon code already exists."
+            ]);
+        }
         $cupon = Cupon::find($id);
         $cupon->code = $request->code;
         $cupon->type = $request->type;
