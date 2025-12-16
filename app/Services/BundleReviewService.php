@@ -16,6 +16,13 @@ class BundleReviewService
 
     public function create($request)
     {
+        request()->validate([
+            'bundle_id' => 'required',
+            'user_id'   => 'required|integer',
+            'rating'    => 'required|numeric',
+            'review'    => 'nullable|string',
+        ]);
+
         if(count($request['bundle_id']) > 0){
             foreach($request['bundle_id'] as $bundle_id){
                 BundleReview::create([
@@ -36,6 +43,13 @@ class BundleReviewService
 
     public function update($request, $id)
     {
+        request()->validate([
+            'bundle_id' => 'required',
+            'user_id'   => 'required|integer',
+            'rating'    => 'required|numeric',
+            'review'    => 'nullable|string',
+        ]);
+
         $review = BundleReview::find($id);
         $review->update([
             'bundle_id' => $request['bundle_id'],

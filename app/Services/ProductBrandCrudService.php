@@ -24,6 +24,11 @@ class ProductBrandCrudService
 
     public function createProductBrand($request)
     {
+        $request->validate([
+            'brand_name' => 'required|string|max:255|unique:product_brands,name',
+            'status' => 'required|integer',
+        ]);
+
         $productBrand = new ProductBrand();
         $productBrand->name = $request->brand_name;
         $productBrand->slug = Str::slug($request->brand_name);
@@ -39,6 +44,11 @@ class ProductBrandCrudService
 
     public function updateProductBrand($request, $id)
     {
+        $request->validate([
+            'brand_name' => 'required|string|max:255|unique:product_brands,name,' . $id,
+            'status' => 'required|integer',
+        ]);
+
         $productBrand = ProductBrand::find($id);
         $productBrand->name = $request->brand_name;
         $productBrand->slug = Str::slug($request->brand_name);

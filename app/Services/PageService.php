@@ -21,8 +21,13 @@ class PageService
      */
     public function updatePrivacyPolicy($request)
     {
+        $validated = request()->validate([
+            'content' => 'required|string',
+        ]);
+
         $privacyPolicy = Page::where('slug', 'privacy-policy')->first();
-        $privacyPolicy->update($request->all());
+        $privacyPolicy->update($validated);
+
         return $privacyPolicy;
     }
 
@@ -40,8 +45,13 @@ class PageService
      */
     public function updateTermsCondition($request)
     {
+        $validated = request()->validate([
+            'content' => 'required|string',
+        ]);
+
         $termsCondition = Page::where('slug', 'terms-condition')->first();
-        $termsCondition->update($request->all());
+        $termsCondition->update($validated);
+
         return $termsCondition;
     }
 
@@ -64,6 +74,14 @@ class PageService
     //update contact us
     public function updateContactUs($request)
     {
+        $request->validate([
+            'telephone' => 'nullable|string|max:50',
+            'email' => 'nullable|email|max:100',
+            'address' => 'nullable|string|max:500',
+            'form_title' => 'nullable|string|max:255',
+            'form_subtitle' => 'nullable|string|max:255',
+            'map_iframe' => 'nullable|string',
+        ]);
         $contact = Page::where('slug', 'contact-us')->first();
         $content = [
             'telephone' => $request->telephone,
@@ -108,6 +126,21 @@ class PageService
     //update about us
     public function updateAboutUs($request)
     {
+        $request->validate([
+            'top_image' => 'nullable|string|max:255',
+            'middle_first_image' => 'nullable|string|max:255',
+            'middle_second_image' => 'nullable|string|max:255',
+            'top_title' => 'nullable|string|max:255',
+            'top_content' => 'nullable|string',
+            'bottom_title' => 'nullable|string|max:255',
+            'bottom_content' => 'nullable|string',
+            'bottom_button_text' => 'nullable|string|max:100',
+            'bottom_button_url' => 'nullable|url|max:255',
+            'top_image_file_to_delete' => 'nullable',
+            'middle_first_image_file_to_delete' => 'nullable',
+            'middle_second_image_file_to_delete' => 'nullable',
+        ]);
+
         $aboutUs = AboutUsPage::first();
         if($request->top_image){
             $this->aboutUsImageUpload($aboutUs, 'top_image', 'top_image_original_name', 'top_image_file_size', $request);
