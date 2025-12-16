@@ -23,6 +23,10 @@ class ClientsCrudService
 
     public function createClient($request)
     {
+        $request->validate([
+            'status' => 'required|integer',
+            'client_image' => 'required|string',
+        ]);
         $client = new Client();
         $client->status = $request->status ?? 0;
 
@@ -50,6 +54,11 @@ class ClientsCrudService
 
     public function updateClient($request, $id)
     {
+        $request->validate([
+            'status' => 'required|integer',
+            'client_image' => 'nullable|string',
+        ]);
+
         $client = Client::findOrFail($id);
         $client->name = $request->name;
         $client->status = $request->status ?? 0;

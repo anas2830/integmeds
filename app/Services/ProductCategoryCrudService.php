@@ -29,6 +29,13 @@ class ProductCategoryCrudService
 
     public function createProductCategory($request)
     {
+        $request->validate([
+            'name'        => 'required|string|max:255|unique:product_categories,name',
+            'parent_id'   => 'nullable|integer|exists:product_categories,id',
+            'description' => 'nullable|string',
+            'status'      => 'nullable|integer',
+        ]);
+
         $productCategory = new ProductCategory();
         $productCategory->name = $request->category_name;
         $productCategory->slug = Str::slug($request->category_name);
@@ -48,6 +55,13 @@ class ProductCategoryCrudService
 
     public function updateProductCategory($request, $id)
     {
+        $request->validate([
+            'name'        => 'required|string|max:255|unique:product_categories,name,' . $id,
+            'parent_id'   => 'nullable|integer|exists:product_categories,id',
+            'description' => 'nullable|string',
+            'status'      => 'nullable|integer',
+        ]);
+
         $productCategory = ProductCategory::find($id);
         $productCategory->name = $request->category_name;
         $productCategory->slug = Str::slug($request->category_name);

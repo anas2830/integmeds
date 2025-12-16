@@ -23,6 +23,10 @@ class ProductTagCrudService
 
     public function createProductTag($request)
     {
+        $validated = request()->validate([
+            'tag_name' => 'required|string|max:255|unique:product_tags,name',
+            'status'   => 'nullable|integer',
+        ]);
         $productTag = new ProductTag();
         $productTag->name = $request->tag_name;
         $productTag->slug = Str::slug($request->tag_name);
@@ -38,6 +42,10 @@ class ProductTagCrudService
 
     public function updateProductTag($request, $id)
     {
+        $validated = request()->validate([
+            'tag_name' => 'required|string|max:255|unique:product_tags,name,' . $id,
+            'status'   => 'nullable|integer',
+        ]);
         $productTag = ProductTag::find($id);
         $productTag->name = $request->tag_name;
         $productTag->slug = Str::slug($request->tag_name);

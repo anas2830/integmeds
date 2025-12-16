@@ -24,6 +24,11 @@ class ProductSizeCrudService
 
     public function createProductSize($request)
     {
+        $validated = request()->validate([
+            'size_name' => 'required|string|max:255|unique:product_sizes,name',
+            'status'    => 'nullable|integer',
+        ]);
+
         $productSize = new ProductSize();
         $productSize->name = $request->size_name;
         $productSize->slug = Str::slug($request->size_name);
@@ -39,6 +44,10 @@ class ProductSizeCrudService
 
     public function updateProductSize($request, $id)
     {
+        $validated = request()->validate([
+            'size_name' => 'required|string|max:255|unique:product_sizes,name,' . $id,
+            'status'    => 'nullable|integer',
+        ]);
         $productSize = ProductSize::find($id);
         $productSize->name = $request->size_name;
         $productSize->slug = Str::slug($request->size_name);

@@ -23,6 +23,17 @@ class CuponCrudService
 
     public function createCupon($request)
     {
+        $request->validate([
+            'code' => 'required|string|max:255|unique:cupons,code',
+            'type' => 'required|in:fixed,percent',
+            'value' => 'required|numeric|min:0',
+            'min_purchase' => 'nullable|numeric|min:0',
+            'usage_limit' => 'nullable|integer|min:0',
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'status' => 'nullable|integer|in:0,1',
+        ]);
+
         $cupon = new Cupon();
         $cupon->code = $request->code;
         $cupon->type = $request->type;
@@ -43,6 +54,17 @@ class CuponCrudService
 
     public function updateCupon($request, $id)
     {
+        $request->validate([
+            'code' => 'required|string|max:255|unique:cupons,code,' . $id,
+            'type' => 'required|in:fixed,percent',
+            'value' => 'required|numeric|min:0',
+            'min_purchase' => 'nullable|numeric|min:0',
+            'usage_limit' => 'nullable|integer|min:0',
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'status' => 'nullable|integer|in:0,1',
+        ]);
+
         $cupon = Cupon::find($id);
         $cupon->code = $request->code;
         $cupon->type = $request->type;
