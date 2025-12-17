@@ -17,7 +17,7 @@ class BundleReviewService
     public function create($request)
     {
         request()->validate([
-            'bundle_id' => 'required',
+            'bundle_id' => 'required|exists:bundles,id',
             'user_id'   => 'required|integer',
             'rating'    => 'required|numeric',
             'review'    => 'nullable|string',
@@ -44,7 +44,7 @@ class BundleReviewService
     public function update($request, $id)
     {
         request()->validate([
-            'bundle_id' => 'required',
+            'bundle_id' => 'required|exists:bundles,id',
             'user_id'   => 'required|integer',
             'rating'    => 'required|numeric',
             'review'    => 'nullable|string',

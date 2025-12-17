@@ -76,7 +76,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+                        {{-- <div class="row">
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-body">
@@ -90,8 +90,7 @@
                                     </div>
                                 </div> <!-- end card-->
                             </div>
-                        </div>
-
+                        </div> --}}
                         <div>
                             <button type="submit" class="btn btn-primary w-md">Create</button>
                             <a href="{{ route('product-category.index') }}" class="btn btn-secondary w-md">Back to list</a>

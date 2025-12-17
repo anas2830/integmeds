@@ -4,19 +4,13 @@ namespace App\Services;
 
 use App\Models\Client;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Validator;
 
 class ClientsCrudService
 {
     public function getClientsList($request)
     {
-        $data['search'] = $search = $request->input('search');
-        $data['sortBy'] = $sortBy = $request->input('sort_by', 'id');
-        $data['sortDirection'] = $sortDirection = $request->input('sort_direction', 'desc');
-        $data['clients'] = Client::when($search, function ($query, $search) {
-                return $query->where('name', 'like', "%{$search}%");
-            })
-            ->orderBy($sortBy, $sortDirection)
-            ->paginate(10);
+        $data['clients'] = Client::latest()->paginate(10);
         return $data;
     }
 
@@ -25,7 +19,7 @@ class ClientsCrudService
     {
         $request->validate([
             'status' => 'required|integer',
-            'client_image' => 'required|string',
+            'client_image' => 'required|string|max:255',
         ]);
         $client = new Client();
         $client->status = $request->status ?? 0;
@@ -56,7 +50,7 @@ class ClientsCrudService
     {
         $request->validate([
             'status' => 'required|integer',
-            'client_image' => 'nullable|string',
+            'client_image' => 'nullable|string|max:255',
         ]);
 
         $client = Client::findOrFail($id);
