@@ -47,6 +47,7 @@ class ShoppingCartController extends SidebarService
     {
         $request->validate([
             'quantity' => 'required|min:1|max:100',
+            'product_id' => 'required|exists:products,id',
         ]);
 
         $salePrice = null;
