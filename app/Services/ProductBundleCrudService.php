@@ -11,6 +11,11 @@ class ProductBundleCrudService
 {
     public function getProductBundleList($request)
     {
+        $request->validate([
+            'search' => 'nullable|string|max:255',
+            'sort_by' => 'nullable|string',
+            'sort_direction' => 'nullable|string|in:asc,desc',
+        ]);
         $data['search'] = $search = $request->input('search');
         $data['sortBy'] = $sortBy = $request->input('sort_by', 'id');
         $data['sortDirection'] = $sortDirection = $request->input('sort_direction', 'desc');

@@ -34,6 +34,14 @@
                     </button>
                 </div>
             @endif
+            @if(session('error'))
+                <div class="alert alert-danger alert-dismissible fade show text-white" role="alert">
+                    <span class="text-sm">{{ session('message') }}</span>
+                    <button type="button" class="close text-white" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
             <form method="POST" action="{{ route('home.page.sidebar.settings.update') }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')

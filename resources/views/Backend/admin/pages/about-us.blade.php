@@ -177,7 +177,7 @@
                 false,
                 topImageUploadedFiles,
                 'top_image_uploaded_file',
-                'top_image_file_to_delete',
+                'top_image_fileToDelete',
                 @json($topImageFileArray)
             );
             initDropzone(
@@ -185,7 +185,7 @@
                 false,
                 middleFirstImageUploadedFiles,
                 'middle_first_image_uploaded_file',
-                'middle_first_image_file_to_delete',
+                'middle_first_image_fileToDelete',
                 @json($middleFirstImageFileArray)
             );
             initDropzone(
@@ -193,7 +193,7 @@
                 false,
                 middleSecondImageUploadedFiles,
                 'middle_second_image_uploaded_file',
-                'middle_second_image_file_to_delete',
+                'middle_second_image_fileToDelete',
                 @json($middleSecondImageFileArray)
             );
         });

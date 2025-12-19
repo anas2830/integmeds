@@ -9,4 +9,5 @@ class HomeSidebarBanner extends Model
 {
     use RemoveModelCache;
     protected $guarded = [];
+    CONST BANNER_COUNT = 3;
 }

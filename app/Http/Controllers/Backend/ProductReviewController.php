@@ -35,6 +35,13 @@ class ProductReviewController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'product_id' => 'required|array',
+            'product_id.*' => 'required|exists:products,id',
+            'user_id' => 'required|exists:users,id',
+            'rating' => 'required|integer|min:1|max:5',
+            'review' => 'required|string|max:60000',
+        ]);
         $this->reviewService->create($request->all());
         return redirect()->route('product-review.index')->with('success', 'Review created successfully.');
     }
@@ -51,6 +58,12 @@ class ProductReviewController extends Controller
 
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'product_id' => 'required|integer',
+            'user_id' => 'required|exists:users,id',
+            'rating' => 'required|integer|min:1|max:5',
+            'review' => 'required|string|max:60000',
+        ]);
         $this->reviewService->update($request->all(), $id);
         return redirect()->route('product-review.index')->with('success', 'Review updated successfully.');
     }

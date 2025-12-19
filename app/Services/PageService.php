@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Page;
 use App\Models\AboutUsPage;
+use Illuminate\Support\Facades\File;
 
 class PageService
 {
@@ -136,9 +137,9 @@ class PageService
             'bottom_content' => 'nullable|string',
             'bottom_button_text' => 'nullable|string|max:100',
             'bottom_button_url' => 'nullable|url|max:255',
-            'top_image_file_to_delete' => 'nullable',
-            'middle_first_image_file_to_delete' => 'nullable',
-            'middle_second_image_file_to_delete' => 'nullable',
+            'top_image_file_to_delete' => 'nullable|string|max:255',
+            'middle_first_image_file_to_delete' => 'nullable|string|max:255',
+            'middle_second_image_file_to_delete' => 'nullable|string|max:255',
         ]);
 
         $aboutUs = AboutUsPage::first();

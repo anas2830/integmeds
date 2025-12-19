@@ -14,12 +14,9 @@ class HomePageSettingsService {
     {
         $banners = HomeSidebarBanner::orderBy('id')->get()->keyBy('id');
         $data['banners'] = $banners;
-
         $existingFilesArray = [];
-
-        foreach ([1, 2, 3] as $id) {
+        foreach (range(1, HomeSidebarBanner::BANNER_COUNT) as $id) {
             $banner = $banners[$id] ?? null;
-
             $existingFilesArray[$id] = $banner && $banner->image_path ? [[
                 'full_path' => url($banner->image_path),
                 'name'      => $banner->file_original_name ,
@@ -27,30 +24,28 @@ class HomePageSettingsService {
                 'path'      => $banner->image_path,
             ]] : [];
         }
-
         $data['existingFilesArray'] = $existingFilesArray;
         return $data;
     }
 
-    public  function updateHomePageSidebarSettings($request){
+    public function updateHomePageSidebarSettings($request){
+        $banners = HomeSidebarBanner::whereIn('id',range(1, HomeSidebarBanner::BANNER_COUNT))->get()->keyBy('id');
         $updates = [];
-        
-        foreach ([1, 2, 3] as $id) {
-            $input = $request->input("banner_{$id}");
-            if (!$input) continue;
-            
-            $banner = HomeSidebarBanner::find($id);
-            if (!$banner) continue;
+        foreach ($banners ?? [] as $id => $banner) {
+            $bannerField = "banner_{$id}";
+            $bannerInput = $request->input($bannerField, []);
+            $imagePath = $bannerInput['image_path'] ?? null;
+
 
             // Handle image update & deletion (updates $banner properties)
-            $fileData = $this->updateBannerImage($banner, $input['image_path'] ?? null, $request->input("filesToDelete_{$id}"));
+            $fileData = $this->updateBannerImage($banner, $imagePath ?? null, $request->input("filesToDelete") ?? []);
 
             // Prepare update data (use file data if present, otherwise keep current banner data)
             $updates[$id] = [
-                'title'              => $input['title'] ?? '',
-                'short_description'  => $input['short_description'] ?? '',
-                'button_text'        => $input['button_text'] ?? '',
-                'button_url'         => $input['button_url'] ?? '',
+                'title'              => $bannerInput['title'] ?? '',
+                'short_description'  => $bannerInput['short_description'] ?? '',
+                'button_text'        => $bannerInput['button_text'] ?? '',
+                'button_url'         => $bannerInput['button_url'] ?? '',
                 'image_path'         => $fileData['fullPath'] ?? $banner->image_path,
                 'file_original_name' => $fileData['originalName'] ?? $banner->file_original_name,
                 'file_size'          => $fileData['size'] ?? $banner->file_size,
@@ -70,46 +65,38 @@ class HomePageSettingsService {
     {
         // Delete files requested from frontend first
         if (!empty($filesToDelete)) {
-            foreach ((array) $filesToDelete as $fileToDelete) {
+            $filesToDelete = array_filter($filesToDelete);
+            foreach ($filesToDelete as $fileToDelete) {
                 $deletePath = public_path($fileToDelete);
-                if (File::exists($deletePath)) {
-                    File::delete($deletePath);
-
-                    // Clear banner image fields if deleted file was the banner image
-                    if ($banner->image_path === $fileToDelete) {
-                        $banner->image_path = null;
-                        $banner->file_original_name = null;
-                        $banner->file_size = null;
-                        $banner->file_extension = null;
-                        $banner->save();
-
-                        return [
-                            'fullPath' => null,
-                            'originalName' => null,
-                            'size' => null,
-                            'extension' => null,
-                        ];
+                if ($banner->image_path === $fileToDelete) {
+                    if (File::exists($deletePath)) {
+                        File::delete($deletePath);
                     }
+                    $banner->image_path = null;
+                    $banner->file_original_name = null;
+                    $banner->file_size = null;
+                    $banner->file_extension = null;
+                    $banner->save();
                 }
             }
         }
 
-
         // Now handle new image upload if given
-        if (!empty($newImagePath)) {
-            foreach ((array) $newImagePath as $image) {
-                $newImagePath = $image;
-                $fileUploadService = new FileUploadService();
-                $newDirectory = 'uploads/sidebar-banners';
-                $fileData = $fileUploadService->handleFileUpload($newImagePath, 'temp/' . $newImagePath, $newDirectory);
-                return [
-                    'fullPath'       => $fileData['fullPath'] ?? null,
-                    'originalName'   => $fileData['originalName'] ?? null,
-                    'size'           => $fileData['size'] ?? null,
-                    'extension'      => $fileData['extension'] ?? null,
-                ];
-            }
+        if (!empty($newImagePath) && $newImagePath !== $banner->image_path) {
+            $fileUploadService = new FileUploadService();
+            $fileModifyData = $fileUploadService->handleFileUpload(
+                $newImagePath,
+                'temp/' . $newImagePath,
+                'uploads/sidebar-banners'
+            );
+            return $fileModifyData;
         }
+        return [
+            'fullPath'       => null,
+            'originalName'   => null,
+            'size'           => null,
+            'extension'      => null,
+        ];
     }
 
     public function getHomePageBodySettingsData()
