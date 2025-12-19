@@ -54,6 +54,11 @@ class UserService
     //orders
     public function getOrders($request)
     {
+        $request->validate([
+            'search' => 'nullable|string|max:100',
+            'status' => 'nullable|string|max:100',
+            'sort' => 'nullable|string|in:oldest,newest,price_low_to_high,price_high_to_low',
+        ]);
         $orders = Order::where('user_id', auth()->id())->where('payment_status', 'paid');
         if ($request->filled('search')) {
             $orders->where('order_number', 'like', '%' . $request->search . '%');
@@ -125,6 +130,18 @@ class UserService
     //address
     public function updateBillingAddress($request)
     {
+        $request->validate([
+            'first_name' => 'required|string|max:100',
+            'last_name' => 'required|string|max:100',
+            'email' => 'required|email|max:100',
+            'phone' => 'required|string|max:20',
+            'country' => 'required|string|max:100',
+            'address_line1' => 'required|string|max:500',
+            'address_line2' => 'nullable|string|max:500',
+            'city' => 'required|string|max:100',
+            'state' => 'required|string|max:100',
+            'postal_code' => 'required|string|max:100',
+        ]);
         $user = User::where('id', auth()->id())->first();
         $data = [
             'first_name' => $request->first_name,
@@ -133,7 +150,7 @@ class UserService
             'phone' => $request->phone,
             'country' => $request->country,
             'address_line1' => $request->address_line1,
-            'address_line2' => $request->address_line2,
+            'address_line2' => $request->address_line2 ?? '',
             'city' => $request->city,
             'state' => $request->state,
             'postal_code' => $request->postal_code,
@@ -145,6 +162,18 @@ class UserService
 
     public function updateShippingAddress($request)
     {
+        $request->validate([
+            'first_name' => 'required|string|max:100',
+            'last_name' => 'required|string|max:100',
+            'email' => 'required|email|max:100',
+            'phone' => 'required|string|max:20',
+            'country' => 'required|string|max:100',
+            'address_line1' => 'required|string|max:500',
+            'address_line2' => 'nullable|string|max:500',
+            'city' => 'required|string|max:100',
+            'state' => 'required|string|max:100',
+            'postal_code' => 'required|string|max:100',
+        ]);
         $user = User::where('id', auth()->id())->first();
         $data = [
             'first_name' => $request->first_name,
