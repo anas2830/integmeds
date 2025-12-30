@@ -3,6 +3,7 @@
 use App\Models\Order;
 use App\Models\Country;
 use Illuminate\Support\Facades\Auth;
+use Mews\Purifier\Facades\Purifier;
 
 if (!function_exists('generateOrderNumber')) {
     function generateOrderNumber()
@@ -72,5 +73,12 @@ if (!function_exists('adminUser')) {
     function adminUser()
     {
         return Auth::guard('admin')->user();
+    }
+}
+
+if (!function_exists('purify')) {
+    function purify($content)
+    {
+        return Purifier::clean($content);
     }
 }

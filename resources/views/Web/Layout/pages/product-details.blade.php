@@ -167,13 +167,13 @@
                                     <div class="tab-pane fade" id="description" role="tabpanel"
                                         aria-labelledby="description-tab">
                                         <div class="product-desc-content">
-                                            {!! $product->description !!}
+                                            {!! purify($product->description) !!}
                                         </div>
                                     </div>
                                     <div class="tab-pane fade" id="research" role="tabpanel"
                                         aria-labelledby="information-tab">
                                         <div class="product-desc-content">
-                                            {!! $product->research !!}
+                                            {!! purify($product->research) !!}
                                         </div>
                                     </div>
                                     <div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">

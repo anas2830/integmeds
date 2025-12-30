@@ -23,7 +23,7 @@
                                 <h2>{{ $aboutUs->top_title }}</h2>
                             </div>
                             <div class="number-no-text-wrap">
-                                {!! $aboutUs->top_content !!}
+                                {!! purify($aboutUs->top_content) !!}
                             </div>
                             <div class="number-no-img-wrap">
                                 <img class="img-fluid" src="{{asset($aboutUs->top_image)}}" alt="" title="">
@@ -57,7 +57,7 @@
                                 <h2>{{ $aboutUs->bottom_title }}</h2>
                             </div>
                             <div class="number-no-text-wrap">
-                                {!! $aboutUs->bottom_content !!}
+                                {!! purify($aboutUs->bottom_content) !!}
                             </div>
                         </div>
                     </div>

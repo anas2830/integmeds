@@ -111,7 +111,7 @@
                                     <div class="tab-pane fade active show" id="description" role="tabpanel"
                                         aria-labelledby="description-tab">
                                         <div class="product-desc-content">
-                                            {!! $bundle->description !!}
+                                            {!! purify($bundle->description) !!}
                                         </div>
                                     </div>
                                     <div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">

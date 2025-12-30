@@ -12,7 +12,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="privacy-policy-page">
-                    {!! $privacyPolicy->content !!}
+                    {!! purify($privacyPolicy->content) !!}
                 </div>
             </div>
         </div>
