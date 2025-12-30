@@ -35,7 +35,14 @@ class BundleReviewController extends Controller
 
     public function store(Request $request)
     {
-        $this->bundleReviewService->create($request->all());
+        $validator = $request->validate([
+            'bundle_id' => 'required|array',
+            'bundle_id.*' => 'required|exists:bundles,id',
+            'user_id' => 'required|exists:users,id',
+            'rating' => 'required|integer|min:1|max:5',
+            'review' => 'required|string|max:60000',
+        ]);
+        $this->bundleReviewService->create($validator);
         return redirect()->route('bundle-review.index')->with('success', 'Review created successfully.');
     }
 
@@ -51,7 +58,13 @@ class BundleReviewController extends Controller
 
     public function update(Request $request, $id)
     {
-        $this->bundleReviewService->update($request->all(), $id);
+        $validator = $request->validate([
+            'bundle_id' => 'required|exists:bundles,id',
+            'user_id' => 'required|exists:users,id',
+            'rating' => 'required|integer|min:1|max:5',
+            'review' => 'required|string|max:60000',
+        ]);
+        $this->bundleReviewService->update($validator, $id);
         return redirect()->route('bundle-review.index')->with('success', 'Review updated successfully.');
     }
 

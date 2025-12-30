@@ -11,6 +11,7 @@
         "laravel/tinker": "^2.10.1",
         "laravel/ui": "^4.6",
         "mews/captcha": "^3.4",
+        "mews/purifier": "^3.4",
         "noobtrader/laravelshoppingcart": "dev-master",
         "stripe/stripe-php": "^17.4"
     },

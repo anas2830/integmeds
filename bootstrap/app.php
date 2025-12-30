@@ -13,6 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        $middleware->append(\App\Http\Middleware\SecurityHeader::class);
         $middleware->alias([
             'auth.user' => UserMiddleware::class,
             'auth.admin' => AdminMiddleware::class
