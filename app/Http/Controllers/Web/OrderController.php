@@ -145,15 +145,16 @@ class OrderController extends Controller
                     }
                     SendOrderInvoice::dispatch($order);
 
+                    $order->load('items.product');
                     $easyship = $availableMethods->find(1);
                     $token = $easyship->token ?? null;  // fix typo 'toekn' => 'token'
 
                     if (!empty($token) && app()->environment('production')) {
-                        CreateEasyshipShipment::dispatch($order, $token, $this->shippingService->createShippingParcels());
+                        CreateEasyshipShipment::dispatch($order, $token, $this->shippingService->createShippingParcelsFromOrder($order));
                     }
 
                     if(app()->environment('production')){
-                        $this->shippingEasyOrder($order, $this->shippingService->getCartLineItems());
+                        $this->shippingEasyOrder($order, $this->shippingService->getOrderLineItems($order));
                     }
 
                     $this->orderService->sendOrderNotification($order);
@@ -210,6 +211,7 @@ class OrderController extends Controller
         $sslc = new SslCommerzNotification();
 
         $order = Order::where('transaction_id', $tran_id)->first();
+        $order->load('items.product');
 
         if (!$order) {
             return response('Invalid Transaction: Order not found', 404);
@@ -234,11 +236,11 @@ class OrderController extends Controller
                 $token = $easyship->token;
 
                 if (!empty($token) && app()->environment('production')) {
-                    CreateEasyshipShipment::dispatch($order, $token, $this->shippingService->createShippingParcels());
+                    CreateEasyshipShipment::dispatch($order, $token, $this->shippingService->createShippingParcelsFromOrder($order));
                 }
 
                 if (app()->environment('production')) {
-                    $this->shippingEasyOrder($order, $this->shippingService->getCartLineItems());
+                    $this->shippingEasyOrder($order, $this->shippingService->getOrderLineItems($order));
                 }
 
                 $this->orderService->sendOrderNotification($order);
