@@ -131,6 +131,47 @@ class ShippingService
 
     }
 
+    public function createShippingParcelsFromOrder($order)
+    {
+        $items = [];
+        $totalWeight = 0;
+
+        foreach ($order->items ?? [] as $orderItem) {
+
+            $product = $orderItem->product;
+            $quantity = (int) $orderItem->quantity;
+
+            // Fallback weight
+            $weight = max((float) ($product->weight_converted ?? 0.1), 0.1);
+
+            $items[] = [
+                "quantity" => $quantity,
+                "description" => $orderItem->product_name,
+                "category" => $product->firstCategory()->first()?->name,
+                "sku" => $product->sku ?? '',
+                "actual_weight" => $weight,
+                "dimensions" => [
+                    "length" => (float) $product->length,
+                    "width"  => (float) $product->width,
+                    "height" => (float) $product->height,
+                ],
+                "declared_currency" => "USD",
+                "declared_customs_value" => (float) $orderItem->price,
+                "origin_country_alpha2" => $product->origin_country_alpha2 ?? 'US',
+                "hs_code" => $product->hs_code ?? '490199',
+            ];
+
+            $totalWeight += $weight * $quantity;
+        }
+
+        return [
+            [
+                "total_actual_weight" => round($totalWeight, 2),
+                "items" => $items
+            ]
+        ];
+    }
+
     public function createShippingParcels(): array
     {
         $cartItems = Cart::getContent();
@@ -237,6 +278,33 @@ class ShippingService
     
         return $lineItems;
     }
+
+    public function getOrderLineItems($order)
+    {
+        $lineItems = [];
+        foreach ($order->items ?? [] as $item) {
+            $product = $item->product; 
+            $quantity = (int) $item->quantity;
+            $unitPrice = (float) $item->price;
+            $weightKg = max((float) ($product->weight_converted ?? 0.1), 0.1);
+            $weightOunces = $weightKg * 35.274;
+            $lineItems[] = [
+                "item_name"           => $item->product_name,
+                "sku"                 => $product->sku ?? '',
+                "unit_price"          => $unitPrice,
+                "total_excluding_tax" => $unitPrice * $quantity,
+                "price_excluding_tax" => $unitPrice,
+                "weight_in_ounces"    => $weightOunces,
+                "quantity"            => $quantity,
+                "product_options"     => [
+                    "pa_size" => $product->pa_size ?? '',
+                    "Colour"  => $product->colour ?? '',
+                ],
+            ];
+        }
+        return $lineItems;
+    }
+
     
 
 
