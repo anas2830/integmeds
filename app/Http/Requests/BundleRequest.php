@@ -42,6 +42,7 @@ class BundleRequest extends FormRequest
             'bundle_images' => ['nullable'],
             'min_price' => ['required', 'numeric', 'min:0'],
             'max_price' => ['required', 'numeric', 'min:0'],
+            'bundle_youtube_link' => ['nullable', 'string', 'max:255'],
         ];
     }
 }

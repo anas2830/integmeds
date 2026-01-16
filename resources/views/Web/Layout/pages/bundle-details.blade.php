@@ -96,8 +96,15 @@
                         <div class="col-12">
                             <div class="product-desc-wrap">
                                 <ul class="nav nav-tabs" id="myTabTwo" role="tablist">
+                                    @if($bundle->bundle_youtube_link)
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link active" id="youtube-tab" data-bs-toggle="tab"
+                                                data-bs-target="#youtube" role="tab" aria-controls="youtube"
+                                                aria-selected="false">Youtube</a>
+                                        </li>
+                                    @endif
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link active" id="description-tab" data-bs-toggle="tab"
+                                        <a href="#" class="nav-link @if(!$bundle->bundle_youtube_link) active @endif" id="description-tab" data-bs-toggle="tab"
                                             data-bs-target="#description" role="tab" aria-controls="description"
                                             aria-selected="true">Description</a>
                                     </li>
@@ -108,7 +115,17 @@
                                     </li>
                                 </ul>
                                 <div class="tab-content" id="myTabContentTwo">
-                                    <div class="tab-pane fade active show" id="description" role="tabpanel"
+                                    @if($bundle->bundle_youtube_link)
+                                        <div class="tab-pane fade active show" id="youtube" role="tabpanel"
+                                            aria-labelledby="youtube-tab">
+                                            <div class="product-desc-content">
+                                                <div class="video-container">
+                                                    <iframe width="100%" height="500" src="https://www.youtube.com/embed/{{ $bundle->bundle_youtube_link }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
+                                    <div class="tab-pane fade @if(!$bundle->bundle_youtube_link) active show @endif" id="description" role="tabpanel"
                                         aria-labelledby="description-tab">
                                         <div class="product-desc-content">
                                             {!! purify($bundle->description) !!}
