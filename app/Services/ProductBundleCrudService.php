@@ -37,6 +37,7 @@ class ProductBundleCrudService
         $productBundle->min_price = $request->min_price;
         $productBundle->max_price = $request->max_price;
         $productBundle->status = $request->status ?? 0;
+        $productBundle->bundle_youtube_link = $request->bundle_youtube_link ?? null;
 
         $this->bundleIconUpload($productBundle, $request);
 
@@ -84,7 +85,8 @@ class ProductBundleCrudService
         $productBundle->min_price = $request->min_price;
         $productBundle->max_price = $request->max_price;
         $productBundle->status = $request->status ?? 0;
-
+        $productBundle->bundle_youtube_link = $request->bundle_youtube_link ?? null;
+        
         $this->bundleIconUpload($productBundle, $request);
 
         if ($request->files_to_delete) {

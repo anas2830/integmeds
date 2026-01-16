@@ -132,7 +132,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-sm-12">
+                                    <div class="col-sm-8">
                                         <div class="form-group">
                                             <label class="control-label">Select Product for Bundle<span class="text-danger">*</span></label>
                                             <select name="bundle_products[]" class="form-control select2" multiple required>
@@ -144,6 +144,15 @@
                                                 @endforeach
                                             </select>
                                             @error('bundle_products')
+                                                <small class="invalid-feedback">{{ $message }}</small>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label class="control-label">Youtube video id</label>
+                                            <input type="text" name="bundle_youtube_link" class="form-control">
+                                            @error('bundle_youtube_link')
                                                 <small class="invalid-feedback">{{ $message }}</small>
                                             @enderror
                                         </div>
