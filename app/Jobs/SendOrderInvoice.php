@@ -24,6 +24,12 @@ class SendOrderInvoice implements ShouldQueue
 
     public function handle()
     {
+        $this->order->items->each(function ($item) {
+            if ($item->product && $item->product->sold_count > 0) {
+                $item->product()->increment('sold_count', $item->quantity);
+            }
+        });
+
         $email = $this->order->customer_email
             ?? ($this->order->billing_address['email'] ?? null)
             ?? ($this->order->shipping_address['email'] ?? null);
