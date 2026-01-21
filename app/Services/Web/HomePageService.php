@@ -44,7 +44,7 @@ class HomePageService extends SidebarService
                 ->pluck('id');
         });
 
-        return Product::select('id', 'product_name', 'regular_price', 'sale_price', 'discount_percentage', 'slug', 'quantity')
+        return Product::select('id', 'product_name', 'regular_price', 'sale_price', 'discount_percentage', 'slug', 'quantity', 'sold_count')
             ->with(['firstImage:id,product_id,image_url', 'firstCategory:id,name,slug'])
             ->whereIn('id', $productIds)
             ->get();
@@ -53,7 +53,7 @@ class HomePageService extends SidebarService
     public function topRatedProducts()
     {
         return Cache::remember('topRatedProducts', 10, function() {
-            return Product::select('id', 'product_name', 'regular_price', 'sale_price', 'discount_percentage', 'slug', 'quantity')
+            return Product::select('id', 'product_name', 'regular_price', 'sale_price', 'discount_percentage', 'slug', 'quantity', 'sold_count')
             ->with(['firstImage:id,product_id,image_url', 'firstCategory:id,name,slug'])
             ->withAvg('productReviews', 'rating')
             ->where('status', 1)

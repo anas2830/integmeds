@@ -160,7 +160,8 @@ class ProductCrudService
             'length'        => $validated['length'],
             'width'         => $validated['width'],
             'height'        => $validated['height'],
-            'status'        => $validated['status']
+            'status'        => $validated['status'],
+            'sold_count'    => $validated['sold_count'] ?? 0,
         ];
 
         if ($product) {
