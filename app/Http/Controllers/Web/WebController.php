@@ -154,7 +154,7 @@ class WebController extends SidebarService
         // Ensure categories are loaded
         $categoryIds = $product->categories()->pluck('id');
 
-        return Product::select('id', 'product_name', 'regular_price', 'sale_price', 'discount_percentage', 'slug', 'quantity')
+        return Product::select('id', 'product_name', 'regular_price', 'sale_price', 'discount_percentage', 'slug', 'quantity', 'sold_count')
             ->with(['firstImage:id,product_id,image_url'])
             ->where('status', 1)
             ->where('id', '!=', $product->id)

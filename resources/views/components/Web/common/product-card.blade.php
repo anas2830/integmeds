@@ -35,9 +35,14 @@
             </div>
 
             <div class="rating">
-                <div class="rating-start">
-                    <x-Web.common.star-rating :rating="$product->product_reviews_avg_rating ?? 0" />
-                </div>
+                @if($product->product_reviews_avg_rating > 0)
+                    <div class="rating-start">
+                        <x-Web.common.star-rating :rating="$product->product_reviews_avg_rating ?? 0" />
+                    </div>
+                @endif
+                @if($product->sold_count > 0)
+                    <span class="sold-count">{{ $product->sold_count }} sold</span>
+                @endif
             </div>
             
        

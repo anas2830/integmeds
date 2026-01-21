@@ -76,6 +76,7 @@ class ProductRequest extends FormRequest
             'width'         => ['required', 'numeric', 'min:0', 'max:10'],
             'height'        => ['required', 'numeric', 'min:0', 'max:5'],
             'status'        => ['required', 'string', 'max:255'],
+            'sold_count'    => ['nullable', 'integer', 'min:0'],
         ];
     }
 }

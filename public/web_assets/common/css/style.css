@@ -183,7 +183,18 @@ ul{padding:0;margin:0;}
 .common-product-img img { width: 100%; transition: all 0.5s ease; aspect-ratio:0.9; object-fit: cover; object-position: center; }
 .common-product-box:hover .common-product-img img{ transform: scale(1.1); }
 .common-products-info-wrap { padding: 0 10px 10px 10px; }
-.common-products-info-wrap .rating {display: flex; gap: 10px; margin-bottom:5px;}
+.common-products-info-wrap .rating {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 5px;
+    align-items: center;
+	height: 20px;
+}
+.sold-count {
+    font-size: 14px;
+    color: var(--primary);
+    font-weight: 600;
+}
 .common-products-info-wrap .rating .rating-start{ color: var(--star-color);font-size: 10px;}
 .comm-products-title{ margin-bottom:5px;}
 .comm-products-title h3 { font-size: 18px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; transition: all 0.3s ease; margin-bottom:5px;height:40px;}

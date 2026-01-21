@@ -170,19 +170,15 @@
                                     @enderror                               
                                 </div>
                             </div>
-                            {{-- <div class="col-sm-6">
+                            <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label class="control-label">Sizes</label>
-                                    <select name="sizes[]" class="form-control select2" multiple>
-                                        @foreach($sizes as $size)
-                                            <option value="{{ $size->id }}" 
-                                                {{ (collect(old('sizes'))->contains($size->id)) ? 'selected' : '' }}>
-                                                {{ $size->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                    <label class="control-label">Sold Count</label>
+                                    <input type="number" name="sold_count" class="form-control" value="{{ old('sold_count') }}">
+                                    @error('sold_count')
+                                        <small class="invalid-feedback">{{ $message }}</small>
+                                    @enderror
                                 </div>
-                            </div> --}}
+                            </div>
                         </div>
                     </div>
                 </div>
