@@ -1,10 +1,11 @@
 <?php
 
 return [
-    'additional_rates' => [
-        'US' => env('ADDITIONAL_SHIPPING_RATE_US', 10),
-        'CA' => env('ADDITIONAL_SHIPPING_RATE_CA', 20),
-        'OTHER' => env('ADDITIONAL_SHIPPING_RATE_OTHER', 80),
+
+    'fixed_rates' => [
+        'US' => env('FIXED_SHIPPING_RATE_US', 0),
+        'CA' => env('FIXED_SHIPPING_RATE_CA', 40),
+        'SA' => env('FIXED_SHIPPING_RATE_SA', 80),
     ],
 
     'shipping_easy_api_key' => env('SHIPPING_EASY_API_KEY'),

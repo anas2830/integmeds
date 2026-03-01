@@ -182,32 +182,6 @@
 @push('script')
 <script>
 $(document).ready(function () {
-    const additionalShippingRates = @json(config('shipping.additional_rates'));
-    // function toggleShippingBilling() {
-    //     if ($('#ship-address').is(':checked')) {
-    //         $('.different-address-info').slideDown();
-    //         $('.shipping-form-wrap input, .shipping-form-wrap select').attr('required', true);
-    //         resetShippingMethod();
-    //         const country = $('select[name="shipping[country]"]').val()
-    //         if (country === 'US') {
-    //             $('.shipping-method').addClass('d-none');
-    //             updateShippingCostSummary();
-    //         }else{
-    //             $('.shipping-method').removeClass('d-none');
-    //         }
-    //     } else {
-    //         $('.different-address-info').slideUp();
-    //         $('.shipping-form-wrap input, .shipping-form-wrap select').removeAttr('required');
-    //         resetShippingMethod();
-    //         const country = $('select[name="billing[country]"]').val()
-    //         if (country === 'US') {
-    //             $('.shipping-method').addClass('d-none');
-    //             updateShippingCostSummary();
-    //         }else{
-    //             $('.shipping-method').removeClass('d-none');
-    //         }
-    //     }
-    // }
 
     function toggleShippingBilling() {
         const isDifferentAddress = $('#ship-address').is(':checked');
@@ -227,7 +201,7 @@ $(document).ready(function () {
 
         resetShippingMethod();
 
-        if (country === 'US') {
+        if (country === 'US' || country === 'CA' || country === 'SA') {
             $shippingMethod.addClass('d-none');
             $('#courier-service-error').hide();
             updateShippingCostSummary();
@@ -236,30 +210,6 @@ $(document).ready(function () {
             $shippingMethod.removeClass('d-none');
         }
     }
-
-
-    
-    // function toggleShippingBilling() {
-    //     const isDifferentAddress = $('#ship-address').is(':checked');
-    //     const $formFields = $('.shipping-form-wrap input, .shipping-form-wrap select');
-    //     const $shippingMethod = $('.shipping-method');
-    //     const country = isDifferentAddress
-    //         ? $('select[name="shipping[country]"]').val()
-    //         : $('select[name="billing[country]"]').val();
-
-    //     $('.different-address-info').slideToggle(isDifferentAddress);
-    //     $formFields.prop('required', isDifferentAddress);
-    //     resetShippingMethod();
-
-    //     if (country === 'US') {
-    //         $shippingMethod.addClass('d-none');
-    //         updateShippingCostSummary();
-    //     } else {
-    //         $shippingMethod.removeClass('d-none');
-    //         updateShippingCostSummary();
-    //     }
-    // }
-
 
     $('#ship-address').on('change', toggleShippingBilling);
     toggleShippingBilling();
@@ -274,31 +224,7 @@ $(document).ready(function () {
         $('.total-price').text(total.toFixed(2));
     }
 
-    // function getAdjustedShippingCost(baseCost) {
-    //     const isShipToDifferent = $('input[name="ship_to_different_address"]').prop('checked');
-    //     const country = isShipToDifferent
-    //         ? $('select[name="shipping[country]"]').val()
-    //         : $('select[name="billing[country]"]').val();
-
-    //     if (country === 'US'){
-    //         return baseCost + 10;
-    //     }else if (country === 'CA') {
-    //         return baseCost + 20;
-    //     }else{
-    //         return baseCost + 80;
-    //     }
-
-    //     return baseCost;
-    // }
     function getAdjustedShippingCost(baseCost) {
-        // const isShipToDifferent = $('input[name="ship_to_different_address"]').prop('checked');
-        // const country = isShipToDifferent
-        //     ? $('select[name="shipping[country]"]').val()
-        //     : $('select[name="billing[country]"]').val();
-
-        // const rate = additionalShippingRates[country] ?? additionalShippingRates.OTHER;
-
-        // return baseCost + Number(rate);
         return baseCost;
     }
 
@@ -453,21 +379,31 @@ $(document).ready(function () {
             ? $('select[name="shipping[country]"]').val()
             : $('select[name="billing[country]"]').val();
 
-        const isUS = selectedCountry === 'US';
-
         // Clear previous selection
         $('#shipping_method_select').val(null);
         $('#shipping-method-container').html('');
 
-        // Toggle shipping method visibility based on country
-        $('.shipping-method').toggleClass('d-none', isUS);
-
-        if (isUS) {
-            $('#courier-service-error').hide();
-            updateShippingCostSummary();
-        }else{
-            $('#courier-service-error').show();
-            resetShippingMethod();
+        switch (selectedCountry) {
+            case 'US': 
+                $('#courier-service-error').hide();
+                $('.shipping-method').toggleClass('d-none', true);
+                updateShippingCostSummary({{config('shipping.fixed_rates.US')}});
+                break;
+            case 'CA':
+                $('#courier-service-error').hide();
+                $('.shipping-method').toggleClass('d-none', true);
+                updateShippingCostSummary({{config('shipping.fixed_rates.CA')}});
+                break;
+            case 'SA':
+                $('#courier-service-error').hide();
+                $('.shipping-method').toggleClass('d-none', true);
+                updateShippingCostSummary({{config('shipping.fixed_rates.SA')}});
+                break;
+            default:
+                $('#courier-service-error').show();
+                $('.shipping-method').toggleClass('d-none', false);
+                resetShippingMethod();
+                break;
         }
     }
 
@@ -556,7 +492,5 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
  </script>
- 
-
 @endpush
 

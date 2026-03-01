@@ -45,7 +45,7 @@ class OrderController extends Controller
         $isShippingRequired = false;
         $ship_to_different_address = $request->ship_to_different_address;
         $address = $ship_to_different_address ? $request->shipping : $request->billing;
-        if (count($availableMethods) && $address['country'] != 'US') {
+        if (count($availableMethods) && $address['country'] !== 'US' && $address['country'] !== 'CA' && $address['country'] !== 'SA') {
             if (empty($request->courier_service_id)) {
                 return back()->withErrors([
                     'courier_service_id' => 'Please select a shipping method.',
@@ -71,7 +71,7 @@ class OrderController extends Controller
         if ($request->ship_to_different_address) {
             $shippingAddress = $request->input('shipping');
         }
-        if($shippingAddress['country'] == 'US'){
+        if($shippingAddress['country'] == 'US' || $shippingAddress['country'] == 'CA' || $shippingAddress['country'] == 'SA'){
             $isShippingRequired = true; 
         }
         // Order basics
