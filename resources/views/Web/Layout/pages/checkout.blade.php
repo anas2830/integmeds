@@ -201,14 +201,18 @@ $(document).ready(function () {
 
         resetShippingMethod();
 
-        if (country === 'US' || country === 'CA' || country === 'SA') {
-            $shippingMethod.addClass('d-none');
-            $('#courier-service-error').hide();
-            updateShippingCostSummary();
-        } else {
-            $('#courier-service-error').show();
-            $shippingMethod.removeClass('d-none');
-        }
+        $shippingMethod.addClass('d-none');
+        $('#courier-service-error').hide();
+        updateShippingCostSummary();
+
+        // if (country === 'US' || country === 'CA' || country === 'SA') {
+        //     $shippingMethod.addClass('d-none');
+        //     $('#courier-service-error').hide();
+        //     updateShippingCostSummary();
+        // } else {
+        //     $('#courier-service-error').show();
+        //     $shippingMethod.removeClass('d-none');
+        // }
     }
 
     $('#ship-address').on('change', toggleShippingBilling);
@@ -394,15 +398,20 @@ $(document).ready(function () {
                 $('.shipping-method').toggleClass('d-none', true);
                 updateShippingCostSummary({{config('shipping.fixed_rates.CA')}});
                 break;
-            case 'SA':
+            // case 'SA':
+            //     $('#courier-service-error').hide();
+            //     $('.shipping-method').toggleClass('d-none', true);
+            //     updateShippingCostSummary({{config('shipping.fixed_rates.SA')}});
+            //     break;
+            // default:
+            //     $('#courier-service-error').show();
+            //     $('.shipping-method').toggleClass('d-none', false);
+            //     resetShippingMethod();
+            //     break;
+            default:
                 $('#courier-service-error').hide();
                 $('.shipping-method').toggleClass('d-none', true);
-                updateShippingCostSummary({{config('shipping.fixed_rates.SA')}});
-                break;
-            default:
-                $('#courier-service-error').show();
-                $('.shipping-method').toggleClass('d-none', false);
-                resetShippingMethod();
+                updateShippingCostSummary({{config('shipping.fixed_rates.OTHER')}});
                 break;
         }
     }

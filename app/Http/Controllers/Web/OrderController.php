@@ -45,14 +45,14 @@ class OrderController extends Controller
         $isShippingRequired = false;
         $ship_to_different_address = $request->ship_to_different_address;
         $address = $ship_to_different_address ? $request->shipping : $request->billing;
-        if (count($availableMethods) && $address['country'] !== 'US' && $address['country'] !== 'CA' && $address['country'] !== 'SA') {
-            if (empty($request->courier_service_id)) {
-                return back()->withErrors([
-                    'courier_service_id' => 'Please select a shipping method.',
-                ])->withInput();
-            }
-            $isShippingRequired = true;
-        }
+        // if (count($availableMethods) && $address['country'] !== 'US' && $address['country'] !== 'CA' && $address['country'] !== 'SA') {
+        //     if (empty($request->courier_service_id)) {
+        //         return back()->withErrors([
+        //             'courier_service_id' => 'Please select a shipping method.',
+        //         ])->withInput();
+        //     }
+        //     $isShippingRequired = true;
+        // }
         $user = Auth::user();
         $cart = Cart::getContent();
         $subtotal = Cart::getSubTotal();
@@ -71,9 +71,10 @@ class OrderController extends Controller
         if ($request->ship_to_different_address) {
             $shippingAddress = $request->input('shipping');
         }
-        if($shippingAddress['country'] == 'US' || $shippingAddress['country'] == 'CA' || $shippingAddress['country'] == 'SA'){
-            $isShippingRequired = true; 
-        }
+        // if($shippingAddress['country'] == 'US' || $shippingAddress['country'] == 'CA' || $shippingAddress['country'] == 'SA'){
+        //     $isShippingRequired = true; 
+        // }
+        $isShippingRequired = true;
         // Order basics
         $orderNumber = generateOrderNumber();
         $transactionId = 'TRX-' . uniqid();

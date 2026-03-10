@@ -3,9 +3,9 @@
 return [
 
     'fixed_rates' => [
-        'US' => env('FIXED_SHIPPING_RATE_US', 0),
+        'US' => env('FIXED_SHIPPING_RATE_US', 10),
         'CA' => env('FIXED_SHIPPING_RATE_CA', 40),
-        'SA' => env('FIXED_SHIPPING_RATE_SA', 80),
+        'OTHER' => env('FIXED_SHIPPING_RATE_OTHER', 80),
     ],
 
     'shipping_easy_api_key' => env('SHIPPING_EASY_API_KEY'),
