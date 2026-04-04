@@ -78,6 +78,9 @@ Route::controller(OrderController::class)->group(function () {
     Route::post('/cancel', 'cancel');
     Route::post('/ipn', 'ipn');
     Route::post('/update/shipping/cost', 'updateShippingCost')->name('update.shipping.cost');
+
+    Route::get('/stripe/success', 'stripeSuccess')->name('stripe.success');
+    Route::get('/stripe/cancel', 'stripeCancel')->name('stripe.cancel');
 });
 
 

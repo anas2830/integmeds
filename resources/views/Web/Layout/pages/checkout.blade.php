@@ -20,23 +20,21 @@
                         @csrf
                         <div class="row">
                             <div class="col-lg-8">
-                                <form>
-                                    <h4 class="mb-3">Billing Address</h4>
-                                    <x-Web.checkout.billing-address :billingAddress="$billingAddress" :countries="$countries" />
-                                    <div class="different-address-checkbox mb-4">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="ship_to_different_address" value="1" id="ship-address" class="ship_to_different_address"
-                                                {{ old('ship_to_different_address') ? 'checked' : '' }}>
-                                            <label class="form-check-label" for="ship-address">
-                                                Ship to a different address?
-                                            </label>
-                                        </div>
+                                <h4 class="mb-3">Billing Address</h4>
+                                <x-Web.checkout.billing-address :billingAddress="$billingAddress" :countries="$countries" />
+                                <div class="different-address-checkbox mb-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="ship_to_different_address" value="1" id="ship-address" class="ship_to_different_address"
+                                            {{ old('ship_to_different_address') ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="ship-address">
+                                            Ship to a different address?
+                                        </label>
                                     </div>
-                                    
-                                    <div class="different-address-info">
-                                        <x-Web.checkout.shipping-address :shippingAddress="$shippingAddress" :countries="$countries" />
-                                    </div>
-                                </form>
+                                </div>
+                                
+                                <div class="different-address-info">
+                                    <x-Web.checkout.shipping-address :shippingAddress="$shippingAddress" :countries="$countries" />
+                                </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="checkout-order-summary-container">
@@ -125,12 +123,6 @@
                                                 </div>
                                             </div>
 
-                                            <div id="stripe-card-section" class="mt-3 px-2" style="display: none;">
-                                                {{-- <label for="card-element" class="form-label">Card Details</label> --}}
-                                                <div id="card-element" class="form-control" style="padding: 10px;"></div>
-                                                <div id="card-errors" class="text-danger mt-2"></div>
-                                            </div>
-
                                             <div class="form-check mb-2">
                                                 <div class="check-wrap">
                                                     <input class="form-check-input" type="radio"
@@ -171,7 +163,7 @@
                                 </div>
                             </div>
                         </div>
-                    <form>
+                    </form>
                 </div>
             </div>
         </div>
@@ -435,71 +427,5 @@ $(document).ready(function () {
 });
 
 </script>
-
- <!--  stripe -->
- <script src="https://js.stripe.com/v3/"></script>
- <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const stripe = Stripe("{{ config('services.stripe.key') }}");
-    const elements = stripe.elements();
-
-    const style = {
-        base: {
-            fontSize: '16px',
-            color: '#32325d',
-            '::placeholder': {
-                color: '#aab7c4',
-            },
-        },
-        invalid: {
-            color: '#fa755a',
-        }
-    };
-
-    const card = elements.create('card', { style: style });
-    card.mount('#card-element');
-
-    const radios = document.querySelectorAll('input[name="paymentMethod"]');
-    const stripeSection = document.getElementById('stripe-card-section');
-
-    function toggleStripeSection() {
-        const selected = document.querySelector('input[name="paymentMethod"]:checked');
-        stripeSection.style.display = (selected && selected.value === 'stripe') ? 'block' : 'none';
-    }
-
-    // Initial check on load
-    toggleStripeSection();
-
-    // Listen to radio changes
-    radios.forEach(radio => {
-        radio.addEventListener('change', toggleStripeSection);
-    });
-
-    const form = document.querySelector('form[action="{{ route('place.order') }}"]');
-
-    form.addEventListener('submit', function (e) {
-        const selectedMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
-
-        if (selectedMethod === 'stripe') {
-            console.log('stripe selected');
-            e.preventDefault();
-            stripe.createToken(card).then(function (result) {
-                if (result.error) {
-                    document.getElementById('card-errors').textContent = result.error.message;
-                } else {
-                    const hiddenInput = document.createElement('input');
-                    hiddenInput.setAttribute('type', 'hidden');
-                    hiddenInput.setAttribute('name', 'stripeToken');
-                    hiddenInput.setAttribute('value', result.token.id);
-                    form.appendChild(hiddenInput);
-
-                    form.submit();
-                }
-            });
-        }
-    });
-});
-
- </script>
 @endpush
 

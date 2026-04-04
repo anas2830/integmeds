@@ -126,58 +126,88 @@ class OrderController extends Controller
         $order = $this->orderService->orderGenerate($orderData, $cart);
 
         
-        if($request->paymentMethod === 'stripe'){
-            try {
-                \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
-                $charge = \Stripe\Charge::create([
-                    'amount' =>  $totalAmount * 100, // amount in cents
-                    'currency' => 'usd',
-                    'source' => $request->stripeToken,
-                    'description' => 'Integmeds Order Payment - ' . $order->order_number,
-                ]);
-                if ($charge->status === 'succeeded') {
-                    $order->update([
-                        'payment_status' => 'paid',
-                        'order_status' => 'completed'
-                    ]);
-                    $this->processOrderDetailsAndStock($order, $order->items);
-                    if (!empty($couponId) && ($coupon = Cupon::find($couponId))) {
-                        $coupon->increment('used');
-                    }
-                    SendOrderInvoice::dispatch($order);
+        // if($request->paymentMethod === 'stripe'){
+        //     try {
+        //         \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
+        //         $charge = \Stripe\Charge::create([
+        //             'amount' =>  $totalAmount * 100, // amount in cents
+        //             'currency' => 'usd',
+        //             'source' => $request->stripeToken,
+        //             'description' => 'Integmeds Order Payment - ' . $order->order_number,
+        //         ]);
+        //         if ($charge->status === 'succeeded') {
+        //             $order->update([
+        //                 'payment_status' => 'paid',
+        //                 'order_status' => 'completed'
+        //             ]);
+        //             $this->processOrderDetailsAndStock($order, $order->items);
+        //             if (!empty($couponId) && ($coupon = Cupon::find($couponId))) {
+        //                 $coupon->increment('used');
+        //             }
+        //             SendOrderInvoice::dispatch($order);
 
-                    $order->load('items.product');
-                    $easyship = $availableMethods->find(1);
-                    $token = $easyship->token ?? null;  // fix typo 'toekn' => 'token'
+        //             $order->load('items.product');
+        //             $easyship = $availableMethods->find(1);
+        //             $token = $easyship->token ?? null;  // fix typo 'toekn' => 'token'
 
-                    if (!empty($token) && app()->environment('production')) {
-                        CreateEasyshipShipment::dispatch($order, $token, $this->shippingService->createShippingParcelsFromOrder($order));
-                    }
+        //             if (!empty($token) && app()->environment('production')) {
+        //                 CreateEasyshipShipment::dispatch($order, $token, $this->shippingService->createShippingParcelsFromOrder($order));
+        //             }
 
-                    if(app()->environment('production')){
-                        $this->shippingEasyOrder($order, $this->shippingService->getOrderLineItems($order));
-                    }
+        //             if(app()->environment('production')){
+        //                 $this->shippingEasyOrder($order, $this->shippingService->getOrderLineItems($order));
+        //             }
 
-                    $this->orderService->sendOrderNotification($order);
+        //             $this->orderService->sendOrderNotification($order);
 
-                    Cart::clear();
+        //             Cart::clear();
 
-                    $this->couponService->removeSessionCoupon();
-                    if(Auth::check()){
-                        return redirect()->route('user.order-invoice', ['id' => $order->id])->with('order_complete', 'Thanks! Your order has been placed successfully.');
-                    }
-                    return redirect()->route('order.complete', ['id' => $order->id])->with('order_complete', 'Thanks! Your order has been placed successfully.');
-                } else {
-                    throw ValidationException::withMessages([
-                        'error' => "Payment failed. Please try again."
-                    ]);
-                }
-            } catch (\Exception $e) {
-                throw ValidationException::withMessages([
-                    'error' => "Payment failed: " . $e->getError()->message
-                ]);
-            }
+        //             $this->couponService->removeSessionCoupon();
+        //             if(Auth::check()){
+        //                 return redirect()->route('user.order-invoice', ['id' => $order->id])->with('order_complete', 'Thanks! Your order has been placed successfully.');
+        //             }
+        //             return redirect()->route('order.complete', ['id' => $order->id])->with('order_complete', 'Thanks! Your order has been placed successfully.');
+        //         } else {
+        //             throw ValidationException::withMessages([
+        //                 'error' => "Payment failed. Please try again."
+        //             ]);
+        //         }
+        //     } catch (\Exception $e) {
+        //         throw ValidationException::withMessages([
+        //             'error' => "Payment failed: " . $e->getError()->message
+        //         ]);
+        //     }
+        // }
+        if ($request->paymentMethod === 'stripe') {
+
+            \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
+        
+            $session = \Stripe\Checkout\Session::create([
+                'payment_method_types' => ['card'],
+                'line_items' => [[
+                    'price_data' => [
+                        'currency' => 'usd',
+                        'product_data' => [
+                            'name' => 'Order #' . $order->order_number,
+                        ],
+                        'unit_amount' => $totalAmount * 100,
+                    ],
+                    'quantity' => 1,
+                ]],
+                'mode' => 'payment',
+        
+                // VERY IMPORTANT
+                'metadata' => [
+                    'order_id' => $order->id,
+                ],
+        
+                'success_url' => route('stripe.success') . '?session_id={CHECKOUT_SESSION_ID}',
+                'cancel_url' => route('stripe.cancel'),
+            ]);
+        
+            return redirect($session->url);
         }
+
         if($request->paymentMethod === 'sslcommerz'){
             $sslPostData = $this->orderService->sslCommerzPayload($totalAmount, $transactionId);
             $sslc = new SslCommerzNotification();
