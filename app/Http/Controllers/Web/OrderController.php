@@ -125,63 +125,8 @@ class OrderController extends Controller
         ];
         $order = $this->orderService->orderGenerate($orderData, $cart);
 
-        
-        // if($request->paymentMethod === 'stripe'){
-        //     try {
-        //         \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
-        //         $charge = \Stripe\Charge::create([
-        //             'amount' =>  $totalAmount * 100, // amount in cents
-        //             'currency' => 'usd',
-        //             'source' => $request->stripeToken,
-        //             'description' => 'Integmeds Order Payment - ' . $order->order_number,
-        //         ]);
-        //         if ($charge->status === 'succeeded') {
-        //             $order->update([
-        //                 'payment_status' => 'paid',
-        //                 'order_status' => 'completed'
-        //             ]);
-        //             $this->processOrderDetailsAndStock($order, $order->items);
-        //             if (!empty($couponId) && ($coupon = Cupon::find($couponId))) {
-        //                 $coupon->increment('used');
-        //             }
-        //             SendOrderInvoice::dispatch($order);
-
-        //             $order->load('items.product');
-        //             $easyship = $availableMethods->find(1);
-        //             $token = $easyship->token ?? null;  // fix typo 'toekn' => 'token'
-
-        //             if (!empty($token) && app()->environment('production')) {
-        //                 CreateEasyshipShipment::dispatch($order, $token, $this->shippingService->createShippingParcelsFromOrder($order));
-        //             }
-
-        //             if(app()->environment('production')){
-        //                 $this->shippingEasyOrder($order, $this->shippingService->getOrderLineItems($order));
-        //             }
-
-        //             $this->orderService->sendOrderNotification($order);
-
-        //             Cart::clear();
-
-        //             $this->couponService->removeSessionCoupon();
-        //             if(Auth::check()){
-        //                 return redirect()->route('user.order-invoice', ['id' => $order->id])->with('order_complete', 'Thanks! Your order has been placed successfully.');
-        //             }
-        //             return redirect()->route('order.complete', ['id' => $order->id])->with('order_complete', 'Thanks! Your order has been placed successfully.');
-        //         } else {
-        //             throw ValidationException::withMessages([
-        //                 'error' => "Payment failed. Please try again."
-        //             ]);
-        //         }
-        //     } catch (\Exception $e) {
-        //         throw ValidationException::withMessages([
-        //             'error' => "Payment failed: " . $e->getError()->message
-        //         ]);
-        //     }
-        // }
         if ($request->paymentMethod === 'stripe') {
-
             \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
-        
             $session = \Stripe\Checkout\Session::create([
                 'payment_method_types' => ['card'],
                 'line_items' => [[
@@ -232,6 +177,7 @@ class OrderController extends Controller
         }
     }
 
+    //sslcommerz success
     public function success(Request $request)
     {
         $tran_id = $request->input('tran_id');
@@ -310,6 +256,76 @@ class OrderController extends Controller
         return to_route('order.status')->with('order_cancelled', 'The Order has been cancelled');
     }
 
+    //end sslcommerz
+
+    //stripe
+    public function stripeSuccess(Request $request)
+    {
+        \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
+        $session = \Stripe\Checkout\Session::retrieve($request->session_id);
+        $paymentIntent = \Stripe\PaymentIntent::retrieve($session->payment_intent);
+        $couponId = Session::get('coupon_id', null);
+        if ($paymentIntent->status === 'succeeded' && $session->metadata->order_id) {
+            $orderId = $session->metadata->order_id;
+            $order = Order::where('id', $orderId)->first();
+            $order->load('items.product');
+            if (!$order) {
+                return response('Invalid Transaction: Order not found', 404);
+            }
+            $order->update([
+                'payment_status' => 'paid',
+                'order_status' => 'completed'
+            ]);
+            $this->processOrderDetailsAndStock($order, $order->items);
+            if (!empty($couponId) && ($coupon = Cupon::find($couponId))) {
+                $coupon->increment('used');
+            }
+
+            SendOrderInvoice::dispatch($order);
+
+            $easyship = ShippingMethod::find(1);
+            $token = $easyship->token ?? null;  // fix typo 'toekn' => 'token'
+
+            if (!empty($token) && app()->environment('production')) {
+                CreateEasyshipShipment::dispatch($order, $token, $this->shippingService->createShippingParcelsFromOrder($order));
+            }
+
+            if(app()->environment('production')){
+                $this->shippingEasyOrder($order, $this->shippingService->getOrderLineItems($order));
+            }
+
+            $this->orderService->sendOrderNotification($order);
+
+            Cart::clear();
+
+            $this->couponService->removeSessionCoupon();
+            if(Auth::check()){
+                return redirect()->route('user.order-invoice', ['id' => $order->id])->with('order_complete', 'Thanks! Your order has been placed successfully.');
+            }
+            return redirect()->route('order.complete', ['id' => $order->id])->with('order_complete', 'Thanks! Your order has been placed successfully.');
+        } else {
+            return response('Payment Failed', 400);
+        }
+
+        return response('Invalid Transaction', 400);
+    }
+
+    public function stripeCancel(Request $request)
+    {
+        \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
+        $session = \Stripe\Checkout\Session::retrieve($request->session_id);
+        $paymentIntent = \Stripe\PaymentIntent::retrieve($session->payment_intent);
+        if ($paymentIntent->status === 'canceled') {
+            $orderId = $session->metadata->order_id;
+            $order = Order::where('id', $orderId)->first();
+            if($order){
+                $order->delete();
+            }
+            return to_route('order.status')->with('order_cancelled', 'The Order has been cancelled');
+        }
+    }
+    // end stripe
+
     public  function orderStatus(){
         return view('Web.Layout.pages.order.order-status');
     }
@@ -331,51 +347,6 @@ class OrderController extends Controller
             ]);
         }
     }
-
-    // public function ipn(Request $request)
-    // {
-    //     #Received all the payement information from the gateway
-    //     if ($request->input('tran_id')) #Check transation id is posted or not.
-    //     {
-    //         $tran_id = $request->input('tran_id');
-    //         #Check order status in order tabel against the transaction id or order id.
-    //         $order_details = DB::table('orders')
-    //             ->where('transaction_id', $tran_id)
-    //             ->select('transaction_id', 'status', 'total')->first();
-    //         if ($order_details->status == 0) {
-    //             $sslc = new SslCommerzNotification();
-    //             $validation = $sslc->orderValidate($request->all(), $tran_id, $order_details->amount, $order_details->currency);
-    //             if ($validation == TRUE) {
-    //                 /*
-    //                 That means IPN worked. Here you need to update order status
-    //                 in order table as Processing or Complete.
-    //                 Here you can also sent sms or email for successful transaction to customer
-    //                 */
-    //                 $update_product = DB::table('orders')
-    //                     ->where('transaction_id', $tran_id)
-    //                     ->update(['order_status' => 1]);
-    //                 echo "Transaction is successfully Completed";
-    //             } else {
-    //                 /*
-    //                 That means IPN worked, but Transation validation failed.
-    //                 Here you need to update order status as Failed in order table.
-    //                 */
-    //                 $update_product = DB::table('orders')
-    //                     ->where('transaction_id', $tran_id)
-    //                     ->update(['order_status' => 5]);
-    //                 echo "validation Fail";
-    //             }
-    //         } else if ($order_details->status == 1 || $order_details->status == 3) {
-    //             #That means Order status already updated. No need to udate database.
-    //             echo "Transaction is already successfully Completed";
-    //         } else {
-    //             #That means something wrong happened. You can redirect customer to your product page.
-    //             echo "Invalid Transaction";
-    //         }
-    //     } else {
-    //         echo "Invalid Data";
-    //     }
-    // }
 
     public function orderComplete($id)
     {

@@ -129,6 +129,12 @@
                     $('#cart-stock').html('<div class="product-cart-Btn"> <a href="#" class="btn-icon btn-add-cart product-type-simple" id="add-to-cart" data-product-id="'+product_id+'"> <i class="fas fa-spinner fa-spin me-2 d-none spinner"></i> <i class="icon-shopping-cart icon-bag"></i><span>ADD TO CART</span> </a> </div>')
                     $('#no-mini-product').html(''); 
                     $('#quick-view-modal').modal('hide');
+
+
+                    // show mini cart
+                    var offcanvasElement = document.getElementById('offcanvasRight');
+                    var offcanvas = new bootstrap.Offcanvas(offcanvasElement);
+                    offcanvas.show();
                     showSuccessMessage(response.message);
                 }else if(response.status === 'out-of-stock'){
                     $('.product-buy-section').html('<a class="cart-btn sold-out-cart">Out of Stock</a>');
