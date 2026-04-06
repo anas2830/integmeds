@@ -123,7 +123,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="form-check mb-2">
+                                            {{-- <div class="form-check mb-2">
                                                 <div class="check-wrap">
                                                     <input class="form-check-input" type="radio"
                                                         name="paymentMethod" value="sslcommerz" id="ssl-commerz">
@@ -132,7 +132,7 @@
                                                             style="height: 20px; margin-left: 10px;"> </label>
                                                 </div>
                                             </div>
-                                            <span class="fs-small">SSL Commerz is allowed only for Bangladesh</span>
+                                            <span class="fs-small">SSL Commerz is allowed only for Bangladesh</span> --}}
                                         </div>
 
                                     
