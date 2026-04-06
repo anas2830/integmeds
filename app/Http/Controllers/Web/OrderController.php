@@ -147,7 +147,7 @@ class OrderController extends Controller
                 ],
         
                 'success_url' => route('stripe.success') . '?session_id={CHECKOUT_SESSION_ID}',
-                'cancel_url' => route('stripe.cancel'),
+                'cancel_url' => route('stripe.cancel') . '?order_id=' . $order->id,
             ]);
         
             return redirect($session->url);
@@ -312,17 +312,7 @@ class OrderController extends Controller
 
     public function stripeCancel(Request $request)
     {
-        \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
-        $session = \Stripe\Checkout\Session::retrieve($request->session_id);
-        $paymentIntent = \Stripe\PaymentIntent::retrieve($session->payment_intent);
-        if ($paymentIntent->status === 'canceled') {
-            $orderId = $session->metadata->order_id;
-            $order = Order::where('id', $orderId)->first();
-            if($order){
-                $order->delete();
-            }
-            return to_route('order.status')->with('order_cancelled', 'The Order has been cancelled');
-        }
+        return redirect()->route('checkout');
     }
     // end stripe
 
