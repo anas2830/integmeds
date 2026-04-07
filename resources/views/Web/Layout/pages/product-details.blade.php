@@ -78,7 +78,12 @@
                                     </ul>
                                 </div>
                                 <div class="inner-shop-details-price">
-                                    <h2 class="price">{{config('app.currency_symbol')}}{{$product->sale_price}}</h2>
+                                    <h2 class="price">
+                                        <span class="old-price">
+                                            {{config('app.currency_symbol')}}{{ $product->regular_price }}
+                                        </span>
+                                        {{config('app.currency_symbol')}}{{$product->sale_price}}
+                                    </h2>
                                     <span class="stock-info">
                                         @if($product->quantity > 0)
                                             <h5 class="stock-status text-success">- In Stock</h5>

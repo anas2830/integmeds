@@ -586,6 +586,11 @@ ul{padding:0;margin:0;}
 .inner-shop-details-price { display: flex; align-items: center; margin: 27px 0 23px; }
 .inner-shop-details-price .price { font-size: 26px; font-weight: 700; line-height: .9; margin-bottom: 0; }
 .inner-shop-details-price .stock-status { font-size: 12px; line-height: 1; margin-bottom: 0; font-weight: 900; margin-left: 15px; text-transform: uppercase; color: #4eb92d; }
+.inner-shop-details-price .old-price {
+    color: #aaa;
+    text-decoration: line-through;
+	font-size: 20px;
+}
 .inner-shop-details-list { margin: 28px 0 32px; }
 .inner-shop-details-list ul li { padding-left: 22px; position: relative; font-size: 15px; color: #777777; margin-top: 5px; font-weight: 500; list-style:none;}
 .inner-shop-details-list ul li > span { color: #696868; margin-left: 5px; font-weight: 400; }
