@@ -128,7 +128,7 @@ class OrderController extends Controller
         if ($request->paymentMethod === 'stripe') {
             \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
             $session = \Stripe\Checkout\Session::create([
-                'payment_method_types' => ['card'],
+                // 'payment_method_types' => ['card'],
                 'line_items' => [[
                     'price_data' => [
                         'currency' => 'usd',
