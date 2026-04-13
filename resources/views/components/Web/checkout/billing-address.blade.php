@@ -31,7 +31,7 @@
         @dd($countries->take(5), $billingAddress->country) --}}
         <div class="col-md-6 mb-3">
             <label class="form-label">Country/Region <span class="required">*</span></label>
-            <select class="select2 country form-control @error('billing.country') is-invalid @enderror" name="billing[country]" id="country" required style="width: 100%;">
+            <select class="select2 country form-control @error('billing.country') is-invalid @enderror billing-country" name="billing[country]" id="country" required style="width: 100%;">
                 <option value="">Please choose your country/region</option>
                 @foreach($countries as $country)
                     <option value="{{ $country->iso2 }}"

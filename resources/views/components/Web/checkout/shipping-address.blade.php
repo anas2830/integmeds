@@ -30,7 +30,7 @@
 
         <div class="col-md-6 mb-3">
             <label class="form-label">Country/Region <span class="required">*</span></label>
-            <select class="select2 country form-control @error('shipping.country') is-invalid @enderror" name="shipping[country]" id="country" required style="width: 100%;">
+            <select class="select2 country form-control @error('shipping.country') is-invalid @enderror shipping-country" name="shipping[country]" id="country" required style="width: 100%;">
                 <option value="">Please choose your country/region</option>
                 @foreach($countries as $country)
                     <option value="{{ $country->iso2 }}"

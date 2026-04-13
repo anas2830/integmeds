@@ -19,6 +19,15 @@
                     <form action="{{ route('place.order') }}" method="post">
                         @csrf
                         <div class="row">
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul class="mb-0">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
                             <div class="col-lg-8">
                                 <h4 class="mb-3">Billing Address</h4>
                                 <x-Web.checkout.billing-address :billingAddress="$billingAddress" :countries="$countries" />
@@ -174,6 +183,19 @@
 @push('script')
 <script>
 $(document).ready(function () {
+
+    $(document).ready(function () {
+
+        // Initial page load
+        $('.billing-country').trigger('change');
+        $('.shipping-country').trigger('change');
+        // যখন Ship to different address checkbox click হবে
+        $('#ship-address').on('change', function () {
+            $('.billing-country').trigger('change');
+            $('.shipping-country').trigger('change');
+        });
+
+    });
 
     function toggleShippingBilling() {
         const isDifferentAddress = $('#ship-address').is(':checked');

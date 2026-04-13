@@ -41,6 +41,12 @@ class OrderController extends Controller
     }
     public  function placeOrder(OrderPlaceRequest $request)
     {
+        $shippingCost = session('shipping_cost', 0);
+        if ($shippingCost <= 0) {
+            return back()->withErrors([
+                'shipping' => 'Invalid shipping cost. Please select your country again.'
+            ]);
+        }
         $availableMethods = ShippingMethod::where('status', 1)->get();
         $isShippingRequired = false;
         $ship_to_different_address = $request->ship_to_different_address;
@@ -355,9 +361,18 @@ class OrderController extends Controller
     public function updateShippingCost(Request $request)
     {
         $request->validate([
-            'shipping_cost' => 'required|numeric|max:999999',
+            'shipping_cost' => 'required|numeric|min:0.01|max:999999',
+        ], [
+            'shipping_cost.min' => 'Invalid shipping cost.',
         ]);
-        Session::put('shipping_cost', $request->shipping_cost);
-        return response()->json(['success' => true]);
+    
+        $shippingCost = round((float) $request->shipping_cost, 2);
+    
+        Session::put('shipping_cost', $shippingCost);
+    
+        return response()->json([
+            'success' => true,
+            'shipping_cost' => $shippingCost
+        ]);
     }
 }
