@@ -369,6 +369,7 @@ class OrderController extends Controller
         $shippingCost = round((float) $request->shipping_cost, 2);
     
         Session::put('shipping_cost', $shippingCost);
+        Session::save();
     
         return response()->json([
             'success' => true,
