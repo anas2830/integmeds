@@ -402,7 +402,14 @@ $(document).ready(function () {
         $('#shipping-method-container').html('');
 
         switch (selectedCountry) {
-            case 'US': 
+            case '':
+            case null:
+            case undefined:
+                $('#courier-service-error').hide();
+                $('.shipping-method').toggleClass('d-none', true);
+                updateShippingCostSummary(0);
+                break;
+            case 'US':
                 $('#courier-service-error').hide();
                 $('.shipping-method').toggleClass('d-none', true);
                 updateShippingCostSummary({{config('shipping.fixed_rates.US')}});
@@ -416,11 +423,6 @@ $(document).ready(function () {
             //     $('#courier-service-error').hide();
             //     $('.shipping-method').toggleClass('d-none', true);
             //     updateShippingCostSummary({{config('shipping.fixed_rates.SA')}});
-            //     break;
-            // default:
-            //     $('#courier-service-error').show();
-            //     $('.shipping-method').toggleClass('d-none', false);
-            //     resetShippingMethod();
             //     break;
             default:
                 $('#courier-service-error').hide();
